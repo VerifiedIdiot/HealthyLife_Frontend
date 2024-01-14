@@ -1,5 +1,5 @@
 import React from "react";
-import useTrackUserVisit from "./hooks/TrackUserVisit";
+import useTrackUserVisit from "./hooks/useTrackUserVisit";
 import useMobileView from "./hooks/useMobileView";
 import GlobalStyle from "./styles/GlobalStyle";
 import {
@@ -9,9 +9,11 @@ import {
   Navigate,
 } from "react-router-dom";
 import {
-  HeaderFooterLayout,
-  HeaderOnlyLayout,
-  FooterOnlyLayout,
+  HeaderFooter,
+  HeaderOnly,
+  FooterOnly,
+  DynamicHeaderFooter,
+  DynamicHeaderOnly
 } from "./styles/headerFooter/HeaderFooter";
 
 import HomePage from "./pages/HomePage";
@@ -27,6 +29,8 @@ function App() {
   // 모바일뷰 여부에 따라 페이지가 등장할지 말지 결정하는 커스텀 훅
   const isMobileView = useMobileView();
 
+  
+
   return (
     <>
       <GlobalStyle />
@@ -34,12 +38,12 @@ function App() {
         <Routes>
           <Route path="/login" element={<LogInPage />} />
 
-          {/* 헤더와 푸터가 포함된 라우트 그룹 */}
-          <Route element={<HeaderFooterLayout />}>
+          {/*다이나믹한 헤더와 푸터가 포함된 라우트 그룹 */}
+          <Route element={<DynamicHeaderFooter />}>
             <Route path="/" element={<HomePage />} />
           </Route>
-          {/* 헤더만 포함된 라우트 그룹 */}
-          <Route element={<HeaderOnlyLayout />}>
+          {/*다이나믹한 헤더만 포함된 라우트 그룹 */}
+          <Route element={<DynamicHeaderOnly />}>
           <Route path="/inbody" element={<InbodyPage />} />
           <Route path="/calendar" element={<CalendarPage />} />
           <Route path="/community" element={<CommunityPage />} />

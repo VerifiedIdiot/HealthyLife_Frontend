@@ -14,7 +14,7 @@ const NavContainer = styled.nav`
 
 const NavLink = styled.div`
   cursor: pointer;
-  // 링크 스타일링
+
 `;
 
 const Navigation = () => {

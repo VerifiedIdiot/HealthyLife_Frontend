@@ -2,9 +2,9 @@ import React from "react";
 import styled from "styled-components";
 import Logo from "./headerComponents/Logo";
 import Navigation from "./headerComponents/Navigation";
+import useDetectScroll from "../../hooks/useDetectScroll";
 
-
-const StyledHeader = styled.header`
+const DynamicStyledHeader = styled.header`
   margin: 0;
   padding: 0;
   border: 1px solid black;
@@ -19,25 +19,25 @@ const StyledHeader = styled.header`
   
 `;
 
-const HeaderInner = styled.div`
+const DynamicHeaderInner = styled.div`
   display: flex;
   width: 100%;
   height: 100%;
 `;
 
-const Header = () => {
+const DynamicHeader = () => {
   
-  
+  const scrolledDown = useDetectScroll();
 
 
   return (
-    <StyledHeader>
-      <HeaderInner>
+    <DynamicStyledHeader $scrolledDown={scrolledDown}>
+      <DynamicHeaderInner>
         <Logo />
         <Navigation />
-      </HeaderInner>
-    </StyledHeader>
+      </DynamicHeaderInner>
+    </DynamicStyledHeader>
   );
 };
 
-export default Header;
+export default DynamicHeader;

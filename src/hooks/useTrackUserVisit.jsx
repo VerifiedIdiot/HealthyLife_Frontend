@@ -26,9 +26,9 @@ const useTrackUserVisit = () => {
 
       try {
         await axios.post(BACKEND_DOMAIN +'/api/track-visit', visitData);
-        console.log('Tracking data sent successfully');
+        console.log('백엔드 서버로 유저 추적 정보 전달 성공!');
       } catch (error) {
-        console.error('Error sending tracking data:', error);
+        console.error('유저 추적 정보 전달 실패 :', error);
       }
     };
 

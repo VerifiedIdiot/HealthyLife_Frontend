@@ -17,6 +17,7 @@ import {
 } from "./styles/headerFooter/HeaderFooter";
 
 import HomePage from "./pages/HomePage";
+import AboutPage from "./pages/AboutPage";
 import LogInPage from "./pages/LogIn";
 import InbodyPage from "./pages/InBodyPage";
 import CalendarPage from "./pages/CalendarPage";
@@ -44,6 +45,7 @@ function App() {
               </Route>
               {/*다이나믹한 헤더만 포함된 라우트 그룹 */}
               <Route element={<HeaderFooter />}>
+                <Route path="/about" element={<AboutPage />} />
                 <Route path="/inbody" element={<InbodyPage />} />
                 <Route path="/calendar" element={<CalendarPage />} />
                 <Route path="/community" element={<CommunityPage />} />

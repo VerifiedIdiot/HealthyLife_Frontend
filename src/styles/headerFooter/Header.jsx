@@ -16,7 +16,7 @@ const StyledHeader = styled.header.attrs({
   left: 0;
   z-index: 998;
   background-color: ${(props) => (props.$scrolledDown ? "white" : "transparent")};
-  transition: background-color 0.3s;
+  transition: background-color 0.4s;
   box-shadow: ${(props) => props.$shadow || "0 2px 4px rgba(0, 0, 0, 0.1)"};
 `;
 
@@ -28,13 +28,13 @@ const HeaderInner = styled.div.attrs({
   height: 100%;
 `;
 
-const Header = () => {
+const Header = ({ $scrolledDown, $position }) => {
   
   
 
 
   return (
-    <StyledHeader>
+    <StyledHeader $scrolledDown={$scrolledDown} $position={$position}>
       <HeaderInner>
         <Logo />
         <Navigation />

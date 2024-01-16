@@ -18,6 +18,7 @@ export const Main = styled.main.attrs({
   height: ${(props) => props.$height || "100%"};
   border: ${(props) => props.$border || "1px solid black"};
   border: 1px solid black;
+  
 `;
 
 

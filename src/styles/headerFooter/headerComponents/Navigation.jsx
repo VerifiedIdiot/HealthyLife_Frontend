@@ -3,7 +3,9 @@ import styled from 'styled-components';
 import { useNavigate } from 'react-router-dom';
 
 
-const NavContainer = styled.nav`
+const NavContainer = styled.nav.attrs({
+  className: "nav-bar"
+})`
   display: flex;
   justify-content: space-around;
   align-items: center;
@@ -12,7 +14,9 @@ const NavContainer = styled.nav`
   border: 1px solid black;
 `;
 
-const NavLink = styled.div`
+const NavLink = styled.div.attrs({
+  className: "nav-item"
+})`
   cursor: pointer;
 
 `;

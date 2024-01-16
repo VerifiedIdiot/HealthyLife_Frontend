@@ -2,7 +2,9 @@ import React from 'react';
 import styled from 'styled-components';
 import { useNavigate } from 'react-router-dom';
 
-const LogoContainer = styled.div`
+const LogoContainer = styled.div.attrs({
+  className: "logo"
+})`
   height: 100%;
   width: 25%;
   border: 1px solid black;

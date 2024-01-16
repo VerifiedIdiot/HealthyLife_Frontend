@@ -12,11 +12,12 @@ export const Main = styled.main.attrs({
   className: "main"
 })`
   position: ${(props) => props.$position || "static"};
-  display: ${(props) => props.$diplay || "flex"};
+  display: ${(props) => props.$display || "flex"};
   flex-direction: ${(props) => props.$direction || "column"};
   width: ${(props) => props.$width || "100%"};
   height: ${(props) => props.$height || "100%"};
-  border: ${(props) => props.$border || "none"};
+  border: ${(props) => props.$border || "1px solid black"};
+  border: 1px solid black;
 `;
 
 
@@ -30,12 +31,13 @@ export const Container = styled.div.attrs({
   className: "container"
 })`
   position: ${(props) => props.$position || "static"};
-  display: ${(props) => props.$diplay || "flex"};
+  display: ${(props) => props.$display || "flex"};
   flex-direction: ${(props) => props.$direction || "column"};
   width: ${(props) => props.$width || "100%"};
-  height: ${(props) => props.$height || "100%"};
+  height: ${(props) => props.$height || "52.5vw"};
   border: ${(props) => props.$border || "none"};
   box-shadow: ${(props) => props.$shadow || "0 2px 4px rgba(0, 0, 0, 0.1)"};
+  border: 1px solid black;
 `;
 
 // 섹션 : 컨테이너를 컬럼방향기준으로 나누고 싶을때
@@ -45,11 +47,13 @@ export const Section = styled.section.attrs({
   className: "section"
 })`
   position: ${(props) => props.$position || "static"};
-  display: ${(props) => props.$diplay || "flex"};
+  display: ${(props) => props.$display || "flex"};
+  flex-direction: ${(props) => props.$direction || "row"};
   width: ${(props) => props.$width || "100%"};
-  height: ${(props) => props.$height || "100%"};
+  height: ${(props) => props.$height || "50%"};
   border: ${(props) => props.$border || "none"};
   box-shadow: ${(props) => props.$shadow || "0 2px 4px rgba(0, 0, 0, 0.1)"};
+  /* border: 1px solid black; */
 `;
 
 
@@ -58,11 +62,12 @@ export const Area = styled.div.attrs({
   className: "area"
 })`
   position: ${(props) => props.$position || "static"};
-  display: ${(props) => props.$diplay || "flex"};
+  display: ${(props) => props.$display || "flex"};
   width: ${(props) => props.$width || "100%"};
   height: ${(props) => props.$height || "100%"};
   border: ${(props) => props.$border || "none"};
   box-shadow: ${(props) => props.$shadow || "0 2px 4px rgba(0, 0, 0, 0.1)"};
+  
 `;
 
 
@@ -71,11 +76,12 @@ export const Box = styled.div.attrs({
   className: "box"
 })`
   position: ${(props) => props.$position || "static"};
-  display: ${(props) => props.$diplay || "flex"};
+  display: ${(props) => props.$display || "flex"};
   width: ${(props) => props.$width || "100%"};
   height: ${(props) => props.$height || "100%"};
   border: ${(props) => props.$border || "none"};
   box-shadow: ${(props) => props.$shadow || "0 2px 4px rgba(0, 0, 0, 0.1)"};
+  
 `;
 
 // 각 영역별 Area
@@ -84,11 +90,12 @@ export const Item = styled.div.attrs({
   className: "item"
 })`
   position: ${(props) => props.$position || "static"};
-  display: ${(props) => props.$diplay || "flex"};
+  display: ${(props) => props.$display || "flex"};
   width: ${(props) => props.$width || "100%"};
   height: ${(props) => props.$height || "100%"};
   border: ${(props) => props.$border || "none"};
   box-shadow: ${(props) => props.$shadow || "0 2px 4px rgba(0, 0, 0, 0.1)"};
+  
 `;
 
 // 각 영역별 Area
@@ -97,9 +104,10 @@ export const Element = styled.div.attrs({
   className: "element"
 })`
   position: ${(props) => props.$position || "static"};
-  display: ${(props) => props.$diplay || "flex"};
+  display: ${(props) => props.$display || "flex"};
   width: ${(props) => props.$width || "100%"};
   height: ${(props) => props.$height || "100%"};
   border: ${(props) => props.$border || "none"};
   box-shadow: ${(props) => props.$shadow || "0 2px 4px rgba(0, 0, 0, 0.1)"};
+  
 `;

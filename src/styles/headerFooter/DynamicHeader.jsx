@@ -5,7 +5,7 @@ import Header from "./Header";
 const DynamicHeader = () => {
   const scrolledDown = useDetectScroll();
 
-  return <Header $scrolledDown={scrolledDown} />;
+  return <Header $scrolledDown={scrolledDown} $position ="fixed"/>;
 };
 
 export default DynamicHeader;

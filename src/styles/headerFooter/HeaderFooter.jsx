@@ -1,18 +1,19 @@
 import Header from "./Header";
 import DynamicHeader from "./DynamicHeader";
+import { Outlet } from "react-router-dom";
 
-export const HeaderFooter = ({ children }) => (
+export const HeaderFooter = () => (
   <>
     <Header />
-    {children}
+    <Outlet/>
     {/* <Footer /> */}
   </>
 );
 
-export const HeaderOnly = ({ children }) => (
+export const HeaderOnly = () => (
   <>
     <Header />
-    {children}
+    <Outlet/>
   </>
 );
 
@@ -24,18 +25,20 @@ export const HeaderOnly = ({ children }) => (
 // );
 
 
-export const DynamicHeaderFooter = ({ children }) => (
+export const DynamicHeaderFooter = () => (
   <>
-    <DynamicHeader />
-    {children}
+    <DynamicHeader/>
+    
+    <Outlet/>
+    
     {/* <Footer /> */}
   </>
 );
 
-export const DynamicHeaderOnly = ({ children }) => (
+export const DynamicHeaderOnly = () => (
   <>
-    <DynamicHeader />
-    {children}
+    <DynamicHeader/>
+    <Outlet/>
     
   </>
 );

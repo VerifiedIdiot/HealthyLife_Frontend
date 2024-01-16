@@ -11,40 +11,30 @@ import {
 const InbodyPage = () => {
   return (
     <>
-      <p>인바디 페이지입니다</p>
       <Main>
-        <Container>
-          <Section>
-            <Area>
-              <Box>
-                <Item>
-                  <Element></Element>
-                  <Element></Element>
-                </Item>
-              </Box>
-              <Box>
-                <Item>
-                  <Element></Element>
-                  <Element></Element>
-                </Item>
-              </Box>
-            </Area>
+        <Container $border="1px solid black">
+          <Section $border="1px solid black">
+            <p>페이지입니다.</p>
           </Section>
-          <Section>
-            <Area>
-              <Box>
-                <Item>
-                  <Element></Element>
-                  <Element></Element>
-                </Item>
-              </Box>
-              <Box>
-                <Item>
-                  <Element></Element>
-                  <Element></Element>
-                </Item>
-              </Box>
-            </Area>
+          <Section $border="1px solid black">
+            <p>페이지입니다.</p>
+          </Section>
+        </Container>
+        <Container></Container>
+        <Container $border="1px solid black">
+          <Section $border="1px solid black">
+            <p>페이지입니다.</p>
+          </Section>
+          <Section $border="1px solid black">
+            <p>홈페이지입니다.</p>
+          </Section>
+        </Container>
+        <Container>
+          <Section $border="1px solid black">
+            <p>페이지입니다.</p>
+          </Section>
+          <Section $border="1px solid black">
+            <p>페이지입니다.</p>
           </Section>
         </Container>
       </Main>

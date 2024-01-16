@@ -15,7 +15,7 @@ export const Wrapper = styled.div.attrs({
 
 
 const GlobalStyle = createGlobalStyle`
-  body {
+  * {
     margin: 0;
     padding: 0;
     /* font-family: 'Open Sans', sans-serif; */

@@ -1,7 +1,7 @@
 import React from "react";
 import useTrackUserVisit from "./hooks/useTrackUserVisit";
 import useMobileView from "./hooks/useMobileView";
-import GlobalStyle from "./styles/GlobalStyle";
+import GlobalStyle, { Wrapper } from "./styles/GlobalStyle";
 import {
   BrowserRouter as Router,
   Routes,
@@ -13,7 +13,7 @@ import {
   HeaderOnly,
   FooterOnly,
   DynamicHeaderFooter,
-  DynamicHeaderOnly
+  DynamicHeaderOnly,
 } from "./styles/headerFooter/HeaderFooter";
 
 import HomePage from "./pages/HomePage";
@@ -29,30 +29,32 @@ function App() {
   // 모바일뷰 여부에 따라 페이지가 등장할지 말지 결정하는 커스텀 훅
   const isMobileView = useMobileView();
 
-  
-
   return (
     <>
       <GlobalStyle />
-      <Router>
-        <Routes>
-          <Route path="/login" element={<LogInPage />} />
+      <Wrapper>
+        <Router>
+          
+            <Routes>
+              <Route path="/login" element={<LogInPage />} />
 
-          {/*다이나믹한 헤더와 푸터가 포함된 라우트 그룹 */}
-          <Route element={<DynamicHeaderFooter />}>
-            <Route path="/" element={<HomePage />} />
-          </Route>
-          {/*다이나믹한 헤더만 포함된 라우트 그룹 */}
-          <Route element={<DynamicHeaderOnly />}>
-          <Route path="/inbody" element={<InbodyPage />} />
-          <Route path="/calendar" element={<CalendarPage />} />
-          <Route path="/community" element={<CommunityPage />} />
-          <Route path="/ranking" element={<RankingPage />} />
-          </Route>
-          {/* 사용자가 잘못된 URL을 입력했을 때 홈으로 리다이렉션 */}
-          <Route path="*" element={<Navigate to="/" replace />} />
-        </Routes>
-      </Router>
+              {/*다이나믹한 헤더와 푸터가 포함된 라우트 그룹 */}
+              <Route element={<DynamicHeaderFooter />}>
+                <Route path="/" element={<HomePage />} />
+              </Route>
+              {/*다이나믹한 헤더만 포함된 라우트 그룹 */}
+              <Route element={<DynamicHeaderOnly />}>
+                <Route path="/inbody" element={<InbodyPage />} />
+                <Route path="/calendar" element={<CalendarPage />} />
+                <Route path="/community" element={<CommunityPage />} />
+                <Route path="/ranking" element={<RankingPage />} />
+              </Route>
+              {/* 사용자가 잘못된 URL을 입력했을 때 홈으로 리다이렉션 */}
+              <Route path="*" element={<Navigate to="/" replace />} />
+            </Routes>
+          
+        </Router>
+      </Wrapper>
     </>
   );
 }

@@ -28,7 +28,7 @@ function App() {
   // 방문자 추적 커스텀 훅
   useTrackUserVisit();
   // 모바일뷰 여부에 따라 페이지가 등장할지 말지 결정하는 커스텀 훅
-  // const isMobileView = useMobileView();
+  const isMobileView = useMobileView();
 
   return (
     <>

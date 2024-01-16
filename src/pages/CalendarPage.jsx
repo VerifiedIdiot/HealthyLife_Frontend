@@ -8,7 +8,7 @@ import {
   Element,
 } from "../styles/Layouts";
 
-const CalendarPage = () => {
+const MyPage = () => {
   return (
     <>
       <Main>
@@ -26,7 +26,7 @@ const CalendarPage = () => {
             <p>페이지입니다.</p>
           </Section>
           <Section $border="1px solid black">
-            <p>홈페이지입니다.</p>
+            <p>페이지입니다.</p>
           </Section>
         </Container>
         <Container>
@@ -41,4 +41,4 @@ const CalendarPage = () => {
     </>
   );
 };
-export default CalendarPage;
+export default MyPage;

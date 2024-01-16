@@ -8,7 +8,7 @@ import {
   Element,
 } from "../styles/Layouts";
 
-const CommunityPage = () => {
+const MyPage = () => {
   return (
     <>
       <Main>
@@ -26,7 +26,7 @@ const CommunityPage = () => {
             <p>페이지입니다.</p>
           </Section>
           <Section $border="1px solid black">
-            <p>홈페이지입니다.</p>
+            <p>페이지입니다.</p>
           </Section>
         </Container>
         <Container>
@@ -41,4 +41,4 @@ const CommunityPage = () => {
     </>
   );
 };
-export default CommunityPage;
+export default MyPage;

@@ -43,7 +43,7 @@ function App() {
               <Route element={<DynamicHeaderFooter />}>
                 <Route path="/" element={<HomePage />} />
               </Route>
-              {/*다이나믹한 헤더만 포함된 라우트 그룹 */}
+              {/*일반 헤더푸터만 포함된 라우트 그룹 */}
               <Route element={<HeaderFooter />}>
                 <Route path="/about" element={<AboutPage />} />
                 <Route path="/inbody" element={<InbodyPage />} />

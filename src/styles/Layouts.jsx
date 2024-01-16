@@ -38,11 +38,12 @@ export const Container = styled.div.attrs({
   height: ${(props) => props.$height || "52.5vw"};
   border: ${(props) => props.$border || "none"};
   box-shadow: ${(props) => props.$shadow || "0 2px 4px rgba(0, 0, 0, 0.1)"};
-  border: 1px solid black;
+  
 `;
 
 // 섹션 : 컨테이너를 컬럼방향기준으로 나누고 싶을때
 // 해당 영역부터 아래까지는 복수이상으로 존재할 수 있음
+
 // wrap -> Main -> Container -> Section
 export const Section = styled.section.attrs({
   className: "section"

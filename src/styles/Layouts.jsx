@@ -16,8 +16,8 @@ export const Main = styled.main.attrs({
   width: ${(props) => props.$width || "90%"};
   height: ${(props) => props.$height || "100%"};
   border: ${(props) => props.$border || "1px solid black"};
-  border: 1px solid black;
 
+  border: 1px solid black;
 `;
 
 // 컨테이너
@@ -37,6 +37,7 @@ export const Container = styled.div.attrs({
   width: ${(props) => props.$width || "100%"};
   height: ${(props) => props.$height || "52.5vw"};
   border: ${(props) => props.$border || "none"};
+  border-radius: ${(props) => props.$borderRadius || "none"};
   box-shadow: ${(props) => props.$shadow || "0 2px 4px rgba(0, 0, 0, 0.1)"};
 
 `;

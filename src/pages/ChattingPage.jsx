@@ -5,12 +5,13 @@ import { Main, Container,Section,Area,Box,Item,Element } from "../styles/Layouts
 const ChattingPage=()=>{
 
   return(
-    <>
-    <ChatHeader/> 
+  <>
+    <ChatHeader> 
       <ChatList/>
       <FriendsList/>
       <Chatting/>
-      </>
+    </ChatHeader> 
+  </>
 
   )
 }

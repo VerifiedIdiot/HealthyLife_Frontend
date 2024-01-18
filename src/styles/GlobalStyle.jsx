@@ -7,10 +7,13 @@ import styled from "styled-components";
 export const Wrapper = styled.div.attrs({
   className: "wrap",
 })`
+  display: flex;
+  justify-content: center;
   width: 99.9%;
   height: auto;
   min-height: 52.5vw;
-  border: 1px solid black;
+  
+  
 `;
 
 const GlobalStyle = createGlobalStyle`

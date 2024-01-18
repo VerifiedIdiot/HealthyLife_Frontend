@@ -17,6 +17,7 @@ export const Main = styled.main.attrs({
   height: ${(props) => props.$height || "100%"};
   border: ${(props) => props.$border || "1px solid black"};
   border: 1px solid black;
+
 `;
 
 // 컨테이너
@@ -37,6 +38,7 @@ export const Container = styled.div.attrs({
   height: ${(props) => props.$height || "52.5vw"};
   border: ${(props) => props.$border || "none"};
   box-shadow: ${(props) => props.$shadow || "0 2px 4px rgba(0, 0, 0, 0.1)"};
+
 `;
 
 // 섹션 : 컨테이너를 컬럼방향기준으로 나누고 싶을때
@@ -54,7 +56,7 @@ export const Section = styled.section.attrs({
   width: ${(props) => props.$width || "100%"};
   height: ${(props) => props.$height || "50%"};
   border: ${(props) => props.$border || "none"};
-  box-shadow: ${(props) => props.$shadow || "0 2px 4px rgba(0, 0, 0, 0.1)"};
+  /* box-shadow: ${(props) => props.$shadow || "0 2px 4px rgba(0, 0, 0, 0.1)"}; */
   /* border: 1px solid black; */
 `;
 

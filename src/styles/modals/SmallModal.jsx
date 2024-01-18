@@ -10,6 +10,8 @@ const ModalContent = styled.div`
 
 `;
 
+
+
 const ConfirmationModal = ({ isOpen, onClose, message, onConfirm }) => {
   return (
     <ModalOverlay isOpen={isOpen} onClick={onClose}>

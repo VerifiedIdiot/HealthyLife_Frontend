@@ -3,7 +3,7 @@ import axios from "axios";
 import "moment/locale/ko"; // 한글 로컬라이제이션
 moment.locale("ko"); // 한글 설정 적용
 const Common = {
-  HEALTH_HOST: "http://localhost:8111",
+  BACKEND_DOMAIN : process.env.REACT_APP_BACKEND_DOMAIN,
 };
 
 export default Common;

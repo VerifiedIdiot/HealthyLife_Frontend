@@ -28,6 +28,7 @@ export const Main = styled.main.attrs({
 export const Container = styled.div.attrs({
   className: "container",
 })`
+  background-color: ${(props) => props.$background || "none"};
   position: ${(props) => props.$position || "static"};
   display: ${(props) => props.$display || "flex"};
   flex-direction: ${(props) => props.$direction || "column"};
@@ -45,6 +46,7 @@ export const Container = styled.div.attrs({
 export const Section = styled.section.attrs({
   className: "section",
 })`
+  background-color: ${(props) => props.$background || "none"};
   position: ${(props) => props.$position || "static"};
   display: ${(props) => props.$display || "flex"};
   flex-direction: ${(props) => props.$direction || "row"};
@@ -60,6 +62,7 @@ export const Section = styled.section.attrs({
 export const Area = styled.div.attrs({
   className: "area",
 })`
+  background-color: ${(props) => props.$background || "none"};
   position: ${(props) => props.$position || "static"};
   display: ${(props) => props.$display || "flex"};
   flex-direction: ${(props) => props.$direction || "row"};
@@ -74,6 +77,7 @@ export const Area = styled.div.attrs({
 export const Box = styled.div.attrs({
   className: "box",
 })`
+  background-color: ${(props) => props.$background || "none"};
   position: ${(props) => props.$position || "static"};
   display: ${(props) => props.$display || "flex"};
   flex-direction: ${(props) => props.$direction || "row"};
@@ -89,6 +93,7 @@ export const Box = styled.div.attrs({
 export const Item = styled.div.attrs({
   className: "item",
 })`
+  background-color: ${(props) => props.$background || "none"};
   position: ${(props) => props.$position || "static"};
   display: ${(props) => props.$display || "flex"};
   flex-direction: ${(props) => props.$direction || "row"};
@@ -104,6 +109,7 @@ export const Item = styled.div.attrs({
 export const Element = styled.div.attrs({
   className: "element",
 })`
+  background-color: ${(props) => props.$background || "none"};
   position: ${(props) => props.$position || "static"};
   display: ${(props) => props.$display || "flex"};
   flex-direction: ${(props) => props.$direction || "row"};

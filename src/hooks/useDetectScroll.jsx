@@ -11,9 +11,10 @@ const useDetectScroll = () => {
 
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
+  }, []); 
 
   return scrolledDown;
 };
 
 export default useDetectScroll;
+ 

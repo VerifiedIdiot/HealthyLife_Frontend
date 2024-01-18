@@ -18,13 +18,14 @@ import {
 
 import HomePage from "./pages/HomePage";
 import AboutPage from "./pages/AboutPage";
-import LogInPage from "./pages/Login";
+import LogInPage from "./pages/LogIn";
 import InbodyPage from "./pages/InBodyPage";
 import CalendarPage from "./pages/CalendarPage";
 import CommunityPage from "./pages/CommunityPage";
 import RankingPage from "./pages/RankingPage";
 import JoinPage from "./pages/JoinPage";
 import Kakao from "./pages/Kakao";
+import ChattingPage from "./pages/ChattingPage";
 
 function App() {
   // 방문자 추적 커스텀 훅
@@ -41,7 +42,7 @@ function App() {
             <Route path="/login" element={<LogInPage />} />
             <Route path="/join" element={<JoinPage />} />
             <Route path="/oauth/kakao" element={<Kakao />} />
-
+            <Route path="/test" element={<ChattingPage/>}/>
             {/*다이나믹한 헤더와 푸터가 포함된 라우트 그룹 */}
             <Route element={<DynamicHeaderFooter />}>
               <Route path="/" element={<HomePage />} />

@@ -1,28 +1,28 @@
 import { styled } from "styled-components";
 
-const ButtonComp = styled.button`
-  text-align: center;
-  width: ${(props) => props.width || "200px"};
-  height: ${(props) => props.height || "40px"};
-  color: ${(props) => props.color || "white"};
-  font-weight: 600;
-  font-size: ${(props) => props.fontSize || "1em"};
-  border: none;
-  border-radius: 5px;
-  background-color: ${(props) => props.$front || "var(--LIGHTVIO)"};
-  transition: 0.4s ease-in;
-  cursor: pointer;
-  &.false {
-    background-color: var(--GREY);
-    cursor: default;
-    &:hover {
-      background-color: var(--GREY);
-    }
-  }
+export const ButtonComp = styled.button`
+text-align: center;
+width: ${(props) => props.$width || "40px"};
+height: ${(props) => props.$height || "25px"};
+color: ${(props) => props.$color || "white"};
+font-weight: 600;
+font-size: ${(props) => props.$fontSize || "1em"};
+border: ${(props) => props.$border || "none"};
+border-radius: ${(props) => props.$borderRadius || "8px"};
+background-color: ${(props) => props.$front || "#4942E4"};
+transition: 0.2s ease-in;
+cursor: pointer;
+&.false {
+  background-color: #11009E;
+  cursor: default;
   &:hover {
-    background-color: ${(props) => props.$back || "var(--VIOLET)"};
-    color: white;
+    background-color: #11009E;
   }
+}
+&:hover {
+  background-color: ${(props) => props.$back || "#11009E"};
+  color: white;
+}
 `;
 
 // 활성/비활성 버튼

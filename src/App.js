@@ -18,7 +18,7 @@ import {
 
 import HomePage from "./pages/HomePage";
 
-import LogInPage from "./pages/Login";
+import LoginPage from "./pages/Login";
 import InbodyPage from "./pages/InBodyPage";
 import CalendarPage from "./pages/CalendarPage";
 import CommunityPage from "./pages/CommunityPage";
@@ -39,7 +39,7 @@ function App() {
       <Wrapper>
         <Router>
           <Routes>
-            <Route path="/login" element={<LogInPage />} />
+            <Route path="/login" element={<LoginPage />} />
             <Route path="/join" element={<JoinPage />} />
             <Route path="/oauth/kakao" element={<Kakao />} />
             <Route path="/test" element={<ChattingPage/>}/>

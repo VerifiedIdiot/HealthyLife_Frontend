@@ -17,12 +17,8 @@ import {
 } from "./styles/headerFooter/HeaderFooter";
 
 import HomePage from "./pages/HomePage";
-<<<<<<< Updated upstream
-import AboutPage from "./pages/AboutPage";
-import LogInPage from "./pages/LogIn";
-=======
+
 import LogInPage from "./pages/Login";
->>>>>>> Stashed changes
 import InbodyPage from "./pages/InBodyPage";
 import CalendarPage from "./pages/CalendarPage";
 import CommunityPage from "./pages/CommunityPage";

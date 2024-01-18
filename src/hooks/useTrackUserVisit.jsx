@@ -9,7 +9,7 @@ const useTrackUserVisit = () => {
   useEffect(() => {
     const entryTime = new Date();
     console.log('방문자수 추적!!');
-    
+
     // 페이지를 떠날 때 실행될 함수
     const trackExit = async () => {
       const exitTime = new Date();

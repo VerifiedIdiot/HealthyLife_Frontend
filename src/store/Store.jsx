@@ -3,11 +3,11 @@ import { configureStore } from '@reduxjs/toolkit';
 // import TrackUserReducer from './reducers/TrackUserReducer';
 import { ChattingReducer } from './reducers/ChattingReducer';
 
-const store = configureStore({
+const Store = configureStore({
   reducer: {
     // visit: TrackUserReducer,
     message : ChattingReducer // 채팅리듀서추가
   },
 });
 
-export default store;
+export default Store;

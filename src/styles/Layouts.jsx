@@ -1,7 +1,5 @@
 import styled from 'styled-components';
 
-
-
 // Wrapper 안에서 최초로 display : flex 혹은 grid를 사용하여 엘리먼트들을 어떻게
 // position은 기본적으로 static이라 작동안하지만 , relative나 absolute를
 // postion props의 값으로 전달하면 규칙 변경가능

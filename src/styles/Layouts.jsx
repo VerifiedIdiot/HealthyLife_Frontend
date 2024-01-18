@@ -12,7 +12,7 @@ export const Main = styled.main.attrs({
   position: ${(props) => props.$position || "static"};
   display: ${(props) => props.$display || "flex"};
   flex-direction: ${(props) => props.$direction || "column"};
-  width: ${(props) => props.$width || "100%"};
+  width: ${(props) => props.$width || "90%"};
   height: ${(props) => props.$height || "100%"};
   border: ${(props) => props.$border || "1px solid black"};
   border: 1px solid black;

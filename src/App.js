@@ -23,7 +23,7 @@ import InbodyPage from "./pages/InBodyPage";
 import CalendarPage from "./pages/CalendarPage";
 import CommunityPage from "./pages/CommunityPage";
 import RankingPage from "./pages/RankingPage";
-import AuthPage from "./pages/AuthPage";
+// import AuthPage from "./pages/AuthPage";
 import JoinPage from "./pages/AuthPage";
 
 function App() {

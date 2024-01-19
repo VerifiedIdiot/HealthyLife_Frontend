@@ -1,41 +1,17 @@
-import {
-  Main,
-  Container,
-  Section,
-  Area,
-  Box,
-  Item,
-  Element,
+import { Main, 
+  Container, 
+  // Section, 
+  // Area 
 } from "../styles/Layouts";
+import { HeaderSection,BodySection } from "../components/calendarPage/CalendarContainer";
 
 const CalendarPage = () => {
   return (
     <>
       <Main>
         <Container $border="1px solid black">
-          <Section $border="1px solid black">
-            <p>페이지입니다.</p>
-          </Section>
-          <Section $border="1px solid black">
-            <p>페이지입니다.</p>
-          </Section>
-        </Container>
-        <Container></Container>
-        <Container $border="1px solid black">
-          <Section $border="1px solid black">
-            <p>페이지입니다.</p>
-          </Section>
-          <Section $border="1px solid black">
-            <p>페이지입니다.</p>
-          </Section>
-        </Container>
-        <Container>
-          <Section $border="1px solid black">
-            <p>페이지입니다.</p>
-          </Section>
-          <Section $border="1px solid black">
-            <p>페이지입니다.</p>
-          </Section>
+          <HeaderSection $height="5%" />
+          <BodySection $height="95%" />
         </Container>
       </Main>
     </>

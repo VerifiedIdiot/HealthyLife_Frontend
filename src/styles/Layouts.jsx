@@ -16,8 +16,6 @@ export const Main = styled.main.attrs({
   width: ${(props) => props.$width || "90%"};
   height: ${(props) => props.$height || "100%"};
   border: ${(props) => props.$border || "1px solid black"};
-
-  border: 1px solid black;
 `;
 
 // 컨테이너
@@ -83,6 +81,7 @@ export const Box = styled.div.attrs({
   background-color: ${(props) => props.$background || "none"};
   position: ${(props) => props.$position || "static"};
   display: ${(props) => props.$display || "flex"};
+  align-items: ${(props) => props.$align || "center"};
   flex-direction: ${(props) => props.$direction || "row"};
   justify-content: ${(props) => props.$justify || "none"};
   width: ${(props) => props.$width || "100%"};
@@ -99,6 +98,7 @@ export const Item = styled.div.attrs({
   background-color: ${(props) => props.$background || "none"};
   position: ${(props) => props.$position || "static"};
   display: ${(props) => props.$display || "flex"};
+  align-items: ${(props) => props.$align || "center"};
   flex-direction: ${(props) => props.$direction || "row"};
   justify-content: ${(props) => props.$justify || "none"};
   width: ${(props) => props.$width || "100%"};
@@ -121,4 +121,23 @@ export const Element = styled.div.attrs({
   height: ${(props) => props.$height || "100%"};
   border: ${(props) => props.$border || "none"};
   box-shadow: ${(props) => props.$shadow || "0 2px 4px rgba(0, 0, 0, 0.1)"};
+`;
+
+
+export const ScrollBox =styled.div`
+  height: ${(props) => props.$height || "100%"};
+  overflow: auto;
+  overflow-x: hidden;
+  width: ${(props) => props.$width || "100%"};
+  border:1px solid black;
+  &::-webkit-scrollbar {
+    width: 10px;
+  }
+  &::-webkit-scrollbar-thumb {
+    background-color: #cfcfcf;
+    border-radius: 8px;
+  }
+  &::-webkit-scrollbar-track {
+    background-color: white
+  }
 `;

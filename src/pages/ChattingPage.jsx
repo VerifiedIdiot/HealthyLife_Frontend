@@ -8,7 +8,7 @@ const ChattingPage=()=>{
   <>
     <ChatHeader> 
       <ChatList/>
-      <FriendsList/>
+      {/* <FriendsList/> */}
       <Chatting/>
     </ChatHeader> 
   </>

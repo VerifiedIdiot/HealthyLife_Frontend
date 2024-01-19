@@ -14,7 +14,7 @@ export const Main = styled.main.attrs({
   flex-direction: ${(props) => props.$direction || "column"};
   justify-content: ${(props) => props.$justify || "none"};
   align-items: ${(props) => props.align || "none"};
-  width: ${(props) => props.$width || "90%"};
+  width: ${(props) => props.$width || "95%"};
   height: ${(props) => props.$height || "100%"};
   border: ${(props) => props.$border || "none"};
 `;

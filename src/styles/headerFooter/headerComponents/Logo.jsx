@@ -13,7 +13,7 @@ const LogoContainer = styled.div.attrs({
   height: 100%;
   width: 25%;
   /* border: 1px solid black; */
-  cursor: pointer;
+  
   
 `;
 
@@ -23,6 +23,7 @@ const LogoImage = styled.img.attrs({
   height: 100%;
   
   object-fit: contain;
+  cursor: pointer;
 `
 
 

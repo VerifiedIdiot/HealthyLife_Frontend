@@ -26,6 +26,7 @@ import RankingPage from "./pages/RankingPage";
 import JoinPage from "./pages/JoinPage";
 import Kakao from "./pages/Kakao";
 import ChattingPage from "./pages/ChattingPage";
+import MedicinePage from "./pages/MedicinePage";
 
 function App() {
   // 방문자 추적 커스텀 훅
@@ -49,6 +50,7 @@ function App() {
             </Route>
             {/*일반 헤더푸터만 포함된 라우트 그룹 */}
             <Route element={<HeaderFooter />}>
+            <Route path="/medicine" element={<MedicinePage />} />
               <Route path="/inbody" element={<InbodyPage />} />
               <Route path="/calendar" element={<CalendarPage />} />
               <Route path="/community" element={<CommunityPage />} />

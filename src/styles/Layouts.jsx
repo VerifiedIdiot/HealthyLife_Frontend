@@ -13,7 +13,7 @@ export const Main = styled.main.attrs({
   display: ${(props) => props.$display || "flex"};
   flex-direction: ${(props) => props.$direction || "column"};
   justify-content: ${(props) => props.$justify || "none"};
-  align-items: ${(props) => props.align || "none"};
+  align-items: ${(props) => props.$align || "stretch"};
   width: ${(props) => props.$width || "95%"};
   height: ${(props) => props.$height || "100%"};
   border: ${(props) => props.$border || "none"};
@@ -33,11 +33,13 @@ export const Container = styled.div.attrs({
   display: ${(props) => props.$display || "flex"};
   flex-direction: ${(props) => props.$direction || "column"};
   justify-content: ${(props) => props.$justify || "none"};
+  align-items: ${(props) => props.$align || "stretch"};
   width: ${(props) => props.$width || "100%"};
   height: ${(props) => props.$height || "93vh"};
   border: ${(props) => props.$border || "none"};
   border-radius: ${(props) => props.$borderRadius || "none"};
   box-shadow: ${(props) => props.$shadow || "0 2px 4px rgba(0, 0, 0, 0.1)"};
+  
 `;
 
 // 섹션 : 컨테이너를 컬럼방향기준으로 나누고 싶을때
@@ -52,11 +54,10 @@ export const Section = styled.section.attrs({
   display: ${(props) => props.$display || "flex"};
   flex-direction: ${(props) => props.$direction || "row"};
   justify-content: ${(props) => props.$justify || "none"};
+  align-items: ${(props) => props.$align || "stretch"};
   width: ${(props) => props.$width || "100%"};
   height: ${(props) => props.$height || "50%"};
   border: ${(props) => props.$border || "none"};
-  /* box-shadow: ${(props) =>
-    props.$shadow || "0 2px 4px rgba(0, 0, 0, 0.1)"}; */
   /* border: 1px solid black; */
 `;
 
@@ -69,6 +70,7 @@ export const Area = styled.div.attrs({
   display: ${(props) => props.$display || "flex"};
   flex-direction: ${(props) => props.$direction || "row"};
   justify-content: ${(props) => props.$justify || "none"};
+  align-items: ${(props) => props.$align || "stretch"};
   width: ${(props) => props.$width || "100%"};
   height: ${(props) => props.$height || "100%"};
   border: ${(props) => props.$border || "none"};
@@ -82,9 +84,9 @@ export const Box = styled.div.attrs({
   background-color: ${(props) => props.$background || "none"};
   position: ${(props) => props.$position || "static"};
   display: ${(props) => props.$display || "flex"};
-  align-items: ${(props) => props.$align || "center"};
   flex-direction: ${(props) => props.$direction || "row"};
   justify-content: ${(props) => props.$justify || "none"};
+  align-items: ${(props) => props.$align || "stretch"};
   width: ${(props) => props.$width || "100%"};
   height: ${(props) => props.$height || "100%"};
   border: ${(props) => props.$border || "none"};
@@ -99,7 +101,7 @@ export const Item = styled.div.attrs({
   background-color: ${(props) => props.$background || "none"};
   position: ${(props) => props.$position || "static"};
   display: ${(props) => props.$display || "flex"};
-  align-items: ${(props) => props.$align || "center"};
+  align-items: ${(props) => props.$align || "stretch"};
   flex-direction: ${(props) => props.$direction || "row"};
   justify-content: ${(props) => props.$justify || "none"};
   width: ${(props) => props.$width || "100%"};
@@ -118,6 +120,7 @@ export const Element = styled.div.attrs({
   display: ${(props) => props.$display || "flex"};
   flex-direction: ${(props) => props.$direction || "row"};
   justify-content: ${(props) => props.$justify || "none"};
+  align-items: ${(props) => props.$align || "stretch"};
   width: ${(props) => props.$width || "100%"};
   height: ${(props) => props.$height || "100%"};
   border: ${(props) => props.$border || "none"};

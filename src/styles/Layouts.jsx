@@ -13,9 +13,10 @@ export const Main = styled.main.attrs({
   display: ${(props) => props.$display || "flex"};
   flex-direction: ${(props) => props.$direction || "column"};
   justify-content: ${(props) => props.$justify || "none"};
+  align-items: ${(props) => props.align || "none"};
   width: ${(props) => props.$width || "90%"};
   height: ${(props) => props.$height || "100%"};
-  border: ${(props) => props.$border || "1px solid black"};
+  border: ${(props) => props.$border || "none"};
 `;
 
 // 컨테이너

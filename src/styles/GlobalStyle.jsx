@@ -8,7 +8,9 @@ export const Wrapper = styled.div.attrs({
   className: "wrap",
 })`
   display: flex;
+  flex-direction: column;
   justify-content: center;
+  align-items: center;
   width: 99.9%;
   height: auto;
   min-height: 52.5vw;

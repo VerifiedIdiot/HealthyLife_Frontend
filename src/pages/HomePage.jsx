@@ -11,7 +11,7 @@ import {
 const MyPage = () => {
   return (
     <>
-      <Main>
+      <Main $width = "100%">
         <Container>
           <Section></Section>
         </Container>

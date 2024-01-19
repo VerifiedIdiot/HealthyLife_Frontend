@@ -8,7 +8,7 @@ import {
     Element,
   } from "../styles/Layouts";
   
-  const Login = () => {
+  const LoginPage = () => {
     return (
       <>
         <Main $direction="row" $width="100%">
@@ -27,5 +27,5 @@ import {
       </>
     );
   };
-  export default Login;
+  export default LoginPage;
   

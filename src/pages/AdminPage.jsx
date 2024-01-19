@@ -8,7 +8,7 @@ import {
   Element,
 } from "../styles/Layouts";
 
-const MyPage = () => {
+const AdminPage = () => {
   return (
     <>
       <Main>
@@ -41,4 +41,4 @@ const MyPage = () => {
     </>
   );
 };
-export default MyPage;
+export default AdminPage;

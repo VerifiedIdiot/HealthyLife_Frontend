@@ -16,7 +16,7 @@ const StyledImageContainer = styled.img.attrs({
   height: 100vh;
   object-fit: cover;
 `
-const MyPage = () => {
+const HomePage = () => {
   return (
     <>
       <Main $width = "100%">
@@ -44,4 +44,4 @@ const MyPage = () => {
     </>
   );
 };
-export default MyPage;
+export default HomePage;

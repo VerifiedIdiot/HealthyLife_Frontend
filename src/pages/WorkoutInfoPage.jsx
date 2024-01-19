@@ -8,7 +8,7 @@ import {
     Element,
   } from "../styles/Layouts";
   
-  const MyPage = () => {
+  const WorkoutInfoPage = () => {
     return (
       <>
         <Main>
@@ -41,5 +41,5 @@ import {
       </>
     );
   };
-  export default MyPage;
+  export default WorkoutInfoPage;
   

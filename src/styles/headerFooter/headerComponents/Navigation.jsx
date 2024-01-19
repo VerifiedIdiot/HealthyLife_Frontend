@@ -18,9 +18,10 @@ const NavContainer = styled.nav.attrs({
 })`
   display: flex;
   justify-content: space-around;
+  justify-content: ${(props) => props.$justify || "space-around"};
   align-items: center;
   height: 100%;
-  width: ${(props) => props.$width || "65%"};
+  width: ${(props) => props.$width || "60%"};
   /* border: 1px solid black; */
 `;
 
@@ -43,7 +44,7 @@ const Navigation = () => {
         <NavLink onClick={() => navigate("/community")}>Community</NavLink>
         <NavLink onClick={() => navigate("/ranking")}>Ranking</NavLink>
       </NavContainer>
-      <NavContainer $width="10%">
+      <NavContainer $width="15%" $justify="">
         <NavLink onClick={() => navigate("/login")}>Login/Signin</NavLink>
       </NavContainer>
     </>

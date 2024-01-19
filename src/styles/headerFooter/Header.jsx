@@ -10,14 +10,15 @@ const StyledHeader = styled.header.attrs({
   margin: 0;
   padding: 0;
   width: 100%;
-  height: 60px;
+  height: 6.8vh;
   position: ${(props) => props.$position || "static"};
   top: 0;
   left: 0;
   z-index: 998;
   background-color: ${(props) => (props.$scrolledDown ? "white" : "transparent")};
-  transition: background-color 0.4s;
-  box-shadow: ${(props) => props.$shadow || "0 2px 4px rgba(0, 0, 0, 0.1)"};
+  transition: background-color 0.5s;
+  box-shadow: ${(props) => props.$dynamic ? (props.$scrolledDown ? "0 2px 4px rgba(0, 0, 0, 0.1)" : "none") : "0 2px 4px rgba(0, 0, 0, 0.1)"};
+
 `;
 
 const HeaderInner = styled.div.attrs({
@@ -28,13 +29,12 @@ const HeaderInner = styled.div.attrs({
   height: 100%;
 `;
 
-const Header = ({ $scrolledDown, $position }) => {
-  
-  
-
-
+const Header = ({ headerProps = {} }) => {
   return (
-    <StyledHeader $scrolledDown={$scrolledDown} $position={$position}>
+    <StyledHeader
+      $scrolledDown={headerProps.$scrolledDown || false}
+      $position={headerProps.$position || "static"}
+      $dynamic={headerProps.$dynamic || false}>
       <HeaderInner>
         <Logo />
         <Navigation />
@@ -42,5 +42,6 @@ const Header = ({ $scrolledDown, $position }) => {
     </StyledHeader>
   );
 };
+
 
 export default Header;

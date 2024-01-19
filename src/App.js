@@ -18,7 +18,7 @@ import {
 
 import HomePage from "./pages/HomePage";
 
-import LoginPage from "./pages/Login";
+import LoginPage from "./pages/LoginPage";
 import InbodyPage from "./pages/InBodyPage";
 import CalendarPage from "./pages/CalendarPage";
 import CommunityPage from "./pages/CommunityPage";

@@ -11,17 +11,17 @@ import {
 const Login = () => {
   return (
     <>
-      <Main $direction="row" $width="100%">
-        <Container $width="50%" $direction="row" $border="1px solid black">
-          {/* <Section>
+      <Main $direction="row" $width="100%" $height="105%">
+        <Container $width="50%" $background="#F3F3F3">
+          <Section>
             <p>페이지입니다.</p>
-          </Section> */}
+          </Section>
         </Container>
-        <Container $width="50%" $direction="row" $border="1px solid black">
-          {/* <Section $border="1px solid black">
+        <Container $width="50%">
+          <Section $direction="column">
             <p>EMAIL (*)</p>
             <p>Email을 입력해 주세요</p>
-          </Section> */}
+          </Section>
         </Container>
       </Main>
     </>

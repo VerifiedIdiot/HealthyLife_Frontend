@@ -7,11 +7,9 @@ import {
   Item,
   Element,
 } from "../styles/Layouts";
-import { ButtonComp } from "../styles/example/Button";
-import {
-  LargeButton,
-  MiddleButton,
-} from "../styles/styledComponents/StyledComponents";
+import logo from "../assets/icons/logo.svg";
+import Logo from "../styles/headerFooter/headerComponents/Logo";
+import { LargeButton } from "../styles/styledComponents/StyledComponents";
 
 const LoginPage = () => {
   return (
@@ -24,8 +22,8 @@ const LoginPage = () => {
           $background="#F3F3F3"
           $height="100vh"
         >
-          <Section>
-            <p>페이지입니다.</p>
+          <Section $paddingTop="180px">
+            <Logo />
           </Section>
         </Container>
         <Container

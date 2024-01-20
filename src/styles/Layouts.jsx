@@ -39,7 +39,7 @@ export const Container = styled.div.attrs({
   border: ${(props) => props.$border || "none"};
   border-radius: ${(props) => props.$borderRadius || "none"};
   box-shadow: ${(props) => props.$shadow || "0 2px 4px rgba(0, 0, 0, 0.1)"};
-  
+  padding: ${(props) => props.$padding || "0"};
 `;
 
 // 섹션 : 컨테이너를 컬럼방향기준으로 나누고 싶을때
@@ -58,6 +58,11 @@ export const Section = styled.section.attrs({
   width: ${(props) => props.$width || "100%"};
   height: ${(props) => props.$height || "50%"};
   border: ${(props) => props.$border || "none"};
+  margin: ${(props) => props.$margin || "0"};
+  margin-top: ${(props) => props.$marginTop || "0"};
+  padding: ${(props) => props.$padding || "0"};
+  padding-top: ${(props) => props.$paddingTop || "0"};
+
   /* border: 1px solid black; */
 `;
 
@@ -127,13 +132,12 @@ export const Element = styled.div.attrs({
   box-shadow: ${(props) => props.$shadow || "0 2px 4px rgba(0, 0, 0, 0.1)"};
 `;
 
-
-export const ScrollBox =styled.div`
+export const ScrollBox = styled.div`
   height: ${(props) => props.$height || "100%"};
   overflow: auto;
   overflow-x: hidden;
   width: ${(props) => props.$width || "100%"};
-  border:1px solid black;
+  border: 1px solid black;
   &::-webkit-scrollbar {
     width: 10px;
   }
@@ -142,6 +146,6 @@ export const ScrollBox =styled.div`
     border-radius: 8px;
   }
   &::-webkit-scrollbar-track {
-    background-color: white
+    background-color: white;
   }
 `;

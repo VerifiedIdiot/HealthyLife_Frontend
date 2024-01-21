@@ -1,12 +1,13 @@
 import Header from "./Header";
 import DynamicHeader from "./DynamicHeader";
+import Footer from "./Footer";
 import { Outlet } from "react-router-dom";
 
 export const HeaderFooter = () => (
   <>
     <Header />
     <Outlet/>
-    {/* <Footer /> */}
+    <Footer />
   </>
 );
 
@@ -31,7 +32,7 @@ export const DynamicHeaderFooter = () => (
     
     <Outlet/>
     
-    {/* <Footer /> */}
+    <Footer />
   </>
 );
 

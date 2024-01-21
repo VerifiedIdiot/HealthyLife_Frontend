@@ -30,14 +30,15 @@ const HeaderInner = styled.div.attrs({
 `;
 
 const Header = ({ headerProps = {} }) => {
+  const { $scrolledDown, $position, $dynamic } = headerProps;
   return (
     <StyledHeader
-      $scrolledDown={headerProps.$scrolledDown || false}
-      $position={headerProps.$position || "static"}
-      $dynamic={headerProps.$dynamic || false}>
+      $scrolledDown={$scrolledDown || false}
+      $position={$position || "static"}
+      $dynamic={$dynamic || false}>
       <HeaderInner>
         <Logo />
-        <Navigation />
+        <Navigation $scrolledDown={$dynamic ? $scrolledDown : true} />
       </HeaderInner>
     </StyledHeader>
   );

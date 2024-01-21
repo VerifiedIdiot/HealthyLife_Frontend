@@ -1,6 +1,4 @@
 import {
-  Main,
-  Container,
   Section,
   Area,
   Box,

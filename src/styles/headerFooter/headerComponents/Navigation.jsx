@@ -29,23 +29,30 @@ const NavLink = styled.div.attrs({
   className: "nav-item",
 })`
   cursor: pointer;
+  p {
+    font-size: 1.5rem;
+    color: ${(props) => (props.$scrolledDown ? "black" : "white")};
+  }
+  &.hover {
+    
+  }
 `;
 
-const Navigation = () => {
+const Navigation = ({ $scrolledDown = true }) => {
   const { isUnauthorized } = useRequireAuth("USER");
   const navigate = useNavigate();
 
   return (
     <>
       <NavContainer>
-        <NavLink onClick={() => navigate("/inbody")}>Inbody</NavLink>
-        <NavLink onClick={() => navigate("/calendar")}>Calendar</NavLink>
-        <NavLink onClick={() => navigate("/information")}>Information</NavLink>
-        <NavLink onClick={() => navigate("/community")}>Community</NavLink>
-        <NavLink onClick={() => navigate("/ranking")}>Ranking</NavLink>
+        <NavLink $scrolledDown={$scrolledDown} onClick={() => navigate("/inbody")}><p>Inbody</p></NavLink>
+        <NavLink $scrolledDown={$scrolledDown} onClick={() => navigate("/calendar")}><p>Calendar</p></NavLink>
+        <NavLink $scrolledDown={$scrolledDown} onClick={() => navigate("/information")}><p>Information</p></NavLink>
+        <NavLink $scrolledDown={$scrolledDown} onClick={() => navigate("/community")}><p>Community</p></NavLink>
+        <NavLink $scrolledDown={$scrolledDown} onClick={() => navigate("/ranking")}><p>Ranking</p></NavLink>
       </NavContainer>
       <NavContainer $width="15%" $justify="">
-        <NavLink onClick={() => navigate("/login")}>Login/Signin</NavLink>
+        <NavLink $scrolledDown={$scrolledDown} onClick={() => navigate("/login")}><p>LogIn/SignIn</p></NavLink>
       </NavContainer>
     </>
   );

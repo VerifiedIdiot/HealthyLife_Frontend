@@ -8,22 +8,46 @@ import {
   Element,
 } from "../styles/Layouts";
 import logo from "../assets/icons/logo.svg";
-import Logo from "../styles/headerFooter/headerComponents/Logo";
 import { LargeButton } from "../styles/styledComponents/StyledComponents";
+import Logo from "../styles/headerFooter/headerComponents/Logo";
+import { useNavigate } from "react-router-dom";
 
 const LoginPage = () => {
+  const navigate = useNavigate();
   return (
     <>
       <Main $direction="row" $width="100%">
         <Container
           $width="50%"
-          $direction="row"
-          $border="1px solid black"
+          $display="flex"
+          $direction="column"
           $background="#F3F3F3"
           $height="100vh"
         >
-          <Section $paddingTop="180px">
-            <Logo />
+          <Section
+            $height="95%"
+            $display="flex"
+            $justify="center"
+            $align="center"
+          >
+            <img
+              src={logo}
+              alt="로고이미지"
+              onClick={() => navigate("/")}
+              style={{
+                cursor: "pointer",
+              }}
+            />
+          </Section>
+          <Section $height="5%">
+            <p
+              style={{
+                paddingRight: "5px",
+              }}
+            >
+              Not a member yet?
+            </p>
+            <p>Register now</p>
           </Section>
         </Container>
         <Container
@@ -32,18 +56,13 @@ const LoginPage = () => {
           $padding="0 15px"
           $height="auto"
         >
-          <Section
-            // $border="1px solid black"
-            $height="auto"
-            $paddingTop="400px"
-            $direction="column"
-          >
+          <Section $height="auto" $paddingTop="400px" $direction="column">
             <p>EMAIL (*)</p>
             <input
               type="text"
               placeholder="Email을 입력해주세요."
               style={{
-                borderBottom: "1px solid #000",
+                borderBottom: "1px solid black",
                 border: "none",
                 padding: "15px 5px",
                 outline: "none",
@@ -60,7 +79,7 @@ const LoginPage = () => {
               type="text"
               placeholder="Password를 입력해주세요."
               style={{
-                borderBottom: "1px solid #000",
+                borderBottom: "1px solid black",
                 border: "none",
                 padding: "15px 5px",
                 outline: "none",

@@ -62,7 +62,7 @@ export const Section = styled.section.attrs({
   margin-top: ${(props) => props.$marginTop || "0"};
   padding: ${(props) => props.$padding || "0"};
   padding-top: ${(props) => props.$paddingTop || "0"};
-
+  flex-grow: ${(props) => props.$grow || 0};
   /* border: 1px solid black; */
 `;
 

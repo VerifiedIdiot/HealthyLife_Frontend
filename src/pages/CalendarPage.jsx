@@ -1,9 +1,7 @@
-import { Main, 
-  Container, 
-  // Section, 
-  // Area 
+import { 
+  Main, Container, Section, Area 
 } from "../styles/Layouts";
-import { HeaderSection,BodySection } from "../components/calendarPage/CalendarContainer";
+import { HeaderSection,BodySection } from "../components/calendarPage/CalendarComponent";
 
 const CalendarPage = () => {
   return (

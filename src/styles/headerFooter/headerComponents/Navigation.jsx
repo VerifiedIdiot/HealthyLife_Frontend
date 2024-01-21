@@ -30,7 +30,7 @@ const NavLink = styled.div.attrs({
 })`
   cursor: pointer;
   p {
-    font-size: 1.5rem;
+    font-size: 1.8vw;
     color: ${(props) => (props.$scrolledDown ? "black" : "white")};
   }
   &.hover {

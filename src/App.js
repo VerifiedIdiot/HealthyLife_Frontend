@@ -52,9 +52,12 @@ function App() {
             <Route element={<HeaderFooter />}>
             <Route path="/medicine" element={<MedicinePage />} />
               <Route path="/inbody" element={<InbodyPage />} />
-              <Route path="/calendar" element={<CalendarPage />} />
+             
               <Route path="/community" element={<CommunityPage />} />
               <Route path="/ranking" element={<RankingPage />} />
+            </Route>
+            <Route element={<HeaderOnly/>}>
+            <Route path="/calendar" element={<CalendarPage />} />
             </Route>
             {/* 사용자가 잘못된 URL을 입력했을 때 홈으로 리다이렉션 */}
             <Route path="*" element={<Navigate to="/" replace />} />

@@ -12,7 +12,7 @@ const StyledFooter = styled.footer.attrs({
     className: "footer",
 })`
   height: 200px;
-  width: 100%;
+  width: 97%;
   display: flex;
   flex-direction: column;
   align-items: center;

@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 
 
-// 뷰포트 기준 768 이하로 축소될시 , 함수나 컴포넌트 등의 실행여부를 결정하는 커스텀 훅
+// 뷰포트 기준 768 이하로 축소될시 , 함수나 컴포넌트, css 등의 실행여부를 결정하는 커스텀 훅
 const useMobileView = (maxWidth = 768) => {
   const [isMobileView, setIsMobileView] = useState(window.innerWidth <= maxWidth);
 

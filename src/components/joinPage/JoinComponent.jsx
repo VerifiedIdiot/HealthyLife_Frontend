@@ -1,10 +1,8 @@
-import { Container, Main, Section } from "../../styles/Layouts";
-import { LargeButton } from "../../styles/styledComponents/StyledComponents";
 import { useNavigate } from "react-router";
+import { Area, Container, Main, Section } from "../../styles/Layouts";
 import logo from "../../assets/icons/logo.svg";
-const LoginComp = () => {
+const JoinComp = () => {
   const navigate = useNavigate();
-  const joinNavigate = useNavigate();
   return (
     <>
       <Main $direction="row" $width="100%">
@@ -38,14 +36,7 @@ const LoginComp = () => {
             >
               Not a member yet?
             </p>
-            <p
-              style={{
-                cursor: "pointer",
-              }}
-              onClick={() => joinNavigate("/join")}
-            >
-              Register now
-            </p>
+            <p>Register now</p>
           </Section>
         </Container>
         <Container
@@ -54,7 +45,22 @@ const LoginComp = () => {
           $padding="0 15px"
           $height="auto"
         >
-          <Section $height="auto" $paddingTop="400px" $direction="column">
+          <Section
+            $height="auto"
+            $paddingTop="50px"
+            $direction="column"
+            border="1px solid black"
+          >
+            <Area>
+              <img src="" alt="프로필이미지" />
+            </Area>
+          </Section>
+          <Section
+            $height="auto"
+            $paddingTop="50px"
+            $direction="column"
+            border="1px solid black"
+          >
             <p>EMAIL (*)</p>
             <input
               type="text"
@@ -84,26 +90,26 @@ const LoginComp = () => {
               }}
             />
           </Section>
-          <Section
-            $display="flex"
-            $direction="column"
-            $marginTop="50px"
-            $align="center"
-            $height="auto"
-          >
-            <LargeButton>로그인</LargeButton>
-          </Section>
-          <Section
-            $display="flex"
-            $direction="column"
-            $align="center"
-            $marginTop="20px"
-          >
-            <LargeButton>카카오 로그인</LargeButton>
-          </Section>
+          {/* <Section
+              $display="flex"
+              $direction="column"
+              $marginTop="50px"
+              $align="center"
+              $height="auto"
+            >
+              <LargeButton>로그인</LargeButton>
+            </Section>
+            <Section
+              $display="flex"
+              $direction="column"
+              $align="center"
+              $marginTop="20px"
+            >
+              <LargeButton>카카오 로그인</LargeButton>
+            </Section> */}
         </Container>
       </Main>
     </>
   );
 };
-export default LoginComp;
+export default JoinComp;

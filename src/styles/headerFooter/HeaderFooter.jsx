@@ -18,12 +18,12 @@ export const HeaderOnly = () => (
   </>
 );
 
-// export const FooterOnly = ({ children }) => (
-//   <>
-//     {children}
-//     <Footer />
-//   </>
-// );
+export const FooterOnly = () => (
+  <>
+    <Outlet/>
+    <Footer />
+  </>
+);
 
 
 export const DynamicHeaderFooter = () => (

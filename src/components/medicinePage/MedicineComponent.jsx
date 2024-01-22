@@ -1,11 +1,11 @@
 import { Section, Area, Box, Item, Element } from "../../styles/Layouts";
 import { LargeButton } from "../../styles/styledComponents/StyledComponents";
-import DropdownComp from "../../styles/dropDown/DropdownComp";
+import { ComboSearchBox } from "../../styles/styledComponents/ComboSearchBox";
 import { media } from "../../utils/MediaQuery";
 import styled from "styled-components";
 
-import useApiRequest from "../../hooks/useApiRequest";
-import MedicineApi from "../../api/MedicineApi";
+
+
 
 const ResponsiveSearchSection = styled(Section)`
   border: 1px solid black;
@@ -45,16 +45,23 @@ const SearchItemRight = styled(Item)`
   width: 65%;
 `;
 
-const InputField = styled.input`
-  width: 70%;
-  padding: 10px;
-  margin: 10px 0;
-  border: 1px solid #ccc;
-  border-radius: 4px;
-`;
+
+
+
 
 export const SearchSection = () => {
-  const { data, loading, error } = useApiRequest(MedicineApi.getSortByColumn);
+  // const handleSearchTypeChange = (e) => {
+  //   setSearchType(e.target.value);
+  // };
+
+  // const handleSearchQueryChange = (e) => {
+  //   setSearchQuery(e.target.value);
+  // };
+
+  // const handleSearch = () => {
+  //   // console.log(`검색 유형: ${searchType}, 검색어: ${searchQuery}`);
+  //   // // 여기에 검색 로직을 구현합니다.
+  // };
  
   return (
     <>
@@ -65,9 +72,8 @@ export const SearchSection = () => {
             <Item $width="95%">$제품 검색</Item>
           </ResponsiveItemBox>
           <ResponsiveItemBox>
-            <Item $paddingLeft="29%">
-            <DropdownComp dropdownItems={data || []} />
-              <InputField placeholder="검색어를 입력하세요." />
+            <Item $paddingLeft ="29%" $align ="center" $justify="flex-start">
+              <ComboSearchBox/>
             </Item>
           </ResponsiveItemBox>
           <ResponsiveItemBox>

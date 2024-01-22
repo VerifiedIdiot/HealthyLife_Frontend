@@ -8,7 +8,8 @@ import {
   Element,
 } from "../styles/Layouts";
 
-import { SearchSection ,BoardSection, PaginationSection } from "../components/medicinePage.jsx/medicineComponent";
+import { SearchSection, BoardSection, PaginationSection } from "../components/medicinePage/MedicineComponent";
+
 const MedicinePage = () => {
   return (
     <>

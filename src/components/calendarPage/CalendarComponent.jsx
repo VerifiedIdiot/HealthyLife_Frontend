@@ -4,17 +4,16 @@ import dayGridPlugin from '@fullcalendar/daygrid'; // Import necessary plugins
 import interactionPlugin from '@fullcalendar/interaction';
 import { Container, Section, Area, Box, Item, Element } from "../../styles/Layouts";
 
-export const Calendars = () => {
+export const CalendarComponent = () => {
   const calendarRef = useRef(null);
 
+  const handleDateClick = (info) => {
+    console.log("클릭날짜", info.date);
+  };
   useEffect(() => {
     const fetchEvents = async () => {
       try {
-        // Replace 'YOUR_GOOGLE_API_KEY' and 'YOUR_CALENDAR_ID' with your actual API key and calendar ID
-        const apiKey = 'AIzaSyBHLDaL_wbao5Ukua8ZHWzN2fXyN6INxPM';
-        const calendarId = 'wellv2024';
-        const apiUrl = `https://www.googleapis.com/calendar/v3/calendars/${calendarId}/events?key=${apiKey}`;
-        
+        const apiUrl = `https://www.googleapis.com/calendar/v3/calendars/${process.env.REACT_APP_GOOGLE_CALENDARID}/events?key=${process.env.REACT_APP_GOOGLE_API_KEY}`;
         const response = await fetch(apiUrl);
         const eventData = await response.json();
 
@@ -34,29 +33,30 @@ export const Calendars = () => {
   }, []);
 
   return (
-    <Container>
+    <Container $height="100%" $shadow="none" $border="none">
       <FullCalendar
         ref={calendarRef}
         plugins={[dayGridPlugin, interactionPlugin]}
-        header={{
-          left: '',
-          center: 'prev,title,next',
-          right: ''
+        titleFormat={{
+          year: 'numeric',
+          month: 'long'
         }}
-        monthYearFormat='MMMM YYYY'
-        eventLimit={true}
-        fixedWeekCount={false}
-        defaultView='dayGridMonth'
-        dayNamesShort={['S', 'M', 'T', 'W', 'T', 'F', 'S']}
+        dayMaxEventRows={true}
+        initialView='dayGridMonth'
+        height={'90vh'}
+        dayHeaderFormat={{
+          weekday: 'short'
+        }}
         buttonText={{
           today: '오늘',
           month: '월별',
           week: '주별',
           day: '일별',
         }}
+        dateClick={handleDateClick}
       />
     </Container>
   );
 };
 
-export default Calendars;
+export default CalendarComponent;

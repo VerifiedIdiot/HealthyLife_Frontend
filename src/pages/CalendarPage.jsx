@@ -1,14 +1,11 @@
 import { Main, Container, Section, Area } from "../styles/Layouts";
-import { Calendars } from "../components/calendarPage/CalendarComponent";
+import { CalendarComponent } from "../components/calendarPage/CalendarComponent";
 
 const CalendarPage = () => {
   return (
     <>
       <Main>
-        <Container $border="1px solid black">
-          <Calendars $height="100%" />
-          {/* <BodySection $height="95%" /> */}
-        </Container>
+          <CalendarComponent $height="100%" />
       </Main>
     </>
   );

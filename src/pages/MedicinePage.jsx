@@ -14,7 +14,7 @@ const MedicinePage = () => {
   return (
     <>
       <Main>
-        <Container $border="1px solid black">
+        <Container>
             <SearchSection/>
             <BoardSection/>
             <PaginationSection/>

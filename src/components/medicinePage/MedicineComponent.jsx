@@ -6,56 +6,79 @@ import {
   ComboBox,
   SearchBox,
 } from "../../styles/styledComponents/ComboSearchBox";
-import capsule from "../../assets/icons/medicine/capsule.png"
+import capsule from "../../assets/icons/medicine/capsule.png";
 import { media } from "../../utils/MediaQuery";
 
 const StyledIcon = styled.img.attrs({
   className: "medicine-icon",
 })`
   object-fit: contain;
-
-`
-
+  height: 50%;
+`;
+const LogoItem = styled(Item)`
+  width: 30%;
+  align-items: center;
+  margin-left: 1vw;
+  h1 {
+    margin-left: 10px;
+  }
+`;
 
 const ResponsiveSearchSection = styled(Section)`
-  border: 1px solid black;
-  height: 40%;
+  height: 400px;
   justify-content: center;
   align-items: center;
 
-  /* ${media.small`
-    $height: 30%;
-  `} */
+  ${media.medium`
+    
+  `}
 `;
 
 const ResponsiveSearchArea = styled(Area)`
-  border: 1px solid black;
   flex-direction: column;
+  justify-content: flex-end;
   height: 90%;
   width: 95%;
 
-  /* ${media.small`
-    $height: 30%;
-  `} */
+  ${media.medium`
+    
+    `}
 `;
 
 const ResponsiveItemBox = styled(Box)`
-  border: 1px solid black;
-  height: 20%;
-  /* justify-content: center; */
+  height: 60px;
+
+  ${media.medium`
+    
+    `}
 `;
 
 const SearchItemLeft = styled(Item)`
   display: flex;
   justify-content: center;
   align-items: center;
-  border: 1px solid black;
+  /* height: 60px; */
   width: 15%;
+  white-space: nowrap;
+
+  p {
+    font-weight: bold;
+  }
+
+  ${media.medium`
+    
+    `}
 `;
 
 const SearchItemRight = styled(Item)`
-  border: 1px solid black;
+  display: flex;
+  align-items: center;
+  /* height: 60px; */
   width: 65%;
+
+  ${media.medium`
+    
+    `}
 `;
 
 const ButtonItem = styled(Item)`
@@ -63,6 +86,10 @@ const ButtonItem = styled(Item)`
   justify-content: center;
   align-items: center;
   width: 19.5%;
+
+  ${media.medium`
+    
+    `}
 `;
 
 export const SearchSection = () => {
@@ -84,23 +111,28 @@ export const SearchSection = () => {
       <ResponsiveSearchSection>
         <ResponsiveSearchArea>
           <ResponsiveItemBox>
-            <Item $width="5%"><StyledIcon img src={capsule}/>
-              </Item>
-            <Item $width="95%">$제품 검색</Item>
+            <LogoItem>
+              <StyledIcon img src={capsule} />
+              <h1>제품 검색</h1>
+            </LogoItem>
           </ResponsiveItemBox>
           <ResponsiveItemBox>
-            <Item $paddingLeft="14.5%" $align="center" $justify="flex-start">
+            <Item $paddingLeft="15%" $align="center" $justify="flex-start">
               <ComboSearchBox />
             </Item>
           </ResponsiveItemBox>
           <ResponsiveItemBox>
-            <SearchItemLeft>원료검색</SearchItemLeft>
+            <SearchItemLeft>
+              <p>원료검색</p>
+            </SearchItemLeft>
             <SearchItemRight>
               <SearchBox></SearchBox>
             </SearchItemRight>
           </ResponsiveItemBox>
           <ResponsiveItemBox>
-            <SearchItemLeft>기능성 검색</SearchItemLeft>
+            <SearchItemLeft>
+              <p>기능성 검색</p>
+            </SearchItemLeft>
             <SearchItemRight>
               <ComboBox>영양소 기능</ComboBox>
               <ComboBox>생리활성 기능</ComboBox>
@@ -108,7 +140,9 @@ export const SearchSection = () => {
             </SearchItemRight>
           </ResponsiveItemBox>
           <ResponsiveItemBox>
-            <SearchItemLeft>초성 검색</SearchItemLeft>
+            <SearchItemLeft>
+              <p>초성 검색</p>
+            </SearchItemLeft>
             <SearchItemRight>ㄱㄴㄷㄹㅁㅂㅅ</SearchItemRight>
             <ButtonItem>
               <LargeButton>검색</LargeButton>
@@ -121,24 +155,25 @@ export const SearchSection = () => {
 };
 
 const ResponsiveBoardSection = styled(Section)`
-  border: 1px solid black;
-  height: 55%;
+  /* border: 1px solid black; */
+  height: auto;
+  min-height: 300px;
   justify-content: center;
   align-items: center;
 
-  /* ${media.small`
-    $height: 30%;
-  `} */
+  ${media.medium`
+    
+    `}
 `;
 
 const ResponsiveBoardArea = styled(Area)`
-  border: 1px solid black;
+  /* border: 1px solid black; */
   height: 95%;
   width: 95%;
 
-  /* ${media.small`
-    $height: 30%;
-  `} */
+  ${media.medium`
+    
+    `}
 `;
 
 export const BoardSection = () => {
@@ -146,7 +181,12 @@ export const BoardSection = () => {
     <>
       <ResponsiveBoardSection>
         <ResponsiveBoardArea>
-          <p>게시판</p>
+          <ResponsiveItemBox>
+            <LogoItem>
+              <StyledIcon img src={capsule} />
+              <h1>제품 목록</h1>
+            </LogoItem>
+          </ResponsiveItemBox>
         </ResponsiveBoardArea>
       </ResponsiveBoardSection>
     </>
@@ -154,24 +194,22 @@ export const BoardSection = () => {
 };
 
 const ResponsivePaginationSection = styled(Section)`
-  border: 1px solid black;
   height: 5%;
   justify-content: center;
   align-items: center;
 
-  /* ${media.small`
-    $height: 30%;
-  `} */
+  ${media.medium`
+    
+    `}
 `;
 
 const ResponsivePaginationArea = styled(Area)`
-  border: 1px solid black;
   height: 90%;
   width: 95%;
 
-  /* ${media.small`
-    $height: 30%;
-  `} */
+  ${media.medium`
+    
+    `}
 `;
 
 export const PaginationSection = () => {

@@ -9,7 +9,7 @@ const SearchContainer = styled.div.attrs({
   display: flex;
   align-items: center;
   justify-content: space-around;
-  padding: ${(props) => props.$padding || "10px"};
+  
   width: ${(props) => props.$width || "100%"};
 `;
 
@@ -19,7 +19,7 @@ const SelectBox = styled.select.attrs({
   height: 40px;
   border: 1px solid #ccc;
   border-radius: 4px;
-  width: 20%;
+  width: ${(props) => props.$width || "20%"};
 `;
 
 const InputField = styled.input.attrs({
@@ -55,7 +55,7 @@ export const ComboSearchBox = () => {
   };
 
   return (
-    <SearchContainer $width="76%">
+    <SearchContainer $width="76.5%">
       <SelectBox value={searchType} onChange={handleSearchTypeChange}>
         {searchTypes.map(type => (
           <option key={type} value={type}>{type}</option>
@@ -149,7 +149,7 @@ export const ComboBox = ({ items }) => {
   const selectedCategoryName = itemList.find(item => item.key === selectedKey)?.name || "";
 
   return (
-    <div>
+    <SelectBox $width="33.9%">
       <div onClick={toggleDropdown}>
         {selectedCategoryName}: {selectedItems.size} <span>▼</span>
       </div>
@@ -168,6 +168,6 @@ export const ComboBox = ({ items }) => {
           <button onClick={handleReset}>Reset</button>
         </div>
       )}
-    </div>
+    </SelectBox>
   );
 };

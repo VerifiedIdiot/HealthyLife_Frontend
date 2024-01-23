@@ -43,21 +43,21 @@ function App() {
             <Route path="/login" element={<LoginPage />} />
             <Route path="/join" element={<JoinPage />} />
             <Route path="/oauth/kakao" element={<Kakao />} />
-            <Route path="/test" element={<ChattingPage/>}/>
+            <Route path="/test" element={<ChattingPage />} />
             {/*다이나믹한 헤더와 푸터가 포함된 라우트 그룹 */}
             <Route element={<DynamicHeaderFooter />}>
               <Route path="/" element={<HomePage />} />
             </Route>
             {/*일반 헤더푸터만 포함된 라우트 그룹 */}
             <Route element={<HeaderFooter />}>
-            <Route path="/medicine" element={<MedicinePage />} />
+              <Route path="/medicine" element={<MedicinePage />} />
               <Route path="/inbody" element={<InbodyPage />} />
-             
+
               <Route path="/community" element={<CommunityPage />} />
               <Route path="/ranking" element={<RankingPage />} />
             </Route>
-            <Route element={<HeaderOnly/>}>
-            <Route path="/calendar" element={<CalendarPage />} />
+            <Route element={<HeaderOnly />}>
+              <Route path="/calendar" element={<CalendarPage />} />
             </Route>
             {/* 사용자가 잘못된 URL을 입력했을 때 홈으로 리다이렉션 */}
             <Route path="*" element={<Navigate to="/" replace />} />

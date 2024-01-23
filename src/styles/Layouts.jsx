@@ -83,7 +83,7 @@ export const Area = styled.div.attrs({
   padding-bottom: ${(props) => props.$paddingBottom || "0"};
   overflow: ${(props) => props.$overflow || "visible"};
   box-shadow: ${(props) => props.$shadow || "0 2px 4px rgba(0, 0, 0, 0.1)"};
-  margin-top: ${(props) => props.$marginRight || "0"};
+  margin-bottom: ${(props) => props.$marginBottom || "0"};
   margin-top: ${(props) => props.$marginTop || "0"};
 `;
 

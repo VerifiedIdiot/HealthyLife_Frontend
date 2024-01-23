@@ -79,7 +79,12 @@ export const Area = styled.div.attrs({
   width: ${(props) => props.$width || "100%"};
   height: ${(props) => props.$height || "100%"};
   border: ${(props) => props.$border || "none"};
+  border-radius: ${(props) => props.$borderRadius || "0"};
+  padding-bottom: ${(props) => props.$paddingBottom || "0"};
+  overflow: ${(props) => props.$overflow || "visible"};
   box-shadow: ${(props) => props.$shadow || "0 2px 4px rgba(0, 0, 0, 0.1)"};
+  margin-top: ${(props) => props.$marginRight || "0"};
+  margin-top: ${(props) => props.$marginTop || "0"};
 `;
 
 // wrap -> Main -> Container -> Section -> Area -> Box

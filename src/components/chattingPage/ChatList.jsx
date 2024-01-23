@@ -15,6 +15,12 @@ const ChatList  =(props)=>{
       <ScrollBox>
         <ChatBox/>
         <ChatBox/>
+        <ChatBox/>
+        <ChatBox/>
+        <ChatBox/>
+        <ChatBox/>
+        <ChatBox/>
+        <ChatBox/>
       </ScrollBox>
     </>
   )
@@ -25,9 +31,10 @@ export default ChatList;
 // 채팅정보 ItemBox
 const ChatBox  =(props)=>{
   const {userImg,user,recMessege,messegeIndex} =props;
+
   return(
     <>
-      <Box $height="100px" > 
+      <Box $align="center" $height="100px" > 
         <MemberImg>
           <ChatImage src={userImg} alt="회원 이미지" />
         </MemberImg>

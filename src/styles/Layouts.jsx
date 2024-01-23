@@ -119,6 +119,7 @@ export const Item = styled.div.attrs({
   border: ${(props) => props.$border || "none"};
   box-shadow: ${(props) => props.$shadow || "0 2px 4px rgba(0, 0, 0, 0.1)"};
   padding-left: ${(props) => props.$paddingLeft || "0"};
+  color: ${(props) => props.$color || "black"};
 `;
 
 // 각 영역별 Area

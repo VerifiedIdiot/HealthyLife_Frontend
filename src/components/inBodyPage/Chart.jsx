@@ -10,38 +10,10 @@ import {
   ResponsiveContainer,
 } from "recharts";
 
-const data = [
-  {
-    date: "2023-12-22",
-    weight: 89.5,
-  },
-  {
-    date: "2023-12-26",
-    weight: 85.5,
-  },
-  {
-    date: "2023-12-30",
-    weight: 82.2,
-  },
-  {
-    date: "2024-01-05",
-    weight: 81.9,
-  },
-  {
-    date: "2024-01-17",
-    weight: 75.1,
-  },
-];
-
-const weightValues = data.map((item) => item.weight);
-
-// 평균 계산
-const averageweight = Math.floor(
-  weightValues.reduce((sum, value) => sum + value, 0) / weightValues.length
-);
-
-export default class WeightChart extends PureComponent {
+export default class Chart extends PureComponent {
   render() {
+    const { data, yAxisRange } = this.props;
+
     return (
       <ResponsiveContainer width="90%" height="80%">
         <LineChart width={600} height={140} data={data}>
@@ -49,10 +21,13 @@ export default class WeightChart extends PureComponent {
           <XAxis dataKey="date" fontSize="12px" />
           <YAxis
             interval={1}
-            domain={[averageweight - 5, averageweight + 5]} // Y축의 범위를 평균에서 -5부터 +5까지로 설정
+            domain={yAxisRange} // Y축 범위를 동적으로 설정
           />
           <Tooltip />
           <Line type="monotone" dataKey="weight" stroke="#4942E4" />
+          <Line type="monotone" dataKey="BMI" stroke="#4942E4" />
+          <Line type="monotone" dataKey="muscle" stroke="#4942E4" />
+          <Line type="monotone" dataKey="fat" stroke="#4942E4" />
           <LabelList dataKey="weight" position="top" />
         </LineChart>
       </ResponsiveContainer>

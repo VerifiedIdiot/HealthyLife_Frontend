@@ -1,10 +1,20 @@
+import styled from "styled-components";
 import { Section, Area, Box, Item, Element } from "../../styles/Layouts";
 import { LargeButton } from "../../styles/styledComponents/StyledComponents";
-import { ComboSearchBox } from "../../styles/styledComponents/ComboSearchBox";
+import {
+  ComboSearchBox,
+  ComboBox,
+  SearchBox,
+} from "../../styles/styledComponents/ComboSearchBox";
+import capsule from "../../assets/icons/medicine/capsule.png"
 import { media } from "../../utils/MediaQuery";
-import styled from "styled-components";
 
+const StyledIcon = styled.img.attrs({
+  className: "medicine-icon",
+})`
+  object-fit: contain;
 
+`
 
 
 const ResponsiveSearchSection = styled(Section)`
@@ -36,6 +46,9 @@ const ResponsiveItemBox = styled(Box)`
 `;
 
 const SearchItemLeft = styled(Item)`
+  display: flex;
+  justify-content: center;
+  align-items: center;
   border: 1px solid black;
   width: 15%;
 `;
@@ -45,9 +58,12 @@ const SearchItemRight = styled(Item)`
   width: 65%;
 `;
 
-
-
-
+const ButtonItem = styled(Item)`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 19.5%;
+`;
 
 export const SearchSection = () => {
   // const handleSearchTypeChange = (e) => {
@@ -62,32 +78,41 @@ export const SearchSection = () => {
   //   // console.log(`검색 유형: ${searchType}, 검색어: ${searchQuery}`);
   //   // // 여기에 검색 로직을 구현합니다.
   // };
- 
+
   return (
     <>
       <ResponsiveSearchSection>
         <ResponsiveSearchArea>
           <ResponsiveItemBox>
-            <Item $width="5%">아이콘</Item>
+            <Item $width="5%"><StyledIcon img src={capsule}/>
+              </Item>
             <Item $width="95%">$제품 검색</Item>
           </ResponsiveItemBox>
           <ResponsiveItemBox>
-            <Item $paddingLeft ="29%" $align ="center" $justify="flex-start">
-              <ComboSearchBox/>
+            <Item $paddingLeft="14.5%" $align="center" $justify="flex-start">
+              <ComboSearchBox />
             </Item>
           </ResponsiveItemBox>
           <ResponsiveItemBox>
-            <SearchItemLeft>통합/제품명/제조사</SearchItemLeft>
-            <SearchItemRight>검색어를 입력해 주세요</SearchItemRight>
+            <SearchItemLeft>원료검색</SearchItemLeft>
+            <SearchItemRight>
+              <SearchBox></SearchBox>
+            </SearchItemRight>
           </ResponsiveItemBox>
           <ResponsiveItemBox>
-            <SearchItemLeft>통합/제품명/제조사</SearchItemLeft>
-            <SearchItemRight>검색어를 입력해 주세요</SearchItemRight>
+            <SearchItemLeft>기능성 검색</SearchItemLeft>
+            <SearchItemRight>
+              <ComboBox>영양소 기능</ComboBox>
+              <ComboBox>생리활성 기능</ComboBox>
+              <ComboBox>질병발생위험감소기능</ComboBox>
+            </SearchItemRight>
           </ResponsiveItemBox>
           <ResponsiveItemBox>
-            <SearchItemLeft>통합/제품명/제조사</SearchItemLeft>
-            <SearchItemRight>검색어를 입력해 주세요</SearchItemRight>
-            <LargeButton></LargeButton>
+            <SearchItemLeft>초성 검색</SearchItemLeft>
+            <SearchItemRight>ㄱㄴㄷㄹㅁㅂㅅ</SearchItemRight>
+            <ButtonItem>
+              <LargeButton>검색</LargeButton>
+            </ButtonItem>
           </ResponsiveItemBox>
         </ResponsiveSearchArea>
       </ResponsiveSearchSection>

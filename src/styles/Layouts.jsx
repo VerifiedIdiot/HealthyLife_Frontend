@@ -100,6 +100,8 @@ export const Box = styled.div.attrs({
   width: ${(props) => props.$width || "100%"};
   height: ${(props) => props.$height || "100%"};
   border: ${(props) => props.$border || "none"};
+  border-bottom: ${(props) => props.$borderBottom || "none"};
+
   box-shadow: ${(props) => props.$shadow || "0 2px 4px rgba(0, 0, 0, 0.1)"};
 `;
 

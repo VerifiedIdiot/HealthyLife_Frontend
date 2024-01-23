@@ -1,9 +1,10 @@
 import { useNavigate } from "react-router";
-import { Area, Container, Main, Section } from "../../styles/Layouts";
+import { Area, Box, Container, Main, Section } from "../../styles/Layouts";
 import logo from "../../assets/icons/logo.svg";
-import { MiddleButton } from "../../styles/styledComponents/StyledComponents";
 import { useState } from "react";
 import { LabelComp } from "./JoinStyle";
+import { Input, InputButton } from "./JoinInput";
+import MemberApi from "../../api/MemberApi";
 const JoinComp = (email, profile) => {
   const navigate = useNavigate();
 
@@ -24,6 +25,169 @@ const JoinComp = (email, profile) => {
       setFile(selectedFile);
     }
   };
+
+  // 키보드 입력
+  const [inputEmail, setInputEmail] = useState("");
+  const [inputCode, setInputCode] = useState("");
+  const [inputPw, setInputPw] = useState("");
+  const [inputPw2, setInputPw2] = useState("");
+  const [inputName, setInputName] = useState("");
+  const [inputNickName, setInputNickName] = useState("");
+  const [inputPhone, setInputPhone] = useState("");
+
+  // 오류 메세지
+  const [emailMessage, setEmailMessage] = useState("");
+  const [codeMessage, setCodeMessage] = useState("");
+  const [pwMessage, setPwMessage] = useState("");
+  const [pw2Message, setPw2Message] = useState("");
+  const [nameMessage, setNameMessage] = useState("");
+  const [nickNameMessage, setNickNameMessage] = useState("");
+  const [phoneMessage, setPhoneMessage] = useState("");
+
+  // 유효성
+  const [isEmail, setIsEmail] = useState(false);
+  const [isCode, setIsCode] = useState(false);
+  const [isPw, setIsPw] = useState(false);
+  const [isPw2, setIsPw2] = useState(false);
+  const [isName, setIsName] = useState(false);
+  const [isNickName, setIsNickName] = useState(false);
+  const [isPhone, setIsPhone] = useState(false);
+  const [isAddr, setIsAddr] = useState(false);
+
+  // 정규식
+  const regexList = [
+    //email
+    /^[0-9a-zA-Z]([-_\.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_\.]?[0-9a-zA-Z])*\.[a-zA-Z]{2,3}$/,
+    //pw
+    /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%_#^*?])[A-Za-z\d@$!%_#^*?]{8,15}$/,
+    //phone
+    /^\d{3}-\d{4}-\d{4}$/,
+  ];
+
+  // 중복체크
+  const isUnique = async (num, checkVal) => {
+    const msgList = [setEmailMessage, setNickNameMessage, setPhoneMessage];
+    const validList = [setIsEmail, setIsNickName, setIsPhone];
+    try {
+      // 빽부분
+    } catch (err) {
+      console.log("중복오류 : " + err);
+    }
+  };
+
+  // 이메일
+  const onChangeEmail = (e) => {
+    const currEmail = e.target.value;
+    console.log("currr" + currEmail);
+    setInputEmail(currEmail);
+    if (!regexList[0].test(currEmail)) {
+      setEmailMessage("잘못된 형식입니다.");
+      setIsEmail(false);
+    } else {
+      isUnique(0, currEmail);
+    }
+  };
+
+  // 이메일 인증 번호 확인
+  const [sendCode, setSendCode] = useState("");
+  const onChangeEmailCode = (e) => {
+    const currCode = Number(e.target.value);
+    console.log("currr" + typeof currCode);
+    console.log("sentCode: " + typeof sentCode);
+    console.log("code : " + (currCode === sendCode));
+    setInputCode(currCode);
+  };
+
+  // 이메일 인증
+  const authorizeMail = async () => {
+    try {
+      const res = await MemberApi.sendEmailCode(inputEmail);
+      console.log("이메일전송 결과 : " + res.data);
+      if (res.data !== null) {
+        setSendCode(res.data);
+      }
+    } catch (e) {
+      console.log("이메일 err : " + e);
+    }
+  };
+  const checkCode = () => {
+    if (inputCode === sendCode) {
+      setIsCode(true);
+      setCodeMessage("인증이 완료되었습니다.");
+    } else {
+      setIsCode(false);
+      setCodeMessage("인증번호를 확인해주세요.");
+    }
+  };
+
+  // 비밀번호
+  const onChangePw = (e) => {
+    const currPw = e.target.value;
+    setInputPw(currPw);
+    if (!regexList[1].test(currPw)) {
+      setPwMessage(
+        "대소문자, 숫자, 특수기호 포함 8자 이상 15자 이하로 입력 하세요."
+      );
+      setIsPw(false);
+      setIsPw2(false);
+      setPw2Message("");
+    } else {
+      setPwMessage("사용 가능합니다.");
+      setIsPw(true);
+    }
+  };
+
+  // 비밀번호 재 입력
+  const onChangePw2 = (e) => {
+    const currPw2 = e.target.value;
+    setInputPw2(currPw2);
+    if (currPw2 !== inputPw) {
+      setPw2Message("입력한 비밀번호와 일치 하지 않습니다.");
+      setIsPw2(false);
+    } else if (isPw && currPw2 === inputPw) {
+      setPw2Message("비밀번호가 일치합니다.");
+      setIsPw(true);
+    }
+  };
+
+  // 이름
+  const onChangeName = (e) => {
+    const currName = e.target.value;
+    setInputName(currName);
+    if (currName.length < 2 || currName.length > 5) {
+      setNameMessage("2자 이상 5자 이하로 입력하세요.");
+      setIsName(false);
+    } else {
+      setNameMessage("사용 가능합니다.");
+      setIsName(true);
+    }
+  };
+
+  // 닉네임
+  const onChangeNickName = (e) => {
+    const currNickName = e.target.value;
+    setInputNickName(currNickName);
+    if (currNickName.length < 2 || currNickName.length > 8) {
+      setNickNameMessage("2자 이상 8자 이하로 입력하세요.");
+      setIsNickName(false);
+    } else {
+      isUnique(1, currNickName);
+    }
+  };
+
+  // 핸드폰 번호
+  const onChangePhone = (e) => {
+    const currPhone = e.target.value;
+    setInputPhone(currPhone);
+    const regex = regexList[2];
+    if (!regex.test(currPhone)) {
+      setPhoneMessage("잘못 입력 하셨습니다.");
+      setIsPhone(false);
+    } else {
+      isUnique(2, currPhone);
+    }
+  };
+
   return (
     <>
       <Main $direction="row" $width="100%">
@@ -67,7 +231,7 @@ const JoinComp = (email, profile) => {
           $height="auto"
         >
           <Section
-            $height="25%"
+            $height="auto"
             $paddingTop="25px"
             $direction="column"
             $align="center"
@@ -105,9 +269,94 @@ const JoinComp = (email, profile) => {
               </LabelComp>
             </Area>
           </Section>
-          <Section $height="auto" $paddingTop="20px" $direction="column">
+          <Section $height="auto" $paddingTop="15px" $direction="column">
             <Area $direction="column" $shadow="none">
-              <p>EMAIL (*)</p>
+              <p
+                style={{
+                  color: "rgba(0, 0, 0, 0.5)",
+                  fontWeight: "600",
+                }}
+              >
+                EMAIL (*)
+              </p>
+              <InputButton
+                holder="이메일을 입력해주세요."
+                value={inputEmail}
+                changeEvt={onChangeEmail}
+                btnChild="확인"
+                active={isEmail}
+                clickEvt={authorizeMail}
+                msg={emailMessage}
+                msgType={isEmail}
+              />
+            </Area>
+            <Area $direction="column" $shadow="none">
+              <p
+                style={{
+                  color: "rgba(0, 0, 0, 0.5)",
+                  fontWeight: "600",
+                }}
+              >
+                VERIFICATIOMN NUMBER (*)
+              </p>
+              <InputButton
+                holder="인증번호를 입력하세요"
+                value={inputCode}
+                changeEvt={onChangeEmailCode}
+                btnChild="확인"
+                active={isEmail}
+                clickEvt={checkCode}
+                msg={codeMessage}
+                msgType={isCode}
+              />
+            </Area>
+            <Area $shadow="none">
+              <Box $shadow="none" $direction="column">
+                <p
+                  style={{
+                    color: "rgba(0, 0, 0, 0.5)",
+                    fontWeight: "600",
+                  }}
+                >
+                  PASSWORD (*)
+                </p>
+                <Input
+                  holder="패스워드를 입력해주세요."
+                  value={inputPw}
+                  type="password"
+                  msg={pwMessage}
+                  msgType={isPw}
+                  changeEvt={onChangePw}
+                />
+              </Box>
+              <Box $shadow="none" $direction="column">
+                <p
+                  style={{
+                    color: "rgba(0, 0, 0, 0.5)",
+                    fontWeight: "600",
+                  }}
+                >
+                  REPEAT PASSWORD (*)
+                </p>
+                <Input
+                  holder="패스워드를 다시 입력해주세요."
+                  value={inputPw2}
+                  type="password"
+                  msg={pw2Message}
+                  msgType={isPw2}
+                  changeEvt={onChangePw2}
+                />
+              </Box>
+            </Area>
+            <Area $direction="column" $shadow="none" $marginTop="10px">
+              <p
+                style={{
+                  color: "rgba(0, 0, 0, 0.5)",
+                  fontWeight: "600",
+                }}
+              >
+                USERNAME (*)
+              </p>
               <input
                 type="text"
                 placeholder="Email을 입력해주세요."
@@ -119,31 +368,14 @@ const JoinComp = (email, profile) => {
               />
             </Area>
             <Area $direction="column" $shadow="none" $marginTop="10px">
-              <p>VERIFICATIOMN NUMBER (*)</p>
-              <input
-                type="text"
-                placeholder="인증번호를 입력해주세요."
+              <p
                 style={{
-                  padding: "15px 10px",
-                  border: "none",
-                  borderBottom: "1px solid #000",
+                  color: "rgba(0, 0, 0, 0.5)",
+                  fontWeight: "600",
                 }}
-              />
-            </Area>
-            <Area $direction="column" $shadow="none" $marginTop="10px">
-              <p>PASSWORD (*)</p>
-              <input
-                type="text"
-                placeholder="Password를 입력해주세요."
-                style={{
-                  padding: "15px 10px",
-                  border: "none",
-                  borderBottom: "1px solid #000",
-                }}
-              />
-            </Area>
-            <Area $direction="column" $shadow="none" $marginTop="10px">
-              <p>USERNAME (*)</p>
+              >
+                NICK NAME (*)
+              </p>
               <input
                 type="text"
                 placeholder="Email을 입력해주세요."
@@ -155,7 +387,14 @@ const JoinComp = (email, profile) => {
               />
             </Area>
             <Area $direction="column" $shadow="none" $marginTop="10px">
-              <p>NICK NAME (*)</p>
+              <p
+                style={{
+                  color: "rgba(0, 0, 0, 0.5)",
+                  fontWeight: "600",
+                }}
+              >
+                PHONE NUMBER (*)
+              </p>
               <input
                 type="text"
                 placeholder="Email을 입력해주세요."
@@ -167,19 +406,14 @@ const JoinComp = (email, profile) => {
               />
             </Area>
             <Area $direction="column" $shadow="none" $marginTop="10px">
-              <p>PHONE NUMBER (*)</p>
-              <input
-                type="text"
-                placeholder="Email을 입력해주세요."
+              <p
                 style={{
-                  padding: "15px 10px",
-                  border: "none",
-                  borderBottom: "1px solid #000",
+                  color: "rgba(0, 0, 0, 0.5)",
+                  fontWeight: "600",
                 }}
-              />
-            </Area>
-            <Area $direction="column" $shadow="none" $marginTop="10px">
-              <p>ADDRESS (*)</p>
+              >
+                ADDRESS (*)
+              </p>
               <input
                 type="text"
                 placeholder="Email을 입력해주세요."

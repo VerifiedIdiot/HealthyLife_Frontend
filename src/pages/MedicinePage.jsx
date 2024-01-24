@@ -16,8 +16,8 @@ const MedicinePage = () => {
       <Main>
         <Container>
             <SearchSection/>
-            {/* <BoardSection/>
-            <PaginationSection/> */}
+            <BoardSection/>
+            {/* <PaginationSection/> */}
         </Container>
       </Main>
     </>

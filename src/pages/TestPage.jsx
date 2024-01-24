@@ -10,7 +10,10 @@ import {
 import LargeModal from "../styles/modals/LargeModal";
 import MiddleModal from "../styles/modals/MiddleModal";
 import SmallModal from "../styles/modals/SmallModal";
+
+
 import React, { useState } from "react";
+
 const TestPage = () => {
   const [isModalOpen, setIsModalOpen] = useState({
     Large: false,

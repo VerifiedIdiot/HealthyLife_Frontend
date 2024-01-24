@@ -12,33 +12,26 @@ const ComboSearchContainer = styled.div`
     width: 100%;
     
   }
-  @media (max-width: 550px) {
-    justify-content: space-around;
-    /* width: 300px;
-    margin-left: 5px; */
-  }
+
 `;
 
 const ComboSelectBox = styled.select`
   height: 40px;
   border: 1px solid #ccc;
   border-radius: 4px;
-  width: 20%;
+  width: 20.5%;
 
   @media (max-width: 768px) {
     width: 110px;
     
   }
-  @media (max-width: 550px) {
-    width: 110px;
-    
-  }
+
 `;
 
 const ComboInputField = styled.input`
-  width: 55%;
-  height: 18px;
-  padding: 10px;
+  width: 54.5%;
+  height: 40px;
+  
   margin: 10px 0;
   border: 1px solid #ccc;
   border-radius: 4px;
@@ -48,10 +41,6 @@ const ComboInputField = styled.input`
     margin-left: 5px;
   }
 
-  @media (max-width: 550px) {
-    width: 56vw;
-    
-  }
 `;
 
 export const ComboSearchBox = () => {
@@ -97,18 +86,21 @@ export const ComboSearchBox = () => {
 const SearchContainer = styled.div`
   display: flex;
   align-items: center;
-  justify-content: space-around;
+  
   width: 100%;
 
-  @media (max-width: 768px) {
+  /* @media (max-width: 768px) {
+    
     width: 100%;
-  }
+  } */
+
+
 `;
 
 const SearchInputField = styled.input`
-  width: 100%;
-  height: 18px;
-  padding: 10px;
+  width: 75%;
+  height: 40px;
+  
   margin: 10px 0;
   border: 1px solid #ccc;
   border-radius: 4px;
@@ -118,10 +110,7 @@ const SearchInputField = styled.input`
     margin-left: 5px;
   }
 
-  @media (max-width: 550px) {
-    width: 56vw;
-    
-  }
+
 `;
 
 export const SearchBox = () => {
@@ -148,27 +137,25 @@ export const SearchBox = () => {
 // ComboBox 컴포넌트
 
 const SelectBox = styled.div`
-  width: 33.9%;
+  width: 24.9%;
   border: 1px solid #ccc;
   border-radius: 4px;
-  padding: 10px;
+  height: 40px;
   cursor: pointer;
   position: relative;
 
   @media (max-width: 768px) {
-    width: 100%;
+    width: 19.5vw;
+    margin-left: .5vw;
   }
 
-  @media (max-width: 550px) {
-    width: 13.5vw;
-    
-  }
+
 
   .dropdown-content {
     display: none;
     position: absolute;
     background-color: #f9f9f9;
-    min-width: 160px;
+    min-width: 100%;
     box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
     z-index: 1;
 

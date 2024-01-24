@@ -70,6 +70,7 @@ const SearchItemLeft = styled(Item)`
   display: flex;
   justify-content: center;
   align-items: center;
+  box-shadow: none;
   /* height: 60px; */
   width: 15%;
   white-space: nowrap;
@@ -79,10 +80,13 @@ const SearchItemLeft = styled(Item)`
   }
 
   @media (max-width: 768px) {
-    width: 160px;
+    width: 19.5%;
+    min-width: 110px;
     p {
       font-size: smaller;
     }
+
+    
    
   }
 `;
@@ -90,36 +94,41 @@ const SearchItemLeft = styled(Item)`
 const SearchItemRight = styled(Item)`
   display: flex;
   align-items: center;
-  
+  box-shadow: none;
   width: ${(props) => props.$width || "100%"};
-
+  padding-right: ${(props) => props.$paddingRight || ""};
   @media (max-width: 768px) {
-  }
-
-  @media (max-width: 550px) {
-    justify-content: space-around;
     
   }
+
+  
 `;
 
 const ButtonItem = styled(Item)`
   display: flex;
-  justify-content: center;
+  /* justify-content: center; */
   align-items: center;
-  width: 19.5%;
-
+  width: 25%;
+  box-shadow: none;
   @media (max-width: 768px) {
   }
 `;
 
-
-const StyledButton = styled(LargeButton)`
+const InitialConsonant = styled.div`
   display: flex;
-  justify-content: center;
   align-items: center;
-  width: 19.5%;
+  width: 75%;
 
   @media (max-width: 768px) {
+    width: 73%;
+  }
+`
+
+
+const StyledButton = styled(LargeButton)`
+
+  @media (max-width: 768px) {
+    width: 100%;
   }
 `;
 
@@ -183,10 +192,13 @@ export const SearchSection = () => {
             <SearchItemLeft >
               <p>초성 검색</p>
             </SearchItemLeft>
-            <SearchItemRight $width="80%">ㄱㄴㄷㄹㅁㅂㅅ</SearchItemRight>
+            <SearchItemRight $width="100%">
+              <InitialConsonant>ㄱㄴㄷㄹㅁㅂㅅ</InitialConsonant>
             <ButtonItem>
-              <LargeButton onClick={handleSearch}>검색</LargeButton>
+              <StyledButton onClick={handleSearch}>검색</StyledButton>
             </ButtonItem>
+            </SearchItemRight>
+            
           </ResponsiveItemBox>
         </ResponsiveSearchArea>
       </ResponsiveSearchSection>

@@ -1,4 +1,4 @@
-import { Container, Main, Section } from "../../styles/Layouts";
+import { Area, Container, Main, Section } from "../../styles/Layouts";
 import { LargeButton } from "../../styles/styledComponents/StyledComponents";
 import { useNavigate } from "react-router";
 import logo from "../../assets/icons/logo.svg";
@@ -30,22 +30,28 @@ const LoginComp = () => {
               }}
             />
           </Section>
-          <Section $height="5%">
-            <p
-              style={{
-                paddingRight: "5px",
-              }}
-            >
-              Not a member yet?
-            </p>
-            <p
-              style={{
-                cursor: "pointer",
-              }}
-              onClick={() => joinNavigate("/join")}
-            >
-              Register now
-            </p>
+          <Section $height="5%" $shadow="none" $padding="0 10px">
+            <Area $shadow="none" $width="22%">
+              <p
+                style={{
+                  paddingRight: "5px",
+                }}
+              >
+                Not a member yet?
+              </p>
+            </Area>
+            <Area $shadow="none" $height="50%">
+              <p
+                style={{
+                  borderBottom: "2px solid black",
+                  cursor: "pointer",
+                  fontWeight: "600",
+                }}
+                onClick={() => joinNavigate("/join")}
+              >
+                Register now
+              </p>
+            </Area>
           </Section>
         </Container>
         <Container
@@ -55,34 +61,44 @@ const LoginComp = () => {
           $height="auto"
         >
           <Section $height="auto" $paddingTop="400px" $direction="column">
-            <p>EMAIL (*)</p>
-            <input
-              type="text"
-              placeholder="Email을 입력해주세요."
-              style={{
-                borderBottom: "1px solid black",
-                border: "none",
-                padding: "15px 5px",
-                outline: "none",
-              }}
-            />
-            <p
-              style={{
-                paddingTop: "20px",
-              }}
+            <Area
+              $direction="column"
+              $shadow="none"
+              $borderBottom="1px solid black"
             >
-              PASSWORD (*)
-            </p>
-            <input
-              type="text"
-              placeholder="Password를 입력해주세요."
-              style={{
-                borderBottom: "1px solid black",
-                border: "none",
-                padding: "15px 5px",
-                outline: "none",
-              }}
-            />
+              <p>EMAIL (*)</p>
+              <input
+                type="text"
+                placeholder="Email을 입력해주세요."
+                style={{
+                  border: "none",
+                  padding: "15px 5px",
+                  outline: "none",
+                }}
+              />
+            </Area>
+            <Area
+              $direction="column"
+              $shadow="none"
+              $borderBottom="1px solid black"
+            >
+              <p
+                style={{
+                  paddingTop: "20px",
+                }}
+              >
+                PASSWORD (*)
+              </p>
+              <input
+                type="text"
+                placeholder="Password를 입력해주세요."
+                style={{
+                  border: "none",
+                  padding: "15px 5px",
+                  outline: "none",
+                }}
+              />
+            </Area>
           </Section>
           <Section
             $display="flex"

@@ -29,6 +29,11 @@ import ChattingPage from "./pages/ChattingPage";
 import MedicinePage from "./pages/MedicinePage";
 import TestPage from "./pages/TestPage";
 import BodyInfoComp from "./components/joinPage/BodyInfoComponent";
+<<<<<<< Updated upstream
+=======
+import PaymentPage from "./pages/PaymentPage";
+import MyPage from "./pages/MyPage";
+>>>>>>> Stashed changes
 
 function App() {
   // 방문자 추적 커스텀 훅
@@ -55,7 +60,11 @@ function App() {
             <Route element={<HeaderFooter />}>
               <Route path="/medicine" element={<MedicinePage />} />
               <Route path="/inbody" element={<InbodyPage />} />
+<<<<<<< Updated upstream
              
+=======
+              <Route path="/Mypage" element={<MyPage />} />
+>>>>>>> Stashed changes
               <Route path="/community" element={<CommunityPage />} />
               <Route path="/ranking" element={<RankingPage />} />
             </Route>

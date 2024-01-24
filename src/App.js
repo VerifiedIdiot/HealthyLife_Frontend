@@ -17,7 +17,7 @@ import {
 } from "./styles/headerFooter/HeaderFooter";
 
 import HomePage from "./pages/HomePage";
-
+import MyPage from "./pages/MyPage";
 import LoginPage from "./pages/LoginPage";
 import InbodyPage from "./pages/InBodyPage";
 import CalendarPage from "./pages/CalendarPage";
@@ -59,7 +59,7 @@ function App() {
               <Route path="/medicine" element={<MedicinePage />} />
               <Route path="/inbody" element={<InbodyPage />} />
               <Route path="/information" element={<InformationPage />} />
-
+              <Route path="/mypage" element={<MyPage />} />
               <Route path="/community" element={<CommunityPage />} />
               <Route path="/ranking" element={<RankingPage />} />
             </Route>

@@ -3,11 +3,12 @@ import { Area, Box, Container, Main, Section } from "../../styles/Layouts";
 import logo from "../../assets/icons/logo.svg";
 import { useEffect, useState } from "react";
 import { Input, InputButton } from "./JoinInput";
+import { MiddleButton } from "../../styles/styledComponents/StyledComponents";
 
 const BodyInfoComp = (profile) => {
   const navigate = useNavigate();
   const loginGate = useNavigate();
-  const bodyNavigate = useNavigate();
+  const cashNavigate = useNavigate();
 
   // 키보드 입력
   const [inputHeight, setInputHeight] = useState("");
@@ -16,7 +17,6 @@ const BodyInfoComp = (profile) => {
   const [inputBodyFat, setInputBodyFat] = useState("");
   const [inputBasalMetabolic, setInputBasalMetabolic] = useState("");
   const [inputBodyMass, setInputBodyMass] = useState("");
-
   // 오류 메세지
   const [heightMessage, setHeightMessage] = useState("");
   const [weightMessage, setWeightMessage] = useState("");
@@ -24,7 +24,6 @@ const BodyInfoComp = (profile) => {
   const [bodyFatMessage, setBodyFatMessage] = useState("");
   const [basalMetabolicMessage, setBasalMetabolicMessage] = useState("");
   const [bodyMassMessage, setBodyMassMessage] = useState("");
-
   // 유효성
   const [isHeight, setIsHeight] = useState(false);
   const [isWeight, setIsWeight] = useState(false);
@@ -32,10 +31,8 @@ const BodyInfoComp = (profile) => {
   const [isBodyFat, setIsBodyFat] = useState(false);
   const [isBasalMetabolic, setIsBasalMetabolic] = useState(false);
   const [isBodyMass, setIsBodyMass] = useState(false);
-
   // 정규식
   const regexList = /^[0-9.]{2,5}$/;
-
   // 키
   const onChangeHeight = (e) => {
     const currHeight = e.target.value;
@@ -50,7 +47,6 @@ const BodyInfoComp = (profile) => {
       setIsHeight(true);
     }
   };
-
   // 몸무게
   const onChangeWeight = (e) => {
     const currWeight = e.target.value;
@@ -64,11 +60,10 @@ const BodyInfoComp = (profile) => {
       setIsWeight(true);
     }
   };
-
   // 근육량
   const onChangeMuscle = (e) => {
     const currMuscle = e.target.value;
-    setInputWeight(currMuscle);
+    setInputMuscle(currMuscle);
     if (!regexList.test(currMuscle)) {
       setMuscleMessage("2 ~ 5 까지의 숫자만 입력가능합니다. (.포함) ");
       setIsMuscle(false);
@@ -78,11 +73,10 @@ const BodyInfoComp = (profile) => {
       setIsMuscle(true);
     }
   };
-
   // 체지방률
   const onChangeBodyFat = (e) => {
     const currBodyFat = e.target.value;
-    setInputWeight(currBodyFat);
+    setInputBodyFat(currBodyFat);
     if (!regexList.test(currBodyFat)) {
       setBodyFatMessage("2 ~ 5 까지의 숫자만 입력가능합니다. (.포함) ");
       setIsBodyFat(false);
@@ -92,11 +86,10 @@ const BodyInfoComp = (profile) => {
       setIsBodyFat(true);
     }
   };
-
   // 기초대사량
   const onChangeBasal = (e) => {
     const currBasalMetabolic = e.target.value;
-    setInputWeight(currBasalMetabolic);
+    setInputBasalMetabolic(currBasalMetabolic);
     if (!regexList.test(currBasalMetabolic)) {
       setBasalMetabolicMessage("2 ~ 5 까지의 숫자만 입력가능합니다. (.포함) ");
       setIsBasalMetabolic(false);
@@ -106,11 +99,10 @@ const BodyInfoComp = (profile) => {
       setIsBasalMetabolic(true);
     }
   };
-
   // BMI
   const onChangeBodyMass = (e) => {
     const currBodyMass = e.target.value;
-    setInputWeight(currBodyMass);
+    setInputBodyMass(currBodyMass);
     if (!regexList.test(currBodyMass)) {
       setBodyMassMessage("2 ~ 5 까지의 숫자만 입력가능합니다. (.포함) ");
       setIsBodyMass(false);
@@ -120,7 +112,6 @@ const BodyInfoComp = (profile) => {
       setIsBodyMass(true);
     }
   };
-
   return (
     <>
       <Main $direction="row" $width="100%" $height="auto">
@@ -129,7 +120,7 @@ const BodyInfoComp = (profile) => {
           $display="flex"
           $direction="column"
           $background="#F3F3F3"
-          $height="100vh"
+          $height="auto"
         >
           <Section
             $height="95%"
@@ -195,7 +186,6 @@ const BodyInfoComp = (profile) => {
                 changeEvt={onChangeHeight}
               />
             </Area>
-
             <Area $direction="column" $shadow="none">
               <p
                 style={{
@@ -288,6 +278,17 @@ const BodyInfoComp = (profile) => {
                 />
               </Box>
             </Area>
+          </Section>
+          <Section
+            $shadow="none"
+            $align="center"
+            $justify="center"
+            $height="10%"
+            $marginTop="50px"
+          >
+            <MiddleButton onClick={() => cashNavigate("/join/payment")}>
+              다음
+            </MiddleButton>
           </Section>
         </Container>
       </Main>

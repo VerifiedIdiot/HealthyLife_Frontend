@@ -72,13 +72,14 @@ const InputComp = styled.div`
   width: 100%;
   margin-bottom: 10px;
   position: relative;
+
   input {
-    width: 94%;
+    width: 100%;
     height: auto;
     padding: 10px;
     border: none;
     border-bottom: 1px solid black;
-
+    box-sizing: border-box;
     outline: none;
     /* font-size: 1em; */
     &:disabled {

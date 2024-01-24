@@ -6,6 +6,7 @@ import { LabelComp } from "./JoinStyle";
 import { Input, InputButton } from "./JoinInput";
 import MemberApi from "../../api/MemberApi";
 import AgreeCheck from "./AgreeCheck";
+import { MiddleButton } from "../../styles/styledComponents/StyledComponents";
 const JoinComp = (email, profile) => {
   const navigate = useNavigate();
 
@@ -220,7 +221,7 @@ const JoinComp = (email, profile) => {
 
   return (
     <>
-      <Main $direction="row" $width="100%">
+      <Main $direction="row" $width="100%" $height="auto">
         <Container
           $width="50%"
           $display="flex"
@@ -299,7 +300,12 @@ const JoinComp = (email, profile) => {
               </LabelComp>
             </Area>
           </Section>
-          <Section $height="auto" $paddingTop="15px" $direction="column">
+          <Section
+            $height="auto"
+            $paddingTop="15px"
+            $direction="column"
+            $width="100%"
+          >
             <Area $direction="column" $shadow="none">
               <p
                 style={{
@@ -340,8 +346,13 @@ const JoinComp = (email, profile) => {
                 msgType={isCode}
               />
             </Area>
-            <Area $shadow="none">
-              <Box $shadow="none" $direction="column">
+            <Area $shadow="none" $width="100%">
+              <Box
+                $shadow="none"
+                $direction="column"
+                $width="100%"
+                $padding="10px"
+              >
                 <p
                   style={{
                     color: "rgba(0, 0, 0, 0.5)",
@@ -467,6 +478,15 @@ const JoinComp = (email, profile) => {
                 onCheckedChange={() => onCheckedChange(2)}
                 modalType="privacy"
               />
+            </Area>
+            <Area
+              $display="flex"
+              $align="center"
+              $justify="center"
+              $shadow="none"
+              $margin="100px 0"
+            >
+              <MiddleButton>다음</MiddleButton>
             </Area>
           </Section>
           {/* <Section

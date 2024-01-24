@@ -35,7 +35,7 @@ export const Container = styled.div.attrs({
   justify-content: ${(props) => props.$justify || "flex-start"};
   align-items: ${(props) => props.$align || "stretch"};
   width: ${(props) => props.$width || "100%"};
-  height: ${(props) => props.$height || "94vh"};
+  height: ${(props) => props.$height || "93vh"};
   border: ${(props) => props.$border || "none"};
   border-radius: ${(props) => props.$borderRadius || "none"};
   box-shadow: ${(props) => props.$shadow || "0 2px 4px rgba(0, 0, 0, 0.1)"};
@@ -85,6 +85,7 @@ export const Area = styled.div.attrs({
   box-shadow: ${(props) => props.$shadow || "0 2px 4px rgba(0, 0, 0, 0.1)"};
   margin-bottom: ${(props) => props.$marginBottom || "0"};
   margin-top: ${(props) => props.$marginTop || "0"};
+  margin: ${(props) => props.$margin || "0"};
 `;
 
 // wrap -> Main -> Container -> Section -> Area -> Box
@@ -122,6 +123,7 @@ export const Item = styled.div.attrs({
   box-shadow: ${(props) => props.$shadow || "0 2px 4px rgba(0, 0, 0, 0.1)"};
   padding-left: ${(props) => props.$paddingLeft || "0"};
   color: ${(props) => props.$color || "black"};
+  text-align: ${(props) => props.$textAlign || "center"};
 `;
 
 // 각 영역별 Area

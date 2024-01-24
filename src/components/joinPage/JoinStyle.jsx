@@ -5,8 +5,7 @@ export const LabelComp = styled.div`
   justify-content: center;
   align-items: center;
   width: 100px;
-  /* height: 80px; */
-
+  padding: 20px 0;
   label {
     width: 80px;
     height: 30px;

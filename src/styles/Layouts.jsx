@@ -80,6 +80,7 @@ export const Area = styled.div.attrs({
   height: ${(props) => props.$height || "100%"};
   border: ${(props) => props.$border || "none"};
   border-radius: ${(props) => props.$borderRadius || "0"};
+  padding: ${(props) => props.$padding || "0"};
   padding-bottom: ${(props) => props.$paddingBottom || "0"};
   overflow: ${(props) => props.$overflow || "visible"};
   box-shadow: ${(props) => props.$shadow || "0 2px 4px rgba(0, 0, 0, 0.1)"};

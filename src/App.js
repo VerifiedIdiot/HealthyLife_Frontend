@@ -27,8 +27,12 @@ import JoinPage from "./pages/JoinPage";
 import Kakao from "./pages/Kakao";
 import ChattingPage from "./pages/ChattingPage";
 import MedicinePage from "./pages/MedicinePage";
+<<<<<<< Updated upstream
 import TestPage from "./pages/TestPage";
 
+=======
+import BodyInfoComp from "./components/joinPage/BodyInfoComponent";
+>>>>>>> Stashed changes
 
 function App() {
   // 방문자 추적 커스텀 훅
@@ -44,6 +48,7 @@ function App() {
           <Routes>
             <Route path="/login" element={<LoginPage />} />
             <Route path="/join" element={<JoinPage />} />
+            <Route path="/join/bodyInfo" element={<BodyInfoComp />} />
             <Route path="/oauth/kakao" element={<Kakao />} />
             <Route path="/test" element={<ChattingPage />} />
             {/*다이나믹한 헤더와 푸터가 포함된 라우트 그룹 */}

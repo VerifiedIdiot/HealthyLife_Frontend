@@ -9,6 +9,8 @@ import AgreeCheck from "./AgreeCheck";
 import { MiddleButton } from "../../styles/styledComponents/StyledComponents";
 const JoinComp = (email, profile) => {
   const navigate = useNavigate();
+  const loginGate = useNavigate();
+  const bodyNavigate = useNavigate();
 
   // 프로필 관련
   const [imgSrc, setImgSrc] = useState(profile && profile ? profile : logo);
@@ -250,16 +252,23 @@ const JoinComp = (email, profile) => {
                 paddingRight: "5px",
               }}
             >
-              Not a member yet?
+              Are you a member?
             </p>
-            <p>Register now</p>
+            <p
+              style={{
+                cursor: "pointer",
+              }}
+              onClick={() => loginGate("/login")}
+            >
+              Log in now
+            </p>
           </Section>
         </Container>
         <Container
           $width="50%"
           $direction="column"
           $padding="0 15px"
-          $height="auto"
+          $height="100vh"
         >
           <Section
             $height="auto"
@@ -272,7 +281,7 @@ const JoinComp = (email, profile) => {
               $shadow="none"
               $position="relative"
               $width="25%"
-              $paddingBottom="20%"
+              $paddingBottom="25%"
               $marginBottom="30px"
               $borderRadius="50%"
               $background="#F3F3F3"
@@ -479,14 +488,10 @@ const JoinComp = (email, profile) => {
                 modalType="privacy"
               />
             </Area>
-            <Area
-              $display="flex"
-              $align="center"
-              $justify="center"
-              $shadow="none"
-              $margin="100px 0"
-            >
-              <MiddleButton>다음</MiddleButton>
+            <Area $display="flex" $justify="center" $shadow="none">
+              <MiddleButton onClick={() => bodyNavigate("/join/bodyInfo")}>
+                다음
+              </MiddleButton>
             </Area>
           </Section>
           {/* <Section

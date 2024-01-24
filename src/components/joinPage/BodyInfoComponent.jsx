@@ -68,7 +68,7 @@ const BodyInfoComp = (profile) => {
   // 근육량
   const onChangeMuscle = (e) => {
     const currMuscle = e.target.value;
-    setInputWeight(currMuscle);
+    setInputMuscle(currMuscle);
     if (!regexList.test(currMuscle)) {
       setMuscleMessage("2 ~ 5 까지의 숫자만 입력가능합니다. (.포함) ");
       setIsMuscle(false);
@@ -82,7 +82,7 @@ const BodyInfoComp = (profile) => {
   // 체지방률
   const onChangeBodyFat = (e) => {
     const currBodyFat = e.target.value;
-    setInputWeight(currBodyFat);
+    setInputBodyFat(currBodyFat);
     if (!regexList.test(currBodyFat)) {
       setBodyFatMessage("2 ~ 5 까지의 숫자만 입력가능합니다. (.포함) ");
       setIsBodyFat(false);
@@ -96,7 +96,7 @@ const BodyInfoComp = (profile) => {
   // 기초대사량
   const onChangeBasal = (e) => {
     const currBasalMetabolic = e.target.value;
-    setInputWeight(currBasalMetabolic);
+    setInputBasalMetabolic(currBasalMetabolic);
     if (!regexList.test(currBasalMetabolic)) {
       setBasalMetabolicMessage("2 ~ 5 까지의 숫자만 입력가능합니다. (.포함) ");
       setIsBasalMetabolic(false);
@@ -110,7 +110,7 @@ const BodyInfoComp = (profile) => {
   // BMI
   const onChangeBodyMass = (e) => {
     const currBodyMass = e.target.value;
-    setInputWeight(currBodyMass);
+    setInputBodyMass(currBodyMass);
     if (!regexList.test(currBodyMass)) {
       setBodyMassMessage("2 ~ 5 까지의 숫자만 입력가능합니다. (.포함) ");
       setIsBodyMass(false);
@@ -195,7 +195,6 @@ const BodyInfoComp = (profile) => {
                 changeEvt={onChangeHeight}
               />
             </Area>
-
             <Area $direction="column" $shadow="none">
               <p
                 style={{

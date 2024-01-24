@@ -1,13 +1,10 @@
+import { useState } from "react";
 import styled from "styled-components";
-import { Section, Area, Box, Item, Element } from "../../styles/Layouts";
+import { Section, Area, Box, Item } from "../../styles/Layouts";
 import { LargeButton } from "../../styles/styledComponents/StyledComponents";
-import {
-  ComboSearchBox,
-  ComboBox,
-  SearchBox,
-} from "../../styles/styledComponents/ComboSearchBox";
+import { SearchBox, ComboBox, ComboSearchBox } from "./MedicineContainer";
 import capsule from "../../assets/icons/medicine/capsule.png";
-import { media, mediaHeight } from "../../utils/MediaQuery";
+
 
 const StyledIcon = styled.img.attrs({
   className: "medicine-icon",
@@ -22,6 +19,15 @@ const LogoItem = styled(Item)`
   h1 {
     margin-left: 10px;
   }
+  @media (max-width: 768px) {
+    h1 {
+      
+      margin-left: 0;
+      width: 100%;
+     
+     
+    }
+  }
 `;
 
 const ResponsiveSearchSection = styled(Section)`
@@ -30,41 +36,35 @@ const ResponsiveSearchSection = styled(Section)`
   align-items: center;
 
   @media (max-width: 768px) {
-    
   }
-
 `;
 
 const ResponsiveSearchArea = styled(Area)`
   flex-direction: column;
-  
+
   height: 90%;
   width: 95%;
 
   @media (max-width: 768px) {
-    
   }
-
-
 `;
 
 const ResponsiveItemBox = styled(Box)`
   height: 60px;
 
   @media (max-width: 768px) {
-    
   }
 `;
 
 const ResponsiveItem = styled(Item)`
-  padding-left:15%;
+  padding-left: 13%;
   align-items: center;
-  justify-content:flex-start;
+  justify-content: flex-start;
 
   @media (max-width: 768px) {
-   padding-left : 0;
+    padding-left: 0;
   }
-`
+`;
 
 const SearchItemLeft = styled(Item)`
   display: flex;
@@ -79,17 +79,25 @@ const SearchItemLeft = styled(Item)`
   }
 
   @media (max-width: 768px) {
-    
+    width: 160px;
+    p {
+      font-size: smaller;
+    }
+   
   }
 `;
 
 const SearchItemRight = styled(Item)`
   display: flex;
   align-items: center;
-  /* height: 60px; */
-  width: 65%;
+  
+  width: ${(props) => props.$width || "100%"};
 
   @media (max-width: 768px) {
+  }
+
+  @media (max-width: 550px) {
+    justify-content: space-around;
     
   }
 `;
@@ -101,49 +109,68 @@ const ButtonItem = styled(Item)`
   width: 19.5%;
 
   @media (max-width: 768px) {
-    
+  }
+`;
+
+
+const StyledButton = styled(LargeButton)`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 19.5%;
+
+  @media (max-width: 768px) {
   }
 `;
 
 export const SearchSection = () => {
-  // const handleSearchTypeChange = (e) => {
-  //   setSearchType(e.target.value);
-  // };
+  const [comboSearch, setComboSearch] = useState("");
+  const [searchQuery, setSearchQuery] = useState("");
+  
 
-  // const handleSearchQueryChange = (e) => {
-  //   setSearchQuery(e.target.value);
-  // };
+  const handleSearch = () => {
+    // 여기에서 검색 로직 구현
+    console.log("Combo Search Type:", comboSearch);
+    console.log("Search Query:", searchQuery);
+    
 
-  // const handleSearch = () => {
-  //   // console.log(`검색 유형: ${searchType}, 검색어: ${searchQuery}`);
-  //   // // 여기에 검색 로직을 구현합니다.
-  // };
+    // 검색 로직을 여기에 추가하세요.
+  };
+
+  // 각 컴포넌트의 상태를 업데이트하는 함수들
+  const handleComboSearchChange = (value) => {
+    setComboSearch(value);
+  };
+
+  const handleSearchQueryChange = (value) => {
+    setSearchQuery(value);
+  };
 
   return (
     <>
       <ResponsiveSearchSection>
         <ResponsiveSearchArea>
           <ResponsiveItemBox>
-            <LogoItem>
-              <StyledIcon img src={capsule} />
+            <LogoItem >
+              <StyledIcon src={capsule} />
               <h1>제품 검색</h1>
             </LogoItem>
           </ResponsiveItemBox>
           <ResponsiveItemBox>
             <ResponsiveItem>
-              <ComboSearchBox className="a"/>
+              <ComboSearchBox onChange={handleComboSearchChange} />
             </ResponsiveItem>
           </ResponsiveItemBox>
           <ResponsiveItemBox>
-            <SearchItemLeft>
+            <SearchItemLeft >
               <p>원료검색</p>
             </SearchItemLeft>
             <SearchItemRight>
-              <SearchBox></SearchBox>
+              <SearchBox onChange={handleSearchQueryChange}></SearchBox>
             </SearchItemRight>
           </ResponsiveItemBox>
           <ResponsiveItemBox>
-            <SearchItemLeft>
+            <SearchItemLeft >
               <p>기능성 검색</p>
             </SearchItemLeft>
             <SearchItemRight>
@@ -153,12 +180,12 @@ export const SearchSection = () => {
             </SearchItemRight>
           </ResponsiveItemBox>
           <ResponsiveItemBox>
-            <SearchItemLeft>
+            <SearchItemLeft >
               <p>초성 검색</p>
             </SearchItemLeft>
-            <SearchItemRight>ㄱㄴㄷㄹㅁㅂㅅ</SearchItemRight>
+            <SearchItemRight $width="80%">ㄱㄴㄷㄹㅁㅂㅅ</SearchItemRight>
             <ButtonItem>
-              <LargeButton>검색</LargeButton>
+              <LargeButton onClick={handleSearch}>검색</LargeButton>
             </ButtonItem>
           </ResponsiveItemBox>
         </ResponsiveSearchArea>
@@ -174,9 +201,7 @@ const ResponsiveBoardSection = styled(Section)`
   justify-content: center;
   align-items: center;
 
-  ${media.medium`
-    
-    `}
+
 `;
 
 const ResponsiveBoardArea = styled(Area)`
@@ -184,9 +209,7 @@ const ResponsiveBoardArea = styled(Area)`
   height: 95%;
   width: 95%;
   min-height: 30vw;
-  ${media.medium`
-    
-    `}
+
 `;
 
 export const BoardSection = () => {
@@ -211,18 +234,14 @@ const ResponsivePaginationSection = styled(Section)`
   justify-content: center;
   align-items: center;
   min-height: 80px;
-  ${media.medium`
-    
-    `}
+
 `;
 
 const ResponsivePaginationArea = styled(Area)`
   height: 90%;
   width: 95%;
 
-  ${media.medium`
-    
-    `}
+
 `;
 
 export const PaginationSection = () => {

@@ -1,4 +1,4 @@
-import { Main, Container, Section, Area } from "../styles/Layouts";
+import { Main } from "../styles/Layouts";
 import { CalendarComponent } from "../components/calendarPage/CalendarComponent";
 
 const CalendarPage = () => {

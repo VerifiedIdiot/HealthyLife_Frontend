@@ -16,7 +16,6 @@ const Input1 = styled.div`
   width: 30%;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 1rem;
 `;
 
 const Input2 = styled.div`
@@ -25,13 +24,13 @@ const Input2 = styled.div`
 
 const Input3 = styled.input`
   width: 40%;
-  height: 30px;
+  height: 60%;
   border-radius: 8px;
   border: none;
 `;
 
 const Runner = styled.img`
-  width: 190px;
+  width: 50%;
 `;
 
 const currentDate = new Date();
@@ -65,8 +64,6 @@ const InbodyInput = () => {
               alignItems: "center",
               fontSize: "20px",
               fontWeight: "bold",
-              marginBottom: "1rem",
-              marginTop: "1rem",
             }}
           >
             김현빈님의 {formattedDate} 신체정보 입력
@@ -105,7 +102,7 @@ const InbodyInput = () => {
             $align="center"
             style={{ borderRadius: "0px 0px 8px 0px" }}
           >
-            <MiddleButton style={{ marginRight: "1.5%", marginBottom: "1.5%" }}>
+            <MiddleButton style={{ height: "80%", marginRight: "2%" }}>
               제출
             </MiddleButton>
           </Section>

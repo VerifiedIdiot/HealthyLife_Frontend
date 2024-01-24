@@ -28,7 +28,7 @@ const FriendBoxs  =(props)=>{
     <>
       <Box $height="100px" $align="center"> 
         <MemberImg>
-          <ChatImage src={userImg} alt="회원 이미지" />
+          <ChatImage src={"https://item.kakaocdn.net/do/1401e813472967e3b572fee1ee192eb89f17e489affba0627eb1eb39695f93dd"} alt="회원 이미지" />
         </MemberImg>
         <MemberInfo>
           <Item >

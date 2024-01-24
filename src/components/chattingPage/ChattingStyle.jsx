@@ -1,9 +1,12 @@
 import styled from "styled-components";
 
 export const MemberImg = styled.div`
+  display:${(props) => (props.isSender ? "none" : "flex")};
   height: ${(props) => props.$height || "80px"};
   width: ${(props) => props.$width || "80px"};
-  margin-left:15px;
+  margin:0 10px;
+  align-items: center;
+  justify-content: center;
   border-radius: 10px;
   border: 1px solid black;
 `;
@@ -40,8 +43,10 @@ export const ChatImage = styled.img.attrs({
   className: "chat-img"
 })`
   cursor: pointer;
-  object-fit:cover;
+  object-fit: cover;
   margin:5px;
+  width:100%;
+  height:100%;
 `;
 
 export const ChatContainer = styled.div`
@@ -72,21 +77,25 @@ export const MessagesContainer = styled.div`
 `;
 
 export const Message = styled.div`
-  max-width: 60%;
-  height: auto;
   padding: 5px;
   border-radius: 8px;
+  overflow-wrap: break-word;
+  min-height: 30px;
+  width: 50%;
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
   background-color: ${(props) => (props.isSender ? "#c6d1f8" : "#E0E0E0")};
-  align-self: ${(props) => (props.isSender ? "flex-end" : "flex-start")};
 `;
 
-export const MassegeState =styled.div`
+export const MassegeState = styled.div`
   display: flex;
   color: grey;
   font-size: 0.6em;
-  flex-direction: column;
-  width: 100%;
-  justify-content: flex-end;
+  flex-direction: row;
+  white-space: nowrap;
+  justify-content: flex-end; /* 가로 방향으로 오른쪽 정렬 */
+  align-items: flex-end; /* 세로 방향으로 아래쪽 정렬 */
 `;
 
 export const MassegeInput = styled.textarea`
@@ -131,6 +140,26 @@ export const CloseButton = styled.button`
 
 export const ChatBox =styled.div`
   display: flex;
-  flex-direction:column;
-
+  height: auto;
+  flex-direction:${(props) => (props.isSender ? "row-reverse" : "row")};
 `;
+
+export const ChatBox1 =styled.div`
+  display:flex;
+  width: ${(props) => (props.isSender ? "97%" : "70%")};
+  flex-direction: row;
+  justify-content: ${(props) => (props.isSender ? "flex-end" : "flex-start")};
+`;
+
+export const MessegeContainer =styled.div`
+  display: flex;
+  width: 100%;
+  &+&{
+    margin-bottom: 5px;
+  }
+`;
+
+export const SenderBox =styled.div`
+  display:${(props) => (props.isSender ? "none" : "box")};
+`;
+

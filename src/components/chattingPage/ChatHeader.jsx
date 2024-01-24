@@ -4,14 +4,15 @@ import { ButtonComp } from "../../styles/example/Button"
 
 
 const Containerstyle = styled(Container)`
-  $position: relative;
-  $width: 400px;
-  $height: 600px;
-  $background: #333333;
-  $border: 1px solid black;
-  $border-radius: 8px;
-  $overflow: visible;
-  $padding: 12px;
+  position: relative;
+  width: 400px;
+  height: 600px;
+  background: #333333;
+  border: 1px solid black;
+  border-radius: 8px;
+  overflow: visible;
+  padding: 12px;
+
   &::before {
   content: '';
   position: absolute;
@@ -22,7 +23,7 @@ const Containerstyle = styled(Container)`
   height: 0;
   border-style: solid;
   border-width: 0 20px 20px;  /* 변경된 부분 */
-  border-color: transparent transparent ${props => props.$background};  /* 변경된 부분 */
+  border-color: transparent transparent #333333;  /* 변경된 부분 */
 }`;
 
 // 채팅 헤더 + Box
@@ -30,7 +31,7 @@ export const ChatHeader=(props)=>{
   const {isDisabled,children } =props;
   
   return(
-      <Containerstyle >
+      <Containerstyle>
         <Section $direction="column" $height="100%" $background="white" style={{borderRadius:"9px 9px 0px 0px"}}>
           <Area $height="none">
           <ButtonComp className={isDisabled ? 'false':""}$width="50%" $height="70px" $fontSize="1.5em" $borderRadius="8px 0px 0px 0px" >

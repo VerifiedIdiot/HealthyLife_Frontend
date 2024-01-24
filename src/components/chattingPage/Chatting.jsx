@@ -1,7 +1,7 @@
 import { Container, Box,Item, ScrollBox } from "../../styles/Layouts"
 import { ButtonComp } from "../../styles/example/Button"
 import { MiddleButton } from "../../styles/styledComponents/StyledComponents"
-import { ChatBox, ChatImage, CloseButton, MassegeInput, MassegeState, MemberImg, Message, } from "./ChattingStyle"
+import { ChatBox, ChatBox1, ChatImage, CloseButton, MassegeInput, MassegeState, MemberImg, Message, MessegeContainer, Sender, SenderBox, } from "./ChattingStyle"
 
 
 // 채팅방Component
@@ -17,8 +17,15 @@ const Chatting  =(props)=>{
         <CloseButton onClick={onClickMsgClose}>x</CloseButton>
       </Box>
       <ScrollBox $height="350px" ref={chatContainerRef}>
-          <MessageInfo isSender={false} message={"ㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋ"}/>
+          <MessageInfo isSender={false} message={"ㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋ"}/>
           <MessageInfo isSender={false} message={"ㅋㅋ"}/>
+          <MessageInfo isSender={true} message={"ㅋㅋ"}/>
+          <MessageInfo isSender={false} message={"ㅋㅋ"}/>
+          <MessageInfo isSender={false} message={"ㅋㅋ"}/>
+          <MessageInfo isSender={false} message={"ㅋㅋ"}/>
+          <MessageInfo isSender={false} message={"ㅋㅋ"}/>
+          <MessageInfo isSender={false} message={"ㅋㅋ"}/>
+          <MessageInfo isSender={true} message={"ㅋㅋ"}/>
           <MessageInfo isSender={true} message={"ㅋㅋ"}/>
       </ScrollBox>
         <MassegeInput
@@ -43,22 +50,21 @@ const MessageInfo=(props)=>{
   const {isSender,message,sender,messageTime,messageState}=props;
   return(
     <>
-    <Box $height="auto" $width="auto" $align="none">
-      <MemberImg $height="60px" $width="60px">
-        <ChatImage src={""} alt="회원 이미지"/>
+    <MessegeContainer>
+      <MemberImg $height="30px" $width="30px" isSender={isSender}>
+        <ChatImage src={"https://item.kakaocdn.net/do/1401e813472967e3b572fee1ee192eb89f17e489affba0627eb1eb39695f93dd"} alt="회원 이미지"/>
       </MemberImg>
-      <ChatBox>
-        김현빈{sender}
-        <ChatBox> 
-          <Message isSender={isSender}>
-            {message}
-          </Message>
-          <MassegeState>
-            12:20{messageTime} 읽음{messageState}
-          </MassegeState>
-        </ChatBox>
+      <ChatBox1 isSender={isSender}>
+      <ChatBox isSender={isSender}>  
+        <Message isSender={isSender}>
+          {message}
+        </Message>
+        <MassegeState>
+          12:20{messageTime} 읽음{messageState}
+        </MassegeState>
       </ChatBox>
-    </Box>
+      </ChatBox1>
+    </MessegeContainer>
     </>
   )
 }

@@ -29,11 +29,8 @@ import ChattingPage from "./pages/ChattingPage";
 import MedicinePage from "./pages/MedicinePage";
 import TestPage from "./pages/TestPage";
 import BodyInfoComp from "./components/joinPage/BodyInfoComponent";
-<<<<<<< Updated upstream
-=======
 import PaymentPage from "./pages/PaymentPage";
-import MyPage from "./pages/MyPage";
->>>>>>> Stashed changes
+import InformationPage from "./pages/InformationPage";
 
 function App() {
   // 방문자 추적 커스텀 훅
@@ -50,6 +47,7 @@ function App() {
             <Route path="/login" element={<LoginPage />} />
             <Route path="/join" element={<JoinPage />} />
             <Route path="/join/bodyInfo" element={<BodyInfoComp />} />
+            <Route path="/join/payment" element={<PaymentPage />} />
             <Route path="/oauth/kakao" element={<Kakao />} />
             <Route path="/test" element={<ChattingPage />} />
             {/*다이나믹한 헤더와 푸터가 포함된 라우트 그룹 */}
@@ -60,16 +58,13 @@ function App() {
             <Route element={<HeaderFooter />}>
               <Route path="/medicine" element={<MedicinePage />} />
               <Route path="/inbody" element={<InbodyPage />} />
-<<<<<<< Updated upstream
-             
-=======
-              <Route path="/Mypage" element={<MyPage />} />
->>>>>>> Stashed changes
+              <Route path="/information" element={<InformationPage />} />
+
               <Route path="/community" element={<CommunityPage />} />
               <Route path="/ranking" element={<RankingPage />} />
             </Route>
-            <Route element={<HeaderOnly/>}>
-            <Route path="/calendar" element={<CalendarPage />} />
+            <Route element={<HeaderOnly />}>
+              <Route path="/calendar" element={<CalendarPage />} />
             </Route>
             {/* 사용자가 잘못된 URL을 입력했을 때 홈으로 리다이렉션 */}
             <Route path="*" element={<Navigate to="/" replace />} />

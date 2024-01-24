@@ -27,6 +27,8 @@ import JoinPage from "./pages/JoinPage";
 import Kakao from "./pages/Kakao";
 import ChattingPage from "./pages/ChattingPage";
 import MedicinePage from "./pages/MedicinePage";
+import TestPage from "./pages/TestPage";
+
 
 function App() {
   // 방문자 추적 커스텀 훅
@@ -61,6 +63,8 @@ function App() {
             </Route>
             {/* 사용자가 잘못된 URL을 입력했을 때 홈으로 리다이렉션 */}
             <Route path="*" element={<Navigate to="/" replace />} />
+
+            <Route path="/test2" element={<TestPage />} />
           </Routes>
         </Router>
       </Wrapper>

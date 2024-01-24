@@ -22,11 +22,22 @@ const SelectBox = styled.select.attrs({
   border-radius: 4px;
   width: ${(props) => props.$width || "20%"};
 
-  @media (max-width: 768px) {
+  
    
-   #a {width: 30%; }
-    #b {width: 33.9%}
+   .a {
+    @media (max-width: 768px) {}
+
+
+   }
+  .b {
+    @media (max-width: 768px) {
+      
+
+    }
+
+
   }
+  
 `;
 
 const InputField = styled.input.attrs({

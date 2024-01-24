@@ -70,7 +70,7 @@ export const InputButton = (props) => {
 
 const InputComp = styled.div`
   width: 100%;
-  margin-bottom: 30px;
+  margin-bottom: 10px;
   position: relative;
   input {
     width: 94%;

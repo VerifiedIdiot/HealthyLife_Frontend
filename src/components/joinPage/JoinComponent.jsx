@@ -1,10 +1,11 @@
 import { useNavigate } from "react-router";
 import { Area, Box, Container, Main, Section } from "../../styles/Layouts";
 import logo from "../../assets/icons/logo.svg";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { LabelComp } from "./JoinStyle";
 import { Input, InputButton } from "./JoinInput";
 import MemberApi from "../../api/MemberApi";
+import AgreeCheck from "./AgreeCheck";
 const JoinComp = (email, profile) => {
   const navigate = useNavigate();
 
@@ -188,6 +189,35 @@ const JoinComp = (email, profile) => {
     }
   };
 
+  // 약관 동의
+  const [checkedAll, setCheckedAll] = useState(false);
+  const [checked1, setChecked1] = useState(false);
+  const [checked2, setChecked2] = useState(false);
+
+  const onCheckedChange = (checkboxNumber) => {
+    switch (checkboxNumber) {
+      case 1:
+        setChecked1(!checked1);
+        break;
+      case 2:
+        setChecked2(!checked2);
+        break;
+      default:
+        // 전체약관동의 체크박스를 선택하면 나머지 두 개의 체크박스도 선택/해제되도록 설정
+        setCheckedAll(!checkedAll);
+        setChecked1(!checkedAll);
+        setChecked2(!checkedAll);
+        break;
+    }
+  };
+  useEffect(() => {
+    if (checked1 && checked2) {
+      setCheckedAll(true);
+    } else {
+      setCheckedAll(false);
+    }
+  }, [checked1, checked2]);
+
   return (
     <>
       <Main $direction="row" $width="100%">
@@ -357,14 +387,12 @@ const JoinComp = (email, profile) => {
               >
                 USERNAME (*)
               </p>
-              <input
-                type="text"
-                placeholder="Email을 입력해주세요."
-                style={{
-                  padding: "15px 10px",
-                  border: "none",
-                  borderBottom: "1px solid #000",
-                }}
+              <Input
+                holder="이름을 입력해주세요."
+                value={inputName}
+                msg={nameMessage}
+                msgType={isName}
+                changeEvt={onChangeName}
               />
             </Area>
             <Area $direction="column" $shadow="none" $marginTop="10px">
@@ -376,14 +404,12 @@ const JoinComp = (email, profile) => {
               >
                 NICK NAME (*)
               </p>
-              <input
-                type="text"
-                placeholder="Email을 입력해주세요."
-                style={{
-                  padding: "15px 10px",
-                  border: "none",
-                  borderBottom: "1px solid #000",
-                }}
+              <Input
+                holder="닉네임을 입력해주세요."
+                value={inputNickName}
+                msg={nickNameMessage}
+                msgType={isNickName}
+                changeEvt={onChangeNickName}
               />
             </Area>
             <Area $direction="column" $shadow="none" $marginTop="10px">
@@ -395,14 +421,12 @@ const JoinComp = (email, profile) => {
               >
                 PHONE NUMBER (*)
               </p>
-              <input
-                type="text"
-                placeholder="Email을 입력해주세요."
-                style={{
-                  padding: "15px 10px",
-                  border: "none",
-                  borderBottom: "1px solid #000",
-                }}
+              <Input
+                holder="전화번호 '-' 포함 입력하세요"
+                value={inputPhone}
+                msg={phoneMessage}
+                msgType={isPhone}
+                changeEvt={onChangePhone}
               />
             </Area>
             <Area $direction="column" $shadow="none" $marginTop="10px">
@@ -414,14 +438,34 @@ const JoinComp = (email, profile) => {
               >
                 ADDRESS (*)
               </p>
-              <input
-                type="text"
-                placeholder="Email을 입력해주세요."
-                style={{
-                  padding: "15px 10px",
-                  border: "none",
-                  borderBottom: "1px solid #000",
-                }}
+              <Input
+                holder="주소를 입력해주세요."
+                // value={}
+                // msg={phoneMessage}
+                // msgType={isPhone}
+                // changeEvt={onChangePhone}
+              />
+            </Area>
+
+            <Area $direction="column" $shadow="none" $marginTop="10px">
+              <AgreeCheck
+                className="all"
+                agreeAll={true}
+                children="전체 약관동의"
+                checked={checkedAll}
+                onCheckedChange={() => onCheckedChange()}
+              />
+              <AgreeCheck
+                children="[필수] 서비스 이용약관 동의"
+                checked={checked1}
+                onCheckedChange={() => onCheckedChange(1)}
+                modalType="use"
+              />
+              <AgreeCheck
+                children="[필수] 개인정보 수집 및 이용 동의"
+                checked={checked2}
+                onCheckedChange={() => onCheckedChange(2)}
+                modalType="privacy"
               />
             </Area>
           </Section>

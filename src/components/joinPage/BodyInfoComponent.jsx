@@ -3,11 +3,12 @@ import { Area, Box, Container, Main, Section } from "../../styles/Layouts";
 import logo from "../../assets/icons/logo.svg";
 import { useEffect, useState } from "react";
 import { Input, InputButton } from "./JoinInput";
+import { MiddleButton } from "../../styles/styledComponents/StyledComponents";
 
 const BodyInfoComp = (profile) => {
   const navigate = useNavigate();
   const loginGate = useNavigate();
-  const bodyNavigate = useNavigate();
+  const cashNavigate = useNavigate();
 
   // 키보드 입력
   const [inputHeight, setInputHeight] = useState("");
@@ -129,7 +130,7 @@ const BodyInfoComp = (profile) => {
           $display="flex"
           $direction="column"
           $background="#F3F3F3"
-          $height="100vh"
+          $height="auto"
         >
           <Section
             $height="95%"
@@ -287,6 +288,17 @@ const BodyInfoComp = (profile) => {
                 />
               </Box>
             </Area>
+          </Section>
+          <Section
+            $shadow="none"
+            $align="center"
+            $justify="center"
+            $height="10%"
+            $marginTop="50px"
+          >
+            <MiddleButton onClick={() => cashNavigate("/join/payment")}>
+              다음
+            </MiddleButton>
           </Section>
         </Container>
       </Main>

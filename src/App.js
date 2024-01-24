@@ -29,6 +29,7 @@ import ChattingPage from "./pages/ChattingPage";
 import MedicinePage from "./pages/MedicinePage";
 import TestPage from "./pages/TestPage";
 import BodyInfoComp from "./components/joinPage/BodyInfoComponent";
+import PaymentPage from "./pages/PaymentPage";
 
 function App() {
   // 방문자 추적 커스텀 훅
@@ -45,6 +46,7 @@ function App() {
             <Route path="/login" element={<LoginPage />} />
             <Route path="/join" element={<JoinPage />} />
             <Route path="/join/bodyInfo" element={<BodyInfoComp />} />
+            <Route path="/join/payment" element={<PaymentPage />} />
             <Route path="/oauth/kakao" element={<Kakao />} />
             <Route path="/test" element={<ChattingPage />} />
             {/*다이나믹한 헤더와 푸터가 포함된 라우트 그룹 */}

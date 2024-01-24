@@ -27,12 +27,8 @@ import JoinPage from "./pages/JoinPage";
 import Kakao from "./pages/Kakao";
 import ChattingPage from "./pages/ChattingPage";
 import MedicinePage from "./pages/MedicinePage";
-<<<<<<< Updated upstream
 import TestPage from "./pages/TestPage";
-
-=======
 import BodyInfoComp from "./components/joinPage/BodyInfoComponent";
->>>>>>> Stashed changes
 
 function App() {
   // 방문자 추적 커스텀 훅

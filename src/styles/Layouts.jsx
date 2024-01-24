@@ -61,6 +61,7 @@ export const Section = styled.section.attrs({
   border: ${(props) => props.$border || "none"};
   margin: ${(props) => props.$margin || "0"};
   margin-top: ${(props) => props.$marginTop || "0"};
+  margin-bottom: ${(props) => props.$marginBottom || "0"};
   padding: ${(props) => props.$padding || "0"};
   padding-top: ${(props) => props.$paddingTop || "0"};
   padding-bottom: ${(props) => props.$paddingBottom || "0"};
@@ -85,14 +86,13 @@ export const Area = styled.div.attrs({
   border-bottom: ${(props) => props.$borderBottom || "none"};
   border-radius: ${(props) => props.$borderRadius || "0"};
   padding: ${(props) => props.$padding || "0"};
+  padding-top: ${(props) => props.$paddingTop || "0"};
   padding-bottom: ${(props) => props.$paddingBottom || "0"};
   overflow: ${(props) => props.$overflow || "visible"};
   box-shadow: ${(props) => props.$shadow || "0 2px 4px rgba(0, 0, 0, 0.1)"};
-  margin-bottom: ${(props) => props.$marginBottom || "0"};
-  padding-bottom: ${(props) => props.$paddingBottom || "0"};
-
-  margin-top: ${(props) => props.$marginTop || "0"};
   margin: ${(props) => props.$margin || "0"};
+  margin-bottom: ${(props) => props.$marginBottom || "0"};
+  margin-top: ${(props) => props.$marginTop || "0"};
 `;
 
 // wrap -> Main -> Container -> Section -> Area -> Box

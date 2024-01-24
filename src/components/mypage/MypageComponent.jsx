@@ -1,28 +1,14 @@
+import { useNavigate } from "react-router";
 import { Area, Container, Main, Section } from "../../styles/Layouts";
+import { MiddleButton } from "../../styles/styledComponents/StyledComponents";
 
 const MypageComp = ({ userData }) => {
+  const editNavigate = useNavigate("");
   return (
     <>
-      <Main
-        $direction="row"
-        $background="#f3f3f3"
-        $width="100%"
-        $height="100vh"
-      >
-        <Container
-          $height="auto"
-          $shadow="none"
-          $border="1px solid black"
-          $align="center"
-          $justify="center"
-        >
-          <Section
-            $height="auto"
-            $paddingTop="100px"
-            $direction="column"
-            $align="center"
-            $justify="center"
-          >
+      <Main $direction="row" $background="#f3f3f3" $width="100%">
+        <Container $shadow="none" $align="center" $justify="center">
+          <Section $direction="column" $align="center" $justify="center">
             <Area
               $shadow="none"
               $position="relative"
@@ -45,56 +31,124 @@ const MypageComp = ({ userData }) => {
             </Area>
           </Section>
         </Container>
-        <Container $height="auto" $shadow="none" $padding="60px 15px">
+        <Container
+          $shadow="none"
+          $padding="0 15px"
+          $dispaly="flex"
+          $align="center"
+          $justify="center"
+        >
           <Section $shadow="none" $direction="column">
-            <p>Email</p>
-            <p
-              style={{
-                borderBottom: "1px solid black",
-              }}
-            >
-              {userData.email}
-            </p>
-          </Section>
-          <Section $shadow="none" $direction="column">
-            <p>Name</p>
-            <p
-              style={{
-                borderBottom: "1px solid black",
-              }}
-            >
-              {userData.name}
-            </p>
-          </Section>
-          <Section $shadow="none" $direction="column">
-            <p>NickName</p>
-            <p
-              style={{
-                borderBottom: "1px solid black",
-              }}
-            >
-              {userData.nickName}
-            </p>
-          </Section>
-          <Section $shadow="none" $direction="column">
-            <p>Phone</p>
-            <p
-              style={{
-                borderBottom: "1px solid black",
-              }}
-            >
-              {userData.phone}
-            </p>
-          </Section>
-          <Section $shadow="none" $direction="column">
-            <p>Addr</p>
-            <p
-              style={{
-                borderBottom: "1px solid black",
-              }}
-            >
-              {userData.addr}
-            </p>
+            <Area $shadow="none" $direction="column">
+              <p
+                style={{
+                  color: "rgba(0, 0, 0, 0.5)",
+                  fontWeight: "600",
+                  paddingBottom: "10px",
+                }}
+              >
+                Email
+              </p>
+              <p
+                style={{
+                  color: "rgba(0, 0, 0, 0.3)",
+                  fontWeight: "600",
+                  padding: "0 0 10px 10px",
+                  borderBottom: "1px solid rgba(0, 0, 0, 0.5)",
+                }}
+              >
+                {userData.email}
+              </p>
+            </Area>
+            <Area $shadow="none" $direction="column">
+              <p
+                style={{
+                  color: "rgba(0, 0, 0, 0.5)",
+                  fontWeight: "600",
+                  paddingBottom: "10px",
+                }}
+              >
+                Name
+              </p>
+              <p
+                style={{
+                  color: "rgba(0, 0, 0, 0.3)",
+                  fontWeight: "600",
+                  padding: "0 0 10px 10px",
+                  borderBottom: "1px solid rgba(0, 0, 0, 0.5)",
+                }}
+              >
+                {userData.name}
+              </p>
+            </Area>
+            <Area $shadow="none" $direction="column">
+              <p
+                style={{
+                  color: "rgba(0, 0, 0, 0.5)",
+                  fontWeight: "600",
+                  paddingBottom: "10px",
+                }}
+              >
+                NickName
+              </p>
+              <p
+                style={{
+                  color: "rgba(0, 0, 0, 0.3)",
+                  fontWeight: "600",
+                  padding: "0 0 10px 10px",
+                  borderBottom: "1px solid rgba(0, 0, 0, 0.5)",
+                }}
+              >
+                {userData.nickName}
+              </p>
+            </Area>
+            <Area $shadow="none" $direction="column">
+              <p
+                style={{
+                  color: "rgba(0, 0, 0, 0.5)",
+                  fontWeight: "600",
+                  paddingBottom: "10px",
+                }}
+              >
+                Phone
+              </p>
+              <p
+                style={{
+                  color: "rgba(0, 0, 0, 0.3)",
+                  fontWeight: "600",
+                  padding: "0 0 10px 10px",
+                  borderBottom: "1px solid rgba(0, 0, 0, 0.5)",
+                }}
+              >
+                {userData.phone}
+              </p>
+            </Area>
+            <Area $shadow="none" $direction="column">
+              <p
+                style={{
+                  color: "rgba(0, 0, 0, 0.5)",
+                  fontWeight: "600",
+                  paddingBottom: "10px",
+                }}
+              >
+                Addr
+              </p>
+              <p
+                style={{
+                  color: "rgba(0, 0, 0, 0.3)",
+                  fontWeight: "600",
+                  padding: "0 0 10px 10px",
+                  borderBottom: "1px solid rgba(0, 0, 0, 0.5)",
+                }}
+              >
+                {userData.addr}
+              </p>
+            </Area>
+            <Area $justify="center" $align="center" $shadow="none">
+              <MiddleButton onClick={() => editNavigate("/Mypage/edit")}>
+                정보 수정
+              </MiddleButton>
+            </Area>
           </Section>
         </Container>
       </Main>

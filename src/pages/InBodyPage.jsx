@@ -14,20 +14,19 @@ import InbodyList from "../components/inBodyPage/InbodyList";
 const InbodyPage = () => {
   return (
     <>
-      <Main>
-        <Container $align="center">
+      <Main $height="auto">
+        <Container $align="center" $height="auto">
           <Section
-            $height="150px"
+            $height="70px"
             style={{
               fontSize: "50px",
               fontWeight: "bold",
-              marginBottom: "1rem",
             }}
           >
             My Records
           </Section>
           <Section
-            $height="100%"
+            $height="400px"
             $width="95%"
             $justify="space-around"
             style={{
@@ -42,7 +41,7 @@ const InbodyPage = () => {
           <Section $justify="center" style={{ marginBottom: "1rem" }}>
             <InbodyInput />
           </Section>
-          <Section $justify="center">
+          <Section $justify="center" $height="85vh">
             <InbodyList />
           </Section>
         </Container>

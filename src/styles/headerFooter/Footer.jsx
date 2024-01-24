@@ -11,11 +11,11 @@ import TwitterIcon from "@mui/icons-material/Twitter";
 const StyledFooter = styled.footer.attrs({
     className: "footer",
 })`
-  height: 130px;
-  width: 100%;
   display: flex;
   flex-direction: column;
   align-items: center;
+  height: 130px;
+  width: 100%;
   
   line-height: 60px;
   color: #8a8c8f;

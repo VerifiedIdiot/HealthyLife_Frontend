@@ -7,7 +7,7 @@ import {
   SearchBox,
 } from "../../styles/styledComponents/ComboSearchBox";
 import capsule from "../../assets/icons/medicine/capsule.png";
-import { media } from "../../utils/MediaQuery";
+import { media, mediaHeight } from "../../utils/MediaQuery";
 
 const StyledIcon = styled.img.attrs({
   className: "medicine-icon",
@@ -25,33 +25,46 @@ const LogoItem = styled(Item)`
 `;
 
 const ResponsiveSearchSection = styled(Section)`
-  height: 400px;
+  height: 350px;
   justify-content: center;
   align-items: center;
 
-  ${media.medium`
+  @media (max-width: 768px) {
     
-  `}
+  }
+
 `;
 
 const ResponsiveSearchArea = styled(Area)`
   flex-direction: column;
-  justify-content: flex-end;
+  
   height: 90%;
   width: 95%;
 
-  ${media.medium`
+  @media (max-width: 768px) {
     
-    `}
+  }
+
+
 `;
 
 const ResponsiveItemBox = styled(Box)`
   height: 60px;
 
-  ${media.medium`
+  @media (max-width: 768px) {
     
-    `}
+  }
 `;
+
+const ResponsiveItem = styled(Item)`
+  padding-left:15%;
+  align-items: center;
+  justify-content:flex-start;
+
+  @media (max-width: 768px) {
+   padding-left : 0;
+  }
+`
 
 const SearchItemLeft = styled(Item)`
   display: flex;
@@ -65,9 +78,9 @@ const SearchItemLeft = styled(Item)`
     font-weight: bold;
   }
 
-  ${media.medium`
+  @media (max-width: 768px) {
     
-    `}
+  }
 `;
 
 const SearchItemRight = styled(Item)`
@@ -76,9 +89,9 @@ const SearchItemRight = styled(Item)`
   /* height: 60px; */
   width: 65%;
 
-  ${media.medium`
+  @media (max-width: 768px) {
     
-    `}
+  }
 `;
 
 const ButtonItem = styled(Item)`
@@ -87,9 +100,9 @@ const ButtonItem = styled(Item)`
   align-items: center;
   width: 19.5%;
 
-  ${media.medium`
+  @media (max-width: 768px) {
     
-    `}
+  }
 `;
 
 export const SearchSection = () => {
@@ -117,9 +130,9 @@ export const SearchSection = () => {
             </LogoItem>
           </ResponsiveItemBox>
           <ResponsiveItemBox>
-            <Item $paddingLeft="15%" $align="center" $justify="flex-start">
-              <ComboSearchBox />
-            </Item>
+            <ResponsiveItem>
+              <ComboSearchBox className="a"/>
+            </ResponsiveItem>
           </ResponsiveItemBox>
           <ResponsiveItemBox>
             <SearchItemLeft>
@@ -157,7 +170,7 @@ export const SearchSection = () => {
 const ResponsiveBoardSection = styled(Section)`
   /* border: 1px solid black; */
   height: auto;
-  min-height: 300px;
+  min-height: 30vw;
   justify-content: center;
   align-items: center;
 
@@ -170,7 +183,7 @@ const ResponsiveBoardArea = styled(Area)`
   /* border: 1px solid black; */
   height: 95%;
   width: 95%;
-
+  min-height: 30vw;
   ${media.medium`
     
     `}
@@ -197,7 +210,7 @@ const ResponsivePaginationSection = styled(Section)`
   height: 5%;
   justify-content: center;
   align-items: center;
-
+  min-height: 80px;
   ${media.medium`
     
     `}

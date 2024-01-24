@@ -13,7 +13,7 @@ export const Wrapper = styled.div.attrs({
   align-items: center;
   width: 100%;
   height: auto;
-  min-height: 93vh;
+  min-height: 100vh;
   
   
 `;

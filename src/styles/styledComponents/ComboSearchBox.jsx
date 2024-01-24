@@ -16,10 +16,17 @@ const SearchContainer = styled.div.attrs({
 const SelectBox = styled.select.attrs({
   className: "combo-box",
 })`
+
   height: 40px;
   border: 1px solid #ccc;
   border-radius: 4px;
   width: ${(props) => props.$width || "20%"};
+
+  @media (max-width: 768px) {
+   
+   #a {width: 30%; }
+    #b {width: 33.9%}
+  }
 `;
 
 const InputField = styled.input.attrs({

@@ -34,7 +34,6 @@ const NavLink = styled.div.attrs({
     color: ${(props) => (props.$scrolledDown ? "black" : "white")};
   }
   &.hover {
-    
   }
 `;
 
@@ -45,14 +44,44 @@ const Navigation = ({ $scrolledDown = true }) => {
   return (
     <>
       <NavContainer>
-        <NavLink $scrolledDown={$scrolledDown} onClick={() => navigate("/inbody")}><p>Inbody</p></NavLink>
-        <NavLink $scrolledDown={$scrolledDown} onClick={() => navigate("/calendar")}><p>Calendar</p></NavLink>
-        <NavLink $scrolledDown={$scrolledDown} onClick={() => navigate("/information")}><p>Information</p></NavLink>
-        <NavLink $scrolledDown={$scrolledDown} onClick={() => navigate("/community")}><p>Community</p></NavLink>
-        <NavLink $scrolledDown={$scrolledDown} onClick={() => navigate("/ranking")}><p>Ranking</p></NavLink>
+        <NavLink
+          $scrolledDown={$scrolledDown}
+          onClick={() => navigate("/inbody")}
+        >
+          <p>Inbody</p>
+        </NavLink>
+        <NavLink
+          $scrolledDown={$scrolledDown}
+          onClick={() => navigate("/calendar")}
+        >
+          <p>Calendar</p>
+        </NavLink>
+        <NavLink
+          $scrolledDown={$scrolledDown}
+          onClick={() => navigate("/information")}
+        >
+          <p>Information</p>
+        </NavLink>
+        <NavLink
+          $scrolledDown={$scrolledDown}
+          onClick={() => navigate("/community")}
+        >
+          <p>Community</p>
+        </NavLink>
+        <NavLink
+          $scrolledDown={$scrolledDown}
+          onClick={() => navigate("/ranking")}
+        >
+          <p>Ranking</p>
+        </NavLink>
       </NavContainer>
       <NavContainer $width="15%" $justify="">
-        <NavLink $scrolledDown={$scrolledDown} onClick={() => navigate("/login")}><p>LogIn/SignIn</p></NavLink>
+        <NavLink
+          $scrolledDown={$scrolledDown}
+          onClick={() => navigate("/login")}
+        >
+          <p>LogIn/SignIn</p>
+        </NavLink>
       </NavContainer>
     </>
   );

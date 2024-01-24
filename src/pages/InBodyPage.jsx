@@ -15,16 +15,18 @@ const InbodyPage = () => {
   return (
     <>
       <Main>
-        <Container $border="1px solid black" $align="center">
+        <Container $align="center">
           <Section
-            $border="1px solid black"
             $height="150px"
-            style={{ fontSize: "50px", fontWeight: "bold" }}
+            style={{
+              fontSize: "50px",
+              fontWeight: "bold",
+              marginBottom: "1rem",
+            }}
           >
             My Records
           </Section>
           <Section
-            $border="1px solid black"
             $height="100%"
             $width="95%"
             $justify="space-around"
@@ -32,14 +34,15 @@ const InbodyPage = () => {
               flexWrap: "wrap",
               backgroundColor: "#d9d9d9",
               borderRadius: "8px",
+              marginBottom: "1rem",
             }}
           >
             <InbodyGraph />
           </Section>
-          <Section $border="1px solid black" $justify="center">
+          <Section $justify="center" style={{ marginBottom: "1rem" }}>
             <InbodyInput />
           </Section>
-          <Section $border="1px solid black" $justify="center">
+          <Section $justify="center">
             <InbodyList />
           </Section>
         </Container>

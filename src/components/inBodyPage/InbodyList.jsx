@@ -49,6 +49,34 @@ const data = [
   {
     date: "2023-12-22",
     height: "181.1",
+    BMR: 2000,
+    BMI: 21.5,
+    weight: 89.5,
+    muscle: 31.5,
+    fat: 31.5,
+  },
+  {
+    date: "2023-12-22",
+    height: "181.1",
+    BMR: 2000,
+    BMI: 21.5,
+    weight: 89.5,
+    muscle: 31.5,
+    fat: 31.5,
+  },
+  {
+    date: "2023-12-22",
+    height: "181.1",
+    BMR: 2000,
+    BMI: 21.5,
+    weight: 89.5,
+    muscle: 31.5,
+    fat: 31.5,
+  },
+  {
+    date: "2023-12-22",
+    height: "181.1",
+    BMR: 2000,
     BMI: 21.5,
     weight: 89.5,
     muscle: 31.5,
@@ -57,7 +85,6 @@ const data = [
 ];
 
 const Input1 = styled.div`
-  border: 1px solid black;
   display: flex;
   width: 15%;
   justify-content: space-between;
@@ -65,39 +92,43 @@ const Input1 = styled.div`
 `;
 
 const Input2 = styled.div`
-  border: 1px solid black;
   font-weight: bold;
 `;
 
 const Input3 = styled.div`
-  border: 1px solid black;
   width: 40%;
   height: 30%;
 `;
 
 const Input4 = styled.div`
   height: 100%;
+  flex-direction: column;
+  margin-bottom: 1rem;
 `;
 
 const InbodyList = () => {
   return (
     <>
       <Main
-        $direction="row"
+        $direction="column"
         $justify="center"
-        $height="100%"
+        $height="33vh"
         style={{
-          backgroundColor: "#D9D9D9",
           borderRadius: "8px",
           overflowY: "auto", // y 축으로만 스크롤바를 표시합니다.
           overflowX: "hidden", // 가로 스크롤을 숨깁니다.
         }}
       >
-        <Container $height="100%">
-          {data.map((item, index) => (
-            <Input4 key={index}>
+        {data.map((item, index) => (
+          <Input4 key={index}>
+            <Container
+              $height="100px"
+              style={{
+                borderRadius: "8px",
+                backgroundColor: "#D9D9D9",
+              }}
+            >
               <Section
-                $border="1px solid red"
                 $height="40%"
                 style={{
                   alignItems: "center",
@@ -109,11 +140,7 @@ const InbodyList = () => {
                 {new Date(item.date).getMonth() + 1}월{" "}
                 {new Date(item.date).getDate()}일 신체정보
               </Section>
-              <Section
-                $border="1px solid black"
-                $height="60%"
-                $justify="space-around"
-              >
+              <Section $height="60%" $justify="space-around">
                 <Input1>
                   <Input2>키</Input2>
                   <Input3>{item.height} cm</Input3>
@@ -139,9 +166,9 @@ const InbodyList = () => {
                   <Input2>{item.BMI}</Input2>
                 </Input1>
               </Section>
-            </Input4>
-          ))}
-        </Container>
+            </Container>
+          </Input4>
+        ))}
       </Main>
     </>
   );

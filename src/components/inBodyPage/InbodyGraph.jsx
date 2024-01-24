@@ -1,13 +1,11 @@
 import styled from "styled-components";
 import Chart from "./Chart";
 const Graph = styled.div`
-  border: 1px solid red;
   width: 45%;
   height: 50%;
 `;
 
 const Title = styled.div`
-  border: 1px solid black;
   height: 25%;
   display: flex;
   align-items: center;
@@ -15,6 +13,7 @@ const Title = styled.div`
   border-radius: 8px 8px 0px 0px;
   font-size: 100%;
   font-weight: bold;
+  margin-bottom: 0.5rem;
 `;
 
 const data = [

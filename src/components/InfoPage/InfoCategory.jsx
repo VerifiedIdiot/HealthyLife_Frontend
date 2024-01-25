@@ -9,7 +9,6 @@ import {
   Element,
 } from "../../styles/Layouts";
 import styled, { css } from "styled-components";
-import InformationPage from "../../pages/InfomationPage";
 
 const ToggleBtn = styled.button`
   display: flex;

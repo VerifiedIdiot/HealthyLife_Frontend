@@ -9,6 +9,10 @@ import {
   Item,
   Element,
 } from "../styles/Layouts";
+import InfoClass from "../components/InfoPage/InfoClass";
+import InfoSearch from "../components/InfoPage/InfoSearch";
+import FoodInfo from "../components/InfoPage/FoodInfo";
+import ExerciseInfo from "../components/InfoPage/ExerciseInfo";
 
 const InformationPage = () => {
   const [isExInfo, setIstExInfo] = useState(false);
@@ -20,7 +24,7 @@ const InformationPage = () => {
   return (
     <>
       <Main>
-        <Container $border="1px solid black" $align="center">
+        <Container $align="center" $height="auto">
           <Section
             $height="auto"
             style={{
@@ -31,13 +35,29 @@ const InformationPage = () => {
           >
             Information
           </Section>
-          <Section $border="1px solid black" $justify="center" $height="auto">
+          <Section
+            $justify="center"
+            $height="auto"
+            style={{ marginBottom: "1rem" }}
+          >
             <InfoCategory setdata={handleDataFromChild} />
           </Section>
-          <Section $border="1px solid black"></Section>
-          <Section $border="1px solid black"></Section>
-          <Section $border="1px solid black">
-            {isExInfo ? <div>운동 정보 내용</div> : <div>음식 정보 내용</div>}
+          <Section
+            $justify="center"
+            $height="auto"
+            style={{ marginBottom: "1rem" }}
+          >
+            <InfoClass />
+          </Section>
+          <Section
+            $justify="center"
+            $height="auto"
+            style={{ marginBottom: "1rem" }}
+          >
+            <InfoSearch />
+          </Section>
+          <Section $justify="center" $height="auto">
+            {isExInfo ? <ExerciseInfo /> : <FoodInfo />}
           </Section>
         </Container>
       </Main>

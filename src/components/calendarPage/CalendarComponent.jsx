@@ -4,29 +4,13 @@ import dayGridPlugin from '@fullcalendar/daygrid';
 import interactionPlugin from '@fullcalendar/interaction';
 import { Container } from "../../styles/Layouts";
 import MiddleModal from "../../styles/modals/MiddleModal";
-// import styled from "styled-components";
-
-// export const ModalStyle = styled.div`
-//   .modal {
-//     display: none;
-//     position: fixed;
-//     top: 0;
-//     right: 0;
-//     bottom: 0;
-//     left: 0;
-//     z-index: 99;
-//     background-color: rgba(0, 0, 0, 0.6);
-//   }
-//   .openModal {
-//     display: flex;
-//     align-items: center;
-//     animation: modal-bg-show 0.8s;
-//   }
-// `;
 
 export const CalendarComponent = () => {
   const calendarRef = useRef(null);
   const [clickedDate, setClickedDate] = useState(null);
+  const [isModalOpen, setIsModalOpen] = useState({
+    Middle: false,
+  });
 
   const handleDateClick = (info) => {
     const clickedDateTime = new Date(info.date);
@@ -49,7 +33,7 @@ export const CalendarComponent = () => {
         }}
         dayMaxEventRows={true}
         initialView='dayGridMonth'
-        height={'90vh'}
+        height={'30vh'}
         dayHeaderFormat={{
           weekday: 'short'
         }}

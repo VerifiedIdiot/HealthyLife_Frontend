@@ -34,7 +34,7 @@ import MyPage from "./pages/MyPage";
 import InformationPage from "./pages/InformationPage";
 import MyPageEdit from "./pages/MyPageEdit";
 import CommunityWrite from "./components/communityPage/CommunityWrite";
-
+import CalendarInput from "./components/calendarPage/CalendarInput";
 function App() {
   // 방문자 추적 커스텀 훅
   useTrackUserVisit();
@@ -69,6 +69,7 @@ function App() {
               <Route path="/community" element={<CommunityPage />} />
               <Route path="/community/write" element={<CommunityWrite />} />
               <Route path="/ranking" element={<RankingPage />} />
+              <Route path="/calendar/info" element={<CalendarInput />}/>
             </Route>
             <Route element={<HeaderOnly />}>
               <Route path="/calendar" element={<CalendarPage />} />

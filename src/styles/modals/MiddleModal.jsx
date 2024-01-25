@@ -23,7 +23,7 @@ const ModalContent = styled.div`
   display: flex;
   width: ${(props) => props.$width || "50vw"};
   height: ${(props) => props.$height || "70vh"};
-  z-index: 99999;
+  z-index: 1;
 `;
 
 
@@ -48,6 +48,8 @@ const CloseButton = styled.button`
 `;
 
 const MiddleModal = ({ $isOpen, $onClose, imageSrc, children }) => {
+  console.log("MiddleModal test");
+
   // esc 누르면 모달창 종료
   useEffect(() => {
     const handleEsc = (event) => {

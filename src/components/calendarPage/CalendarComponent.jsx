@@ -1,59 +1,41 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useRef } from 'react';
 import FullCalendar from '@fullcalendar/react';
 import dayGridPlugin from '@fullcalendar/daygrid';
 import interactionPlugin from '@fullcalendar/interaction';
 import { Container } from "../../styles/Layouts";
-// import MiddleModal from "../styles/modals/MiddleModal";
+import MiddleModal from "../../styles/modals/MiddleModal";
+// import styled from "styled-components";
+
+// export const ModalStyle = styled.div`
+//   .modal {
+//     display: none;
+//     position: fixed;
+//     top: 0;
+//     right: 0;
+//     bottom: 0;
+//     left: 0;
+//     z-index: 99;
+//     background-color: rgba(0, 0, 0, 0.6);
+//   }
+//   .openModal {
+//     display: flex;
+//     align-items: center;
+//     animation: modal-bg-show 0.8s;
+//   }
+// `;
 
 export const CalendarComponent = () => {
   const calendarRef = useRef(null);
-  const [isModalOpen, setIsModalOpen] = useState({
-    Middle: false,
-  });
-
-  // const openModal = (size) => {
-  //   setIsModalOpen({ ...isModalOpen, [size]: true });
-  // };
-
-  // const closeModal = (size) => {
-  //   setIsModalOpen({ ...isModalOpen, [size]: false });
-  // };
+  const [clickedDate, setClickedDate] = useState(null);
 
   const handleDateClick = (info) => {
     const clickedDateTime = new Date(info.date);
     const formattedDate = clickedDateTime.toLocaleString();
     console.log("클릭한 날짜 및 시간:", formattedDate);
-    
-
+    setClickedDate(formattedDate);
   };
-  // useEffect(() => {
-  //   const fetchEvents = async () => {
-  //     try {
-  //       // const apiUrl = `https://www.googleapis.com/calendar/v3/calendars/${process.env.REACT_APP_GOOGLE_CALENDARID}/events?key=${process.env.REACT_APP_GOOGLE_API_KEY}`;
-  //       // const response = await fetch(apiUrl);
-  //       // const eventData = await response.json();
-
-  //       // const events = eventData.items.map(item => ({
-  //       //   title: item.summary,
-  //       //   start: item.start.dateTime || item.start.date,
-  //       //   end: item.end.dateTime || item.end.date
-  //       // }));
-
-  //       calendarRef.current.getApi().addEventSource(events);
-  //     } catch (error) {
-  //       console.error('Error fetching events:', error);
-  //     }
-  //   };
-
-  //   fetchEvents();
-  // }, []);
-
-  const handleEventRender = (info) => {
-    const clickedDate = new Date(info.event.start);
-    const isClickedDate = info.date.getDate() === clickedDate.getDate();
-    if (isClickedDate) {
-      info.el.style.backgroundColor = '#4942E4';
-    }
+  const closeModal = () => {
+    setClickedDate(null);
   };
 
   return (
@@ -78,9 +60,37 @@ export const CalendarComponent = () => {
           day: '일별',
         }}
         dateClick={handleDateClick}
-        dateRender={handleEventRender}
-        // onClick={() => openModal('Middle')}
+        events={[
+        { 
+          title: '1차전', 
+          date: '2024-01-15', 
+          backgroundColor: '#4942E4'
+        },
+        { 
+          title: '2차전', 
+          date: '2024-01-20', 
+          backgroundColor: '#4942E4' 
+        },
+        { 
+          title: '3차전', 
+          date: '2024-01-25', 
+          backgroundColor: '#4942E4' 
+        },
+        {
+          title: 'TEST1', 
+          date: '2024-01-25', 
+          backgroundColor: '#FD6B6B' 
+        },
+          
+      ]}
       />
+      {clickedDate && (
+        <MiddleModal
+          isOpen={true}
+          closeModal={closeModal}
+          clickedDate={clickedDate}
+        />
+      )}
     </Container>
   );
 };

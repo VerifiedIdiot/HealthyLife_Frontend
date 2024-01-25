@@ -48,12 +48,6 @@ const Food = styled.div`
   margin: 1rem;
 `;
 
-const FoodImg = styled.img`
-  width: 170px;
-  height: 170px;
-  border-radius: 100%;
-`;
-
 const FoodName = styled.div`
   font-size: 25px;
   font-weight: bold;

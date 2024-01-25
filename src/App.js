@@ -61,6 +61,7 @@ function App() {
             <Route element={<HeaderFooter />}>
               <Route path="/medicine" element={<MedicinePage />} />
               <Route path="/inbody" element={<InbodyPage />} />
+              <Route path="/information" element={<InformationPage />} />
 
               <Route path="/mypage" element={<MyPage />} />
               <Route path="/mypage/edit" element={<MyPageEdit />} />

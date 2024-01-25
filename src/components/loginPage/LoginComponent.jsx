@@ -74,16 +74,11 @@ const LoginComp = () => {
               }}
             />
           </Section>
-          <SectionStyle
-            $height="5%"
-            $shadow="none"
-            $border="1px solid black"
-            $width="100%"
-          >
-            <AreaStyle $shadow="none" $width="100%" $border="1px solid black">
+          <SectionStyle $height="5%" $shadow="none" $width="36%">
+            <AreaStyle $shadow="none" $width="100%">
               <p>Not a member yet?</p>
             </AreaStyle>
-            <AreaStyle $shadow="none" $height="50%" $border="1px solid black">
+            <AreaStyle $shadow="none" $height="50%">
               <p
                 style={{
                   borderBottom: "2px solid black",

@@ -1,9 +1,11 @@
+import { ReactComponent as Text } from "../../assets/imgs/communityImges/write-svgrepo-com.svg";
+import { ReactComponent as Image } from "../../assets/imgs/communityImges/image-svgrepo-com.svg";
+import { ReactComponent as Video } from "../../assets/imgs/communityImges/video-camera-svgrepo-com.svg";
 import React, { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import styled from "styled-components";
 import Search from "./Search";
 import Common from "../../utils/Common";
-import axios from "axios";
 import CommunityAxiosApi from "../../api/CommunityAxiosApi";
 import { SmallButton } from "../../styles/styledComponents/StyledComponents";
 import { Main, Container } from "../../styles/Layouts";
@@ -68,8 +70,9 @@ const TableRowData = styled.a`
   text-overflow: ellipsis;
 `;
 const TableNormalRow = styled.div`
+  border-bottom: 1px solid #2446da;
   width: 100%;
-  height: 4em;
+  height: 40px;
   opacity: 1;
   display: flex;
   flex-direction: row;
@@ -101,6 +104,7 @@ const TableRowDataDate = styled(TableRowData)`
 const TableRowDataLikes = styled(TableRowData)`
   flex: 0.5;
 `;
+
 const TableRowDataViews = styled(TableRowData)`
   flex: 0.5;
 `;
@@ -179,7 +183,78 @@ const Dropdown = styled.select`
 `;
 const Community = () => {
   const navigate = useNavigate();
-  const [posts, setPosts] = useState([]);
+  const [posts, setPosts] = useState([
+    {
+      communityId: 1,
+      categoryId: 1,
+      categoryName: "과일",
+      title: "제목",
+      nickName: "하루",
+      regDate: "",
+      likeItCount: "",
+      viewCount: "",
+    },
+    {
+      communityId: 2,
+      categoryId: 2,
+      categoryName: "사과",
+      title: "제목1",
+      nickName: "하루1",
+      regDate: "",
+      likeItCount: "",
+      viewCount: "",
+    },
+    {
+      communityId: 3,
+      categoryId: 2,
+      categoryName: "사과",
+      title: "제목1",
+      nickName: "하루1",
+      regDate: "",
+      likeItCount: "",
+      viewCount: "",
+    },
+    {
+      communityId: 4,
+      categoryId: 2,
+      categoryName: "사과",
+      title: "제목1",
+      nickName: "하루1",
+      regDate: "",
+      likeItCount: "",
+      viewCount: "",
+    },
+    {
+      communityId: 5,
+      categoryId: 2,
+      categoryName: "사과",
+      title: "제목1",
+      nickName: "하루1",
+      regDate: "",
+      likeItCount: "",
+      viewCount: "",
+    },
+    {
+      communityId: 6,
+      categoryId: 2,
+      categoryName: "사과",
+      title: "제목1",
+      nickName: "하루1",
+      regDate: "",
+      likeItCount: "",
+      viewCount: "",
+    },
+    {
+      communityId: 7,
+      categoryId: 2,
+      categoryName: "사과",
+      title: "제목1",
+      nickName: "하루1",
+      regDate: "",
+      likeItCount: "",
+      viewCount: "",
+    },
+  ]);
   const [currentPage, setCurrentPage] = useState(0); // 현재 게시물 상태
   const [totalPages, setTotalPages] = useState(0);
   const [visiblePageStart, setVisiblePageStart] = useState(0); // 현재 보고 있는 페이지 첫부분 저장
@@ -240,19 +315,19 @@ const Community = () => {
   }, [validCategoryId, currentPage, PAGE_SIZE]);
   useEffect(() => {
     //  컴포넌트가 언마운트된 후에 상태를 변경하려는 작업을 방지
-    let cancelTokenSource = axios.CancelToken.source();
+    // let cancelTokenSource = axios.CancelToken.source();
     const postList = async () => {
       try {
         const rsp =
           validCategoryId === undefined
             ? await CommunityAxiosApi.getCommunityList(currentPage, PAGE_SIZE, {
-                cancelToken: cancelTokenSource.token,
+                // cancelToken: cancelTokenSource.token,
               })
             : await CommunityAxiosApi.getCommunityListByCategory(
                 validCategoryId,
                 currentPage,
-                PAGE_SIZE,
-                { cancelToken: cancelTokenSource.token }
+                PAGE_SIZE
+                // { cancelToken: cancelTokenSource.token }
               );
         setPosts(rsp.data);
         console.log(rsp.data);
@@ -270,7 +345,7 @@ const Community = () => {
     };
     postList();
     return () => {
-      cancelTokenSource.cancel();
+      // cancelTokenSource.cancel();
     };
   }, [validCategoryId, currentPage, PAGE_SIZE, totalPages]);
 
@@ -310,25 +385,37 @@ const Community = () => {
                   // memberId가 있는지 확인하고, 있다면 memberId를 사용하고 없다면 기존의 로직 수행
                   const hasMediaContent = checkMediaContent(post.content);
                   const writerInfo = post.email
-                    ? post.email
-                    : `${Common.truncateText(post.name, 10)})`;
-
+                    ? post.nickName
+                    : `${Common.truncateText(post.nickName, 10)}`;
                   return (
                     <TableNormalRow
                       key={post.id}
                       onClick={() => {
-                        navigate(`/communitypage/detail/${post.id}`);
+                        navigate(`/community/detail/${post.communityId}`);
                       }}
                     >
-                      <TableRowDataWriter>{writerInfo}</TableRowDataWriter>
+                      <TableRowDataIcon>
+                        {hasMediaContent.video ? (
+                          <Video />
+                        ) : hasMediaContent.image ? (
+                          <Image />
+                        ) : (
+                          <Text />
+                        )}
+                      </TableRowDataIcon>
+                      <TableRowDataCategory>
+                        {post.categoryName}
+                      </TableRowDataCategory>
                       <TableRowDataTitle>
                         {Common.truncateText(post.title, 20)}{" "}
                         {totalComments[posts.indexOf(post)] > 0 &&
                           `(${totalComments[posts.indexOf(post)]})`}
                       </TableRowDataTitle>
+                      <TableRowDataWriter>{writerInfo}</TableRowDataWriter>
                       <TableRowDataDate>
                         {Common.timeFromNow(post.regDate)}
                       </TableRowDataDate>
+                      <TableRowDataLikes>{post.likeItCount}</TableRowDataLikes>
                       <TableRowDataViews>{post.viewCount}</TableRowDataViews>
                     </TableNormalRow>
                   );
@@ -347,46 +434,29 @@ const Community = () => {
             <Search />
             <PostPage>
               <Pagination>
-                <PageContant>
+                <PageContant onClick={firstClick} disabled={currentPage === 0}>
                   <IoIosArrowBack />
-                </PageContant>
-                <PageContant
-                  onClick={() =>
-                    setCurrentPage(currentPage > 1 ? currentPage - 1 : 0)
-                  }
-                  disabled={currentPage === 0}
-                >
-                  이전
                 </PageContant>
               </Pagination>
               {/* for 문처럼 페이지를 생성하기 위해 Array 인스턴스 생성, _이건 아무의미없는값이고 서서히 늘어나는 현식 */}
-              {Array.from({ length: totalPages }, (_, i) => i + 1).map(
-                (pageNum) => (
+              {Array.from({ length: totalPages }, (_, i) => i + 1)
+                .slice(visiblePageStart, visiblePageStart + PAGE_SIZE)
+                .map((pageNum) => (
                   <MiddlePage
                     key={pageNum}
-                    onClick={() => setCurrentPage(pageNum - 1)}
-                    active={currentPage === pageNum ? "true" : "false"}
+                    onClick={() => pageClick(pageNum - 1)}
+                    active={currentPage === pageNum - 1}
                   >
-                    <Page selected={currentPage === pageNum - 1} href="#">
+                    <Page selected={currentPage === pageNum - 1}>
                       {pageNum}
                     </Page>
                   </MiddlePage>
-                )
-              )}
+                ))}
               <Pagination>
                 <PageContant
-                  onClick={() =>
-                    setCurrentPage(
-                      currentPage < totalPages - 1
-                        ? currentPage + 1
-                        : currentPage
-                    )
-                  }
-                  disabled={currentPage === totalPages - 1}
+                  onClick={lastClick}
+                  disabled={currentPage >= totalPages - 1}
                 >
-                  다음
-                </PageContant>
-                <PageContant>
                   <IoIosArrowForward />
                 </PageContant>
               </Pagination>

@@ -33,6 +33,7 @@ import PaymentPage from "./pages/PaymentPage";
 import MyPage from "./pages/MyPage";
 import InformationPage from "./pages/InformationPage";
 import MyPageEdit from "./pages/MyPageEdit";
+import CommunityWrite from "./components/communityPage/CommunityWrite";
 
 function App() {
   // 방문자 추적 커스텀 훅
@@ -65,6 +66,7 @@ function App() {
               <Route path="/mypage/edit" element={<MyPageEdit />} />
 
               <Route path="/community" element={<CommunityPage />} />
+              <Route path="/community/write" element={<CommunityWrite />} />
               <Route path="/ranking" element={<RankingPage />} />
             </Route>
             <Route element={<HeaderOnly />}>

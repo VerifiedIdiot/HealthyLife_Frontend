@@ -4,21 +4,8 @@ import CommunityAxiosApi from "../../api/CommunityAxiosApi";
 import { useNavigate, useParams } from "react-router-dom";
 import Common from "../../utils/Common";
 // import { jwtDecode } from "jwt-decode";
+import { Main, Container } from "../../styles/Layouts";
 
-const PostContainer = styled.div`
-  width: 1000px;
-  flex-direction: column;
-  padding: 0px 21.6px 0px 36px;
-  flex: 1;
-  word-wrap: break-word;
-  font-size: 12px;
-  border: 0;
-  background: transparent;
-  font-style: normal;
-  @media (max-width: 1024px) {
-    width: 100%;
-  }
-`;
 const PostHeader = styled.div`
   display: flex;
   border-bottom: 1px solid #ccc;
@@ -512,7 +499,16 @@ const CommentPageButton = styled.button`
 
 const Post = () => {
   const [comments, setComments] = useState([]);
-  const [post, setPost] = useState({});
+  const [post, setPost] = useState({
+    communityId: 7,
+    categoryId: 2,
+    categoryName: "사과",
+    title: "제목1",
+    nickName: "하루1",
+    regDate: "",
+    likeItCount: "",
+    viewCount: "",
+  });
   const [currentCommentPage, setCurrentCommentPage] = useState(0);
   const [totalCommentPages, setTotalCommentPages] = useState(0);
   const [sortType, setSortType] = useState("");
@@ -529,6 +525,11 @@ const Post = () => {
   const { id } = useParams();
   const navigate = useNavigate();
 
+  useEffect(() => {
+    // if (decode) {
+    //   setEmail(decode.sub);
+    // }
+  }, []);
   useEffect(() => {
     const postDetail = async () => {
       try {
@@ -599,67 +600,77 @@ const Post = () => {
   };
 
   return (
-    <PostContainer>
-      <PostHeader>
-        <WriterInfo>
-          <TitleContainer>
-            <PostTitle>{post.title}</PostTitle>
-            <PostViews>조회수: {post.viewCount}</PostViews>
-          </TitleContainer>
-          <PostAuthor>
-            <PostNickName>{post.nickName}`</PostNickName>
-            <PostDate> {Common.formatDate(post.regDate)}</PostDate>
-          </PostAuthor>
-        </WriterInfo>
-      </PostHeader>
-      <PostBody>
-        <PostContent dangerouslySetInnerHTML={{ __html: post.content }} />
-      </PostBody>
-      <Post>
-        <PostUpLike onClick={() => like(true)}>
-          <ButtonText>좋아요</ButtonText>
-        </PostUpLike>
-        <PostTitle>{post.voteCount}</PostTitle>
-        <PostDownLike onClick={() => like(false)}>싫어요</PostDownLike>
-      </Post>
+    <Main>
+      <Container>
+        <PostHeader>
+          <WriterInfo>
+            <TitleContainer>
+              <PostTitle>{post.title}</PostTitle>
+              <PostViews>조회수: {post.viewCount}</PostViews>
+            </TitleContainer>
+            <PostAuthor>
+              <PostNickName>{post.nickName}</PostNickName>
+              <PostDate> {Common.formatDate(post.regDate)}</PostDate>
+            </PostAuthor>
+          </WriterInfo>
+        </PostHeader>
+        <PostBody>
+          <PostContent dangerouslySetInnerHTML={{ __html: post.content }} />
+        </PostBody>
+        <Post>
+          <PostUpLike onClick={() => like(true)}>
+            <ButtonText>좋아요</ButtonText>
+          </PostUpLike>
+          <PostTitle>{post.likeItCount}</PostTitle>
+          <PostDownLike onClick={() => like(false)}>싫어요</PostDownLike>
+        </Post>
 
-      <CommentContainer>
-        {comments
-          .filter((comment) => comment.parentCommentId === null)
-          .map((comment) => (
-            <CommentBox key={comment.commentId}>
-              <CommentContent>
-                <CommentNickname></CommentNickname>
+        <CommentContainer>
+          {comments
+            .filter((comment) => comment.parentCommentId === null)
+            .map((comment) => (
+              <CommentBox key={comment.commentId}>
+                <CommentContent>
+                  <CommentNickname></CommentNickname>
 
-                <>{Common.formatDate(comment.regDate)}</>
-                <HeadText>{comment.content}</HeadText>
-                <CommentButton>댓글 작성</CommentButton>
-              </CommentContent>
-              {comment.childComments &&
-                comment.childComments.map((childComment) => (
-                  <CommentContent style={{ marginLeft: "20px" }}>
-                    <CommentNickname></CommentNickname>
-                    <>{Common.formatDate(childComment.regDate)}</>
-                    <HeadText>{childComment.content}</HeadText>
-                  </CommentContent>
-                ))}
-            </CommentBox>
-          ))}
-        {currentCommentPage > 0 && (
-          <button onClick={() => setCurrentCommentPage(currentCommentPage - 1)}>
-            이전
-          </button>
-        )}
-        {currentCommentPage + 1 < totalCommentPages && (
-          <button onClick={() => setCurrentCommentPage(currentCommentPage + 1)}>
-            다음
-          </button>
-        )}
-        <CommentForm>
-          <FormContainer></FormContainer>
-        </CommentForm>
-      </CommentContainer>
-    </PostContainer>
+                  <>{Common.formatDate(comment.regDate)}</>
+                  <HeadText>{comment.content}</HeadText>
+                </CommentContent>
+              </CommentBox>
+            ))}
+          {currentCommentPage > 0 && (
+            <button
+              onClick={() => setCurrentCommentPage(currentCommentPage - 1)}
+            >
+              이전
+            </button>
+          )}
+          {currentCommentPage + 1 < totalCommentPages && (
+            <button
+              onClick={() => setCurrentCommentPage(currentCommentPage + 1)}
+            >
+              다음
+            </button>
+          )}
+          <CommentForm>
+            <FormContainer>
+              <LargeInput
+                type="text"
+                value={newComment}
+                onChange={(e) => setNewComment(e.target.value)}
+              />
+              <CommentButton
+                type="button"
+                onClick={commentWrite}
+                required={nickName && password}
+              >
+                댓글 작성
+              </CommentButton>
+            </FormContainer>
+          </CommentForm>
+        </CommentContainer>
+      </Container>
+    </Main>
   );
 };
 

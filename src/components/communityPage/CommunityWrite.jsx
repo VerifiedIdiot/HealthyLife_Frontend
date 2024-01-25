@@ -9,17 +9,25 @@ import ReactQuill from "react-quill";
 import styled from "styled-components";
 import { SmallButton } from "../../styles/styledComponents/StyledComponents";
 
-const WriteSection = styled.div``;
+const WriteSection = styled.div`
+  display: flex;
+  flex-direction: column;
+  @media (max-width: 1024px) {
+    width: 100%;
+  }
+`;
 
 const WriteHeading = styled.div`
   display: flex;
   flex-direction: column;
   align-items: flex-start;
+  margin-top: 10px;
 `;
 const WriteHeadingText = styled.p`
   width: 200px;
   color: #2446da;
   font-size: 1.5rem;
+  font-family: "noto sans";
 `;
 
 const Line = styled.div`
@@ -30,7 +38,8 @@ const Line = styled.div`
 `;
 const WriteBorder = styled.input`
   display: flex;
-  font-size: 1rem;
+  font-size: 1.4rem;
+  font-family: "noto sans";
   width: ${(props) => props.width || "100%"};
   align-items: center;
   border: none;
@@ -39,18 +48,22 @@ const WriteBorder = styled.input`
 const CategorySelect = styled.select`
   // 카테고리 선택 드롭다운에 대한 스타일 정의
   padding: 5px;
+  font-size: 1.2rem;
+  font-family: "noto sans";
   border-radius: 4px;
   margin-bottom: 10px;
-  width: 200px; // 드롭다운 너비 조정
+  width: 150px; // 드롭다운 너비 조정
 `;
 const StyledReactQuill = styled(ReactQuill)`
   background-color: rgba(36, 70, 218, 0.6);
   z-index: 4;
-
+  margin-top: 10px;
   .ql-container {
-    /* margin-top: 20px; */
     width: 100%;
     height: 50vh;
+    font-size: 1.2rem;
+    font-family: "noto sans";
+
     overflow-y: auto;
     opacity: 1;
     background: #fff;
@@ -79,6 +92,7 @@ const StyledReactQuill = styled(ReactQuill)`
 const ButtonContainer = styled.div`
   display: flex;
   justify-content: flex-end;
+  align-items: center;
   gap: 5px;
 `;
 const CommunityWrite = () => {
@@ -91,7 +105,13 @@ const CommunityWrite = () => {
   const [nickName, setNickName] = useState("");
   const [password, setPassword] = useState("");
   const navigate = useNavigate();
-  const [categories, setCategories] = useState([]);
+  const [categories, setCategories] = useState([
+    { categoryId: "1", categoryName: "과일" },
+    {
+      categoryId: "2",
+      categoryName: "사과",
+    },
+  ]);
   const [selectedCategory, setSelectedCategory] = useState();
 
   const quillRef = useRef(null);
@@ -181,7 +201,7 @@ const CommunityWrite = () => {
   };
   return (
     <Main>
-      <Container>
+      <Container $align="center">
         <WriteSection>
           <WriteHeading>
             <WriteHeadingText>Community</WriteHeadingText>
@@ -190,7 +210,6 @@ const CommunityWrite = () => {
           <CategorySelect
             value={selectedCategory}
             onChange={(e) => setSelectedCategory(e.target.value)}
-            defaultValue="" // 이 부분을 추가합니다.
           >
             {categories.map((category) => (
               <option key={category.categoryId} value={category.categoryId}>

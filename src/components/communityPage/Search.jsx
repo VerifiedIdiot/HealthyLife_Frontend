@@ -5,17 +5,19 @@ import CommunityAxiosApi from "../../api/CommunityAxiosApi";
 import { SmallButton } from "../../styles/styledComponents/StyledComponents";
 import { FaSearch } from "react-icons/fa";
 const Select = styled.select`
-  width: 100%;
-  height: 100%;
   padding: 5px;
   margin: 10px;
   border-radius: 5px;
-  font-size: 14px;
+  font-size: 0.8rem;
 `;
 const SearchBox = styled.div`
+  width: 100%;
+  height: 100%;
   display: flex;
   justify-content: center;
   align-items: center;
+  flex-grow: 40;
+
   &:hover {
     @media (max-width: 1024px) {
     }
@@ -33,7 +35,6 @@ const SearchButton = styled.a`
   align-items: center;
   color: #2446da;
   transition: width 0.4s, opacity 0.4s, visibility 0.4s;
-
   &:hover {
     background-color: #fff;
   }
@@ -47,7 +48,6 @@ const SearchContainer = styled.div`
   margin-top: 3em;
 
   @media (max-width: 1024px) {
-    flex-direction: column;
   }
 `;
 const SearchInput = styled.input`
@@ -55,8 +55,7 @@ const SearchInput = styled.input`
   width: 100%;
   float: left;
   font-size: 1rem;
-  line-height: 30px;
-  outline: none;
+  line-height: 25px;
   transition: width 0.4s, opacity 0.4s, visibility 0.4s;
 `;
 const Search = () => {

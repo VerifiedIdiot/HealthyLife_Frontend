@@ -1,8 +1,5 @@
-import { ReactComponent as Star } from "../assets/imgs/communityImges/Star.svg";
 import { ReactComponent as Down } from "../assets/imgs/communityImges/Down.svg";
-import { ReactComponent as Menu } from "../assets/imgs/communityImges/Menu.svg";
-import { ReactComponent as Talk } from "../assets/imgs/communityImges/Talk.svg";
-import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom";
+import { Routes, Route, Link, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import styled, { keyframes } from "styled-components";
 import { Main } from "../styles/Layouts";
@@ -12,8 +9,9 @@ import CommunityWrite from "../components/communityPage/CommunityWrite";
 import Community from "../components/communityPage/Community";
 import Post from "../components/communityPage/PostRoom";
 import { SmallButton } from "../styles/styledComponents/StyledComponents";
-import { jwtDecode } from "jwt-decode";
+// import { jwtDecode } from "jwt-decode";
 import Common from "../utils/Common";
+import MemberApi from "../api/MemberApi";
 
 const Container = styled.div`
   display: flex;
@@ -47,7 +45,7 @@ const Aside = styled.div`
   max-width: 264px;
   padding-bottom: 49.83px;
   flex-direction: column;
-  align-items: flex-start;
+  align-items: flex-end;
   gap: 14.39px;
   flex-shrink: 0;
   align-self: stretch;
@@ -59,7 +57,6 @@ const Aside = styled.div`
 
 const CommunityMenuList = styled.div`
   flex-direction: row;
-  align-items: flex-start;
   @media (max-width: 1024px) {
     width: auto;
   }
@@ -67,7 +64,6 @@ const CommunityMenuList = styled.div`
 const CommunityMenuItem = styled.div`
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
   @media (max-width: 1024px) {
     width: 100%;
     flex-direction: row;
@@ -75,10 +71,11 @@ const CommunityMenuItem = styled.div`
 `;
 const CommunityLink = styled.div`
   display: flex;
-  padding: 15px 10px 15px 15px;
+  margin: 10px 10px 10px 0px;
   align-items: center;
-  justify-content: center;
+  justify-content: flex-start;
   align-self: stretch;
+
   @media (max-width: 1024px) {
     width: 100%;
     padding: 10px;
@@ -87,6 +84,7 @@ const CommunityLink = styled.div`
     display: none;
   }
 `;
+
 const CommunitySVG = styled.div`
   display: flex;
   align-items: center;
@@ -97,11 +95,10 @@ const CommunitySVG = styled.div`
   }
 `;
 const CommunityMenuText = styled.a`
-  width: 300px;
-  color: #333;
-  font-size: 1rem;
-  font-weight: 700;
-  line-height: 20px;
+  justify-content: center;
+  font-size: 1.2rem;
+  font-family: "noto sans";
+  text-decoration: none;
   @media (max-width: 1024px) {
     width: 100%;
     text-align: center;
@@ -110,10 +107,10 @@ const CommunityMenuText = styled.a`
 
 const CommunityMenuButton = styled.div`
   display: flex;
-  justify-content: center;
-  align-items: flex-start;
-  align-self: stretch;
-
+  justify-content: flex-start;
+  padding: 10px 10px 10px 0px;
+  background-color: ${(props) => (props.isActive ? "#2446da" : "#fff")};
+  color: ${(props) => (props.isActive ? "#fff" : "#333")};
   @media (max-width: 1024px) {
     width: 100%;
   }
@@ -139,6 +136,7 @@ const CommunityItemList = styled.div`
   width: 100%;
   flex-direction: column;
   align-items: center;
+
   @media (max-width: 1024px) {
     flex-direction: row;
   }
@@ -180,13 +178,24 @@ const SVGX = styled.div`
 `;
 const CommunityPage = () => {
   const [isList, setIsList] = useState(false);
-  const [categories, setCategories] = useState([]);
+  const [isActive, setIsActive] = useState(false);
+
+  const [categories, setCategories] = useState([
+    { categoryId: "1", categoryName: "과일" },
+    {
+      categoryId: "2",
+      categoryName: "사과",
+    },
+  ]);
+  const navigate = useNavigate();
   const [email, setEmail] = useState("");
   // const token = Common.getAccessToken();
   // const decode = token ? jwtDecode(token) : null;
-
   const ListOpen = () => {
     setIsList(!isList);
+  };
+  const handleClick = () => {
+    setIsActive(!isActive);
   };
   const RotatedDown = styled(Down)`
     transition: transform 0.3s ease-in-out;
@@ -206,6 +215,13 @@ const CommunityPage = () => {
         console.log(error);
       }
     };
+    //이메일에 해당하는 회원정보 axios
+    // const getUserInfo = async () => {
+    //   const userInfoResponse = await MemberApi.getUserInfo(email);
+    //   console.log(userInfoResponse.data);
+    //   setUserInfo(userInfoResponse.data);
+    // };
+    // getUserInfo();
     getCategories();
   }, []);
   return (
@@ -226,7 +242,10 @@ const CommunityPage = () => {
                     </CommunityLink>
                   </Link>
                   <CommunityLink>
-                    <CommunityMenuButton>
+                    <CommunityMenuButton
+                      isActive={isActive}
+                      onClick={handleClick}
+                    >
                       <CommunityItem onClick={ListOpen}>
                         <CommunityMenuText>Category</CommunityMenuText>
                       </CommunityItem>
@@ -245,7 +264,6 @@ const CommunityPage = () => {
                               <CommunityMenuText>
                                 {category.categoryName}
                               </CommunityMenuText>
-                              <Star />
                             </CommunityItem>
                           </CommunityLink>
                         </Link>

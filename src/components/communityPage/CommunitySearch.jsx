@@ -187,7 +187,19 @@ const Page = styled.a`
 `;
 const CommunitySearch = () => {
   const navigate = useNavigate();
-  const [posts, setPosts] = useState([]);
+  const [posts, setPosts] = useState([
+    {
+      id: 1,
+      categoryId: 1,
+      categoryName: "과일",
+      title: "제목",
+      nickName: "하루",
+      content: "하늘하늘",
+      regDate: "",
+      likeItCount: "",
+      viewCount: "",
+    },
+  ]);
   const [currentPage, setCurrentPage] = useState(0);
   const [totalPages, setTotalPages] = useState(0);
   const [totalComments, setTotalComments] = useState([]);
@@ -260,7 +272,7 @@ const CommunitySearch = () => {
                     const hasMediaContent = checkMediaContent(post.content);
                     const writerInfo = post.email
                       ? post.email
-                      : `${Common.truncateText(post.name, 10)}`;
+                      : `${Common.truncateText(post.nickName, 10)}`;
                     return (
                       <TableNormalRow
                         key={post.id}
@@ -279,7 +291,7 @@ const CommunitySearch = () => {
                         </TableRowDataIcon>
                         <TableRowDataWriter>{writerInfo}</TableRowDataWriter>
                         <TableRowDataTitle>
-                          {Common.truncateText(post.title, 20)}
+                          {Common.truncateText(post.title, 20)}{" "}
                           {totalComments[posts.indexOf(post)] > 0 &&
                             `(${totalComments[posts.indexOf(post)]})`}
                         </TableRowDataTitle>

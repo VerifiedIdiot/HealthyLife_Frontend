@@ -31,14 +31,14 @@ const FriendBoxs  =(props)=>{
           <ChatImage src={"https://item.kakaocdn.net/do/1401e813472967e3b572fee1ee192eb89f17e489affba0627eb1eb39695f93dd"} alt="회원 이미지" />
         </MemberImg>
         <MemberInfo>
-          <Item >
+          <Item $shadow="none">
           김현빈{user}
           </Item>
-          <Item>
+          <Item $shadow="none">
           [상태 메세지]{statusMessege}
           </Item>
         </MemberInfo>
-        <Item $width="auto">
+        <Item $width="auto" $shadow="none">
           <ChatImage src={chatIcon} alt="채팅 아이콘" />
         </Item>
       </Box>

@@ -1,6 +1,6 @@
-export const CHANGE_NUMBER = 'CHANGE_NUMBER';
+export const CHANGE_CHAT = 'CHANGE_CHAT';
 
-export const changeNumber = (numberId, value) => ({
-  type: CHANGE_NUMBER,
-  payload: { numberId, value },
+export const changeChat = (chattings, value) => ({
+  type: CHANGE_CHAT,
+  payload: { chattings, value },
 });

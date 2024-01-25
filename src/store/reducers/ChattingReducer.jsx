@@ -1,14 +1,15 @@
+import { CHANGE_CHAT } from '../actions/ChattingActions';
 import { CHANGE_NUMBER } from './actionTypes';
 
+
+//채팅 기본 이름과 벨류
 const initialState = {
-  number1: 1,
-  number2: 2,
-  number3: 3,
+  state: 1,
 };
 
-const numbersReducer = (state = initialState, action) => {
+const chatReducer = (state = initialState, action) => {
   switch (action.type) {
-    case CHANGE_NUMBER:
+    case CHANGE_CHAT:
       return {
         ...state,
         [action.payload.numberId]: action.payload.value,
@@ -18,4 +19,4 @@ const numbersReducer = (state = initialState, action) => {
   }
 };
 
-export default numbersReducer;
+export default chatReducer;

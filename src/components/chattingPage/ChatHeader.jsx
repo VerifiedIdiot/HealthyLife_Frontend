@@ -1,6 +1,10 @@
 import styled from "styled-components";
-import { Main,Container,Section,Area} from "../../styles/Layouts"
+import { Container,Section,Area} from "../../styles/Layouts"
 import { ButtonComp } from "../../styles/example/Button"
+import { media } from "../../utils/MediaQuery";
+import { useDispatch } from "react-redux";
+import { changeChat } from "../../store/actions/ChattingActions";
+import { useState } from "react";
 
 
 const Containerstyle = styled(Container)`
@@ -24,20 +28,36 @@ const Containerstyle = styled(Container)`
   border-style: solid;
   border-width: 0 20px 20px;  /* 변경된 부분 */
   border-color: transparent transparent #333333;  /* 변경된 부분 */
-}`;
+}
+${media.small`
+    /* 미디어 쿼리 small에 해당하는 스타일 */
+    width: 100%;
+    height:96vh;
+    padding: 0;
+    &::before{
+      content:none;
+    }
+  `}
+`;
 
 // 채팅 헤더 + Box
 export const ChatHeader=(props)=>{
-  const {isDisabled,children } =props;
+  const {children,setState } =props;
+  const [isDisabled, setIsDisabled] = useState(false);
+
+  const stateClick = (state,Boolean) => {
+    setIsDisabled(Boolean);
+    setState(state)
+  };
   
   return(
       <Containerstyle>
         <Section $direction="column" $height="100%" $background="white" style={{borderRadius:"9px 9px 0px 0px"}}>
           <Area $height="none">
-          <ButtonComp className={isDisabled ? 'false':""}$width="50%" $height="70px" $fontSize="1.5em" $borderRadius="8px 0px 0px 0px" >
+          <ButtonComp onClick={()=>stateClick("FRIENDS",true)} className={isDisabled ? 'false':""}$width="50%" $height="70px" $fontSize="1.5em" $borderRadius="8px 0px 0px 0px" >
             FRIENDS
           </ButtonComp>
-          <ButtonComp className={isDisabled ? '':"false"} $width="50%" $height="70px" $fontSize="1.5em" $borderRadius="0px 8px 0px 0px" >
+          <ButtonComp onClick={()=>stateClick("CHAT",false)} className={isDisabled ? '':"false"} $width="50%" $height="70px" $fontSize="1.5em" $borderRadius="0px 8px 0px 0px" >
             CHAT
           </ButtonComp>
           </Area>

@@ -1,18 +1,19 @@
-import { Main,Container,Section,Area,Box,Item, ScrollBox } from "../../styles/Layouts"
-import { ButtonComp } from "../../styles/example/Button"
-import {LargeButton, MiddleButton} from "../../styles/styledComponents/StyledComponents"
-import { ChatImage,  ChatIndexBox, CloseButton, Input, MassegeInput, MassegeState, MemberImg, MemberInfo, Message, MessagesContainer} from "./ChattingStyle"
-import chatIcon from "../../assets/icons/chatIcon.svg"
-import styled from "styled-components"
+import { Box,Item, ScrollBox } from "../../styles/Layouts"
+import { ChatImage,  ChatIndexBox, MemberImg, MemberInfo} from "./ChattingStyle"
+
 
 
 
 
 const ChatList  =(props)=>{
+  const {setState} =props;
+  const stateClick = (state) => {
+    setState(state)
+  };
 
   return(
     <>
-      <ScrollBox>
+      <ScrollBox onClick={()=>stateClick("CHATTING")} >
         <ChatBox/>
         <ChatBox/>
         <ChatBox/>
@@ -32,6 +33,8 @@ export default ChatList;
 const ChatBox  =(props)=>{
   const {userImg,user,recMessege,messegeIndex} =props;
 
+
+
   return(
     <>
       <Box $align="center" $height="100px" > 
@@ -39,10 +42,10 @@ const ChatBox  =(props)=>{
           <ChatImage src={"https://item.kakaocdn.net/do/1401e813472967e3b572fee1ee192eb89f17e489affba0627eb1eb39695f93dd"} alt="회원 이미지" />
         </MemberImg>
         <MemberInfo>
-          <Item>
+          <Item $shadow="none">
             김현빈{user}
           </Item>
-          <Item $color="grey">
+          <Item $color="grey" $shadow="none">
             최근 메세지...{recMessege}
           </Item>
           <ChatIndexBox>

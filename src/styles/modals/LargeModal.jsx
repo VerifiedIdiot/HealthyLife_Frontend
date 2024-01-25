@@ -48,6 +48,10 @@ const CloseButton = styled.button`
   } */
 `;
 
+const ContentSection = styled.div`
+  display: flex;
+`;
+
 const LargeModal = ({ $isOpen, $onClose, imageSrc, children }) => {
   // esc 누르면 모달창 종료
   useEffect(() => {
@@ -69,7 +73,7 @@ const LargeModal = ({ $isOpen, $onClose, imageSrc, children }) => {
         <ModalContent onClick={(e) => e.stopPropagation()}>
           <CloseButton onClick={$onClose}>&times;</CloseButton>
           {/* <ImageSection src={imageSrc} /> */}
-          {/* <ContentSection>{children}</ContentSection> */}
+          <ContentSection>{children}</ContentSection>
         </ModalContent>
       </ModalOverlay>
     </>

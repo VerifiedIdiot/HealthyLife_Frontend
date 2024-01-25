@@ -47,6 +47,10 @@ const CloseButton = styled.button`
   } */
 `;
 
+const ContentSection = styled.div`
+  display: flex;
+`;
+
 const MiddleModal = ({ $isOpen, $onClose, imageSrc, children }) => {
   console.log("MiddleModal test");
 
@@ -70,7 +74,7 @@ const MiddleModal = ({ $isOpen, $onClose, imageSrc, children }) => {
         <ModalContent onClick={(e) => e.stopPropagation()}>
           <CloseButton onClick={$onClose}>&times;</CloseButton>
           {/* <ImageSection src={imageSrc} /> */}
-          {/* <ContentSection>{children}</ContentSection> */}
+          <ContentSection>{children}</ContentSection>
         </ModalContent>
       </ModalOverlay>
     </>

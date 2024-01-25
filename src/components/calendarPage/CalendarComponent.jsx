@@ -4,6 +4,7 @@ import dayGridPlugin from '@fullcalendar/daygrid';
 import interactionPlugin from '@fullcalendar/interaction';
 import { Container } from "../../styles/Layouts";
 import MiddleModal from "../../styles/modals/MiddleModal";
+import CalendarInput from './CalendarInput';
 
 export const CalendarComponent = () => {
   const calendarRef = useRef(null);
@@ -29,7 +30,7 @@ export const CalendarComponent = () => {
         }}
         dayMaxEventRows={true}
         initialView='dayGridMonth'
-        height={'30vh'}
+        height={'90vh'}
         dayHeaderFormat={{
           weekday: 'short'
         }}
@@ -62,7 +63,7 @@ export const CalendarComponent = () => {
           backgroundColor: '#FD6B6B' 
         },
           
-      ]}
+        ]}
       />
       {clickedDate && (
         <MiddleModal
@@ -70,8 +71,10 @@ export const CalendarComponent = () => {
           $onClose={() => setIsModalOpen(false)} // 모달 닫기 함수를 전달
           clickedDate={clickedDate}
         >
+        <CalendarInput />  
         </MiddleModal>
       )}
+      
     </Container>
   );
 };

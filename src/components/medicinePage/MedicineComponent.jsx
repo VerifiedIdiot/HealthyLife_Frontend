@@ -2,9 +2,8 @@ import { useState } from "react";
 import styled from "styled-components";
 import { Section, Area, Box, Item } from "../../styles/Layouts";
 import { LargeButton } from "../../styles/styledComponents/StyledComponents";
-import { SearchBox, ComboBox, ComboSearchBox } from "./MedicineContainer";
+import { SearchBox, ComboBox, ComboSearchBox, FilterDropdown } from "./MedicineContainer";
 import capsule from "../../assets/icons/medicine/capsule.png";
-
 
 const StyledIcon = styled.img.attrs({
   className: "medicine-icon",
@@ -19,13 +18,14 @@ const LogoItem = styled(Item)`
   h1 {
     margin-left: 10px;
   }
+
+  h2 {
+    margin-left: 10px;
+  }
   @media (max-width: 768px) {
     h1 {
-      
       margin-left: 0;
       width: 100%;
-     
-     
     }
   }
 `;
@@ -85,9 +85,6 @@ const SearchItemLeft = styled(Item)`
     p {
       font-size: smaller;
     }
-
-    
-   
   }
 `;
 
@@ -98,10 +95,7 @@ const SearchItemRight = styled(Item)`
   width: ${(props) => props.$width || "100%"};
   padding-right: ${(props) => props.$paddingRight || ""};
   @media (max-width: 768px) {
-    
   }
-
-  
 `;
 
 const ButtonItem = styled(Item)`
@@ -122,11 +116,9 @@ const InitialConsonant = styled.div`
   @media (max-width: 768px) {
     width: 73%;
   }
-`
-
+`;
 
 const StyledButton = styled(LargeButton)`
-
   @media (max-width: 768px) {
     width: 100%;
   }
@@ -135,13 +127,11 @@ const StyledButton = styled(LargeButton)`
 export const SearchSection = () => {
   const [comboSearch, setComboSearch] = useState("");
   const [searchQuery, setSearchQuery] = useState("");
-  
 
   const handleSearch = () => {
     // 여기에서 검색 로직 구현
     console.log("Combo Search Type:", comboSearch);
     console.log("Search Query:", searchQuery);
-    
 
     // 검색 로직을 여기에 추가하세요.
   };
@@ -160,7 +150,7 @@ export const SearchSection = () => {
       <ResponsiveSearchSection>
         <ResponsiveSearchArea>
           <ResponsiveItemBox>
-            <LogoItem >
+            <LogoItem>
               <StyledIcon src={capsule} />
               <h1>제품 검색</h1>
             </LogoItem>
@@ -171,7 +161,7 @@ export const SearchSection = () => {
             </ResponsiveItem>
           </ResponsiveItemBox>
           <ResponsiveItemBox>
-            <SearchItemLeft >
+            <SearchItemLeft>
               <p>원료검색</p>
             </SearchItemLeft>
             <SearchItemRight>
@@ -179,7 +169,7 @@ export const SearchSection = () => {
             </SearchItemRight>
           </ResponsiveItemBox>
           <ResponsiveItemBox>
-            <SearchItemLeft >
+            <SearchItemLeft>
               <p>기능성 검색</p>
             </SearchItemLeft>
             <SearchItemRight>
@@ -189,16 +179,15 @@ export const SearchSection = () => {
             </SearchItemRight>
           </ResponsiveItemBox>
           <ResponsiveItemBox>
-            <SearchItemLeft >
+            <SearchItemLeft>
               <p>초성 검색</p>
             </SearchItemLeft>
             <SearchItemRight $width="100%">
               <InitialConsonant>ㄱㄴㄷㄹㅁㅂㅅ</InitialConsonant>
-            <ButtonItem>
-              <StyledButton onClick={handleSearch}>검색</StyledButton>
-            </ButtonItem>
+              <ButtonItem>
+                <StyledButton onClick={handleSearch}>검색</StyledButton>
+              </ButtonItem>
             </SearchItemRight>
-            
           </ResponsiveItemBox>
         </ResponsiveSearchArea>
       </ResponsiveSearchSection>
@@ -210,21 +199,32 @@ const ResponsiveBoardSection = styled(Section)`
   /* border: 1px solid black; */
   height: auto;
   min-height: 30vw;
-  justify-content: center;
+
   align-items: center;
-
-
+  flex-direction: column;
 `;
+
+const ResponsiveFilterItem = styled(Item)`
+  display: flex;
+  flex-direction: row-reverse;
+  align-items: center;
+  width: 70%;
+  
+  padding-right: 10px;
+`
 
 const ResponsiveBoardArea = styled(Area)`
   /* border: 1px solid black; */
   height: 95%;
   width: 95%;
-  min-height: 30vw;
-
+  height: auto;
 `;
 
-export const BoardSection = () => {
+const ResponsiveBoardBox = styled(Box)`
+  height: auto;
+`;
+
+export const BoardSection = ({totalCount}) => {
   return (
     <>
       <ResponsiveBoardSection>
@@ -233,8 +233,20 @@ export const BoardSection = () => {
             <LogoItem>
               <StyledIcon src={capsule} />
               <h1>제품 목록</h1>
+              <h2>Total : {totalCount}</h2>
             </LogoItem>
+
+            <ResponsiveFilterItem>
+              <FilterDropdown/>
+            </ResponsiveFilterItem>
+          
           </ResponsiveItemBox>
+        </ResponsiveBoardArea>
+
+        <ResponsiveBoardArea>
+          <ResponsiveBoardBox>
+
+          </ResponsiveBoardBox>
         </ResponsiveBoardArea>
       </ResponsiveBoardSection>
     </>
@@ -246,14 +258,11 @@ const ResponsivePaginationSection = styled(Section)`
   justify-content: center;
   align-items: center;
   min-height: 80px;
-
 `;
 
 const ResponsivePaginationArea = styled(Area)`
   height: 90%;
   width: 95%;
-
-
 `;
 
 export const PaginationSection = () => {

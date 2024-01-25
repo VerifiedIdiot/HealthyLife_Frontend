@@ -13,8 +13,8 @@ import { SearchSection, BoardSection, PaginationSection } from "../components/me
 const MedicinePage = () => {
   return (
     <>
-      <Main>
-        <Container>
+      <Main $height="auto">
+        <Container $height="auto">
             <SearchSection/>
             <BoardSection/>
             <PaginationSection/>

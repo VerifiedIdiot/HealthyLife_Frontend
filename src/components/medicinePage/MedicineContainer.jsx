@@ -229,3 +229,37 @@ export const ComboBox = ({ items }) => {
   );
 };
 
+
+
+
+
+
+export const FilterDropdown = () => {
+  const searchTypes = ["10개씩", "30개씩", "50개씩", "100개씩"];
+  const [searchType, setSearchType] = useState(searchTypes[0]);
+ 
+
+  const handleSearchTypeChange = (e) => {
+    setSearchType(e.target.value);
+    console.log(e.target.value);
+  };
+
+
+
+
+
+  return (
+    <>
+      
+        <ComboSelectBox value={searchType} onChange={handleSearchTypeChange}>
+          {searchTypes.map((type) => (
+            <option key={type} value={type}>
+              {type}
+              
+            </option>
+          ))}
+        </ComboSelectBox>
+      
+    </>
+  );
+};

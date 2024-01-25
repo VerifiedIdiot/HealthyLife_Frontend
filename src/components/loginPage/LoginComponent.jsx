@@ -2,17 +2,61 @@ import { Area, Container, Main, Section } from "../../styles/Layouts";
 import { LargeButton } from "../../styles/styledComponents/StyledComponents";
 import { useNavigate } from "react-router";
 import logo from "../../assets/icons/logo.svg";
+import styled from "styled-components";
+import { media } from "../../utils/MediaQuery";
+const MainStyle = styled(Main)`
+  ${media.small`
+    flex-direction:column;
+    width: 70%;
+    height: auto
+
+`}
+`;
+
+const ContainerStyle = styled(Container)`
+  ${media.small`
+    width: 100%;
+    background-color: white;
+    border: none;
+    box-shadow: none;
+    height: 50%;
+`}
+`;
+
+const Container2Style = styled(Container)`
+  ${media.small`
+    width: 100%;
+    border: none;
+    height: 50%;
+
+    box-shadow: none;
+
+`}
+`;
+
+const SectionStyle = styled(Section)`
+  ${media.small`
+`}
+`;
+
+const AreaStyle = styled(Area)`
+  ${media.small`
+    font-size: 0.9em;
+`}
+`;
+
 const LoginComp = () => {
   const navigate = useNavigate();
   const joinNavigate = useNavigate();
   return (
     <>
-      <Main $direction="row" $width="100%">
-        <Container
+      <MainStyle $direction="row" $width="100%">
+        <ContainerStyle
           $width="50%"
           $display="flex"
           $direction="column"
           $background="#F3F3F3"
+          $padding="0 10px"
           $height="100vh"
         >
           <Section
@@ -30,17 +74,16 @@ const LoginComp = () => {
               }}
             />
           </Section>
-          <Section $height="5%" $shadow="none" $padding="0 10px">
-            <Area $shadow="none" $width="22%">
-              <p
-                style={{
-                  paddingRight: "5px",
-                }}
-              >
-                Not a member yet?
-              </p>
-            </Area>
-            <Area $shadow="none" $height="50%">
+          <SectionStyle
+            $height="5%"
+            $shadow="none"
+            $border="1px solid black"
+            $width="100%"
+          >
+            <AreaStyle $shadow="none" $width="100%" $border="1px solid black">
+              <p>Not a member yet?</p>
+            </AreaStyle>
+            <AreaStyle $shadow="none" $height="50%" $border="1px solid black">
               <p
                 style={{
                   borderBottom: "2px solid black",
@@ -51,10 +94,10 @@ const LoginComp = () => {
               >
                 Register now
               </p>
-            </Area>
-          </Section>
-        </Container>
-        <Container
+            </AreaStyle>
+          </SectionStyle>
+        </ContainerStyle>
+        <Container2Style
           $width="50%"
           $direction="column"
           $padding="0 15px"
@@ -66,7 +109,14 @@ const LoginComp = () => {
               $shadow="none"
               $borderBottom="1px solid black"
             >
-              <p>EMAIL (*)</p>
+              <p
+                style={{
+                  color: "rgba(0, 0, 0, 0.5)",
+                  fontWeight: "600",
+                }}
+              >
+                EMAIL (*)
+              </p>
               <input
                 type="text"
                 placeholder="Email을 입력해주세요."
@@ -85,6 +135,8 @@ const LoginComp = () => {
               <p
                 style={{
                   paddingTop: "20px",
+                  color: "rgba(0, 0, 0, 0.5)",
+                  fontWeight: "600",
                 }}
               >
                 PASSWORD (*)
@@ -117,9 +169,10 @@ const LoginComp = () => {
           >
             <LargeButton>카카오 로그인</LargeButton>
           </Section>
-        </Container>
-      </Main>
+        </Container2Style>
+      </MainStyle>
     </>
   );
 };
+
 export default LoginComp;

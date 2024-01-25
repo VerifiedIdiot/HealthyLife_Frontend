@@ -3,7 +3,7 @@ import { Area, Container, Main, Section } from "../../styles/Layouts";
 import { MiddleButton } from "../../styles/styledComponents/StyledComponents";
 
 const MypageComp = ({ userData }) => {
-  const editNavigate = useNavigate("");
+  const editNavigate = useNavigate();
   return (
     <>
       <Main $direction="row" $background="#f3f3f3" $width="100%">
@@ -145,7 +145,7 @@ const MypageComp = ({ userData }) => {
               </p>
             </Area>
             <Area $justify="center" $align="center" $shadow="none">
-              <MiddleButton onClick={() => editNavigate("/Mypage/edit")}>
+              <MiddleButton onClick={() => editNavigate("/mypage/edit")}>
                 정보 수정
               </MiddleButton>
             </Area>

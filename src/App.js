@@ -17,7 +17,7 @@ import {
 } from "./styles/headerFooter/HeaderFooter";
 
 import HomePage from "./pages/HomePage";
-import MyPage from "./pages/MyPage";
+
 import LoginPage from "./pages/LoginPage";
 import InbodyPage from "./pages/InBodyPage";
 import CalendarPage from "./pages/CalendarPage";
@@ -30,7 +30,9 @@ import MedicinePage from "./pages/MedicinePage";
 import TestPage from "./pages/TestPage";
 import BodyInfoComp from "./components/joinPage/BodyInfoComponent";
 import PaymentPage from "./pages/PaymentPage";
+import MyPage from "./pages/MyPage";
 import InformationPage from "./pages/InformationPage";
+import MyPageEdit from "./pages/MyPageEdit";
 
 function App() {
   // 방문자 추적 커스텀 훅
@@ -58,8 +60,10 @@ function App() {
             <Route element={<HeaderFooter />}>
               <Route path="/medicine" element={<MedicinePage />} />
               <Route path="/inbody" element={<InbodyPage />} />
-              <Route path="/information" element={<InformationPage />} />
+
               <Route path="/mypage" element={<MyPage />} />
+              <Route path="/mypage/edit" element={<MyPageEdit />} />
+
               <Route path="/community" element={<CommunityPage />} />
               <Route path="/ranking" element={<RankingPage />} />
             </Route>

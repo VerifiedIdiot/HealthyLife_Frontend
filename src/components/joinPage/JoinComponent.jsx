@@ -229,7 +229,7 @@ const JoinComp = (email, profile) => {
           $display="flex"
           $direction="column"
           $background="#F3F3F3"
-          $height="100vh"
+          $height="auto"
         >
           <Section
             $height="95%"
@@ -273,8 +273,8 @@ const JoinComp = (email, profile) => {
         <Container
           $width="50%"
           $direction="column"
-          $padding="0 15px"
-          $height="100vh"
+          $padding="50px 15px"
+          $height="auto"
         >
           <Section
             $height="auto"

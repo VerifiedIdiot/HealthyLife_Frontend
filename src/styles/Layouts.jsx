@@ -109,7 +109,7 @@ export const Box = styled.div.attrs({
   height: ${(props) => props.$height || "100%"};
   border: ${(props) => props.$border || "none"};
   border-bottom: ${(props) => props.$borderBottom || "none"};
-
+  margin-bottom: ${(props) => props.$marginBottom || "0"};
   box-shadow: ${(props) => props.$shadow || "0 2px 4px rgba(0, 0, 0, 0.1)"};
 `;
 

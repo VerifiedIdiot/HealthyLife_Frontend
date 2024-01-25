@@ -1,4 +1,5 @@
 import MypageComp from "../components/mypage/MypageComponent";
+import MypageEditComp from "../components/mypage/MypageEditComp";
 import {
   Main,
   Container,
@@ -22,6 +23,7 @@ const MyPage = () => {
   return (
     <>
       <MypageComp userData={userData && userData} />
+      {/* <MypageEditComp userData={userData && userData} /> */}
     </>
   );
 };

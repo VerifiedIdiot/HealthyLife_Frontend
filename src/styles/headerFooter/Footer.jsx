@@ -8,11 +8,10 @@ import TwitterIcon from "@mui/icons-material/Twitter";
 const StyledFooter = styled.footer.attrs({
   className: "footer",
 })`
-<<<<<<< Updated upstream
-=======
+
   height: 130px;
   width: 96.5%;
->>>>>>> Stashed changes
+
   display: flex;
   flex-direction: column;
   align-items: center;

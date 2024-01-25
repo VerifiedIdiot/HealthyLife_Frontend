@@ -321,16 +321,8 @@ const JoinComp = (email, profile) => {
             $direction="column"
             $width="100%"
           >
-<<<<<<< Updated upstream
             <Area $direction="column" $shadow="none">
               <p
-=======
-            <Area>
-              <p>EMAIL (*)</p>
-              <input
-                type="text"
-                placeholder="Email을 입력해주세요."
->>>>>>> Stashed changes
                 style={{
                   color: "rgba(0, 0, 0, 0.5)",
                   fontWeight: "600",
@@ -480,7 +472,6 @@ const JoinComp = (email, profile) => {
                 // changeEvt={onChangePhone}
               />
             </Area>
-<<<<<<< Updated upstream
 
             <Area $direction="column" $shadow="none" $marginTop="10px">
               <AgreeCheck
@@ -526,9 +517,6 @@ const JoinComp = (email, profile) => {
             >
               <LargeButton>카카오 로그인</LargeButton>
             </Section> */}
-=======
-          </Section>
->>>>>>> Stashed changes
         </Container>
       </Main>
     </>

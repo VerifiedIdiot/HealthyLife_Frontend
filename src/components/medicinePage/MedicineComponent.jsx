@@ -1,29 +1,11 @@
-<<<<<<< Updated upstream
 import { useState } from "react";
 import styled from "styled-components";
 import { Section, Area, Box, Item } from "../../styles/Layouts";
 import { LargeButton } from "../../styles/styledComponents/StyledComponents";
 import { SearchBox, ComboBox, ComboSearchBox } from "./MedicineContainer";
 import capsule from "../../assets/icons/medicine/capsule.png";
-=======
-import styled from "styled-components";
-import { Section, Area, Box, Item, Element } from "../../styles/Layouts";
-import { LargeButton } from "../../styles/styledComponents/StyledComponents";
-import {
-  ComboSearchBox,
-  ComboBox,
-  SearchBox,
-} from "../../styles/styledComponents/ComboSearchBox";
-import capsule from "../../assets/icons/medicine/capsule.png"
-import { media } from "../../utils/MediaQuery";
->>>>>>> Stashed changes
 
-const StyledIcon = styled.img.attrs({
-  className: "medicine-icon",
-})`
-  object-fit: contain;
 
-<<<<<<< Updated upstream
 const StyledIcon = styled.img.attrs({
   className: "medicine-icon",
 })`
@@ -47,10 +29,6 @@ const LogoItem = styled(Item)`
     }
   }
 `;
-=======
-`
-
->>>>>>> Stashed changes
 
 const ResponsiveSearchSection = styled(Section)`
   height: 350px;
@@ -92,12 +70,8 @@ const SearchItemLeft = styled(Item)`
   display: flex;
   justify-content: center;
   align-items: center;
-<<<<<<< Updated upstream
   box-shadow: none;
   /* height: 60px; */
-=======
-  border: 1px solid black;
->>>>>>> Stashed changes
   width: 15%;
   white-space: nowrap;
 
@@ -132,7 +106,6 @@ const SearchItemRight = styled(Item)`
 
 const ButtonItem = styled(Item)`
   display: flex;
-<<<<<<< Updated upstream
   /* justify-content: center; */
   align-items: center;
   width: 25%;
@@ -157,11 +130,6 @@ const StyledButton = styled(LargeButton)`
   @media (max-width: 768px) {
     width: 100%;
   }
-=======
-  justify-content: center;
-  align-items: center;
-  width: 19.5%;
->>>>>>> Stashed changes
 `;
 
 export const SearchSection = () => {
@@ -187,20 +155,11 @@ export const SearchSection = () => {
     setSearchQuery(value);
   };
 
-<<<<<<< Updated upstream
-=======
-  // const handleSearch = () => {
-  //   // console.log(`검색 유형: ${searchType}, 검색어: ${searchQuery}`);
-  //   // // 여기에 검색 로직을 구현합니다.
-  // };
-
->>>>>>> Stashed changes
   return (
     <>
       <ResponsiveSearchSection>
         <ResponsiveSearchArea>
           <ResponsiveItemBox>
-<<<<<<< Updated upstream
             <LogoItem >
               <StyledIcon src={capsule} />
               <h1>제품 검색</h1>
@@ -223,25 +182,6 @@ export const SearchSection = () => {
             <SearchItemLeft >
               <p>기능성 검색</p>
             </SearchItemLeft>
-=======
-            <Item $width="5%"><StyledIcon img src={capsule}/>
-              </Item>
-            <Item $width="95%">$제품 검색</Item>
-          </ResponsiveItemBox>
-          <ResponsiveItemBox>
-            <Item $paddingLeft="14.5%" $align="center" $justify="flex-start">
-              <ComboSearchBox />
-            </Item>
-          </ResponsiveItemBox>
-          <ResponsiveItemBox>
-            <SearchItemLeft>원료검색</SearchItemLeft>
-            <SearchItemRight>
-              <SearchBox></SearchBox>
-            </SearchItemRight>
-          </ResponsiveItemBox>
-          <ResponsiveItemBox>
-            <SearchItemLeft>기능성 검색</SearchItemLeft>
->>>>>>> Stashed changes
             <SearchItemRight>
               <ComboBox>영양소 기능</ComboBox>
               <ComboBox>생리활성 기능</ComboBox>
@@ -249,7 +189,6 @@ export const SearchSection = () => {
             </SearchItemRight>
           </ResponsiveItemBox>
           <ResponsiveItemBox>
-<<<<<<< Updated upstream
             <SearchItemLeft >
               <p>초성 검색</p>
             </SearchItemLeft>
@@ -260,13 +199,6 @@ export const SearchSection = () => {
             </ButtonItem>
             </SearchItemRight>
             
-=======
-            <SearchItemLeft>초성 검색</SearchItemLeft>
-            <SearchItemRight>ㄱㄴㄷㄹㅁㅂㅅ</SearchItemRight>
-            <ButtonItem>
-              <LargeButton>검색</LargeButton>
-            </ButtonItem>
->>>>>>> Stashed changes
           </ResponsiveItemBox>
         </ResponsiveSearchArea>
       </ResponsiveSearchSection>

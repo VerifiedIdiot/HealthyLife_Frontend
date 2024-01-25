@@ -231,7 +231,7 @@ export const BoardSection = () => {
         <ResponsiveBoardArea>
           <ResponsiveItemBox>
             <LogoItem>
-              <StyledIcon img src={capsule} />
+              <StyledIcon src={capsule} />
               <h1>제품 목록</h1>
             </LogoItem>
           </ResponsiveItemBox>

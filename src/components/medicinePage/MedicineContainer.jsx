@@ -19,7 +19,7 @@ const ComboSelectBox = styled.select`
   height: 40px;
   border: 1px solid #ccc;
   border-radius: 4px;
-  width: 20.5%;
+  width: 21%;
 
   @media (max-width: 768px) {
     width: 110px;
@@ -29,7 +29,7 @@ const ComboSelectBox = styled.select`
 `;
 
 const ComboInputField = styled.input`
-  width: 54.5%;
+  width: 54%;
   height: 40px;
   
   margin: 10px 0;

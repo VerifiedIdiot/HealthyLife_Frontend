@@ -8,18 +8,14 @@ import MiddleModal from "../../styles/modals/MiddleModal";
 export const CalendarComponent = () => {
   const calendarRef = useRef(null);
   const [clickedDate, setClickedDate] = useState(null);
-  const [isModalOpen, setIsModalOpen] = useState({
-    Middle: false,
-  });
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   const handleDateClick = (info) => {
     const clickedDateTime = new Date(info.date);
     const formattedDate = clickedDateTime.toLocaleString();
     console.log("클릭한 날짜 및 시간:", formattedDate);
     setClickedDate(formattedDate);
-  };
-  const closeModal = () => {
-    setClickedDate(null);
+    setIsModalOpen(true);
   };
 
   return (
@@ -70,10 +66,11 @@ export const CalendarComponent = () => {
       />
       {clickedDate && (
         <MiddleModal
-          isOpen={true}
-          closeModal={closeModal}
+          $isOpen={isModalOpen} // 모달의 열림 상태를 boolean 값으로 전달
+          $onClose={() => setIsModalOpen(false)} // 모달 닫기 함수를 전달
           clickedDate={clickedDate}
-        />
+        >
+        </MiddleModal>
       )}
     </Container>
   );

@@ -12,8 +12,6 @@ export const Wrapper = styled.div.attrs({
   align-items: center;
   width: 100%;
   min-height: 100vh;
-  
-  
 `;
 
 const GlobalStyle = createGlobalStyle`
@@ -23,10 +21,11 @@ ${reset}
   * {
     margin: 0;
     padding: 0;
-    /* font-family: 'Open Sans', sans-serif; */
-  
   }
-  
+
+  body {
+    font-family: 'Noto Sans', sans-serif;
+  }
 `;
 
 export default GlobalStyle;

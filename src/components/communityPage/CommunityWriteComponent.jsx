@@ -8,6 +8,7 @@ import "react-quill/dist/quill.snow.css";
 import ReactQuill from "react-quill";
 import styled from "styled-components";
 import { SmallButton } from "../../styles/styledComponents/StyledComponents";
+import MemberApi from "../../api/MemberApi";
 
 const WriteSection = styled.div`
   display: flex;
@@ -95,7 +96,7 @@ const ButtonContainer = styled.div`
   align-items: center;
   gap: 5px;
 `;
-const CommunityWrite = () => {
+const WriteComponent = () => {
   const [email, setEmail] = useState("");
   // const token = Common.getAccessToken();
   // const decode = token ? jwtDecode(token) : null;
@@ -119,6 +120,13 @@ const CommunityWrite = () => {
   useEffect(() => {
     // if (decode) {
     // setEmail(decode.sub);
+    // const fetchData = async () => {
+    //   const userInfoResponse = await MemberApi.getUserInfo(
+    // decode.sub
+    // );
+    // setNickName(userInfoResponse.userNickname);
+    // };
+    //fetchData();
     // }
     const getCategories = async () => {
       try {
@@ -166,6 +174,7 @@ const CommunityWrite = () => {
       alert("제목과 내용을 입력하세요.");
       return;
     }
+
     const communityDto = {
       title: title,
       content: content,
@@ -238,4 +247,4 @@ const CommunityWrite = () => {
   );
 };
 
-export default CommunityWrite;
+export default WriteComponent;

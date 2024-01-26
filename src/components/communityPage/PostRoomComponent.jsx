@@ -5,7 +5,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import Common from "../../utils/Common";
 // import { jwtDecode } from "jwt-decode";
 import { Main, Container } from "../../styles/Layouts";
-
+import CommunityComponent from "./CommunityComponent";
 const PostHeader = styled.div`
   display: flex;
   border-bottom: 1px solid #ccc;
@@ -221,18 +221,17 @@ const FormContainer = styled.div`
   }
 `;
 
-const InfoContainer = styled.div`
+const CommentHeader = styled.div`
   display: flex;
-  justify-content: center;
+  justify-content: space-between;
   align-items: center;
+  padding: 1em 0;
+  overflow: hidden;
   width: 100%;
-  gap: 0.6em;
-  background-color: rgba(238, 238, 238, 0.1);
-  color: #1e90ff;
-
-  @media (max-width: 1024px) {
-    flex-direction: column;
-  }
+  height: 38px;
+  margin-top: 15px;
+  font-size: 13px;
+  color: #333;
 `;
 
 const CommentForm = styled.form`
@@ -453,6 +452,20 @@ const PostDownLike = styled.button`
 const ButtonText = styled.span`
   padding-left: 0.35em;
 `;
+const Dropdown = styled.select`
+  width: 200px;
+  height: 40px;
+  margin: 10px;
+  padding: 5px;
+  background: transparent;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 16px;
+  &:focus {
+    outline: none;
+    border-color: #4a90e2;
+  }
+`;
 const CommentPageButton = styled.button`
   --flip-button-height: 40px;
   width: 50%;
@@ -498,16 +511,28 @@ const CommentPageButton = styled.button`
 `;
 
 const Post = () => {
-  const [comments, setComments] = useState([]);
+  const [comments, setComments] = useState([
+    {
+      id: 1,
+      communityId: 1,
+      categoryId: 1,
+      categoryName: "과일",
+      title: "제목",
+      nickName: "하루",
+      regDate: "",
+      likeItCount: "",
+      viewCount: "",
+    },
+  ]);
   const [post, setPost] = useState({
-    communityId: 7,
+    communityId: 1,
     categoryId: 2,
     categoryName: "사과",
     title: "제목1",
     nickName: "하루1",
-    regDate: "",
-    likeItCount: "",
-    viewCount: "",
+    regDate: "2024-01-11",
+    likeItCount: "0",
+    viewCount: "0",
   });
   const [currentCommentPage, setCurrentCommentPage] = useState(0);
   const [totalCommentPages, setTotalCommentPages] = useState(0);
@@ -522,8 +547,7 @@ const Post = () => {
 
   const [totalComment, setTotalComment] = useState(0);
 
-  const { id } = useParams();
-  const navigate = useNavigate();
+  const { communityId } = useParams();
 
   useEffect(() => {
     // if (decode) {
@@ -533,10 +557,12 @@ const Post = () => {
   useEffect(() => {
     const postDetail = async () => {
       try {
-        const response = await CommunityAxiosApi.getCommunityDetail(id);
+        const response = await CommunityAxiosApi.getCommunityDetail(
+          communityId
+        );
         setPost(response.data);
         const commentResponse = await CommunityAxiosApi.getCommentList(
-          id,
+          communityId,
           sortType,
           currentCommentPage
         );
@@ -545,7 +571,7 @@ const Post = () => {
         setTotalCommentPages(commentResponse.data.totalPages);
         // 전체 댓글 수 조회
         const totalCommentsResponse = await CommunityAxiosApi.getTotalComments(
-          id
+          communityId
         );
         setTotalComment(totalCommentsResponse.data);
       } catch (error) {
@@ -554,23 +580,21 @@ const Post = () => {
     };
     postDetail();
     console.log(post.mediaPaths);
-  }, [id, currentCommentPage, sortType]);
+  }, [communityId, currentCommentPage, sortType]);
 
   const commentWrite = async () => {
     try {
       const response = await CommunityAxiosApi.commentWrite(
         email,
-        nickName,
-        password,
-        id,
+        communityId,
         newComment,
         null
       );
       setComments([...comments, response.data]);
-      setNewComment(id, response.data.id, newComment, email);
+      setNewComment("");
       // 댓글 작성 후 댓글 목록 다시 불러오기
       const commentResponse = await CommunityAxiosApi.getCommentList(
-        id,
+        communityId,
         sortType,
         currentCommentPage
       );
@@ -581,8 +605,8 @@ const Post = () => {
   };
   const like = async (isLikeIt) => {
     try {
-      await CommunityAxiosApi.like(id, isLikeIt);
-      const response = await CommunityAxiosApi.getCommunityDetail(id);
+      await CommunityAxiosApi.likeIt(communityId, isLikeIt);
+      const response = await CommunityAxiosApi.getCommunityDetail(communityId);
       setPost(response.data);
       if (isLikeIt) {
         alert("추천이 완료되었습니다.");
@@ -602,6 +626,8 @@ const Post = () => {
   return (
     <Main>
       <Container>
+        <CommunityComponent categoryName={post.categoryName} />
+
         <PostHeader>
           <WriterInfo>
             <TitleContainer>
@@ -624,6 +650,16 @@ const Post = () => {
           <PostTitle>{post.likeItCount}</PostTitle>
           <PostDownLike onClick={() => like(false)}>싫어요</PostDownLike>
         </Post>
+        <CommentHeader>
+          전체 댓글 수: {totalComment}
+          <Dropdown onChange={(selected) => setSortType(selected.target.value)}>
+            {["최신순", "등록순", "답글순"].map((option, index) => (
+              <option key={index} value={option}>
+                {option}
+              </option>
+            ))}
+          </Dropdown>
+        </CommentHeader>
 
         <CommentContainer>
           {comments
@@ -659,11 +695,7 @@ const Post = () => {
                 value={newComment}
                 onChange={(e) => setNewComment(e.target.value)}
               />
-              <CommentButton
-                type="button"
-                onClick={commentWrite}
-                required={nickName && password}
-              >
+              <CommentButton type="button" onClick={commentWrite}>
                 댓글 작성
               </CommentButton>
             </FormContainer>

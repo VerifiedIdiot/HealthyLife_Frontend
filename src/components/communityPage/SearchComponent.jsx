@@ -58,20 +58,27 @@ const SearchInput = styled.input`
   line-height: 25px;
   transition: width 0.4s, opacity 0.4s, visibility 0.4s;
 `;
-const Search = () => {
+const SearchComponent = () => {
   const navigate = useNavigate();
 
   const [keyword, setKeyword] = useState("");
   const [searchType, setSearchType] = useState("titleAndContent");
 
   const search = async () => {
-    const result = await CommunityAxiosApi.searchCommunity(searchType, keyword);
+    try {
+      const result = await CommunityAxiosApi.searchCommunity(
+        searchType,
+        keyword
+      );
 
-    // navigate를 사용하여 결과 페이지로 이동. 두번째 파라미터로 상태를 전달.
-    console.log(result.data);
-    navigate(`/community/search/${keyword}`, {
-      state: { result: result.data },
-    });
+      // navigate를 사용하여 결과 페이지로 이동. 두번째 파라미터로 상태를 전달.
+      console.log(result.data);
+      navigate(`/community/search/${keyword}`, {
+        state: { result: result.data },
+      });
+    } catch (error) {
+      console.log(error);
+    }
   };
   return (
     <>
@@ -102,4 +109,4 @@ const Search = () => {
     </>
   );
 };
-export default Search;
+export default SearchComponent;

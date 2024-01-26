@@ -4,14 +4,14 @@ import { ReactComponent as Video } from "../../assets/imgs/communityImges/video-
 import React, { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import styled from "styled-components";
-import Search from "./Search";
 import Common from "../../utils/Common";
 import CommunityAxiosApi from "../../api/CommunityAxiosApi";
 import { SmallButton } from "../../styles/styledComponents/StyledComponents";
 import { Main, Container } from "../../styles/Layouts";
 import { IoIosArrowBack } from "react-icons/io";
 import { IoIosArrowForward } from "react-icons/io";
-
+import axios from "axios";
+import SearchComponent from "./SearchComponent";
 const PostSection = styled.div`
   align-self: stretch;
 `;
@@ -30,7 +30,7 @@ const SendButton = styled.div`
 `;
 const PostListTitle = styled.div`
   display: flex;
-  justify-content: space-around;
+  justify-content: space-between;
   align-items: center;
   width: 100%;
 `;
@@ -86,12 +86,7 @@ const TableRowDataWriter = styled(TableRowData)`
   white-space: nowrap;
   text-overflow: ellipsis;
 `;
-const TableRowDataCategory = styled(TableRowData)`
-  flex: 0.8;
-  overflow: hidden;
-  white-space: nowrap;
-  text-overflow: ellipsis;
-`;
+
 const TableRowDataTitle = styled(TableRowData)`
   flex: 1;
   overflow: hidden;
@@ -178,10 +173,10 @@ const Dropdown = styled.select`
   font-size: 16px;
   &:focus {
     outline: none;
-    border-color: #4a90e2;
+    border-color: #2446da;
   }
 `;
-const Community = () => {
+const CommunityComponent = () => {
   const navigate = useNavigate();
   const [posts, setPosts] = useState([
     {
@@ -190,9 +185,9 @@ const Community = () => {
       categoryName: "과일",
       title: "제목",
       nickName: "하루",
-      regDate: "",
-      likeItCount: "",
-      viewCount: "",
+      regDate: "2012-11-22",
+      likeItCount: "0",
+      viewCount: "0",
     },
     {
       communityId: 2,
@@ -255,9 +250,9 @@ const Community = () => {
       viewCount: "",
     },
   ]);
-  const [currentPage, setCurrentPage] = useState(0); // 현재 게시물 상태
+  const [currentPage, setCurrentPage] = useState(0);
   const [totalPages, setTotalPages] = useState(0);
-  const [visiblePageStart, setVisiblePageStart] = useState(0); // 현재 보고 있는 페이지 첫부분 저장
+  const [visiblePageStart, setVisiblePageStart] = useState(0);
   const categoryId = Number(useParams().categoryId);
   const validCategoryId = isNaN(categoryId) ? undefined : categoryId;
   const [totalComments, setTotalComments] = useState([]);
@@ -301,18 +296,23 @@ const Community = () => {
   useEffect(() => {
     // 서버에서 데이터를 가져오는 함수
     const postPage = async () => {
-      const responsePages =
-        validCategoryId === undefined
-          ? await CommunityAxiosApi.getCommunityTotalPages(PAGE_SIZE)
-          : await CommunityAxiosApi.getCommunityTotalPagesByCategory(
-              validCategoryId,
-              PAGE_SIZE
-            );
-      setTotalPages(responsePages.data);
+      try {
+        const responsePages =
+          validCategoryId === undefined
+            ? await CommunityAxiosApi.getCommunityTotalPages(PAGE_SIZE)
+            : await CommunityAxiosApi.getCommunityTotalPagesByCategory(
+                validCategoryId,
+                PAGE_SIZE,
+                sortType
+              );
+        setTotalPages(responsePages.data);
+      } catch (error) {
+        console.log(error);
+      }
     };
 
     postPage();
-  }, [validCategoryId, currentPage, PAGE_SIZE]);
+  }, [validCategoryId, currentPage, PAGE_SIZE, sortType]);
   useEffect(() => {
     //  컴포넌트가 언마운트된 후에 상태를 변경하려는 작업을 방지
     // let cancelTokenSource = axios.CancelToken.source();
@@ -326,9 +326,11 @@ const Community = () => {
             : await CommunityAxiosApi.getCommunityListByCategory(
                 validCategoryId,
                 currentPage,
-                PAGE_SIZE
+                PAGE_SIZE,
+                sortType
                 // { cancelToken: cancelTokenSource.token }
               );
+
         setPosts(rsp.data);
         console.log(rsp.data);
         // 전체 댓글 수 조회
@@ -340,14 +342,20 @@ const Community = () => {
         );
         setTotalComments(totalComments);
       } catch (error) {
-        console.log(error);
+        if (!axios.isCancel(error)) {
+          console.log(error);
+        }
       }
     };
     postList();
     return () => {
       // cancelTokenSource.cancel();
     };
-  }, [validCategoryId, currentPage, PAGE_SIZE, totalPages]);
+  }, [validCategoryId, currentPage, PAGE_SIZE, totalPages, sortType]);
+  const categoryName =
+    validCategoryId !== undefined && posts.length > 0
+      ? posts[0].categoryName
+      : "전체";
 
   return (
     <Main>
@@ -355,7 +363,7 @@ const Community = () => {
         <PostSection>
           <InputContainer>
             <PostListTitle>
-              <TitleContent>카테고리</TitleContent>
+              <TitleContent>{categoryName}</TitleContent>
               <CommentHeader>
                 <Dropdown
                   onChange={(selected) => setSortType(selected.target.value)}
@@ -369,12 +377,12 @@ const Community = () => {
               </CommentHeader>
             </PostListTitle>
           </InputContainer>
+
           <PostList>
             <PostTable>
               <TableBody>
                 <TableRow>
                   <TableRowDataIcon></TableRowDataIcon>
-                  <TableRowDataCategory>카테고리</TableRowDataCategory>
                   <TableRowDataTitle>제목</TableRowDataTitle>
                   <TableRowDataWriter>글쓴이</TableRowDataWriter>
                   <TableRowDataDate>작성일</TableRowDataDate>
@@ -391,7 +399,7 @@ const Community = () => {
                     <TableNormalRow
                       key={post.id}
                       onClick={() => {
-                        navigate(`/community/detail/${post.communityId}`);
+                        navigate(`/community/detail/${post.id}`);
                       }}
                     >
                       <TableRowDataIcon>
@@ -403,9 +411,6 @@ const Community = () => {
                           <Text />
                         )}
                       </TableRowDataIcon>
-                      <TableRowDataCategory>
-                        {post.categoryName}
-                      </TableRowDataCategory>
                       <TableRowDataTitle>
                         {Common.truncateText(post.title, 20)}{" "}
                         {totalComments[posts.indexOf(post)] > 0 &&
@@ -431,11 +436,14 @@ const Community = () => {
                 글쓰기
               </SmallButton>
             </SendButton>
-            <Search />
+            <SearchComponent />
             <PostPage>
               <Pagination>
-                <PageContant onClick={firstClick} disabled={currentPage === 0}>
+                <PageContant>
                   <IoIosArrowBack />
+                </PageContant>
+                <PageContant onClick={firstClick} disabled={currentPage === 0}>
+                  처음
                 </PageContant>
               </Pagination>
               {/* for 문처럼 페이지를 생성하기 위해 Array 인스턴스 생성, _이건 아무의미없는값이고 서서히 늘어나는 현식 */}
@@ -457,6 +465,9 @@ const Community = () => {
                   onClick={lastClick}
                   disabled={currentPage >= totalPages - 1}
                 >
+                  마지막
+                </PageContant>
+                <PageContant>
                   <IoIosArrowForward />
                 </PageContant>
               </Pagination>
@@ -467,4 +478,4 @@ const Community = () => {
     </Main>
   );
 };
-export default Community;
+export default CommunityComponent;

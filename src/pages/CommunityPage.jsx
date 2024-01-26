@@ -4,14 +4,13 @@ import { useEffect, useState } from "react";
 import styled, { keyframes } from "styled-components";
 import { Main } from "../styles/Layouts";
 import CommunityAxiosApi from "../api/CommunityAxiosApi";
-import CommunitySearch from "../components/communityPage/CommunitySearch";
-import CommunityWrite from "../components/communityPage/CommunityWrite";
-import Community from "../components/communityPage/Community";
-import Post from "../components/communityPage/PostRoom";
-import { SmallButton } from "../styles/styledComponents/StyledComponents";
+import Post from "../components/communityPage/PostRoomComponent";
 // import { jwtDecode } from "jwt-decode";
 import Common from "../utils/Common";
-import MemberApi from "../api/MemberApi";
+import WriteComponent from "../components/communityPage/CommunityWriteComponent";
+import CommunityComponent from "../components/communityPage/CommunityComponent";
+import CommunitySearchComponent from "../components/communityPage/CommunitySearchComponent";
+// import { SmallButton } from "../styles/styledComponents/StyledComponents";
 
 const Container = styled.div`
   display: flex;
@@ -274,11 +273,14 @@ const CommunityPage = () => {
               </CommunityMenuList>
             </Aside>
             <Routes>
-              <Route path="/" element={<Community />} />
-              <Route path="search/:searchTerm" element={<CommunitySearch />} />
-              <Route path=":categoryId" element={<Community />} />
+              <Route path="/" element={<CommunityComponent />} />
+              <Route
+                path="search/:searchTerm"
+                element={<CommunitySearchComponent />}
+              />
+              <Route path=":categoryId" element={<CommunityComponent />} />
               <Route path="detail/:id" element={<Post />} />
-              <Route path="write" element={<CommunityWrite />} />
+              <Route path="write" element={<WriteComponent />} />
             </Routes>
           </CommunityList>
         </Container>

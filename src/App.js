@@ -33,8 +33,9 @@ import PaymentPage from "./pages/PaymentPage";
 import MyPage from "./pages/MyPage";
 import InformationPage from "./pages/InformationPage";
 import MyPageEdit from "./pages/MyPageEdit";
-import CommunityWrite from "./components/communityPage/CommunityWrite";
 import CalendarInput from "./components/calendarPage/CalendarInput";
+import Post from "./components/communityPage/PostRoomComponent";
+import WriteComponent from "./components/communityPage/CommunityWriteComponent";
 function App() {
   // 방문자 추적 커스텀 훅
   useTrackUserVisit();
@@ -66,16 +67,21 @@ function App() {
               <Route path="/mypage" element={<MyPage />} />
               <Route path="/mypage/edit" element={<MyPageEdit />} />
 
-              <Route path="/community" element={<CommunityPage />} />
-              <Route path="/community/write" element={<CommunityWrite />} />
+              <Route path="/community/*" element={<CommunityPage />} />
+              <Route
+                path="/community/:categoryId"
+                element={<CommunityPage />}
+              />
+              <Route path="/community/write" element={<WriteComponent />} />
+              <Route path="/community/detail/:id" element={<Post />} />
               <Route path="/ranking" element={<RankingPage />} />
-              <Route path="/calendar/info" element={<CalendarInput />}/>
+              <Route path="/calendar/info" element={<CalendarInput />} />
             </Route>
             <Route element={<HeaderOnly />}>
               <Route path="/calendar" element={<CalendarPage />} />
             </Route>
             {/* 사용자가 잘못된 URL을 입력했을 때 홈으로 리다이렉션 */}
-            <Route path="*" element={<Navigate to="/" replace />} />
+            {/* <Route path="*" element={<Navigate to="/" replace />} /> */}
 
             <Route path="/test2" element={<TestPage />} />
           </Routes>

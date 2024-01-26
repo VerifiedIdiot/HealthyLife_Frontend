@@ -7,9 +7,10 @@ import { useNavigate, useLocation } from "react-router-dom";
 import { useEffect, useState } from "react";
 import Common from "../../utils/Common";
 import CommunityAxiosApi from "../../api/CommunityAxiosApi";
-import Search from "./Search";
 import styled from "styled-components";
-
+import SearchComponent from "./SearchComponent";
+import CommunityComponent from "./CommunityComponent";
+import axios from "axios";
 const PostContainer = styled.div`
   display: flex;
   width: 1000px;
@@ -185,7 +186,7 @@ const Page = styled.a`
   font-weight: 700;
   line-height: 18px;
 `;
-const CommunitySearch = () => {
+const CommunitySearchComponent = () => {
   const navigate = useNavigate();
   const [posts, setPosts] = useState([
     {
@@ -213,9 +214,8 @@ const CommunitySearch = () => {
     const imgTag = parsedHtml.querySelector("img");
     const videoTag = parsedHtml.querySelector("video");
     const iframeTag = parsedHtml.querySelector("iframe");
-
     return {
-      img: imgTag !== null,
+      image: imgTag !== null,
       video: videoTag !== null || iframeTag !== null, // iframe 태그 추가
     }; // 이미지 태그와 동영상 태그가 각각 있으면 true, 없으면 false를 반환
   };
@@ -243,7 +243,11 @@ const CommunitySearch = () => {
           (response) => response.data
         );
         setTotalComments(totalComments);
-      } catch (error) {}
+      } catch (error) {
+        if (!axios.isCancel(error)) {
+          console.log(error);
+        }
+      }
     };
     postList();
   }, [result, currentPage, pageSize, totalPages]);
@@ -252,15 +256,15 @@ const CommunitySearch = () => {
     <>
       <PostContainer>
         <PostSection>
+          <CommunityComponent categoryName={"검색된"} />
           <PostListTitle>
-            <TitleContent>카테고리</TitleContent>
+            <TitleContent>전체</TitleContent>
           </PostListTitle>
           <PostList>
             <PostTable>
               <TableBody>
                 <TableRow>
                   <TableRowDataIcon></TableRowDataIcon>
-                  <TableRowDataCategory>카테고리</TableRowDataCategory>
                   <TableRowDataTitle>제목</TableRowDataTitle>
                   <TableRowDataWriter>글쓴이</TableRowDataWriter>
                   <TableRowDataDate>작성일</TableRowDataDate>
@@ -289,15 +293,18 @@ const CommunitySearch = () => {
                             <Text />
                           )}
                         </TableRowDataIcon>
-                        <TableRowDataWriter>{writerInfo}</TableRowDataWriter>
                         <TableRowDataTitle>
                           {Common.truncateText(post.title, 20)}{" "}
                           {totalComments[posts.indexOf(post)] > 0 &&
                             `(${totalComments[posts.indexOf(post)]})`}
                         </TableRowDataTitle>
+                        <TableRowDataWriter>{writerInfo}</TableRowDataWriter>
+
                         <TableRowDataDate>
                           {Common.timeFromNow(post.regDate)}
                         </TableRowDataDate>
+                        <TableRowDataLikes>{post.viewCount}</TableRowDataLikes>
+
                         <TableRowDataViews>{post.viewCount}</TableRowDataViews>
                       </TableNormalRow>
                     );
@@ -305,13 +312,13 @@ const CommunitySearch = () => {
                 ) : (
                   <TableNormalRow>
                     <TableRowDataTitle>
-                      <p>검색결과가 없습니다.</p>
+                      검색된 결과가 없습니다
                     </TableRowDataTitle>
                   </TableNormalRow>
                 )}
               </TableBody>
             </PostTable>
-            <Search />
+            <SearchComponent />
             <PostPage>
               <Pagination>
                 <PageContant>
@@ -365,4 +372,4 @@ const CommunitySearch = () => {
   );
 };
 
-export default CommunitySearch;
+export default CommunitySearchComponent;

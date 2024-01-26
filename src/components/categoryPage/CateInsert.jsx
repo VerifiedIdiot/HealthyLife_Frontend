@@ -47,6 +47,8 @@ const CateInsert = ({ onInsert }) => {
     (e) => {
       onInsert(value);
       setValue("");
+      // submit 이벤트는 브라우저에서 새로고침을 발생시킵니다. 이를 방지하기 위한 처리
+
       e.preventDefault();
     },
     [onInsert, value]

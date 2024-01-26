@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 
-const useApiRequest = (apiFunc) => {
+const useApiRequest = (apiFunc, params) => {
     const [data, setData] = useState(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
@@ -8,7 +8,7 @@ const useApiRequest = (apiFunc) => {
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const result = await apiFunc();
+                const result = await apiFunc(params);
                 setData(result);
             } catch (error) {
                 setError(error);
@@ -18,7 +18,7 @@ const useApiRequest = (apiFunc) => {
         };
 
         fetchData();
-    }, [apiFunc]);
+    }, [apiFunc, params]);
 
     return { data, loading, error };
 };

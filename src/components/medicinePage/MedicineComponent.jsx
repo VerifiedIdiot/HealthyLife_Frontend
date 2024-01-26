@@ -2,7 +2,12 @@ import { useState } from "react";
 import styled from "styled-components";
 import { Section, Area, Box, Item } from "../../styles/Layouts";
 import { LargeButton } from "../../styles/styledComponents/StyledComponents";
-import { SearchBox, ComboBox, ComboSearchBox, FilterDropdown } from "./MedicineContainer";
+import {
+  SearchBox,
+  ComboBox,
+  ComboSearchBox,
+  FilterDropdown,
+} from "./MedicineContainer";
 import capsule from "../../assets/icons/medicine/capsule.png";
 
 const StyledIcon = styled.img.attrs({
@@ -23,9 +28,9 @@ const LogoItem = styled(Item)`
     margin-left: 10px;
   }
   @media (max-width: 768px) {
+    width: 50%;
     h1 {
       margin-left: 0;
-      width: 100%;
     }
   }
 `;
@@ -124,27 +129,13 @@ const StyledButton = styled(LargeButton)`
   }
 `;
 
-export const SearchSection = () => {
-  const [comboSearch, setComboSearch] = useState("");
-  const [searchQuery, setSearchQuery] = useState("");
-
-  const handleSearch = () => {
-    // 여기에서 검색 로직 구현
-    console.log("Combo Search Type:", comboSearch);
-    console.log("Search Query:", searchQuery);
-
-    // 검색 로직을 여기에 추가하세요.
-  };
-
-  // 각 컴포넌트의 상태를 업데이트하는 함수들
-  const handleComboSearchChange = (value) => {
-    setComboSearch(value);
-  };
-
-  const handleSearchQueryChange = (value) => {
-    setSearchQuery(value);
-  };
-
+export const SearchSection = ({
+  comboSearch,
+  searchQuery,
+  handleSearch,
+  handleComboSearchChange,
+  handleSearchQueryChange,
+}) => {
   return (
     <>
       <ResponsiveSearchSection>
@@ -157,7 +148,7 @@ export const SearchSection = () => {
           </ResponsiveItemBox>
           <ResponsiveItemBox>
             <ResponsiveItem>
-              <ComboSearchBox onChange={handleComboSearchChange} />
+            <ComboSearchBox onChange={handleComboSearchChange} />
             </ResponsiveItem>
           </ResponsiveItemBox>
           <ResponsiveItemBox>
@@ -165,7 +156,7 @@ export const SearchSection = () => {
               <p>원료검색</p>
             </SearchItemLeft>
             <SearchItemRight>
-              <SearchBox onChange={handleSearchQueryChange}></SearchBox>
+            <SearchBox onChange={handleSearchQueryChange} />
             </SearchItemRight>
           </ResponsiveItemBox>
           <ResponsiveItemBox>
@@ -185,7 +176,9 @@ export const SearchSection = () => {
             <SearchItemRight $width="100%">
               <InitialConsonant>ㄱㄴㄷㄹㅁㅂㅅ</InitialConsonant>
               <ButtonItem>
-                <StyledButton onClick={handleSearch}>검색</StyledButton>
+                <StyledButton type="button" onClick={handleSearch}>
+                  검색
+                </StyledButton>
               </ButtonItem>
             </SearchItemRight>
           </ResponsiveItemBox>
@@ -209,9 +202,9 @@ const ResponsiveFilterItem = styled(Item)`
   flex-direction: row-reverse;
   align-items: center;
   width: 70%;
-  
+
   padding-right: 10px;
-`
+`;
 
 const ResponsiveBoardArea = styled(Area)`
   /* border: 1px solid black; */
@@ -224,7 +217,7 @@ const ResponsiveBoardBox = styled(Box)`
   height: auto;
 `;
 
-export const BoardSection = ({totalCount}) => {
+export const BoardSection = ({ totalCount }) => {
   return (
     <>
       <ResponsiveBoardSection>
@@ -237,16 +230,13 @@ export const BoardSection = ({totalCount}) => {
             </LogoItem>
 
             <ResponsiveFilterItem>
-              <FilterDropdown/>
+              <FilterDropdown />
             </ResponsiveFilterItem>
-          
           </ResponsiveItemBox>
         </ResponsiveBoardArea>
 
         <ResponsiveBoardArea>
-          <ResponsiveBoardBox>
-
-          </ResponsiveBoardBox>
+          <ResponsiveBoardBox></ResponsiveBoardBox>
         </ResponsiveBoardArea>
       </ResponsiveBoardSection>
     </>

@@ -1,18 +1,19 @@
 import styled from "styled-components";
 import { useState } from "react";
+import useApiRequest from "../../hooks/useApiRequest";
+import MedicineApi from "../../api/MedicineApi";
+
 
 // ComboSearchBox 컴포넌트
 const ComboSearchContainer = styled.div`
   display: flex;
   align-items: center;
-  
+
   width: 100%;
 
   @media (max-width: 768px) {
     width: 100%;
-    
   }
-
 `;
 
 const ComboSelectBox = styled.select`
@@ -23,15 +24,13 @@ const ComboSelectBox = styled.select`
 
   @media (max-width: 768px) {
     width: 110px;
-    
   }
-
 `;
 
 const ComboInputField = styled.input`
   width: 54%;
   height: 40px;
-  
+
   margin: 10px 0;
   border: 1px solid #ccc;
   border-radius: 4px;
@@ -40,7 +39,6 @@ const ComboInputField = styled.input`
     width: 60vw;
     margin-left: 5px;
   }
-
 `;
 
 export const ComboSearchBox = () => {
@@ -50,15 +48,13 @@ export const ComboSearchBox = () => {
 
   const handleSearchTypeChange = (e) => {
     setSearchType(e.target.value);
-    console.log(e.target.value);
+    // console.log(e.target.value);
   };
 
   const handleSearchQueryChange = (e) => {
     setSearchQuery(e.target.value);
-    console.log(searchQuery);
+    // console.log(searchQuery);
   };
-
-
 
   return (
     <>
@@ -67,7 +63,6 @@ export const ComboSearchBox = () => {
           {searchTypes.map((type) => (
             <option key={type} value={type}>
               {type}
-              
             </option>
           ))}
         </ComboSelectBox>
@@ -86,21 +81,19 @@ export const ComboSearchBox = () => {
 const SearchContainer = styled.div`
   display: flex;
   align-items: center;
-  
+
   width: 100%;
 
   /* @media (max-width: 768px) {
     
     width: 100%;
   } */
-
-
 `;
 
 const SearchInputField = styled.input`
   width: 75%;
   height: 40px;
-  
+
   margin: 10px 0;
   border: 1px solid #ccc;
   border-radius: 4px;
@@ -109,17 +102,14 @@ const SearchInputField = styled.input`
     width: 60vw;
     margin-left: 5px;
   }
-
-
 `;
 
 export const SearchBox = () => {
-
   const [searchQuery, setSearchQuery] = useState("");
 
   const handleSearchQueryChange = (e) => {
     setSearchQuery(e.target.value);
-    console.log(searchQuery);
+    // console.log(searchQuery);
   };
 
   return (
@@ -146,10 +136,8 @@ const SelectBox = styled.div`
 
   @media (max-width: 768px) {
     width: 19.5vw;
-    margin-left: .5vw;
+    margin-left: 0.5vw;
   }
-
-
 
   .dropdown-content {
     display: none;
@@ -173,7 +161,6 @@ const CheckboxLabel = styled.label`
 const ResetButton = styled.button`
   margin-top: 10px;
 `;
-
 
 export const ComboBox = ({ items }) => {
   // 드롭다운 표시 여부 상태
@@ -229,37 +216,37 @@ export const ComboBox = ({ items }) => {
   );
 };
 
-
-
-
-
-
 export const FilterDropdown = () => {
   const searchTypes = ["10개씩", "30개씩", "50개씩", "100개씩"];
   const [searchType, setSearchType] = useState(searchTypes[0]);
- 
+
+  // 숫자만 추출하는 함수
+  const extractNumber = (string) => {
+    const matches = string.match(/\d+/);
+    return matches ? parseInt(matches[0], 10) : null;
+  };
+
+  // API 요청을 위한 함수
+  
+
+  const { data, loading, error } = useApiRequest(
+    MedicineApi.getSortByOffSet,
+    extractNumber(searchType)
+  );
 
   const handleSearchTypeChange = (e) => {
     setSearchType(e.target.value);
-    console.log(e.target.value);
   };
-
-
-
-
 
   return (
     <>
-      
-        <ComboSelectBox value={searchType} onChange={handleSearchTypeChange}>
-          {searchTypes.map((type) => (
-            <option key={type} value={type}>
-              {type}
-              
-            </option>
-          ))}
-        </ComboSelectBox>
-      
+      <ComboSelectBox value={searchType} onChange={handleSearchTypeChange}>
+        {searchTypes.map((type) => (
+          <option key={type} value={type}>
+            {type}
+          </option>
+        ))}
+      </ComboSelectBox>
     </>
   );
 };

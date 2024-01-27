@@ -33,7 +33,6 @@ import PaymentPage from "./pages/PaymentPage";
 import MyPage from "./pages/MyPage";
 import InformationPage from "./pages/InformationPage";
 import MyPageEdit from "./pages/MyPageEdit";
-import CalendarInput from "./components/calendarPage/CalendarInput";
 import Post from "./components/communityPage/PostRoomComponent";
 import WriteComponent from "./components/communityPage/CommunityWriteComponent";
 function App() {
@@ -75,7 +74,6 @@ function App() {
               <Route path="/community/write" element={<WriteComponent />} />
               <Route path="/community/detail/:id" element={<Post />} />
               <Route path="/ranking" element={<RankingPage />} />
-              <Route path="/calendar/info" element={<CalendarInput />} />
             </Route>
             <Route element={<HeaderOnly />}>
               <Route path="/calendar" element={<CalendarPage />} />

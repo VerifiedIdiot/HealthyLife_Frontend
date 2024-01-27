@@ -1,69 +1,53 @@
-import React, { useState, useRef } from 'react';
-import FullCalendar from '@fullcalendar/react';
-import dayGridPlugin from '@fullcalendar/daygrid';
-import interactionPlugin from '@fullcalendar/interaction';
-import { Container } from "../../styles/Layouts";
+import React, { useState, useRef } from "react";
+import FullCalendar from "@fullcalendar/react";
+import dayGridPlugin from "@fullcalendar/daygrid";
+import interactionPlugin from "@fullcalendar/interaction";
 import MiddleModal from "../../styles/modals/MiddleModal";
-import CalendarInput from './CalendarInput';
+import {SelectBox, MealItemBox, TanDanJiItemBox} from "./CalendarContainer";
 
-export const CalendarComponent = () => {
+
+const value = {
+  tan : 100 ,
+  dan : 100,
+  ji :50
+
+}
+
+const CalendarSection = () => {
   const calendarRef = useRef(null);
   const [clickedDate, setClickedDate] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   const handleDateClick = (info) => {
     const clickedDateTime = new Date(info.date);
-    const formattedDate = clickedDateTime.toLocaleString();
+    const formattedDate = clickedDateTime.toLocaleDateString();
     console.log("클릭한 날짜 및 시간:", formattedDate);
     setClickedDate(formattedDate);
     setIsModalOpen(true);
   };
 
   return (
-    <Container $height="100%" $shadow="none" $border="none">
+    <>
       <FullCalendar
         ref={calendarRef}
         plugins={[dayGridPlugin, interactionPlugin]}
         titleFormat={{
-          year: 'numeric',
-          month: 'long'
+          year: "numeric",
+          month: "long",
         }}
         dayMaxEventRows={true}
-        initialView='dayGridMonth'
-        height={'90vh'}
+        initialView="dayGridMonth"
+        height={"90vh"}
         dayHeaderFormat={{
-          weekday: 'short'
+          weekday: "short",
         }}
         buttonText={{
-          today: '오늘',
-          month: '월별',
-          week: '주별',
-          day: '일별',
+          today: "오늘",
+          month: "월별",
+          week: "주별",
+          day: "일별",
         }}
         dateClick={handleDateClick}
-        events={[
-        { 
-          title: '1차전', 
-          date: '2024-01-15', 
-          backgroundColor: '#4942E4'
-        },
-        { 
-          title: '2차전', 
-          date: '2024-01-20', 
-          backgroundColor: '#4942E4' 
-        },
-        { 
-          title: '3차전', 
-          date: '2024-01-25', 
-          backgroundColor: '#4942E4' 
-        },
-        {
-          title: 'TEST1', 
-          date: '2024-01-25', 
-          backgroundColor: '#FD6B6B' 
-        },
-          
-        ]}
       />
       {clickedDate && (
         <MiddleModal
@@ -71,12 +55,14 @@ export const CalendarComponent = () => {
           $onClose={() => setIsModalOpen(false)} // 모달 닫기 함수를 전달
           clickedDate={clickedDate}
         >
-        <CalendarInput />  
+          <SelectBox clickedDate={clickedDate}>
+            <MealItemBox flex-direction="column"/>
+            <TanDanJiItemBox value={value}/>
+          </SelectBox>
         </MiddleModal>
       )}
-      
-    </Container>
+    </>
   );
 };
 
-export default CalendarComponent;
+export default CalendarSection;

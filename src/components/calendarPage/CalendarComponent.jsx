@@ -1,30 +1,43 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useCallback } from "react";
 import FullCalendar from "@fullcalendar/react";
 import dayGridPlugin from "@fullcalendar/daygrid";
 import interactionPlugin from "@fullcalendar/interaction";
 import MiddleModal from "../../styles/modals/MiddleModal";
-import {SelectBox, MealItemBox, TanDanJiItemBox} from "./CalendarContainer";
-
+import { Container, Section, Area, Box, Item } from "../../styles/Layouts";
+import { SelectBox, TandanjiRateBox } from "./CalendarContainer";
+import styled from "styled-components";
 
 const value = {
-  tan : 100 ,
-  dan : 100,
-  ji :50
+  tan: '0',
+  dan: '0',
+  ji: '0',
+};
 
-}
+const InputSection = styled(Section).attrs({
+  className: "InputSection"
+})`
+`;
+
+const InputArea = styled(Area).attrs({
+  className: "InputArea",
+})`
+  
+`;
 
 const CalendarSection = () => {
   const calendarRef = useRef(null);
   const [clickedDate, setClickedDate] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [selectedBtn, setSelectedBtn] = useState("전체기록");
 
-  const handleDateClick = (info) => {
+  const handleDateClick = useCallback((info) => {
     const clickedDateTime = new Date(info.date);
     const formattedDate = clickedDateTime.toLocaleDateString();
     console.log("클릭한 날짜 및 시간:", formattedDate);
     setClickedDate(formattedDate);
     setIsModalOpen(true);
-  };
+    setSelectedBtn("전체기록");
+  }, []);
 
   return (
     <>
@@ -55,10 +68,14 @@ const CalendarSection = () => {
           $onClose={() => setIsModalOpen(false)} // 모달 닫기 함수를 전달
           clickedDate={clickedDate}
         >
-          <SelectBox clickedDate={clickedDate}>
-            <MealItemBox flex-direction="column"/>
-            <TanDanJiItemBox value={value}/>
-          </SelectBox>
+          <InputSection>
+            <InputArea $height="30%">
+              <SelectBox
+                clickedDate={clickedDate}
+                selectedBtn={setSelectedBtn}
+              />
+            </InputArea>
+          </InputSection>
         </MiddleModal>
       )}
     </>

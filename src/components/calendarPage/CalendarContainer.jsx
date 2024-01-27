@@ -6,64 +6,63 @@ import {
   MiddleButton,
 } from "../../styles/styledComponents/StyledComponents";
 
+const value = {
+  tan: "100",
+  dan: "150",
+  ji: "50",
+};
 
-const ProgressBarContainer = styled.div`
+const ProgressBarContainer = styled(Container).attrs({
+  className: "ProgressBar",
+})`
   background-color: #e0e0e0;
-  border-radius: 8px;
-  height: 1vw;
+  height: 100%;
 `;
 
-const ProgressBar = styled.div`
+const ProgressBar = styled(Box).attrs({
+  className: "ProgressBar",
+})`
   background-color: #4caf50;
   height: 100%;
-  border-radius: 8px;
+  border-radius: 0 4px 4px 0;
+  margin: 0.3vw 0;
   transition: width 1.5s ease-in-out;
-  @media (max-width: 768px) {
-    height: 150%;
-  }
+  width: ${(props) => props.width || 0};
 `;
 
 const ProgressLabel = styled.span`
-  font-size: 1.5vw;
-  @media (max-width: 768px) {
-    font-size: 4vw; // 화면 너비가 768px 이하일 때 폰트 크기 조정
-  }
+  font-size: 1vw;
 `;
 
-export const  TanDanJiItemBox = ({ value, label }) => {
-  const [value1, setValue1] = useState(0); // 탄수화물
-  const [value2, setValue2] = useState(0); // 단백질
-  const [value3, setValue3] = useState(0); // 지방
+export const TandanjiRateBox = ({ value, label, children }) => {
   const [carbBarWidth, setCarbBarWidth] = useState(0);
   const [proteinBarWidth, setProteinBarWidth] = useState(0);
   const [fatBarWidth, setFatBarWidth] = useState(0);
 
   useEffect(() => {
     console.log(value);
-    const total = value1 + value2 + value3;
-    const carbRatio = total > 0 ? (value1 / total) * 100 : 0;
-    const proteinRatio = total > 0 ? (value2 / total) * 100 : 0;
-    const fatRatio = total > 0 ? (value3 / total) * 100 : 0;
+    const total = Number(value.tan) + Number(value.dan) + Number(value.ji);
+    console.log(total);
+    const carbRatio = total > 0 ? (value.tan / total) * 100 : 0;
+    const proteinRatio = total > 0 ? (value.dan / total) * 100 : 0;
+    const fatRatio = total > 0 ? (value.ji / total) * 100 : 0;
 
-    // 각 비율에 따라 프로그레스 바 너비 설정
-    const timeoutId = setTimeout(() => {
-      setCarbBarWidth(carbRatio);
-      setProteinBarWidth(proteinRatio);
-      setFatBarWidth(fatRatio);
-    }, 1000);
+    setCarbBarWidth(`${carbRatio}%`);
+    setProteinBarWidth(`${proteinRatio}%`);
+    setFatBarWidth(`${fatRatio}%`);
+  }, [value]);
 
-    // return () => clearTimeout(timeoutId);
-  }, [value1, value2, value3]);
-  
   return (
-  <>
-    <ProgressLabel>{label}</ProgressLabel>
-    <ProgressBarContainer>
-      <ProgressBar width={carbBarWidth} label="탄수화물" />
-      <ProgressBar width={proteinBarWidth} label="단백질" />
-      <ProgressBar width={fatBarWidth} label="지방" />
-      <div>test</div>
-    </ProgressBarContainer>
+    <>
+      {children}
+      <ProgressBarContainer>
+        <ProgressLabel>탄수화물</ProgressLabel>
+        <ProgressBar width={carbBarWidth} />
+        <ProgressLabel>단백질</ProgressLabel>
+        <ProgressBar width={proteinBarWidth} />
+        <ProgressLabel>지방</ProgressLabel>
+        <ProgressBar width={fatBarWidth} />
+      </ProgressBarContainer>
     </>
   );
 };
@@ -84,6 +83,7 @@ const MealAddbtn = styled(SmallButton).attrs({
   className: "mealAddbtn",
 })`
   width: 25px;
+
 `;
 
 // 식단 유형(아침, 점심, 저녁) 표시
@@ -103,7 +103,6 @@ const InputContainer = styled(Container).attrs({
   width: 50vw;
   height: 70vh;
   border: 1px solid black;
-  padding: 0 8%;
 `;
 
 const InputSection = styled(Section).attrs({
@@ -114,6 +113,25 @@ const InputSection = styled(Section).attrs({
 
 const InputBox = styled(MiddleButton)`
   border-radius: 0;
+`;
+
+const InputCaloryBox = styled.div`
+  display: flex;
+  flex-direction: column;
+`;
+
+const InputCalory = styled.div`
+display: flex;
+justify-content: center;
+align-items: center;
+`;
+
+const InputCaloryInfo = styled.span`
+    align-items: center;
+  font-size: 2.6vw;
+  font-weight: bolder;
+  
+  color: ${(props) => props.$fontcolor || "#FD6B6B"};
 `;
 
 const InputArea = styled(Area)`
@@ -130,29 +148,73 @@ const InputDate = styled.div`
   padding: 10px;
 `;
 
+const InputText = styled.span`
+  font-size: 1%.8;
+  font-weight: 700;
+  padding: 0.3vw 0;
+  display: block !important;
+
+`;
+
 // 식단, 운동, 하루기록 표시
-export const SelectBox = ({ clickedDate }) => {
+export const SelectBox = ({ test, clickedDate, setSelectedSection }) => {
+  const [selectedSection, setSelectedSectionState] = useState("전체기록");
   const buttons = ["식단", "운동", "전체기록"];
+
+  useEffect(() => {
+    setSelectedSectionState("식단");
+  }, [clickedDate]);
+
+  const handleSectionChange = (section) => {
+    setSelectedSectionState(section);
+    if (setSelectedSection) {
+      setSelectedSection(section); // 상위 컴포넌트의 상태도 업데이트
+    }
+  };
+
   return (
     <InputContainer>
       <InputDate>{clickedDate}</InputDate>
       <InputSection $height="auto">
         {buttons.map((item) => (
-          <InputBox key={item} isToday={item === "전체기록"}>
+          <InputBox key={item} onClick={() => handleSectionChange(item)}>
             {item}
           </InputBox>
         ))}
       </InputSection>
-      <InputSection $direction="column" $height="100%" $>
-        <InputArea $height="25%">표준 칼로리</InputArea>
-        <InputArea $>
-          <MealItemBox mealtype="아침" />
-          <MealItemBox mealtype="점심" />
-          <MealItemBox mealtype="저녁" />
-        </InputArea>
-        <InputArea>test
-          <tandanjiRateBox />
-        </InputArea>
+      <InputSection $direction="column" $height="100%">
+        {selectedSection === "식단" && (
+          <>
+            <InputArea $height="auto">
+              <InputCaloryBox>
+                <InputText>표준 칼로리</InputText>
+                <InputCalory>
+                <InputCaloryInfo>2,024&nbsp; </InputCaloryInfo>
+                <InputCaloryInfo $fontcolor="#000">Kcal </InputCaloryInfo>
+                </InputCalory>
+              </InputCaloryBox>
+            </InputArea>
+            <InputArea $height="55%">
+              <MealItemBox mealtype="아침" />
+              <MealItemBox mealtype="점심" />
+              <MealItemBox mealtype="저녁" />
+            </InputArea>
+            <InputArea $height="30%">
+              <TandanjiRateBox value={value}>
+                <InputText>탄단지비율</InputText>
+              </TandanjiRateBox>
+            </InputArea>
+          </>
+        )}
+
+        {selectedSection === "운동" && 
+        <div>
+          운동 
+          시간(분)
+          
+          </div>}
+
+        {selectedSection === "전체기록" && <div>전체기록 컨텐츠</div>}
       </InputSection>
     </InputContainer>
   );

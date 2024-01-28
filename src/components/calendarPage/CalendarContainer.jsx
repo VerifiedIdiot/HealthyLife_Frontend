@@ -5,6 +5,60 @@ import {
   SmallButton,
   MiddleButton,
 } from "../../styles/styledComponents/StyledComponents";
+import MiddleModal from "../../styles/modals/MiddleModal";
+
+const SearchContainer = styled.div`
+  display: flex;
+  align-items: center;
+  width: 100%;
+`;
+const InputField = styled.input`
+  width: 54%;
+  height: 40px;
+
+  margin: 10px 0;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+`;
+
+export const SearchBox = () => {
+  const [searchQuery, setSearchQuery] = useState("");
+  const handleSearchQueryChange = (e) => {
+    setSearchQuery(e.target.value);
+    console.log(searchQuery);
+  };
+  return (
+    <SearchContainer>
+      <SelectBox></SelectBox>
+      <InputField
+        type="text"
+        placeholder="검색어를 입력하세요."
+        value={searchQuery}
+        onChange={handleSearchQueryChange}
+      ></InputField>
+    </SearchContainer>
+  );
+};
+const MovementContainer = styled(Container).attrs({
+  className: "MovementContainer",
+})``;
+export const MovementItemBox = () => {
+  return (
+    <MovementContainer>
+      <MenuInputSection>
+          <MenuInputArea $height="15%">
+            <InputText>운동 추가</InputText>
+          </MenuInputArea>
+          <MenuInputArea $height="15%">
+            <InputField />
+          </MenuInputArea>
+          <MenuInputArea $height="70%" $justify="flex-end" $align="end">
+            <AddMenuButton>추가</AddMenuButton>
+          </MenuInputArea>
+        </MenuInputSection>
+    </MovementContainer>
+  );
+};
 
 const value = {
   tan: "100",
@@ -17,21 +71,25 @@ const ProgressBarContainer = styled(Container).attrs({
 })`
   background-color: #e0e0e0;
   height: 100%;
+  
 `;
 
 const ProgressBar = styled(Box).attrs({
   className: "ProgressBar",
 })`
-  background-color: #4caf50;
-  height: 100%;
+  background-color: yellow;
+  height: 80%;
   border-radius: 0 4px 4px 0;
-  margin: 0.3vw 0;
+  margin: 0.6vw 0;
   transition: width 1.5s ease-in-out;
   width: ${(props) => props.width || 0};
 `;
 
 const ProgressLabel = styled.span`
-  font-size: 1vw;
+
+  span{
+    font-size: 3vw;
+  }
 `;
 
 export const TandanjiRateBox = ({ value, label, children }) => {
@@ -43,13 +101,13 @@ export const TandanjiRateBox = ({ value, label, children }) => {
     console.log(value);
     const total = Number(value.tan) + Number(value.dan) + Number(value.ji);
     console.log(total);
-    const carbRatio = total > 0 ? (value.tan / total) * 100 : 0;
-    const proteinRatio = total > 0 ? (value.dan / total) * 100 : 0;
-    const fatRatio = total > 0 ? (value.ji / total) * 100 : 0;
+    const carb = total > 0 ? (value.tan / total) * 100 : 0;
+    const protein = total > 0 ? (value.dan / total) * 100 : 0;
+    const fat = total > 0 ? (value.ji / total) * 100 : 0;
 
-    setCarbBarWidth(`${carbRatio}%`);
-    setProteinBarWidth(`${proteinRatio}%`);
-    setFatBarWidth(`${fatRatio}%`);
+    setCarbBarWidth(`${carb}%`);
+    setProteinBarWidth(`${protein}%`);
+    setFatBarWidth(`${fat}%`);
   }, [value]);
 
   return (
@@ -83,16 +141,65 @@ const MealAddbtn = styled(SmallButton).attrs({
   className: "mealAddbtn",
 })`
   width: 25px;
+`;
 
+const MenuInputSection = styled(Section).attrs({
+  className: "MenuSection",
+})`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  width: 50vw;
+  height: 70vh;
+`;
+const MenuInputArea = styled(Area).attrs({
+  className: "MenuArea",
+})`
+  width: 100%;
+  height: ${(props) => props.$height || "50%"};
+  justify-content: ${(props) => props.$justify || "center"};
+  align-items: ${(props) => props.$align || "center"};
+`;
+
+const AddMenuButton = styled(MiddleButton)`
+  margin-top: 10px;
 `;
 
 // 식단 유형(아침, 점심, 저녁) 표시
 export const MealItemBox = ({ mealtype }) => {
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const handleOpenModal = () => {
+    setIsModalOpen(true);
+  };
+
+  const handleCloseModal = () => {
+    setIsModalOpen(false);
+  };
+
   return (
     <MealContainer>
       <MealBox>
-        {mealtype}&nbsp;<MealAddbtn>+</MealAddbtn>
+        {mealtype}&nbsp;
+        <MealAddbtn onClick={handleOpenModal}>+</MealAddbtn>
       </MealBox>
+      <MiddleModal
+        $isOpen={isModalOpen}
+        $onClose={handleCloseModal}
+        // onSave={handleSave}
+        mealType={mealtype}
+      >
+        <MenuInputSection>
+          <MenuInputArea $height="15%">
+            <InputText>{mealtype} 메뉴 추가</InputText>
+          </MenuInputArea>
+          <MenuInputArea $height="15%">
+            <InputField />
+          </MenuInputArea>
+          <MenuInputArea $height="70%" $justify="flex-end" $align="end">
+            <AddMenuButton>추가</AddMenuButton>
+          </MenuInputArea>
+        </MenuInputSection>
+      </MiddleModal>
     </MealContainer>
   );
 };
@@ -102,7 +209,6 @@ const InputContainer = styled(Container).attrs({
 })`
   width: 50vw;
   height: 70vh;
-  border: 1px solid black;
 `;
 
 const InputSection = styled(Section).attrs({
@@ -121,16 +227,15 @@ const InputCaloryBox = styled.div`
 `;
 
 const InputCalory = styled.div`
-display: flex;
-justify-content: center;
-align-items: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 `;
 
 const InputCaloryInfo = styled.span`
-    align-items: center;
+  align-items: center;
   font-size: 2.6vw;
   font-weight: bolder;
-  
   color: ${(props) => props.$fontcolor || "#FD6B6B"};
 `;
 
@@ -153,22 +258,31 @@ const InputText = styled.span`
   font-weight: 700;
   padding: 0.3vw 0;
   display: block !important;
-
 `;
 
 // 식단, 운동, 하루기록 표시
-export const SelectBox = ({ test, clickedDate, setSelectedSection }) => {
+export const SelectBox = ({ clickedDate, setSelectedSection }) => {
   const [selectedSection, setSelectedSectionState] = useState("전체기록");
+  const [mealItems, setMealItems] = useState([]);
+  const [isMovementModalOpen, setIsMovementModalOpen] = useState(false);
   const buttons = ["식단", "운동", "전체기록"];
 
   useEffect(() => {
-    setSelectedSectionState("식단");
+    setSelectedSectionState("운동");
   }, [clickedDate]);
+
+  const handleAddMealItem = (mealType) => {
+    setMealItems((prevItems) => [...prevItems, mealType]);
+  };
 
   const handleSectionChange = (section) => {
     setSelectedSectionState(section);
     if (setSelectedSection) {
-      setSelectedSection(section); // 상위 컴포넌트의 상태도 업데이트
+      setSelectedSection(section); // 상위 컴포넌트상태 업데이트
+    }
+    // "운동" 섹션이 선택되면 모달 열기
+    if (section === "운동") {
+      setIsMovementModalOpen(true);
     }
   };
 
@@ -185,36 +299,39 @@ export const SelectBox = ({ test, clickedDate, setSelectedSection }) => {
       <InputSection $direction="column" $height="100%">
         {selectedSection === "식단" && (
           <>
-            <InputArea $height="auto">
+            <InputArea $height="20%">
               <InputCaloryBox>
                 <InputText>표준 칼로리</InputText>
                 <InputCalory>
-                <InputCaloryInfo>2,024&nbsp; </InputCaloryInfo>
-                <InputCaloryInfo $fontcolor="#000">Kcal </InputCaloryInfo>
+                  <InputCaloryInfo>2,024&nbsp; </InputCaloryInfo>
+                  <InputCaloryInfo $fontcolor="#000">Kcal </InputCaloryInfo>
                 </InputCalory>
               </InputCaloryBox>
             </InputArea>
-            <InputArea $height="55%">
-              <MealItemBox mealtype="아침" />
-              <MealItemBox mealtype="점심" />
-              <MealItemBox mealtype="저녁" />
-            </InputArea>
-            <InputArea $height="30%">
-              <TandanjiRateBox value={value}>
-                <InputText>탄단지비율</InputText>
-              </TandanjiRateBox>
+            <InputArea $height="80%">
+              <MealItemBox mealtype="아침" handleAdd={handleAddMealItem} />
+              <MealItemBox mealtype="점심" handleAdd={handleAddMealItem} />
+              <MealItemBox mealtype="저녁" handleAdd={handleAddMealItem} />
             </InputArea>
           </>
         )}
 
-        {selectedSection === "운동" && 
-        <div>
-          운동 
-          시간(분)
-          
-          </div>}
+        {selectedSection === "운동" && (
+          <MiddleModal
+            $isOpen={isMovementModalOpen}
+            $onClose={() => setIsMovementModalOpen(false)}
+          >
+            <MovementItemBox />
+          </MiddleModal>
+        )}
 
-        {selectedSection === "전체기록" && <div>전체기록 컨텐츠</div>}
+        {selectedSection === "전체기록" && (
+          <InputArea $height="80%">
+            <TandanjiRateBox value={value}>
+              <InputText>영양소 그래프</InputText>
+            </TandanjiRateBox>
+          </InputArea>
+        )}
       </InputSection>
     </InputContainer>
   );

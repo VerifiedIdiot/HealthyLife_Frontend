@@ -147,7 +147,7 @@ export const Element = styled.div.attrs({
   width: ${(props) => props.$width || "100%"};
   height: ${(props) => props.$height || "100%"};
   border: ${(props) => props.$border || "none"};
-  : ${(props) => props.$shadow || "0 2px 4px rgba(0, 0, 0, 0.1box-shadow)"};
+  box-shadow: ${(props) => props.$shadow || "0 2px 4px rgba(0, 0, 0, 0.1box-shadow)"};
 `;
 
 export const ScrollBox = styled.div`

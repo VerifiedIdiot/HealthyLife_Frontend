@@ -24,11 +24,24 @@ const InputArea = styled(Area).attrs({
   
 `;
 
+const AddItemModal = ({ onClose }) => {
+  // 항목 추가 로직
+  // ...
+
+  return (
+    <div className="modal">
+      {/* 입력 폼 및 항목 추가 버튼 */}
+      <button onClick={onClose}>닫기</button>
+    </div>
+  );
+};
+
 const CalendarSection = () => {
   const calendarRef = useRef(null);
   const [clickedDate, setClickedDate] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedBtn, setSelectedBtn] = useState("전체기록");
+  const [isAddItemModalOpen, setIsAddItemModalOpen] =useState(false);
 
   const handleDateClick = useCallback((info) => {
     const clickedDateTime = new Date(info.date);
@@ -73,8 +86,14 @@ const CalendarSection = () => {
               <SelectBox
                 clickedDate={clickedDate}
                 selectedBtn={setSelectedBtn}
+                onOpenAddItemModal={() => setIsAddItemModalOpen(true)}
               />
             </InputArea>
+            {isAddItemModalOpen && (
+        <AddItemModal
+          onClose={() => setIsAddItemModalOpen(false)}
+        />
+      )}
           </InputSection>
         </MiddleModal>
       )}

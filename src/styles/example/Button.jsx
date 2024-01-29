@@ -1,28 +1,28 @@
 import { styled } from "styled-components";
 
 export const ButtonComp = styled.button`
-text-align: center;
-width: ${(props) => props.$width || "40px"};
-height: ${(props) => props.$height || "25px"};
-color: ${(props) => props.$color || "white"};
-font-weight: 600;
-font-size: ${(props) => props.$fontSize || "1em"};
-border: ${(props) => props.$border || "none"};
-border-radius: ${(props) => props.$borderRadius || "8px"};
-background-color: ${(props) => props.$front || "#4942E4"};
-transition: 0.2s ease-in;
-cursor: pointer;
-&.false {
-  background-color: #11009E;
-  cursor: default;
-  &:hover {
-    background-color: #11009E;
+  text-align: center;
+  width: ${(props) => props.$width || "40px"};
+  height: ${(props) => props.$height || "25px"};
+  color: ${(props) => props.$color || "white"};
+  font-weight: 600;
+  font-size: ${(props) => props.$fontSize || "1em"};
+  border: ${(props) => props.$border || "none"};
+  border-radius: ${(props) => props.$borderRadius || "8px"};
+  background-color: ${(props) => props.$front || "#4942E4"};
+  transition: 0.2s ease-in;
+  cursor: pointer;
+  &.false {
+    background-color: #11009e;
+    cursor: default;
+    &:hover {
+      background-color: #11009e;
+    }
   }
-}
-&:hover {
-  background-color: ${(props) => props.$back || "#11009E"};
-  color: white;
-}
+  &:hover {
+    background-color: ${(props) => props.$back || "#11009E"};
+    color: white;
+  }
 `;
 
 // 활성/비활성 버튼

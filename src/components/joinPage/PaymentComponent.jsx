@@ -1,12 +1,67 @@
 import { useNavigate } from "react-router";
 import { Area, Container, Main, Section } from "../../styles/Layouts";
-import { LargeButton } from "../../styles/styledComponents/StyledComponents";
+
 import logo from "../../assets/icons/logo.svg";
+import { useEffect } from "react";
+
+import Button from "../../styles/example/Button";
 
 const PaymentComp = () => {
   const navigate = useNavigate();
   const loginGate = useNavigate();
   const homeNavigate = useNavigate();
+
+  useEffect(() => {
+    const jquery = document.createElement("script");
+    jquery.src = "https://code.jquery.com/jquery-1.12.4.min.js";
+    const iamport = document.createElement("script");
+    iamport.src = "https://cdn.iamport.kr/js/iamport.payment-1.1.8.js";
+    document.head.appendChild(jquery);
+    document.head.appendChild(iamport);
+
+    return () => {
+      document.head.removeChild(jquery);
+      document.head.removeChild(iamport);
+    };
+  }, []);
+
+  const onClickPayment = () => {
+    const { IMP } = window;
+    IMP.init("imp63263614");
+
+    const data = {
+      pg: "hetf",
+      pay_method: "card",
+      merchant_uid: `mid_${new Date().getTime()}`,
+      amount: "100",
+      name: "결제 테스트",
+      buyer_name: "이재원",
+      //   buyer_tel: "01012345678",
+      //   buyer_email: "dlwodnjs2669@gmail.com",
+      //   buyer_addr: "구천면로 000-00",
+      //   buyer_postcode: "01234",
+    };
+
+    IMP.request_pay(data, callback);
+  };
+  const callback = (response) => {
+    const {
+      success,
+      error_msg,
+      imp_uid,
+      merchant_uid,
+      pay_method,
+      paid_amount,
+      status,
+    } = response;
+
+    if (success) {
+      alert("결제 성공");
+      navigate("/");
+    } else {
+      alert(`결제 실패: ${error_msg}`);
+    }
+  };
   return (
     <>
       <Main $direction="row" $width="100%" $height="auto">
@@ -68,6 +123,7 @@ const PaymentComp = () => {
             $align="center"
             $justify="center"
             $height="10%"
+            // $border="1px solid black"
             $direction="column"
           >
             <p
@@ -78,9 +134,14 @@ const PaymentComp = () => {
             >
               WELLV는 결제를 해야 이용이 가능합니다.
             </p>
-            <LargeButton onClick={() => homeNavigate("/")}>
-              결제하기
-            </LargeButton>
+            <Button
+              className="testBtn"
+              children="결제하기"
+              width="200px"
+              height="50px"
+              active={true}
+              clickEvt={onClickPayment}
+            />
           </Section>
         </Container>
       </Main>

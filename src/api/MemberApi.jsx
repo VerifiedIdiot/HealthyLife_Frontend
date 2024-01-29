@@ -15,6 +15,31 @@ const MemberApi = {
     };
     return await axios.post(BACKEND_DOMAIN + "/auth/login", data);
   },
+
+  signup: async (
+    email,
+    password,
+    name,
+    nickName,
+    gender,
+    phone,
+    addr,
+    image,
+    birth
+  ) => {
+    const data = {
+      email: email,
+      password: password,
+      name: name,
+      nickName: nickName,
+      gender: gender,
+      phone: phone,
+      addr: addr,
+      image: image,
+      birth: birth,
+    };
+    return await axios.post(BACKEND_DOMAIN + "/auth/signup", data);
+  },
 };
 
 export default MemberApi;

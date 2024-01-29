@@ -6,11 +6,12 @@ import { ReactComponent as Video } from "../../assets/imgs/communityImges/video-
 import { useNavigate, useLocation } from "react-router-dom";
 import { useEffect, useState } from "react";
 import Common from "../../utils/Common";
-import CommunityAxiosApi from "../../api/CommunityAxiosApi";
+import CommunityAxiosApi from "../../api/CommunityAxios";
 import styled from "styled-components";
 import SearchComponent from "./SearchComponent";
 import CommunityComponent from "./CommunityComponent";
 import axios from "axios";
+
 const PostContainer = styled.div`
   display: flex;
   width: 1000px;
@@ -281,7 +282,7 @@ const CommunitySearchComponent = () => {
                       <TableNormalRow
                         key={post.id}
                         onClick={() => {
-                          navigate(`/community/detail/${post.id}`);
+                          navigate(`/communitypage/detail/${post.id}`);
                         }}
                       >
                         <TableRowDataIcon>
@@ -303,7 +304,9 @@ const CommunitySearchComponent = () => {
                         <TableRowDataDate>
                           {Common.timeFromNow(post.regDate)}
                         </TableRowDataDate>
-                        <TableRowDataLikes>{post.viewCount}</TableRowDataLikes>
+                        <TableRowDataLikes>
+                          {post.likeItCount}
+                        </TableRowDataLikes>
 
                         <TableRowDataViews>{post.viewCount}</TableRowDataViews>
                       </TableNormalRow>

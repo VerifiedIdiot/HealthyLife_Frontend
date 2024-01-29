@@ -64,7 +64,7 @@ const Navigation = ({ $scrolledDown = true }) => {
         </NavLink>
         <NavLink
           $scrolledDown={$scrolledDown}
-          onClick={() => navigate("/community")}
+          onClick={() => navigate("/communitypage")}
         >
           <p>Community</p>
         </NavLink>

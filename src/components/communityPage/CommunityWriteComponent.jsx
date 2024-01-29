@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from "react";
-import CommunityAxiosApi from "../../api/CommunityAxiosApi";
+import CommunityAxiosApi from "../../api/CommunityAxios";
 import { useNavigate } from "react-router-dom";
 import Common from "../../utils/Common";
 // import { jwtDecode } from "jwt-decode";
@@ -97,23 +97,14 @@ const ButtonContainer = styled.div`
   gap: 5px;
 `;
 const WriteComponent = () => {
-  const [email, setEmail] = useState("");
   // const token = Common.getAccessToken();
   // const decode = token ? jwtDecode(token) : null;
   const [title, setTitle] = useState("");
   const [text, setText] = useState("");
   const [content, setContent] = useState("");
-  const [nickName, setNickName] = useState("");
-  const [password, setPassword] = useState("");
   const navigate = useNavigate();
-  const [categories, setCategories] = useState([
-    { categoryId: "1", categoryName: "과일" },
-    {
-      categoryId: "2",
-      categoryName: "사과",
-    },
-  ]);
-  const [selectedCategory, setSelectedCategory] = useState();
+  const [categories, setCategories] = useState([]);
+  const [selectedCategory, setSelectedCategory] = useState("");
 
   const quillRef = useRef(null);
 

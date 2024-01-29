@@ -66,13 +66,9 @@ function App() {
               <Route path="/mypage" element={<MyPage />} />
               <Route path="/mypage/edit" element={<MyPageEdit />} />
 
-              <Route path="/community/*" element={<CommunityPage />} />
-              <Route
-                path="/community/:categoryId"
-                element={<CommunityPage />}
-              />
-              <Route path="/community/write" element={<WriteComponent />} />
-              <Route path="/community/detail/:id" element={<Post />} />
+              <Route path="/communitypage/*" element={<CommunityPage />} />
+
+              <Route path="/communitypage/write" element={<WriteComponent />} />
               <Route path="/ranking" element={<RankingPage />} />
             </Route>
             <Route element={<HeaderOnly />}>

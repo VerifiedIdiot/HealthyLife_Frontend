@@ -1,6 +1,7 @@
 import axios from "axios";
 import Common from "../utils/Common";
 const BACKEND_DOMAIN = process.env.REACT_APP_BACKEND_DOMAIN;
+
 const CommunityAxiosApi = {
   // 게시글 조회
   getCommunityList: async (page, size) => {
@@ -27,19 +28,7 @@ const CommunityAxiosApi = {
       throw error;
     }
   },
-  // 실시간 랭킹 조회
-  getRanking: async (period) => {
-    try {
-      return await axios.get(
-        BACKEND_DOMAIN + "/api/community/ranking/" + period,
-        {}
-      );
-    } catch (error) {
-      // 오류 처리
-      console.error("Error in getRanking API call", error);
-      throw error;
-    }
-  },
+
   // 카테고리 조회
   cateList: async () => {
     try {
@@ -104,6 +93,17 @@ const CommunityAxiosApi = {
       throw error;
     }
   },
+  // 수정
+  modifyCommunity: async (communityId) => {
+    try {
+      return await axios.put(BACKEND_DOMAIN + `/api/community/${communityId}`);
+    } catch (error) {
+      // 오류 처리
+      console.error("Error in modifyCommunity API call", error);
+      throw error;
+    }
+  },
+
   // 댓글 리스트 조회
   getCommentList: async (
     communityId,
@@ -174,11 +174,23 @@ const CommunityAxiosApi = {
       );
     } catch (error) {
       // 오류 처리
-      console.error("Error in communityPost API call", error);
+      console.error("Error in getTotalComments API call", error);
       throw error;
     }
   },
 
+  // 게시글 삭제
+  deleteCommunity: async (commentId) => {
+    try {
+      return await axios.delete(
+        BACKEND_DOMAIN + `/api/comment/delete/${commentId}`
+      );
+    } catch (error) {
+      // 오류 처리
+      console.error("Error in deleteCommunity API call", error);
+      throw error;
+    }
+  },
   // 댓글 삭제
   commentDelete: async (commentId) => {
     try {
@@ -187,7 +199,7 @@ const CommunityAxiosApi = {
       );
     } catch (error) {
       // 오류 처리
-      console.error("Error in communityPost API call", error);
+      console.error("Error in commentDelete API call", error);
       throw error;
     }
   },

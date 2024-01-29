@@ -5,13 +5,80 @@ import React, { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import styled from "styled-components";
 import Common from "../../utils/Common";
-import CommunityAxiosApi from "../../api/CommunityAxiosApi";
+import CommunityAxiosApi from "../../api/CommunityAxios";
 import { SmallButton } from "../../styles/styledComponents/StyledComponents";
 import { Main, Container } from "../../styles/Layouts";
 import { IoIosArrowBack } from "react-icons/io";
 import { IoIosArrowForward } from "react-icons/io";
 import axios from "axios";
 import SearchComponent from "./SearchComponent";
+import { ReactComponent as Down } from "../../assets/imgs/communityImges/Down.svg";
+
+const createDummyPost = (
+  id,
+  categoryId,
+  categoryName,
+  title,
+  content,
+  nickName,
+  email,
+  regDate,
+  likeItCount,
+  viewCount
+) => {
+  return {
+    id,
+    categoryId,
+    categoryName,
+    title,
+    content,
+    nickName,
+    email,
+    regDate,
+    likeItCount,
+    viewCount,
+  };
+};
+const dummyPosts = [
+  createDummyPost(
+    1,
+    1,
+    "사과",
+    "사과와 그의 매력",
+    "사과는 매우 영양가 있는 과일로, 많은 사람들에게 사랑받고 있습니다.",
+    "과일맛나는사람",
+    "admin@admin.com",
+    "2024-01-27",
+    35,
+    72
+  ),
+  createDummyPost(
+    2,
+    2,
+    "포도",
+    "포도의 다양한 종류와 특징",
+    "포도에는 레드 와인과 화이트 와인을 만드는 다양한 종류가 있으며, 각각의 특징이 있습니다.",
+    "와인연구가",
+    "admin@admin.com",
+    "2024-01-27",
+    42,
+    85
+  ),
+  createDummyPost(
+    3,
+    1,
+    "사과",
+    "사과의 다양한 요리 아이디어",
+    "사과를 활용한 다양한 요리 아이디어를 소개합니다. 사과를 활용한 디저트부터 메인 요리까지 다양한 아이디어를 찾아보세요!",
+    "요리하는 사람",
+    "admin@admin.com",
+    "2024-01-27",
+    28,
+    63
+  ),
+  // 나머지 데이터도 유사한 방식으로 추가
+];
+
 const PostSection = styled.div`
   align-self: stretch;
 `;
@@ -38,6 +105,8 @@ const TitleContent = styled.div`
   display: flex;
   color: #2446da;
   font-size: 1.5rem;
+  justify-content: center;
+  align-items: center;
 `;
 const PostList = styled.div`
   display: flex;
@@ -95,13 +164,22 @@ const TableRowDataTitle = styled(TableRowData)`
 `;
 const TableRowDataDate = styled(TableRowData)`
   flex: 0.5;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
 `;
 const TableRowDataLikes = styled(TableRowData)`
   flex: 0.5;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
 `;
 
 const TableRowDataViews = styled(TableRowData)`
   flex: 0.5;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
 `;
 const PostPage = styled.div`
   display: flex;
@@ -176,88 +254,45 @@ const Dropdown = styled.select`
     border-color: #2446da;
   }
 `;
+
 const CommunityComponent = () => {
   const navigate = useNavigate();
-  const [posts, setPosts] = useState([
-    {
-      communityId: 1,
-      categoryId: 1,
-      categoryName: "과일",
-      title: "제목",
-      nickName: "하루",
-      regDate: "2012-11-22",
-      likeItCount: "0",
-      viewCount: "0",
-    },
-    {
-      communityId: 2,
-      categoryId: 2,
-      categoryName: "사과",
-      title: "제목1",
-      nickName: "하루1",
-      regDate: "",
-      likeItCount: "",
-      viewCount: "",
-    },
-    {
-      communityId: 3,
-      categoryId: 2,
-      categoryName: "사과",
-      title: "제목1",
-      nickName: "하루1",
-      regDate: "",
-      likeItCount: "",
-      viewCount: "",
-    },
-    {
-      communityId: 4,
-      categoryId: 2,
-      categoryName: "사과",
-      title: "제목1",
-      nickName: "하루1",
-      regDate: "",
-      likeItCount: "",
-      viewCount: "",
-    },
-    {
-      communityId: 5,
-      categoryId: 2,
-      categoryName: "사과",
-      title: "제목1",
-      nickName: "하루1",
-      regDate: "",
-      likeItCount: "",
-      viewCount: "",
-    },
-    {
-      communityId: 6,
-      categoryId: 2,
-      categoryName: "사과",
-      title: "제목1",
-      nickName: "하루1",
-      regDate: "",
-      likeItCount: "",
-      viewCount: "",
-    },
-    {
-      communityId: 7,
-      categoryId: 2,
-      categoryName: "사과",
-      title: "제목1",
-      nickName: "하루1",
-      regDate: "",
-      likeItCount: "",
-      viewCount: "",
-    },
-  ]);
+  const [posts, setPosts] = useState(dummyPosts);
   const [currentPage, setCurrentPage] = useState(0);
   const [totalPages, setTotalPages] = useState(0);
   const [visiblePageStart, setVisiblePageStart] = useState(0);
   const categoryId = Number(useParams().categoryId);
   const validCategoryId = isNaN(categoryId) ? undefined : categoryId;
-  const [totalComments, setTotalComments] = useState([]);
-  const [sortType, setSortType] = useState("");
+  const [sortType, setSortType] = useState(0);
+  const [categories, setCategories] = useState([
+    {
+      categoryId: 1,
+      categoryName: "사과",
+      email: "admin@admin.com",
+    },
+    {
+      categoryId: 2,
+      categoryName: "포도",
+      email: "admin@admin.com",
+    },
+  ]);
+  const [currentCategory, setCurrentCategory] = useState("");
+  const [showDropdown, setShowDropdown] = useState(false);
   const PAGE_SIZE = 10;
+  // CategoryDropdown의 클릭 이벤트를 처리하여 드롭다운 상태를 토글하는 함수
+  const toggleDropdown = () => {
+    setShowDropdown(!showDropdown);
+  };
+
+  const RotatedDown = styled(Down)`
+    transition: transform 0.3s ease-in-out;
+    transform: ${(props) =>
+      props.isRotated ? "rotate(180deg)" : "rotate(0deg)"};
+  `;
+  const CategoryDropdown = styled.div`
+    display: ${(props) =>
+      props.showDropdown ? "block" : "none"}; /* 항상 렌더링되도록 수정 */
+  `;
 
   const pageClick = (pageNum) => {
     console.log(pageNum);
@@ -294,9 +329,17 @@ const CommunityComponent = () => {
     }; // 이미지 태그와 동영상 태그가 각각 있으면 true, 없으면 false를 반환
   };
   useEffect(() => {
+    setPosts(dummyPosts);
+  }, []);
+  useEffect(() => {
     // 서버에서 데이터를 가져오는 함수
     const postPage = async () => {
       try {
+        // 카테고리 목록 가져오기
+        const categoriesResponse = await CommunityAxiosApi.cateList();
+        setCategories(categoriesResponse.data);
+
+        // 페이지 수 가져오기
         const responsePages =
           validCategoryId === undefined
             ? await CommunityAxiosApi.getCommunityTotalPages(PAGE_SIZE)
@@ -315,32 +358,24 @@ const CommunityComponent = () => {
   }, [validCategoryId, currentPage, PAGE_SIZE, sortType]);
   useEffect(() => {
     //  컴포넌트가 언마운트된 후에 상태를 변경하려는 작업을 방지
-    // let cancelTokenSource = axios.CancelToken.source();
+    let cancelTokenSource = axios.CancelToken.source();
     const postList = async () => {
       try {
         const rsp =
           validCategoryId === undefined
             ? await CommunityAxiosApi.getCommunityList(currentPage, PAGE_SIZE, {
-                // cancelToken: cancelTokenSource.token,
+                cancelToken: cancelTokenSource.token,
               })
             : await CommunityAxiosApi.getCommunityListByCategory(
                 validCategoryId,
                 currentPage,
                 PAGE_SIZE,
-                sortType
-                // { cancelToken: cancelTokenSource.token }
+                sortType,
+                { cancelToken: cancelTokenSource.token }
               );
 
         setPosts(rsp.data);
         console.log(rsp.data);
-        // 전체 댓글 수 조회
-        const totalCommentsResponses = await Promise.all(
-          rsp.data.map((post) => CommunityAxiosApi.getTotalComments(post.id))
-        );
-        const totalComments = totalCommentsResponses.map(
-          (response) => response.data
-        );
-        setTotalComments(totalComments);
       } catch (error) {
         if (!axios.isCancel(error)) {
           console.log(error);
@@ -349,21 +384,62 @@ const CommunityComponent = () => {
     };
     postList();
     return () => {
-      // cancelTokenSource.cancel();
+      cancelTokenSource.cancel();
     };
   }, [validCategoryId, currentPage, PAGE_SIZE, totalPages, sortType]);
-  const categoryName =
-    validCategoryId !== undefined && posts.length > 0
-      ? posts[0].categoryName
-      : "전체";
 
+  const handleCategoryClick = async (categoryId) => {
+    setCurrentCategory(categoryId); // 선택한 카테고리를 상태에 반영
+    setShowDropdown(false); // 드롭다운 숨기기
+    try {
+      let response;
+      if (categoryId === "전체") {
+        response = await CommunityAxiosApi.getCommunityList(
+          currentPage,
+          PAGE_SIZE
+        );
+      } else {
+        const selectedCategory = categories.find(
+          (category) => category.categoryName === categoryId
+        ); // 선택된 카테고리의 정보 가져오기
+        if (selectedCategory) {
+          response = await CommunityAxiosApi.getCommunityListByCategory(
+            selectedCategory.categoryId, // 선택된 카테고리의 ID를 사용하여 목록 불러오기
+            currentPage,
+            PAGE_SIZE,
+            sortType
+          );
+        }
+      }
+      if (response) {
+        setPosts(response.data); // 선택된 카테고리에 해당하는 포스트 목록을 상태에 설정
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
   return (
     <Main>
       <Container>
         <PostSection>
           <InputContainer>
             <PostListTitle>
-              <TitleContent>{categoryName}</TitleContent>
+              <TitleContent onClick={toggleDropdown}>
+                {currentCategory ? currentCategory : "전체"}
+                <RotatedDown isRotated={showDropdown} />
+                <CategoryDropdown showDropdown={showDropdown}>
+                  <div onClick={() => handleCategoryClick("전체")}>전체</div>
+                  {categories.map((category) => (
+                    <div
+                      key={category.categoryId}
+                      onClick={() => handleCategoryClick(category.categoryName)}
+                    >
+                      {category.categoryName}
+                    </div>
+                  ))}
+                </CategoryDropdown>
+              </TitleContent>
+
               <CommentHeader>
                 <Dropdown
                   onChange={(selected) => setSortType(selected.target.value)}
@@ -399,7 +475,7 @@ const CommunityComponent = () => {
                     <TableNormalRow
                       key={post.id}
                       onClick={() => {
-                        navigate(`/community/detail/${post.id}`);
+                        navigate(`/communitypage/detail/${post.id}`);
                       }}
                     >
                       <TableRowDataIcon>
@@ -411,11 +487,7 @@ const CommunityComponent = () => {
                           <Text />
                         )}
                       </TableRowDataIcon>
-                      <TableRowDataTitle>
-                        {Common.truncateText(post.title, 20)}{" "}
-                        {totalComments[posts.indexOf(post)] > 0 &&
-                          `(${totalComments[posts.indexOf(post)]})`}
-                      </TableRowDataTitle>
+                      <TableRowDataTitle>{post.title}</TableRowDataTitle>
                       <TableRowDataWriter>{writerInfo}</TableRowDataWriter>
                       <TableRowDataDate>
                         {Common.timeFromNow(post.regDate)}
@@ -430,7 +502,7 @@ const CommunityComponent = () => {
             <SendButton>
               <SmallButton
                 onClick={() => {
-                  navigate(`/community/write`);
+                  navigate(`/communitypage/write`);
                 }}
               >
                 글쓰기
@@ -439,11 +511,8 @@ const CommunityComponent = () => {
             <SearchComponent />
             <PostPage>
               <Pagination>
-                <PageContant>
-                  <IoIosArrowBack />
-                </PageContant>
                 <PageContant onClick={firstClick} disabled={currentPage === 0}>
-                  처음
+                  <IoIosArrowBack />
                 </PageContant>
               </Pagination>
               {/* for 문처럼 페이지를 생성하기 위해 Array 인스턴스 생성, _이건 아무의미없는값이고 서서히 늘어나는 현식 */}
@@ -465,9 +534,6 @@ const CommunityComponent = () => {
                   onClick={lastClick}
                   disabled={currentPage >= totalPages - 1}
                 >
-                  마지막
-                </PageContant>
-                <PageContant>
                   <IoIosArrowForward />
                 </PageContant>
               </Pagination>

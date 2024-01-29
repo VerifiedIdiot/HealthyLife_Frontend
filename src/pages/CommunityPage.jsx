@@ -3,13 +3,12 @@ import { Routes, Route, Link, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import styled, { keyframes } from "styled-components";
 import { Main } from "../styles/Layouts";
-import CommunityAxiosApi from "../api/CommunityAxiosApi";
-import Post from "../components/communityPage/PostRoomComponent";
+import CommunityAxiosApi from "../api/CommunityAxios";
 // import { jwtDecode } from "jwt-decode";
-import Common from "../utils/Common";
-import WriteComponent from "../components/communityPage/CommunityWriteComponent";
 import CommunityComponent from "../components/communityPage/CommunityComponent";
 import CommunitySearchComponent from "../components/communityPage/CommunitySearchComponent";
+import WriteComponent from "../components/communityPage/CommunityWriteComponent";
+import CommunityDetailComponent from "../components/communityPage/CommunityDetailComponent";
 // import { SmallButton } from "../styles/styledComponents/StyledComponents";
 
 const Container = styled.div`
@@ -140,54 +139,23 @@ const CommunityItemList = styled.div`
     flex-direction: row;
   }
 `;
-const CommunitySection = styled.div`
-  display: flex;
-  width: 1224px;
-  max-width: 1224px;
-  padding: 57.6px 183.99px 57.6px 0px;
-  align-items: flex-start;
-`;
-const fadeInOut = keyframes`
-  0% { opacity: 0; }
-  10% { opacity: 1; }
-  90% { opacity: 1; }
-  100% { opacity: 0; }
-`;
 
-const MessageBox = styled.div`
-  padding: 10px;
-  margin: 10px 0;
-  height: 10%;
-  width: 50%;
-  display: flex;
-  position: fixed;
-  justify-content: center;
-  align-items: center;
-  background-color: #f8f8f8;
-  z-index: 1000;
-  bottom: 0;
-  left: 25%;
-  animation: ${fadeInOut} 4s ease-in-out forwards;
-`;
-
-const SVGX = styled.div`
-  @media (max-width: 1024px) {
-    display: none;
-  }
-`;
 const CommunityPage = () => {
   const [isList, setIsList] = useState(false);
   const [isActive, setIsActive] = useState(false);
 
   const [categories, setCategories] = useState([
-    { categoryId: "1", categoryName: "과일" },
     {
-      categoryId: "2",
+      categoryId: 1,
       categoryName: "사과",
+      email: "admin@admin.com",
+    },
+    {
+      categoryId: 2,
+      categoryName: "포도",
+      email: "admin@admin.com",
     },
   ]);
-  const navigate = useNavigate();
-  const [email, setEmail] = useState("");
   // const token = Common.getAccessToken();
   // const decode = token ? jwtDecode(token) : null;
   const ListOpen = () => {
@@ -214,13 +182,7 @@ const CommunityPage = () => {
         console.log(error);
       }
     };
-    //이메일에 해당하는 회원정보 axios
-    // const getUserInfo = async () => {
-    //   const userInfoResponse = await MemberApi.getUserInfo(email);
-    //   console.log(userInfoResponse.data);
-    //   setUserInfo(userInfoResponse.data);
-    // };
-    // getUserInfo();
+
     getCategories();
   }, []);
   return (
@@ -231,7 +193,7 @@ const CommunityPage = () => {
             <Aside>
               <CommunityMenuList>
                 <CommunityMenuItem>
-                  <Link to="/community">
+                  <Link to="/communitypage">
                     <CommunityLink>
                       <CommunitySVG>
                         <CommunityItem>
@@ -255,7 +217,7 @@ const CommunityPage = () => {
                     <CommunityItemList>
                       {categories.map((category) => (
                         <Link
-                          to={`/community/${category.categoryId}`}
+                          to={`/communitypage/${category.categoryId}`}
                           key={category.categoryId}
                         >
                           <CommunityLink key={category.categoryId}>
@@ -279,7 +241,7 @@ const CommunityPage = () => {
                 element={<CommunitySearchComponent />}
               />
               <Route path=":categoryId" element={<CommunityComponent />} />
-              <Route path="detail/:id" element={<Post />} />
+              <Route path="detail/:id" element={<CommunityDetailComponent />} />
               <Route path="write" element={<WriteComponent />} />
             </Routes>
           </CommunityList>

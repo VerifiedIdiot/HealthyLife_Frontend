@@ -236,11 +236,12 @@ const CommunityPage = () => {
             </Aside>
             <Routes>
               <Route path="/" element={<CommunityComponent />} />
+              <Route path=":categoryId" element={<CommunityComponent />} />
+
               <Route
                 path="search/:searchTerm"
                 element={<CommunitySearchComponent />}
               />
-              <Route path=":categoryId" element={<CommunityComponent />} />
               <Route path="detail/:id" element={<CommunityDetailComponent />} />
               <Route path="write" element={<WriteComponent />} />
             </Routes>

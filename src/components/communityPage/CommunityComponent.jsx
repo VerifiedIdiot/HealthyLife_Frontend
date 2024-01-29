@@ -13,7 +13,6 @@ import { IoIosArrowForward } from "react-icons/io";
 import axios from "axios";
 import SearchComponent from "./SearchComponent";
 import { ReactComponent as Down } from "../../assets/imgs/communityImges/Down.svg";
-
 const createDummyPost = (
   id,
   categoryId,
@@ -103,6 +102,7 @@ const PostListTitle = styled.div`
 `;
 const TitleContent = styled.div`
   display: flex;
+  position: relative;
   color: #2446da;
   font-size: 1.5rem;
   justify-content: center;
@@ -256,13 +256,14 @@ const Dropdown = styled.select`
 `;
 
 const CommunityComponent = () => {
+  const { categoryId } = useParams();
   const navigate = useNavigate();
   const [posts, setPosts] = useState(dummyPosts);
   const [currentPage, setCurrentPage] = useState(0);
   const [totalPages, setTotalPages] = useState(0);
   const [visiblePageStart, setVisiblePageStart] = useState(0);
-  const categoryId = Number(useParams().categoryId);
-  const validCategoryId = isNaN(categoryId) ? undefined : categoryId;
+  const [currentCategory, setCurrentCategory] = useState(categoryId || "");
+
   const [sortType, setSortType] = useState(0);
   const [categories, setCategories] = useState([
     {
@@ -276,10 +277,18 @@ const CommunityComponent = () => {
       email: "admin@admin.com",
     },
   ]);
-  const [currentCategory, setCurrentCategory] = useState("");
   const [showDropdown, setShowDropdown] = useState(false);
   const PAGE_SIZE = 10;
   // CategoryDropdown의 클릭 이벤트를 처리하여 드롭다운 상태를 토글하는 함수
+  useEffect(() => {
+    if (categoryId === "") {
+      setCurrentCategory("");
+      navigate(`/communitypage`);
+    } else if (categoryId) {
+      setCurrentCategory(categoryId);
+      navigate(`/communitypage/${categoryId}`);
+    }
+  }, [categoryId, navigate]);
   const toggleDropdown = () => {
     setShowDropdown(!showDropdown);
   };
@@ -288,10 +297,24 @@ const CommunityComponent = () => {
     transition: transform 0.3s ease-in-out;
     transform: ${(props) =>
       props.isRotated ? "rotate(180deg)" : "rotate(0deg)"};
+    display: none;
+    @media (max-width: 1024px) {
+      display: block;
+    }
   `;
   const CategoryDropdown = styled.div`
-    display: ${(props) =>
-      props.showDropdown ? "block" : "none"}; /* 항상 렌더링되도록 수정 */
+    position: absolute;
+    top: 38px;
+    background-color: white;
+    border: 1px solid #2446da;
+    padding: 5px;
+    font-size: 1rem;
+    display: none;
+
+    @media (max-width: 1024px) {
+      display: ${(props) =>
+        props.showDropdown ? "block" : "none"}; /* 항상 렌더링되도록 수정 */
+    }
   `;
 
   const pageClick = (pageNum) => {
@@ -341,33 +364,45 @@ const CommunityComponent = () => {
 
         // 페이지 수 가져오기
         const responsePages =
-          validCategoryId === undefined
+          categoryId === undefined
             ? await CommunityAxiosApi.getCommunityTotalPages(PAGE_SIZE)
             : await CommunityAxiosApi.getCommunityTotalPagesByCategory(
-                validCategoryId,
+                categoryId,
                 PAGE_SIZE,
                 sortType
               );
         setTotalPages(responsePages.data);
+        const rsp =
+          categoryId === undefined
+            ? await CommunityAxiosApi.getCommunityList(0, PAGE_SIZE)
+            : await CommunityAxiosApi.getCommunityListByCategory(
+                categoryId,
+                0,
+                PAGE_SIZE,
+                sortType
+              );
+
+        setPosts(rsp.data);
+        console.log(rsp.data);
       } catch (error) {
         console.log(error);
       }
     };
 
     postPage();
-  }, [validCategoryId, currentPage, PAGE_SIZE, sortType]);
+  }, [categoryId, currentPage, PAGE_SIZE, sortType]);
   useEffect(() => {
     //  컴포넌트가 언마운트된 후에 상태를 변경하려는 작업을 방지
     let cancelTokenSource = axios.CancelToken.source();
     const postList = async () => {
       try {
         const rsp =
-          validCategoryId === undefined
+          categoryId === undefined
             ? await CommunityAxiosApi.getCommunityList(currentPage, PAGE_SIZE, {
                 cancelToken: cancelTokenSource.token,
               })
             : await CommunityAxiosApi.getCommunityListByCategory(
-                validCategoryId,
+                categoryId,
                 currentPage,
                 PAGE_SIZE,
                 sortType,
@@ -386,36 +421,15 @@ const CommunityComponent = () => {
     return () => {
       cancelTokenSource.cancel();
     };
-  }, [validCategoryId, currentPage, PAGE_SIZE, totalPages, sortType]);
-
-  const handleCategoryClick = async (categoryId) => {
-    setCurrentCategory(categoryId); // 선택한 카테고리를 상태에 반영
-    setShowDropdown(false); // 드롭다운 숨기기
-    try {
-      let response;
-      if (categoryId === "전체") {
-        response = await CommunityAxiosApi.getCommunityList(
-          currentPage,
-          PAGE_SIZE
-        );
-      } else {
-        const selectedCategory = categories.find(
-          (category) => category.categoryName === categoryId
-        ); // 선택된 카테고리의 정보 가져오기
-        if (selectedCategory) {
-          response = await CommunityAxiosApi.getCommunityListByCategory(
-            selectedCategory.categoryId, // 선택된 카테고리의 ID를 사용하여 목록 불러오기
-            currentPage,
-            PAGE_SIZE,
-            sortType
-          );
-        }
-      }
-      if (response) {
-        setPosts(response.data); // 선택된 카테고리에 해당하는 포스트 목록을 상태에 설정
-      }
-    } catch (error) {
-      console.log(error);
+  }, [categoryId, currentPage, PAGE_SIZE, totalPages, sortType]);
+  const getCategoryNameById = (categoryId) => {
+    if (!categoryId) {
+      return "전체";
+    } else {
+      const category = categories.find(
+        (cat) => cat.categoryId === parseInt(categoryId)
+      );
+      return category ? category.categoryName : "전체";
     }
   };
   return (
@@ -425,14 +439,24 @@ const CommunityComponent = () => {
           <InputContainer>
             <PostListTitle>
               <TitleContent onClick={toggleDropdown}>
-                {currentCategory ? currentCategory : "전체"}
+                {getCategoryNameById(currentCategory)}
                 <RotatedDown isRotated={showDropdown} />
                 <CategoryDropdown showDropdown={showDropdown}>
-                  <div onClick={() => handleCategoryClick("전체")}>전체</div>
+                  <div
+                    onClick={() => {
+                      setCurrentCategory("");
+                      navigate(`/communitypage`);
+                    }}
+                  >
+                    전체
+                  </div>
                   {categories.map((category) => (
                     <div
                       key={category.categoryId}
-                      onClick={() => handleCategoryClick(category.categoryName)}
+                      onClick={() => {
+                        setCurrentCategory(category.categoryId);
+                        navigate(`/communitypage/${category.categoryId}`);
+                      }}
                     >
                       {category.categoryName}
                     </div>

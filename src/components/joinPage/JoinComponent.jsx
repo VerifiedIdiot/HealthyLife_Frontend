@@ -3,10 +3,13 @@ import { Area, Box, Container, Main, Section } from "../../styles/Layouts";
 import logo from "../../assets/icons/logo.svg";
 import { useEffect, useState } from "react";
 import { LabelComp } from "./JoinStyle";
-import { Input, InputButton } from "./JoinInput";
+import { Address, Input, InputButton } from "./JoinInput";
 import MemberApi from "../../api/MemberApi";
 import AgreeCheck from "./AgreeCheck";
 import { MiddleButton } from "../../styles/styledComponents/StyledComponents";
+import { storage } from "../../api/Firebase";
+import SmallModal from "../../styles/modals/SmallModal";
+import DaumPostPopup from "../../api/DaumPost";
 const JoinComp = (email, profile) => {
   const navigate = useNavigate();
   const loginGate = useNavigate();
@@ -35,6 +38,7 @@ const JoinComp = (email, profile) => {
   const [inputCode, setInputCode] = useState("");
   const [inputPw, setInputPw] = useState("");
   const [inputPw2, setInputPw2] = useState("");
+  const [inputGender, setInputGender] = useState("");
   const [inputName, setInputName] = useState("");
   const [inputNickName, setInputNickName] = useState("");
   const [inputPhone, setInputPhone] = useState("");
@@ -53,10 +57,27 @@ const JoinComp = (email, profile) => {
   const [isCode, setIsCode] = useState(false);
   const [isPw, setIsPw] = useState(false);
   const [isPw2, setIsPw2] = useState(false);
+  const [isGender, setIsGender] = useState("");
   const [isName, setIsName] = useState(false);
   const [isNickName, setIsNickName] = useState(false);
   const [isPhone, setIsPhone] = useState(false);
   const [isAddr, setIsAddr] = useState(false);
+
+  // 모달
+  const [isModalOpen, setIsModalOpen] = useState({
+    Large: false,
+    Middle: false,
+    Small: false,
+  });
+  const [modalMsg, setModalMsg] = useState("");
+
+  const openModal = (size) => {
+    setIsModalOpen({ ...isModalOpen, [size]: true });
+  };
+
+  const closeModal = (size) => {
+    setIsModalOpen({ ...isModalOpen, [size]: false });
+  };
 
   // 정규식
   const regexList = [
@@ -73,7 +94,17 @@ const JoinComp = (email, profile) => {
     const msgList = [setEmailMessage, setNickNameMessage, setPhoneMessage];
     const validList = [setIsEmail, setIsNickName, setIsPhone];
     try {
-      // 빽부분
+      const res = await MemberApi.checkUnique(num, checkVal);
+      console.log("중복여부 : " + !res.data);
+      if (!res.data) {
+        if (num === 0) {
+          msgList[num]("사용 가능합니다. 인증을 해주세요.");
+        } else msgList[num]("사용 가능합니다.");
+        validList[num](true);
+      } else {
+        msgList[num]("이미 사용중입니다.");
+        validList[num](false);
+      }
     } catch (err) {
       console.log("중복오류 : " + err);
     }
@@ -109,6 +140,7 @@ const JoinComp = (email, profile) => {
       console.log("이메일전송 결과 : " + res.data);
       if (res.data !== null) {
         setSendCode(res.data);
+        // setIsModalOpen(true);
       }
     } catch (e) {
       console.log("이메일 err : " + e);
@@ -154,6 +186,16 @@ const JoinComp = (email, profile) => {
     }
   };
 
+  const handleGenderChange = (e) => {
+    setInputGender(e.target.value);
+    setIsGender(e.target.value !== "" && e.target.value !== undefined);
+  };
+
+  const handleTextClick = (value) => {
+    // inputGender 상태 업데이트 또는 다른 필요한 로직 수행
+    setInputGender(value);
+  };
+
   // 이름
   const onChangeName = (e) => {
     const currName = e.target.value;
@@ -192,6 +234,21 @@ const JoinComp = (email, profile) => {
     }
   };
 
+  // 주소
+  const [inputAddr, setInputAddr] = useState("");
+  const [isPopUpOpen, setIsPopUpOpen] = useState(false);
+  const openPostCode = () => {
+    setIsPopUpOpen(true);
+  };
+  const closePostCode = () => {
+    setIsPopUpOpen(false);
+  };
+
+  const setAddr = (addr) => {
+    setInputAddr(addr);
+    setIsAddr(true);
+  };
+
   // 약관 동의
   const [checkedAll, setCheckedAll] = useState(false);
   const [checked1, setChecked1] = useState(false);
@@ -220,6 +277,52 @@ const JoinComp = (email, profile) => {
       setCheckedAll(false);
     }
   }, [checked1, checked2]);
+
+  const onSubmit = () => {
+    if (imgSrc !== logo && imgSrc !== profile) {
+      const storageRef = storage.ref();
+      const fileRef = storageRef.child(file.name);
+      fileRef.put(file).then(() => {
+        console.log("저장성공!");
+        fileRef.getDownloadURL().then((url) => {
+          console.log("저장경로 확인 : " + url);
+          setUrl(url);
+          addNewMember(url);
+        });
+      });
+    } else {
+      if (imgSrc === profile) {
+        addNewMember(profile);
+      } else {
+        addNewMember();
+      }
+    }
+  };
+
+  const addNewMember = async (url) => {
+    try {
+      const res = await MemberApi.signup(
+        inputEmail,
+        inputPw2,
+        inputName,
+        inputGender,
+        inputNickName,
+        inputPhone,
+        // inputAddr,
+        url
+        // isKakao
+      );
+      if (res.data !== null) {
+        console.log("회원가입 성공!");
+        // setModalOpen(true);
+        // setModalHeader("회원가입");
+        // setModalMsg("회원가입에 성공했습니다!");
+        // setModalType("회원가입");
+      }
+    } catch (err) {
+      console.log("회원가입 : " + err);
+    }
+  };
 
   return (
     <>
@@ -321,7 +424,7 @@ const JoinComp = (email, profile) => {
             $direction="column"
             $width="100%"
           >
-            <Area $direction="column" $shadow="none">
+            <Area $direction="column" $shadow="none" $marginBottom="20px">
               <p
                 style={{
                   color: "rgba(0, 0, 0, 0.5)",
@@ -341,7 +444,7 @@ const JoinComp = (email, profile) => {
                 msgType={isEmail}
               />
             </Area>
-            <Area $direction="column" $shadow="none">
+            <Area $direction="column" $shadow="none" $marginBottom="20px">
               <p
                 style={{
                   color: "rgba(0, 0, 0, 0.5)",
@@ -361,12 +464,12 @@ const JoinComp = (email, profile) => {
                 msgType={isCode}
               />
             </Area>
-            <Area $shadow="none" $width="100%">
+            <Area $shadow="none" $width="100%" $justify="space-between">
               <Box
                 $shadow="none"
                 $direction="column"
-                $width="100%"
-                $padding="10px"
+                $width="48%"
+                // $border="1px solid black"
               >
                 <p
                   style={{
@@ -385,7 +488,7 @@ const JoinComp = (email, profile) => {
                   changeEvt={onChangePw}
                 />
               </Box>
-              <Box $shadow="none" $direction="column">
+              <Box $shadow="none" $direction="column" $width="50%">
                 <p
                   style={{
                     color: "rgba(0, 0, 0, 0.5)",
@@ -402,6 +505,53 @@ const JoinComp = (email, profile) => {
                   msgType={isPw2}
                   changeEvt={onChangePw2}
                 />
+              </Box>
+            </Area>
+            <Area $direction="column" $shadow="none" $marginTop="20px">
+              <Box $shadow="none">
+                {" "}
+                <p
+                  style={{
+                    color: "rgba(0, 0, 0, 0.5)",
+                    fontWeight: "600",
+                  }}
+                >
+                  GENDER (*)
+                </p>
+              </Box>
+              <Box $shadow="none">
+                <label
+                  style={{
+                    padding: "10px",
+                  }}
+                  htmlFor="btn1"
+                >
+                  <input
+                    type="radio"
+                    name="gender"
+                    value="남자"
+                    checked={inputGender === "남자"}
+                    onChange={handleGenderChange}
+                    className="radio"
+                  />
+                  남자
+                </label>
+                <label
+                  htmlFor="btn2"
+                  style={{
+                    padding: "10px",
+                  }}
+                >
+                  <input
+                    type="radio"
+                    name="gender"
+                    value="여자"
+                    checked={inputGender === "여자"}
+                    onChange={handleGenderChange}
+                    className="radio"
+                  />
+                  여자
+                </label>
               </Box>
             </Area>
             <Area $direction="column" $shadow="none" $marginTop="10px">
@@ -421,7 +571,8 @@ const JoinComp = (email, profile) => {
                 changeEvt={onChangeName}
               />
             </Area>
-            <Area $direction="column" $shadow="none" $marginTop="10px">
+
+            <Area $direction="column" $shadow="none" $marginTop="20px">
               <p
                 style={{
                   color: "rgba(0, 0, 0, 0.5)",
@@ -438,7 +589,7 @@ const JoinComp = (email, profile) => {
                 changeEvt={onChangeNickName}
               />
             </Area>
-            <Area $direction="column" $shadow="none" $marginTop="10px">
+            <Area $direction="column" $shadow="none" $marginTop="20px">
               <p
                 style={{
                   color: "rgba(0, 0, 0, 0.5)",
@@ -455,7 +606,7 @@ const JoinComp = (email, profile) => {
                 changeEvt={onChangePhone}
               />
             </Area>
-            <Area $direction="column" $shadow="none" $marginTop="10px">
+            <Area $direction="column" $shadow="none" $marginTop="20px">
               <p
                 style={{
                   color: "rgba(0, 0, 0, 0.5)",
@@ -464,13 +615,15 @@ const JoinComp = (email, profile) => {
               >
                 ADDRESS (*)
               </p>
-              <Input
-                holder="주소를 입력해주세요."
-                // value={}
-                // msg={phoneMessage}
-                // msgType={isPhone}
-                // changeEvt={onChangePhone}
-              />
+              {/* 주소 */}
+              <Address value={inputAddr} open={openPostCode} />
+              {isPopUpOpen && (
+                <DaumPostPopup
+                  onClose={closePostCode}
+                  setAddr={setAddr}
+                  open={isPopUpOpen}
+                />
+              )}
             </Area>
 
             <Area $direction="column" $shadow="none" $marginTop="10px">
@@ -500,23 +653,12 @@ const JoinComp = (email, profile) => {
               </MiddleButton>
             </Area>
           </Section>
-          {/* <Section
-              $display="flex"
-              $direction="column"
-              $marginTop="50px"
-              $align="center"
-              $height="auto"
-            >
-              <LargeButton>로그인</LargeButton>
-            </Section>
-            <Section
-              $display="flex"
-              $direction="column"
-              $align="center"
-              $marginTop="20px"
-            >
-              <LargeButton>카카오 로그인</LargeButton>
-            </Section> */}
+          <SmallModal
+            $isOpen={isModalOpen.Small}
+            $onClose={() => closeModal("Small")}
+          >
+            <p>{modalMsg}</p>
+          </SmallModal>
         </Container>
       </Main>
     </>

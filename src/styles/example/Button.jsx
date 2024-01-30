@@ -13,7 +13,7 @@ export const ButtonComp = styled.button`
   transition: 0.2s ease-in;
   cursor: pointer;
   &.false {
-    background-color: #11009e;
+    background-color: #4942e4;
     cursor: default;
     &:hover {
       background-color: #11009e;

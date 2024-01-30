@@ -4,7 +4,7 @@ import { Area, Container, Main, Section } from "../../styles/Layouts";
 import logo from "../../assets/icons/logo.svg";
 import { useEffect } from "react";
 
-import Button from "../../styles/example/Button";
+import { LargeButton } from "../../styles/styledComponents/StyledComponents";
 
 const PaymentComp = () => {
   const navigate = useNavigate();
@@ -134,14 +134,9 @@ const PaymentComp = () => {
             >
               WELLV는 결제를 해야 이용이 가능합니다.
             </p>
-            <Button
-              className="testBtn"
-              children="결제하기"
-              width="200px"
-              height="50px"
-              active={true}
-              clickEvt={onClickPayment}
-            />
+            <LargeButton onClick={() => onClickPayment("결제하기, true")}>
+              결제하기
+            </LargeButton>
           </Section>
         </Container>
       </Main>

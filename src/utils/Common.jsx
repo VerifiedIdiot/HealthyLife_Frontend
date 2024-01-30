@@ -3,7 +3,7 @@ import axios from "axios";
 import "moment/locale/ko"; // 한글 로컬라이제이션
 moment.locale("ko"); // 한글 설정 적용
 const Common = {
-  BACKEND_DOMAIN: process.env.REACT_APP_BACKEND_DOMAIN,
+  WEELV_DOMAIN: "http://localhost:8111",
   truncateText: (text, maxLength) => {
     if (text.length > maxLength) {
       return text.substring(0, maxLength) + "...";
@@ -21,6 +21,85 @@ const Common = {
     const hour = ("0" + date.getHours()).slice(-2);
     const minute = ("0" + date.getMinutes()).slice(-2);
     return `${year}년 ${month}월 ${day}일 ${hour}시 ${minute}분`;
+  },
+  //토큰 게터 세터
+  getAccessToken: () => {
+    return localStorage.getItem("accessToken");
+  },
+  setAccessToken: (token) => {
+    localStorage.setItem("accessToken", token);
+  },
+  getRefreshToken: () => {
+    return localStorage.getItem("refreshToken");
+  },
+  setRefreshToken: (token) => {
+    localStorage.setItem("refreshToken", token);
+  },
+
+  // 401 에러 처리 함수 (토큰 리프래쉬토큰 재발급)
+  handleUnauthorized: async () => {
+    // console.log("에세스토큰 재발급");
+    const accessToken = Common.getAccessToken();
+    const refreshToken = Common.getRefreshToken();
+    const config = {
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
+      },
+    };
+    try {
+      const res = await axios.post(
+        `${Common.BACKEND_DOMAIN}/auth/refresh`,
+        refreshToken,
+        config
+      );
+      // console.log(res.data);
+      // console.log("토큰 재발급 완료!!")
+      Common.setAccessToken(res.data);
+      return true;
+    } catch (err) {
+      // console.log(err);
+      return false;
+    }
+  },
+
+  //토큰에서 이메일 뽑기 (String)
+  TakenToken: async () => {
+    const accessToken = Common.getAccessToken();
+    try {
+      return await axios.get(Common.BACKEND_DOMAIN + `/sale/takenEmail`, {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: "Bearer " + accessToken,
+        },
+      });
+    } catch (e) {
+      if (e.response.status === 401) {
+        await Common.handleUnauthorized();
+        const newToken = Common.getAccessToken();
+        if (newToken !== accessToken) {
+          return await axios.get(Common.BACKEND_DOMAIN + `/sale/takenEmail`, {
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: "Bearer " + newToken,
+            },
+          });
+        }
+      }
+    }
+  },
+
+  //토큰으로 로그인여부 확인 (Buloan)
+  IsLogin: async () => {
+    const accessToken = Common.getAccessToken();
+    return await axios.get(
+      Common.BACKEND_DOMAIN + `/sale/isLogin/${accessToken}`,
+      {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: "Bearer " + accessToken,
+        },
+      }
+    );
   },
 };
 

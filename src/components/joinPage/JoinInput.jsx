@@ -2,7 +2,6 @@ import { styled } from "styled-components";
 import Button from "../../styles/example/Button";
 const InputButtonComp = styled.div`
   width: 100%;
-  margin-bottom: 20px;
   position: relative;
   .inputWrap {
     border-bottom: 1px solid black;
@@ -70,9 +69,8 @@ export const InputButton = (props) => {
 
 const InputComp = styled.div`
   width: 100%;
-  margin-bottom: 10px;
   position: relative;
-
+  padding: "10px 10px";
   input {
     width: 100%;
     height: auto;

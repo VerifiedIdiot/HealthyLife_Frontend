@@ -3,7 +3,7 @@ import Common from "./Common";
 
 const AxiosInstance = axios.create({
   // axios 인스턴스 생성
-  baseURL: "",
+  baseURL: Common.BACKEND_DOMAIN,
 });
 
 AxiosInstance.interceptors.request.use(
@@ -26,7 +26,7 @@ AxiosInstance.interceptors.response.use(
   async (error) => {
     if (error.response && error.response.status === 401) {
       // 401 에러 발생시
-      console.log("401에러 발생!! 토큰 재발급시작!")
+      console.log("401에러 발생!! 토큰 재발급시작!");
       const newToken = await Common.handleUnauthorized();
       if (newToken) {
         // 재시도

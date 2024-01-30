@@ -10,6 +10,7 @@ import AgreeCheck from "./AgreeCheck";
 import { MiddleButton } from "../../styles/styledComponents/StyledComponents";
 import SmallModal from "../../styles/modals/SmallModal";
 import DaumPostPopup from "../../api/DaumPost";
+import { storage } from "../../api/firebase";
 
 const JoinComp = (email, profile) => {
   const navigate = useNavigate();

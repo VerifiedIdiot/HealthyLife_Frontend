@@ -1,22 +1,25 @@
 import { useNavigate } from "react-router";
 import { Area, Box, Container, Main, Section } from "../../styles/Layouts";
 import logo from "../../assets/icons/logo.svg";
+import basicUser from "../../assets/imgs/basicUser.png";
 import { useEffect, useState } from "react";
 import { LabelComp } from "./JoinStyle";
 import { Address, Input, InputButton } from "./JoinInput";
 import MemberApi from "../../api/MemberApi";
 import AgreeCheck from "./AgreeCheck";
 import { MiddleButton } from "../../styles/styledComponents/StyledComponents";
-import { storage } from "../../api/Firebase";
 import SmallModal from "../../styles/modals/SmallModal";
 import DaumPostPopup from "../../api/DaumPost";
+
 const JoinComp = (email, profile) => {
   const navigate = useNavigate();
   const loginGate = useNavigate();
   const bodyNavigate = useNavigate();
 
   // 프로필 관련
-  const [imgSrc, setImgSrc] = useState(profile && profile ? profile : logo);
+  const [imgSrc, setImgSrc] = useState(
+    profile && profile ? profile : basicUser
+  );
   const [file, setFile] = useState("");
   const [url, setUrl] = useState("");
 
@@ -279,7 +282,7 @@ const JoinComp = (email, profile) => {
   }, [checked1, checked2]);
 
   const onSubmit = () => {
-    if (imgSrc !== logo && imgSrc !== profile) {
+    if (imgSrc !== basicUser && imgSrc !== profile) {
       const storageRef = storage.ref();
       const fileRef = storageRef.child(file.name);
       fileRef.put(file).then(() => {
@@ -303,23 +306,25 @@ const JoinComp = (email, profile) => {
     try {
       const res = await MemberApi.signup(
         inputEmail,
-        inputPw2,
+        inputPw,
         inputName,
-        inputGender,
         inputNickName,
+        inputGender,
         inputPhone,
-        // inputAddr,
+        inputAddr,
         url
         // isKakao
       );
       if (res.data !== null) {
         console.log("회원가입 성공!");
+        bodyNavigate("/join/bodyInfo");
         // setModalOpen(true);
         // setModalHeader("회원가입");
         // setModalMsg("회원가입에 성공했습니다!");
         // setModalType("회원가입");
       }
     } catch (err) {
+      console.log(url);
       console.log("회원가입 : " + err);
     }
   };
@@ -648,7 +653,7 @@ const JoinComp = (email, profile) => {
               />
             </Area>
             <Area $display="flex" $justify="center" $shadow="none">
-              <MiddleButton onClick={() => bodyNavigate("/join/bodyInfo")}>
+              <MiddleButton onClick={() => onSubmit("다음, true")}>
                 다음
               </MiddleButton>
             </Area>

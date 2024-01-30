@@ -29,8 +29,7 @@ const MemberApi = {
     gender,
     phone,
     addr,
-    image,
-    birth
+    image
   ) => {
     console.log("회원가입 진입 : " + email);
     const data = {
@@ -42,7 +41,6 @@ const MemberApi = {
       phone: phone,
       addr: addr,
       image: image,
-      birth: birth,
     };
     return await axios.post(Common.WEELV_DOMAIN + "/auth/signup", data);
   },

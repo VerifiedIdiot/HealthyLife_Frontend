@@ -118,6 +118,7 @@ const JoinComp = (email, profile) => {
   const onChangeEmail = (e) => {
     const currEmail = e.target.value;
     console.log("currr" + currEmail);
+    console.log("currr" + imgSrc);
     setInputEmail(currEmail);
     if (!regexList[0].test(currEmail)) {
       setEmailMessage("잘못된 형식입니다.");
@@ -282,10 +283,13 @@ const JoinComp = (email, profile) => {
     }
   }, [checked1, checked2]);
 
+  // 회원가입 /////////////////////////////////////////////////////
   const onSubmit = () => {
     if (imgSrc !== basicUser && imgSrc !== profile) {
       const storageRef = storage.ref();
       const fileRef = storageRef.child(file.name);
+      console.log("Storage Ref:", storageRef);
+      console.log("File Ref:", fileRef);
       fileRef.put(file).then(() => {
         console.log("저장성공!");
         fileRef.getDownloadURL().then((url) => {

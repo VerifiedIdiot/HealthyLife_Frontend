@@ -82,6 +82,8 @@ const LoginComp = () => {
       console.log("tlqkf" + res.data);
       if (res.data.grantType === "Bearer") {
         console.log("성공");
+        console.log("엑세스토큰나와 ! " + res.data.accessToken);
+        console.log("리프레시토큰나와 ! " + res.data.refreshToken);
         Common.setAccessToken(res.data.accessToken);
         Common.setRefreshToken(res.data.refreshToken);
         loginNavigate("/");

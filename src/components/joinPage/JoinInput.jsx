@@ -41,6 +41,7 @@ export const InputButton = (props) => {
     msg,
     msgType,
     disabled,
+    readOnly,
   } = props;
 
   return (
@@ -99,7 +100,8 @@ const InputComp = styled.div`
   }
 `;
 export const Input = (props) => {
-  const { value, holder, changeEvt, type, msg, msgType, disabled } = props;
+  const { value, holder, changeEvt, type, msg, msgType, disabled, readOnly } =
+    props;
   return (
     <InputComp>
       <input
@@ -108,6 +110,7 @@ export const Input = (props) => {
         placeholder={holder}
         onChange={(e) => changeEvt(e)}
         disabled={disabled}
+        readOnly={readOnly}
       />
       <div className={`msg ${msgType ? "" : "fail"}`}>{msg}</div>
     </InputComp>

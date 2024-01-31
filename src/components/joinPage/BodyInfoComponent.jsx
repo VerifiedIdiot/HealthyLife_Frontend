@@ -15,22 +15,19 @@ const BodyInfoComp = (profile) => {
   const [inputWeight, setInputWeight] = useState("");
   const [inputMuscle, setInputMuscle] = useState("");
   const [inputBodyFat, setInputBodyFat] = useState("");
-  const [inputBasalMetabolic, setInputBasalMetabolic] = useState("");
-  const [inputBodyMass, setInputBodyMass] = useState("");
+
   // 오류 메세지
   const [heightMessage, setHeightMessage] = useState("");
   const [weightMessage, setWeightMessage] = useState("");
   const [muscleMessage, setMuscleMessage] = useState("");
   const [bodyFatMessage, setBodyFatMessage] = useState("");
-  const [basalMetabolicMessage, setBasalMetabolicMessage] = useState("");
-  const [bodyMassMessage, setBodyMassMessage] = useState("");
+
   // 유효성
   const [isHeight, setIsHeight] = useState(false);
   const [isWeight, setIsWeight] = useState(false);
   const [isMuscle, setIsMuscle] = useState(false);
   const [isBodyFat, setIsBodyFat] = useState(false);
-  const [isBasalMetabolic, setIsBasalMetabolic] = useState(false);
-  const [isBodyMass, setIsBodyMass] = useState(false);
+
   // 정규식
   const regexList = /^[0-9.]{2,5}$/;
   // 키
@@ -86,32 +83,55 @@ const BodyInfoComp = (profile) => {
       setIsBodyFat(true);
     }
   };
-  // 기초대사량
-  const onChangeBasal = (e) => {
-    const currBasalMetabolic = e.target.value;
-    setInputBasalMetabolic(currBasalMetabolic);
-    if (!regexList.test(currBasalMetabolic)) {
-      setBasalMetabolicMessage("2 ~ 5 까지의 숫자만 입력가능합니다. (.포함) ");
-      setIsBasalMetabolic(false);
-      setBasalMetabolicMessage("");
-    } else {
-      setBasalMetabolicMessage("사용 가능합니다.");
-      setIsBasalMetabolic(true);
+  // 기초대사량 계산 함수
+  const calculateBMR = () => {
+    // 입력값이 숫자가 아니면 빈 문자열 반환
+    if (isNaN(inputWeight) || isNaN(inputHeight)) {
+      return "";
     }
+
+    const weight = parseFloat(inputWeight);
+    const height = parseFloat(inputHeight);
+    const age = 25; // 나이는 적절하게 설정하세요
+
+    // BMR 계산식
+    const bmr = 66.5 + 13.75 * weight + 5.003 * height - 6.75 * age;
+    return bmr.toFixed(2); // 소수점 둘째 자리까지 표시
   };
-  // BMI
-  const onChangeBodyMass = (e) => {
-    const currBodyMass = e.target.value;
-    setInputBodyMass(currBodyMass);
-    if (!regexList.test(currBodyMass)) {
-      setBodyMassMessage("2 ~ 5 까지의 숫자만 입력가능합니다. (.포함) ");
-      setIsBodyMass(false);
-      setBodyMassMessage("");
-    } else {
-      setBodyMassMessage("사용 가능합니다.");
-      setIsBodyMass(true);
+
+  // BMI 계산 함수
+  const calculateBMI = () => {
+    // 입력값이 숫자가 아니면 빈 문자열 반환
+    if (isNaN(inputWeight) || isNaN(inputHeight)) {
+      return "";
     }
+
+    const weight = parseFloat(inputWeight);
+    const height = parseFloat(inputHeight);
+
+    // BMI 계산식
+    const bmi = weight / Math.pow(height / 100, 2);
+    return bmi.toFixed(2); // 소수점 둘째 자리까지 표시
   };
+
+  // 기초대사량 및 BMI 상태
+  const [calculatedBMR, setCalculatedBMR] = useState("");
+  const [calculatedBMI, setCalculatedBMI] = useState("");
+
+  // useEffect를 사용하여 inputHeight, inputWeight가 변경될 때마다 BMR, BMI를 다시 계산
+  useEffect(() => {
+    const bmrResult = calculateBMR();
+    const bmiResult = calculateBMI();
+
+    // 계산된 값이 숫자라면 상태 업데이트
+    if (!isNaN(bmrResult)) {
+      setCalculatedBMR(bmrResult);
+    }
+
+    if (!isNaN(bmiResult)) {
+      setCalculatedBMI(bmiResult);
+    }
+  }, [inputHeight, inputWeight]);
   return (
     <>
       <Main $direction="row" $width="100%" $height="auto">
@@ -257,12 +277,9 @@ const BodyInfoComp = (profile) => {
                   BASAL METABOLIC RATE (*)
                 </p>
                 <Input
-                  holder="기초대사량 : "
-                  value={inputBasalMetabolic}
+                  holder={calculatedBMR}
                   type="basalMetabolic"
-                  msg={basalMetabolicMessage}
-                  msgType={isBasalMetabolic}
-                  changeEvt={onChangeBasal}
+                  readOnly={true}
                 />
               </Box>
               <Box $direction="column" $shadow="none">
@@ -274,14 +291,7 @@ const BodyInfoComp = (profile) => {
                 >
                   BODY MASS INDEX (*)
                 </p>
-                <Input
-                  holder="체질량 지수 : "
-                  value={inputBodyMass}
-                  type="bodyMass"
-                  msg={bodyMassMessage}
-                  msgType={isBodyMass}
-                  changeEvt={onChangeBodyMass}
-                />
+                <Input holder={calculatedBMI} type="bodyMass" readOnly={true} />
               </Box>
             </Area>
           </Section>

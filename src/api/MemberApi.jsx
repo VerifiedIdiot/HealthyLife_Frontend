@@ -54,6 +54,20 @@ const MemberApi = {
     };
     return await axios.post(Common.WEELV_DOMAIN + "/auth/login", data);
   },
+
+  // 인바디정보
+  BodyRegister: async (height, weight, muscle, fatPercent, bmr, bmi) => {
+    console.log("인바디 진입 : " + height);
+    const data = {
+      height: height,
+      weight: weight,
+      muscle: muscle,
+      fatPercent: fatPercent,
+      bmr: bmr,
+      bmi: bmi,
+    };
+    return await axios.post(Common.WEELV_DOMAIN + "/Body/new", data);
+  },
 };
 
 export default MemberApi;

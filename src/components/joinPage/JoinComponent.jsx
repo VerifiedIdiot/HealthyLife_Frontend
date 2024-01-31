@@ -11,8 +11,9 @@ import { MiddleButton } from "../../styles/styledComponents/StyledComponents";
 import SmallModal from "../../styles/modals/SmallModal";
 import DaumPostPopup from "../../api/DaumPost";
 import { storage } from "../../api/firebase";
+import BodyInfoComp from "./BodyInfoComponent";
 
-const JoinComp = (email, profile) => {
+const JoinComp = ({ email, profile }) => {
   const navigate = useNavigate();
   const loginGate = useNavigate();
   const bodyNavigate = useNavigate();
@@ -390,14 +391,17 @@ const JoinComp = (email, profile) => {
           $height="auto"
         >
           <Section
+            $display="flex"
             $height="auto"
             $paddingTop="25px"
             $direction="column"
             $align="center"
             $justify="center"
+            $marginBottom="50px"
           >
             <Area
               $shadow="none"
+              $height="auto"
               $position="relative"
               $width="25%"
               $paddingBottom="25%"
@@ -416,17 +420,12 @@ const JoinComp = (email, profile) => {
                 alt="프로필이미지"
               />
             </Area>
-            <Area $align="center" $justify="center" $shadow="none">
-              <LabelComp>
-                <label>
-                  <input
-                    type="file"
-                    onChange={(e) => handleFileInputChange(e)}
-                  />
-                  파일 선택
-                </label>
-              </LabelComp>
-            </Area>
+            <LabelComp>
+              <label>
+                <input type="file" onChange={(e) => handleFileInputChange(e)} />
+                파일 선택
+              </label>
+            </LabelComp>
           </Section>
           <Section
             $height="auto"
@@ -658,9 +657,7 @@ const JoinComp = (email, profile) => {
               />
             </Area>
             <Area $display="flex" $justify="center" $shadow="none">
-              <MiddleButton onClick={() => onSubmit("다음, true")}>
-                다음
-              </MiddleButton>
+              <MiddleButton onClick={() => addNewMember()}>다음</MiddleButton>
             </Area>
           </Section>
           <SmallModal
@@ -671,6 +668,7 @@ const JoinComp = (email, profile) => {
           </SmallModal>
         </Container>
       </Main>
+      <BodyInfoComp />
     </>
   );
 };

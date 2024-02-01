@@ -1,4 +1,4 @@
-import React, { useState, useEffect, forwardRef } from "react";
+import React, { useState, useEffect, forwardRef, useCallback } from "react";
 import MiddleModal from "../../styles/modals/MiddleModal";
 import { Container, Section, Area } from "../../styles/Layouts";
 import styled from "styled-components";
@@ -7,9 +7,10 @@ import styled from "styled-components";
 import Calendar from "react-calendar";
 import "react-calendar/dist/Calendar.css";
 import moment from "moment";
+import CalendarApi from "../../api/CalendarApi";
 
 export const MyCalendar = forwardRef(({ isBasic }, ref) => {
-
+  const [clickedDate, setClickedDate] = useState(null);
   const [modalOpen, setModalOpen] = useState(false);
   const openModal = () => {
     setModalOpen(true);
@@ -22,14 +23,14 @@ export const MyCalendar = forwardRef(({ isBasic }, ref) => {
   const curDate = new Date();
   const [value, setValue] = useState(curDate);
 
-  // value가 변경될 때마다 모달 창 열기
-  useEffect(() => {
-    if (value !== curDate) {
-      openModal();
-    }
-  }, [value]);
+  // 날짜 클릭 시 모달 창 열기
+  const handleDayClick = (value) => {
+    console.log("클릭한 날짜");
+    setClickedDate(value);
+    openModal();
+  };
 
-  // 
+  // 전후 날짜
   const handleNextDay = () => {
     const nextDay = moment(value).add(1, "day").toDate();
     setValue(nextDay);
@@ -39,18 +40,34 @@ export const MyCalendar = forwardRef(({ isBasic }, ref) => {
     setValue(beforeDay);
   };
 
+  useEffect(() => {
+    const mealInput = async () => {
+      try {
+        const result = await CalendarApi.getFoodListBySearch();
+        if (result.status === 200) {
+          console.log(result.data);
+        }
+      } catch (e) {
+        console.error(e);
+      }
+    };
+    mealInput();
+  }, []);
+
   // api 연결
+  const [mealDates, setMealDates] = useState([]);
+  const [mealAmounts, setMealAmounts] = useState([]);
   const [workoutDates, setworkoutDates] = useState([]);
-  const [todayExercise, settodayExercise] = useState([]);
+  // const [todayExercise, settodayExercise] = useState([]);
 
   // 컨텐츠 날짜 리스트
   const scList = [
-    "2024-01-04",
-    "2024-01-05",
-    "2024-01-10",
-    "2024-01-11",
-    "2024-01-17",
-    "2024-01-30",
+    "2024-02-02",
+    "2024-02-04",
+    "2024-02-10",
+    "2024-02-11",
+    "2024-02-17",
+    "2024-02-30",
   ];
 
   // 각 날짜 타일에 컨텐츠 추가
@@ -61,26 +78,24 @@ export const MyCalendar = forwardRef(({ isBasic }, ref) => {
     const contentTotal = [];
 
     // data가 리스트의 날짜와 일치하면 해당 컨텐츠 추가
-    // 운동
+    // 식단
     if (scList.find((day) => day === moment(date).format("YYYY-MM-DD"))) {
-      contentWorkout.push(
+      contentMeal.push(
         <>
           {isBasic ? (
-            <div className="dot-workout">
-            </div>
+            <div className="dot-meal"></div>
           ) : (
-            <div className="box-workout">
+            <div className="box-meal">
               <p>아침</p>
               <p>점심</p>
               <p>저녁</p>
-
             </div>
           )}
         </>
       );
     }
     return (
-      <Container>
+      <WeekdayContainer>
         {isBasic ? (
           <>
             <div className="content-row">
@@ -93,12 +108,12 @@ export const MyCalendar = forwardRef(({ isBasic }, ref) => {
           <>
             <div className="content-row">{contentTotal}</div>
             <div className="content-column">
-              <div className="content-meal">{contentWorkout}</div>
-              <div className="content-workout">{contentTotal}</div>
+              <div className="content-meal">{contentMeal}</div>
+              <div className="content-workout">{contentWorkout}</div>
             </div>
           </>
         )}
-      </Container>
+      </WeekdayContainer>
     );
   };
   return (
@@ -118,6 +133,7 @@ export const MyCalendar = forwardRef(({ isBasic }, ref) => {
             isBasic={true}
             minDetail="month"
             maxDetail="month"
+            dateClick={handleDayClick}
           />
         ) : (
           <Calendar
@@ -133,34 +149,39 @@ export const MyCalendar = forwardRef(({ isBasic }, ref) => {
             isBasic={true}
             minDetail="month"
             maxDetail="month"
+            onClickDay={handleDayClick}
           />
         )}
-        {modalOpen && (
-            <MiddleModal open={openModal} close={closeModal}>
-                <DayContainer>
-                <DayButton onClick={handleBeforeDay}>
-                </DayButton>
-                <SelectDay>
-                  {moment(value).format("YYYY년 MM월 DD일")}
-                </SelectDay>
-                <DayButton onClick={handleNextDay}>
-                </DayButton>
-              </DayContainer>
-            </MiddleModal>
+        {clickedDate && (
+          <MiddleModal $isOpen={modalOpen} $onClose={closeModal}>
+            <DayContainer>
+              <DayButton onClick={handleBeforeDay}></DayButton>
+              <SelectDay>{moment(value).format("YYYY년 MM월 DD일")}</SelectDay>
+              <DayButton onClick={handleNextDay}></DayButton>
+              <Section></Section>
+            </DayContainer>
+          </MiddleModal>
         )}
       </CalendarContainer>
     </>
   );
 });
 
+const WeekdayContainer = styled.div.attrs({
+  className: "weekday-container",
+})`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  width: 100%;
+`;
 
 const CalendarContainer = styled.div`
-  padding-bottom: 30px;
-  width: 100%;
   height: ${(props) => props.$height || "auto"};
   justify-content: space-between;
   display: flex;
   align-items: center;
+
   .calendar-tab {
     display: ${(props) => (props.isMobile ? "none" : "flex")};
     flex-direction: column;
@@ -203,58 +224,56 @@ const CalendarContainer = styled.div`
     flex-direction: column;
   }
 
-  .content-sc,
-  .content-work {
+  .content-meal,
+  .content-workout {
     display: flex;
     flex-direction: column;
     height: auto;
   }
 
+  .dot-meal,
   .dot-expense,
-  .dot-income,
-  .dot-expense,
-  .dot-schedule,
-  .dot-work {
+  .dot-workout,
+  .dot-schedule {
     margin: 1px;
     width: ${(props) => (props.isMobile ? "0.5em" : "0.6em")};
     height: ${(props) => (props.isMobile ? "0.5em" : "0.6em")};
     border-radius: 50%;
-    /* margin-top: 55px; */
   }
 
-  .income-text {
+  .meal-text {
     color: #3fcea5;
   }
 
-  .expense-text {
+  .workout-text {
     color: #ff005c;
   }
 
-  .dot-income {
+  .dot-meal {
     background-color: #3fcea5;
   }
 
-  .dot-expense {
+  .dot-workout {
     background-color: #ff005c;
   }
 
-  .income-text,
-  .expense-text {
+  .meal-text,
+  .workout-text {
     font-size: 0.8em;
   }
 
-  .dot-schedule,
-  .box-schedule {
+  .dot-meal,
+  .box-meal p {
     background-color: #329d9c;
   }
 
-  .dot-work,
-  .box-work {
-    background-color: #bdbdbd;
+  .dot-workout,
+  .box-workout p {
+    background-color: #ccc;
   }
 
-  .box-schedule,
-  .box-work {
+  .box-meal,
+  .box-workout {
     width: 2em;
     height: 1.2em;
     border-radius: 10%;
@@ -287,8 +306,6 @@ const CalendarContainer = styled.div`
     width: auto;
     height: auto;
     background: none;
-    /* font-size: 16px; */
-    /* margin-top: 15px; */
   }
 
   .react-calendar__navigation__arrow {
@@ -326,7 +343,6 @@ const CalendarContainer = styled.div`
   }
 
   .react-calendar__tile--now {
-    /* background: ${({ theme }) => theme.bgColor}; */
     background: ${({ theme }) => theme.todayColor};
     border-radius: 6px;
     font-weight: bold;
@@ -371,7 +387,7 @@ const CalendarContainer = styled.div`
     margin: 10px;
     width: 85%;
     margin: 0 auto;
-    background-color: ${({ theme }) => theme.bgColor};
+    background-color: #a0a096;
     color: #999;
     border: 0px;
     border-radius: 10px;
@@ -384,8 +400,6 @@ const CalendarContainer = styled.div`
     width: auto;
     height: auto;
     background: none;
-    /* font-size: 16px; */
-    /* margin-top: 15px; */
   }
 
   .react-calendar__navigation__arrow {
@@ -424,8 +438,7 @@ const CalendarContainer = styled.div`
   }
 
   .react-calendar__tile--now {
-    /* background: ${({ theme }) => theme.bgColor}; */
-    background: ${({ theme }) => theme.todayColor};
+    background: #ef5350;
     border-radius: 6px;
     font-weight: bold;
     color: #222;
@@ -434,8 +447,7 @@ const CalendarContainer = styled.div`
   // 오늘 날짜 선택 시
   .react-calendar__tile--now:enabled:hover,
   .react-calendar__tile--now:enabled:focus {
-    background: ${({ theme }) => theme.seldayColor};
-
+    background: #ef5350;
     border-radius: 6px;
     font-weight: bold;
     color: #fff;
@@ -451,7 +463,7 @@ const CalendarContainer = styled.div`
   }
 
   .react-calendar__tile--range {
-    background: ${({ theme }) => theme.todayColor};
+    background: #ef5350;
     color: #fff;
     border-radius: 6px;
   }
@@ -474,7 +486,7 @@ const CalendarContainer = styled.div`
 
   .react-calendar__tile {
     padding: 0;
-}
+  }
 
   .react-calendar__tile {
     text-align: center;

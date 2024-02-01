@@ -4,13 +4,16 @@ const BACKEND_DOMAIN = process.env.REACT_APP_BACKEND_DOMAIN;
 
 const CalendarApi = {
   // 음식 조회
-  getFoodListByCategory: async () => {
+  getFoodListBySearch: async (params) => {
     try {
-      return await axios.get(
-        BACKEND_DOMAIN + `/api/food/list/page`
+      const response = await axios.get(
+        console.log("zzzz")
+        `${BACKEND_DOMAIN}/meal/serch`, { params }
+        
       );
+      return response.data;
     } catch (error) {
-      console.error("Error in getFoodListByCategory API call", error);
+      console.error("Error in getFoodListBySearch API call", error);
       throw error;
     }
   },

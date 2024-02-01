@@ -8,7 +8,7 @@ const CalendarApi = {
     try {
       const response = await axios.get(
         console.log("zzzz")
-        `${BACKEND_DOMAIN}/meal/serch`, { params }
+        `${BACKEND_DOMAIN}/meal/search`, { params }
         
       );
       return response.data;

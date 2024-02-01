@@ -168,9 +168,9 @@ export const SearchSection = ({
               <p>기능성 검색</p>
             </SearchItemLeft>
             <SearchItemRight>
-              <ComboBox>영양소 기능</ComboBox>
-              <ComboBox>생리활성 기능</ComboBox>
-              <ComboBox>질병발생위험감소기능</ComboBox>
+              <ComboBox typeList={typeList}>영양소 기능</ComboBox>
+              <ComboBox typeList={typeList}>생리활성 기능</ComboBox>
+              <ComboBox typeList={typeList}>질병발생위험감소기능</ComboBox>
             </SearchItemRight>
           </ResponsiveItemBox>
           <ResponsiveItemBox>

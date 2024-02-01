@@ -26,26 +26,26 @@ export const useApiRequestParams = (apiFunc, params) => {
 
 
 export const useApiRequest = (apiFunc) => {
-    const [reponse, setResponse] = useState(null);
-    const [responseLoading, setResponsLoading] = useState(true);
-    const [responsError, setResponseError] = useState(null);
+    const [data, setData] = useState(null);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState(null);
 
     useEffect(() => {
         const fetchData = async () => {
             try {
                 const result = await apiFunc();
-                setResponse(result);
+                setData(result);
             } catch (error) {
-                setResponseError(error);
+                setError(error);
             } finally {
-                setResponsLoading(false);
+                setLoading(false);
             }
         };
 
         fetchData();
     }, [apiFunc]);
 
-    return { reponse, responseLoading, responsError };
+    return { data, loading, error };
 };
 
 

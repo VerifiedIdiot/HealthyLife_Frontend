@@ -137,7 +137,7 @@ export const SearchSection = ({
   handleSearchQueryChange,
   typeList,
 }) => {
-
+  console.log(typeList);
   
   return (
     

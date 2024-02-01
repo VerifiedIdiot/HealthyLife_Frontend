@@ -48,9 +48,10 @@ const MedicinePage = () => {
   // getListByType API 호출에 대한 응답 처리
   useEffect(() => {
     if (listByTypeData) {
-      setTypeList(listByTypeData); // 또는 listByTypeData의 특정 프로퍼티
+      setTypeList(listByTypeData); // 상태를 설정합니다.
     }
-    console.log(typeList);
+    
+    // console.log(listByTypeData);
   }, [listByTypeData]);
 
 

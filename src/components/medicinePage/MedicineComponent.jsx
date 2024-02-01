@@ -135,8 +135,12 @@ export const SearchSection = ({
   handleSearch,
   handleComboSearchChange,
   handleSearchQueryChange,
+  typeList,
 }) => {
+
+  
   return (
+    
     <>
       <ResponsiveSearchSection>
         <ResponsiveSearchArea>

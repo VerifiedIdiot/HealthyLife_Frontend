@@ -21,7 +21,7 @@ const HomePage = () => {
     <>
       <Main $width = "100%">
         <Container $height = "100vh">
-          <StyledImageContainer img src={sample}/>
+          <StyledImageContainer $img src={sample}/>
         </Container>
         {/* <Container $height = "100vh">
           

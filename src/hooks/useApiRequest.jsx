@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 
-const useApiRequest = (apiFunc, params) => {
+export const useApiRequestParams = (apiFunc, params) => {
     const [data, setData] = useState(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
@@ -23,4 +23,29 @@ const useApiRequest = (apiFunc, params) => {
     return { data, loading, error };
 };
 
-export default useApiRequest;
+
+
+export const useApiRequest = (apiFunc) => {
+    const [reponse, setResponse] = useState(null);
+    const [responseLoading, setResponsLoading] = useState(true);
+    const [responsError, setResponseError] = useState(null);
+
+    useEffect(() => {
+        const fetchData = async () => {
+            try {
+                const result = await apiFunc();
+                setResponse(result);
+            } catch (error) {
+                setResponseError(error);
+            } finally {
+                setResponsLoading(false);
+            }
+        };
+
+        fetchData();
+    }, [apiFunc]);
+
+    return { reponse, responseLoading, responsError };
+};
+
+

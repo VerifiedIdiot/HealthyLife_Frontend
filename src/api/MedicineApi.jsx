@@ -1,34 +1,48 @@
 import axios from "axios";
 
+
 const BACKEND_DOMAIN = process.env.REACT_APP_BACKEND_DOMAIN;
 
 const MedicineApi = {
-  // 건강기능식품 관련 api
-  getSortByColumn: async (params) => {
+  getListByType: async () => {
     try {
-      const response = await axios.get(
-        `${BACKEND_DOMAIN}/api/medicine/${params}`
+      const reponse = await axios.get(
+        `${BACKEND_DOMAIN}/api/medicines/get-codes`
       );
-      return response.data;
+      // console.log(reponse.data)
+      return reponse.data;
     } catch (error) {
-      // 오류 처리
-      console.error("Error in getSortByColumn API call", error);
+      console.error("Error in getListByType API call", error);
       throw error;
     }
   },
 
-  getSortByOffSet: async (params) => {
-    try {
-      const response = await axios.get(
-        `${BACKEND_DOMAIN}/api/medicine/${params}`
-      );
-      return response.data;
-    } catch (error) {
-      // 오류 처리
-      console.error("Error in getSortByColumn API call", error);
-      throw error;
-    }
-  },
+  // // 건강기능식품 관련 api
+  // getSortByColumn: async (params) => {
+  //   try {
+  //     const response = await axios.get(
+  //       `${BACKEND_DOMAIN}/api/medicine/${params}`
+  //     );
+  //     return response.data;
+  //   } catch (error) {
+  //     // 오류 처리
+  //     console.error("Error in getSortByColumn API call", error);
+  //     throw error;
+  //   }
+  // },
+
+  // getSortByOffSet: async (params) => {
+  //   try {
+  //     const response = await axios.get(
+  //       `${BACKEND_DOMAIN}/api/medicine/${params}`
+  //     );
+  //     return response.data;
+  //   } catch (error) {
+  //     // 오류 처리
+  //     console.error("Error in getSortByColumn API call", error);
+  //     throw error;
+  //   }
+  // },
 };
 
 export default MedicineApi;

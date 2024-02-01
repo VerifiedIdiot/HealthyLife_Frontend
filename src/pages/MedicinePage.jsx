@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import useApiRequest from "../hooks/useApiRequest";
+import {useApiRequestParams, useApiRequest} from "../hooks/useApiRequest";
 import MedicineApi from "../api/MedicineApi";
 import { Main, Container } from "../styles/Layouts";
 import {
@@ -13,11 +13,15 @@ const MedicinePage = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const [searchParams, setSearchParams] = useState({});
   const [totalCount, setTotalCount] = useState(0);
+  const [typeList, setTypeList] = useState({});
 
-  const { data, loading, error } = useApiRequest(
+  const { data: sortByColumnData, loading: sortByColumnLoading, error: sortByColumnError } = useApiRequestParams(
     MedicineApi.getSortByColumn,
     searchParams
   );
+
+  // getListByType API 호출에 대한 상태
+  const { data: listByTypeData, loading: listByTypeLoading, error: listByTypeError } = useApiRequest(MedicineApi.getListByType);
 
   const handleSearch = () => {
     setSearchParams({
@@ -36,10 +40,20 @@ const MedicinePage = () => {
   };
 
   useEffect(() => {
-    if (data) {
-      setTotalCount(data.totalCount);
+    if (sortByColumnData) {
+      setTotalCount(sortByColumnData.totalCount);
     }
-  }, [data]);
+  }, [sortByColumnData]);
+
+  // getListByType API 호출에 대한 응답 처리
+  useEffect(() => {
+    if (listByTypeData) {
+      setTypeList(listByTypeData); // 또는 listByTypeData의 특정 프로퍼티
+    }
+    console.log(typeList);
+  }, [listByTypeData]);
+
+
 
   return (
     <Main $height="auto">
@@ -50,8 +64,9 @@ const MedicinePage = () => {
           handleSearch={handleSearch}
           handleComboSearchChange={handleComboSearchChange}
           handleSearchQueryChange={handleSearchQueryChange}
+          typeList={typeList}
         />
-        <BoardSection totalCount={totalCount} loading={loading} error={error} />
+        <BoardSection totalCount={totalCount}/>
         <PaginationSection />
       </Container>
     </Main>

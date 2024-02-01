@@ -1,6 +1,6 @@
 import styled from "styled-components";
 import { useState } from "react";
-import useApiRequest from "../../hooks/useApiRequest";
+import {useApiRequestParams} from "../../hooks/useApiRequest";
 import MedicineApi from "../../api/MedicineApi";
 
 
@@ -213,6 +213,23 @@ export const ComboBox = ({ items }) => {
         <ResetButton onClick={handleReset}>Reset</ResetButton>
       </div>
     </SelectBox>
+
+
+
+/* <div>
+      {Object.entries(typeList).map(([key, items]) => (
+        <div key={key}>
+          <h3>{key}</h3>
+          <ul>
+            {items.map(item => (
+              <li key={item.id}>
+                {item.functionality}
+              </li>
+            ))}
+          </ul>
+        </div>
+      ))}
+    </div> */
   );
 };
 
@@ -229,7 +246,7 @@ export const FilterDropdown = () => {
   // API 요청을 위한 함수
   
 
-  const { data, loading, error } = useApiRequest(
+  const { data, loading, error } = useApiRequestParams(
     MedicineApi.getSortByOffSet,
     extractNumber(searchType)
   );

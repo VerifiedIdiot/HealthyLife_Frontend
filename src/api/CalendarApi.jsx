@@ -3,13 +3,16 @@ import axios from "axios";
 const BACKEND_DOMAIN = process.env.REACT_APP_BACKEND_DOMAIN;
 
 const CalendarApi = {
-  CalendarReg: async (Detail, Title, WriteDate) => {
-    const CalendarData = {
-      Detail: Detail,
-      Title: Title,
-      WriteDate: WriteDate
-    };
-    return await axios.post(BACKEND_DOMAIN + "/calendar/new", CalendarData);
+  // 음식 조회
+  getFoodListByCategory: async () => {
+    try {
+      return await axios.get(
+        BACKEND_DOMAIN + `/api/food/list/page`
+      );
+    } catch (error) {
+      console.error("Error in getFoodListByCategory API call", error);
+      throw error;
+    }
   },
 }
 

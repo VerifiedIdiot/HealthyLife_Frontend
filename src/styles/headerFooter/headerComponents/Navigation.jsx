@@ -17,12 +17,12 @@ const NavContainer = styled.nav.attrs({
   className: "nav-bar",
 })`
   display: flex;
-  justify-content: space-around;
   justify-content: ${(props) => props.$justify || "space-around"};
   align-items: center;
   height: 100%;
   width: ${(props) => props.$width || "60%"};
   /* border: 1px solid black; */
+  
 `;
 
 const NavLink = styled.div.attrs({
@@ -34,7 +34,11 @@ const NavLink = styled.div.attrs({
     color: ${(props) => (props.$scrolledDown ? "black" : "white")};
   }
   &.hover {
+    color: #000;
   }
+
+  
+  
 `;
 
 const Navigation = ({ $scrolledDown = true }) => {
@@ -75,7 +79,7 @@ const Navigation = ({ $scrolledDown = true }) => {
           <p>Ranking</p>
         </NavLink>
       </NavContainer>
-      <NavContainer $width="15%" $justify="">
+      <NavContainer>
         <NavLink
           $scrolledDown={$scrolledDown}
           onClick={() => navigate("/login")}

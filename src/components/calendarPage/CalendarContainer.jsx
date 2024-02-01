@@ -196,7 +196,8 @@ export const MealItemBox = ({ mealtype }) => {
             <InputField />
           </MenuInputArea>
           <MenuInputArea $height="70%" $justify="flex-end" $align="end">
-            <AddMenuButton>추가</AddMenuButton>
+            {}
+            <AddMenuButton >추가</AddMenuButton>
           </MenuInputArea>
         </MenuInputSection>
       </MiddleModal>
@@ -268,7 +269,7 @@ export const SelectBox = ({ clickedDate, setSelectedSection }) => {
   const buttons = ["식단", "운동", "전체기록"];
 
   useEffect(() => {
-    setSelectedSectionState("운동");
+    setSelectedSectionState("식단");
   }, [clickedDate]);
 
   const handleAddMealItem = (mealType) => {
@@ -280,7 +281,7 @@ export const SelectBox = ({ clickedDate, setSelectedSection }) => {
     if (setSelectedSection) {
       setSelectedSection(section); // 상위 컴포넌트상태 업데이트
     }
-    // "운동" 섹션이 선택되면 모달 열기
+    
     if (section === "운동") {
       setIsMovementModalOpen(true);
     }

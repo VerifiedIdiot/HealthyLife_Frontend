@@ -162,74 +162,52 @@ const ResetButton = styled.button`
   margin-top: 10px;
 `;
 
-export const ComboBox = ({ items }) => {
-  // 드롭다운 표시 여부 상태
+export const ComboBox = ({ typeList, onSelectionChange }) => {
   const [showDropdown, setShowDropdown] = useState(false);
-  // 체크된 항목들의 집합
+  // 체크된 항목들을 functionality 값으로 관리
   const [selectedItems, setSelectedItems] = useState(new Set());
 
-  // `items`가 undefined 일 경우 대비하여 빈 배열로 초기화
-  const itemList = items || [];
+  const itemList = typeList || [];
 
-  const handleCheckboxChange = (itemKey) => {
+  const handleCheckboxChange = (functionality) => {
     setSelectedItems((prev) => {
       const newSelectedItems = new Set(prev);
-      if (newSelectedItems.has(itemKey)) {
-        newSelectedItems.delete(itemKey);
+      if (newSelectedItems.has(functionality)) {
+        newSelectedItems.delete(functionality);
       } else {
-        newSelectedItems.add(itemKey);
+        newSelectedItems.add(functionality);
       }
+      onSelectionChange(Array.from(newSelectedItems)); // 선택된 항목들을 상위 컴포넌트로 전달
       return newSelectedItems;
     });
   };
 
   const handleReset = () => {
     setSelectedItems(new Set());
+    onSelectionChange([]); // 리셋 시 빈 배열을 상위 컴포넌트로 전달
   };
 
-  const toggleDropdown = () => {
-    setShowDropdown((prev) => !prev);
-  };
-
-  // 선택된 항목들의 수를 표시
-  const selectedCount = selectedItems.size;
+  const toggleDropdown = () => setShowDropdown((prev) => !prev);
 
   return (
     <SelectBox>
       <div onClick={toggleDropdown}>
-        {selectedCount} <span>▼</span>
+        {selectedItems.size} <span>▼</span>
       </div>
       <div className={`dropdown-content ${showDropdown ? "show" : ""}`}>
         {itemList.map((item) => (
-          <CheckboxLabel key={item.key}>
+          <CheckboxLabel key={item.id}>
             <input
               type="checkbox"
-              checked={selectedItems.has(item.key)}
-              onChange={() => handleCheckboxChange(item.key)}
+              checked={selectedItems.has(item.functionality)}
+              onChange={() => handleCheckboxChange(item.functionality)}
             />
-            {item.name}
+            {item.functionality}
           </CheckboxLabel>
         ))}
         <ResetButton onClick={handleReset}>Reset</ResetButton>
       </div>
     </SelectBox>
-
-
-
-/* <div>
-      {Object.entries(typeList).map(([key, items]) => (
-        <div key={key}>
-          <h3>{key}</h3>
-          <ul>
-            {items.map(item => (
-              <li key={item.id}>
-                {item.functionality}
-              </li>
-            ))}
-          </ul>
-        </div>
-      ))}
-    </div> */
   );
 };
 

@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useLayoutEffect } from "react";
 import {useApiRequestParams, useApiRequest} from "../hooks/useApiRequest";
 import MedicineApi from "../api/MedicineApi";
 import { Main, Container } from "../styles/Layouts";
@@ -14,6 +14,11 @@ const MedicinePage = () => {
   const [searchParams, setSearchParams] = useState({});
   const [totalCount, setTotalCount] = useState(0);
   const [typeList, setTypeList] = useState({});
+  const [checkBox, setCheckBox] = useState({
+    "영양소 기능": [],
+    "생리활성기능": [],
+    "질병발생위험감소기능": [],
+  });
 
   const { data: sortByColumnData, loading: sortByColumnLoading, error: sortByColumnError } = useApiRequestParams(
     MedicineApi.getSortByColumn,
@@ -39,6 +44,13 @@ const MedicinePage = () => {
     setSearchQuery(value);
   };
 
+  const handleSelectionChange = (checkBoxes, selectedCheckBox) => {
+    setCheckBox(prev => ({
+      ...prev,
+      [checkBoxes]: selectedCheckBox,
+    }));
+  };
+
   useEffect(() => {
     if (sortByColumnData) {
       setTotalCount(sortByColumnData.totalCount);
@@ -52,7 +64,7 @@ const MedicinePage = () => {
     }
     
     // console.log(listByTypeData);
-  }, []);
+  }, [listByTypeData]);
 
 
 
@@ -66,6 +78,8 @@ const MedicinePage = () => {
           handleComboSearchChange={handleComboSearchChange}
           handleSearchQueryChange={handleSearchQueryChange}
           typeList={typeList}
+          checkBox={checkBox}
+  handleSelectionChange={handleSelectionChange}
         />
         <BoardSection totalCount={totalCount}/>
         <PaginationSection />

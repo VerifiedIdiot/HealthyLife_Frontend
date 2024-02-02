@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useLayoutEffect } from "react";
 import styled from "styled-components";
 import { Section, Area, Box, Item } from "../../styles/Layouts";
 import { LargeButton } from "../../styles/styledComponents/StyledComponents";
@@ -136,15 +136,16 @@ export const SearchSection = ({
   handleComboSearchChange,
   handleSearchQueryChange,
   typeList,
+  checkBox,
+  handleSelectionChange
 }) => {
   useEffect(() => {
     if (Object.keys(typeList).length > 0) {
       console.log('typeList:', typeList);
     }
   }, [typeList]);
-  
+
   return (
-    
     <>
       <ResponsiveSearchSection>
         <ResponsiveSearchArea>
@@ -156,7 +157,7 @@ export const SearchSection = ({
           </ResponsiveItemBox>
           <ResponsiveItemBox>
             <ResponsiveItem>
-            <ComboSearchBox onChange={handleComboSearchChange} />
+              <ComboSearchBox onChange={handleComboSearchChange} />
             </ResponsiveItem>
           </ResponsiveItemBox>
           <ResponsiveItemBox>
@@ -164,7 +165,7 @@ export const SearchSection = ({
               <p>원료검색</p>
             </SearchItemLeft>
             <SearchItemRight>
-            <SearchBox onChange={handleSearchQueryChange} />
+              <SearchBox onChange={handleSearchQueryChange} />
             </SearchItemRight>
           </ResponsiveItemBox>
           <ResponsiveItemBox>
@@ -172,9 +173,25 @@ export const SearchSection = ({
               <p>기능성 검색</p>
             </SearchItemLeft>
             <SearchItemRight>
-              <ComboBox typeList={typeList}>영양소 기능</ComboBox>
-              <ComboBox typeList={typeList}>생리활성 기능</ComboBox>
-              <ComboBox typeList={typeList}>질병발생위험감소기능</ComboBox>
+              <ComboBox
+                typeList={typeList["영양소 기능"]}
+                onSelectionChange={(selectedItems) =>
+                  handleSelectionChange("영양소 기능", selectedItems)
+                
+                }
+              />
+              <ComboBox
+                typeList={typeList["생리활성기능"]}
+                onSelectionChange={(selectedItems) =>
+                  handleSelectionChange("생리활성기능", selectedItems)
+                }
+              />
+              <ComboBox
+                typeList={typeList["질병발생위험감소기능"]}
+                onSelectionChange={(selectedItems) =>
+                  handleSelectionChange("질병발생위험감소기능", selectedItems)
+                }
+              />
             </SearchItemRight>
           </ResponsiveItemBox>
           <ResponsiveItemBox>

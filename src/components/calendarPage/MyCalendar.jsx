@@ -69,6 +69,7 @@ export const MyCalendar = forwardRef(({ isBasic }, ref) => {
 
   // 각 날짜 타일에 컨텐츠 추가
   const addContent = ({ date }) => {
+
     // 해당 날짜에 추가할 컨텐츠의 배열
     const contentMeal = [];
     const contentWorkout = [];
@@ -126,7 +127,9 @@ export const MyCalendar = forwardRef(({ isBasic }, ref) => {
             formatMonthYear={(locale, value) =>
               value.toLocaleDateString("ko", { year: "numeric", month: "long" })
             }
-            tileContent={addContent}
+            tileContent={({date}) => (
+              <addContent date={date}/>
+            )}
             isBasic={true}
             minDetail="month"
             maxDetail="month"

@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import styled from "styled-components";
 import { Section, Area, Box, Item } from "../../styles/Layouts";
 import { LargeButton } from "../../styles/styledComponents/StyledComponents";
@@ -137,7 +137,11 @@ export const SearchSection = ({
   handleSearchQueryChange,
   typeList,
 }) => {
-  console.log(typeList);
+  useEffect(() => {
+    if (Object.keys(typeList).length > 0) {
+      console.log('typeList:', typeList);
+    }
+  }, [typeList]);
   
   return (
     

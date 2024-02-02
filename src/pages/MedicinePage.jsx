@@ -52,7 +52,7 @@ const MedicinePage = () => {
     }
     
     // console.log(listByTypeData);
-  }, [listByTypeData]);
+  }, []);
 
 
 

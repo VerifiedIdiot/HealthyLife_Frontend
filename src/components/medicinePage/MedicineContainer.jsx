@@ -127,39 +127,63 @@ export const SearchBox = () => {
 // ComboBox 컴포넌트
 
 const SelectBox = styled.div`
-  width: 24.9%;
+  width: 100%;
+  position: relative;
+  cursor: pointer;
   border: 1px solid #ccc;
   border-radius: 4px;
-  height: 40px;
-  cursor: pointer;
-  position: relative;
+  padding: 5px;
+
 
   @media (max-width: 768px) {
     width: 19.5vw;
     margin-left: 0.5vw;
   }
 
-  .dropdown-content {
-    display: none;
-    position: absolute;
-    background-color: #f9f9f9;
-    min-width: 100%;
-    box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
-    z-index: 1;
+`;
 
-    &.show {
-      display: block;
-    }
+const DropdownItem = styled.div`
+ padding: 10px;
+  cursor: pointer;
+  display: flex;
+  justify-content: flex-end;
+  &:hover {
+    background-color: #f0f0f0;
   }
 `;
 
+const DropdownContent = styled.div`
+  display: ${props => props.show ? 'flex' : 'none'};
+  flex-wrap: wrap;
+  position: absolute;
+  top: 100%;
+  left: 0;
+  background-color: #f9f9f9;
+  min-width: 100%;
+  box-shadow: 0 8px 16px rgba(0,0,0,0.2);
+  z-index: 1;
+  padding: 10px;
+`;
+
 const CheckboxLabel = styled.label`
-  display: block;
-  margin: 5px 0;
+  flex-basis: calc(33.3% - 10px); // 3개씩 배열되도록 너비 계산, 여백 고려
+  margin: 5px; // 여백 추가
+  display: flex;
+  align-items: center;
+  box-sizing: border-box;
+  white-space: nowrap; // 줄바꿈 방지
 `;
 
 const ResetButton = styled.button`
+  width: 100%;
+  padding: 10px;
   margin-top: 10px;
+  background-color: #11009E; // 초기화 버튼 색상 변경
+  color: white;
+  border: none;
+  cursor: pointer;
+  border-radius: 4px;
+ 
 `;
 
 export const ComboBox = ({ typeList, onSelectionChange }) => {
@@ -191,26 +215,24 @@ export const ComboBox = ({ typeList, onSelectionChange }) => {
 
   return (
     <SelectBox>
-      <div onClick={toggleDropdown}>
-        {selectedItems.size} <span>▼</span>
-      </div>
-      <div className={`dropdown-content ${showDropdown ? "show" : ""}`}>
-        {itemList.map((item) => (
-          <CheckboxLabel key={item.id}>
-            <input
-              type="checkbox"
-              checked={selectedItems.has(item.functionality)}
-              onChange={() => handleCheckboxChange(item.functionality)}
-            />
-            {item.functionality}
-          </CheckboxLabel>
-        ))}
-        <ResetButton onClick={handleReset}>Reset</ResetButton>
-      </div>
-    </SelectBox>
-  );
+    <DropdownItem onClick={() => setShowDropdown(!showDropdown)}>
+      선택된 항목 {selectedItems.size}개 <span>▼</span>
+    </DropdownItem>
+    <DropdownContent show={showDropdown}>
+      {itemList.map((item) => (
+        <CheckboxLabel key={item.id}>
+          <input
+            type="checkbox"
+            checked={selectedItems.has(item.functionality)}
+            onChange={() => handleCheckboxChange(item.functionality)}
+          /> {item.functionality}
+        </CheckboxLabel>
+      ))}
+      <ResetButton onClick={handleReset}>초기화</ResetButton>
+    </DropdownContent>
+  </SelectBox>
+);
 };
-
 export const FilterDropdown = () => {
   const searchTypes = ["10개씩", "30개씩", "50개씩", "100개씩"];
   const [searchType, setSearchType] = useState(searchTypes[0]);

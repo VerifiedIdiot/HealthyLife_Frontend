@@ -657,7 +657,7 @@ const JoinComp = ({ email, profile }) => {
               />
             </Area>
             <Area $display="flex" $justify="center" $shadow="none">
-              <MiddleButton onClick={() => addNewMember()}>다음</MiddleButton>
+              <MiddleButton onClick={() => onSubmit()}>다음</MiddleButton>
             </Area>
           </Section>
           <SmallModal
@@ -668,7 +668,6 @@ const JoinComp = ({ email, profile }) => {
           </SmallModal>
         </Container>
       </Main>
-      <BodyInfoComp />
     </>
   );
 };

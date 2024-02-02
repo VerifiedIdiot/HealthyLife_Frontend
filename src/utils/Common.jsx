@@ -38,7 +38,7 @@ const Common = {
 
   // 401 에러 처리 함수 (토큰 리프래쉬토큰 재발급)
   handleUnauthorized: async () => {
-    // console.log("에세스토큰 재발급");
+    console.log("에세스토큰 재발급");
     const accessToken = Common.getAccessToken();
     const refreshToken = Common.getRefreshToken();
     const config = {
@@ -52,8 +52,8 @@ const Common = {
         refreshToken,
         config
       );
-      // console.log(res.data);
-      // console.log("토큰 재발급 완료!!")
+      console.log(res.data);
+      console.log("토큰 재발급 완료!!");
       Common.setAccessToken(res.data);
       return true;
     } catch (err) {

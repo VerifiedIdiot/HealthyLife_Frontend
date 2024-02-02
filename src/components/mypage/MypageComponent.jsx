@@ -2,7 +2,7 @@ import { useNavigate } from "react-router";
 import { Area, Container, Main, Section } from "../../styles/Layouts";
 import { MiddleButton } from "../../styles/styledComponents/StyledComponents";
 
-const MypageComp = ({ userData }) => {
+const MypageComp = ({ memberInfo }) => {
   const editNavigate = useNavigate();
   return (
     <>
@@ -25,7 +25,7 @@ const MypageComp = ({ userData }) => {
                   height: "100%",
                   position: "absolute",
                 }}
-                src={userData && userData.image}
+                src={memberInfo && memberInfo.image}
                 alt="프로필 이미지"
               />
             </Area>
@@ -57,7 +57,7 @@ const MypageComp = ({ userData }) => {
                   borderBottom: "1px solid rgba(0, 0, 0, 0.5)",
                 }}
               >
-                {userData.email}
+                {memberInfo.email}
               </p>
             </Area>
             <Area $shadow="none" $direction="column">
@@ -78,7 +78,7 @@ const MypageComp = ({ userData }) => {
                   borderBottom: "1px solid rgba(0, 0, 0, 0.5)",
                 }}
               >
-                {userData.name}
+                {memberInfo.name}
               </p>
             </Area>
             <Area $shadow="none" $direction="column">
@@ -99,7 +99,7 @@ const MypageComp = ({ userData }) => {
                   borderBottom: "1px solid rgba(0, 0, 0, 0.5)",
                 }}
               >
-                {userData.nickName}
+                {memberInfo.nickName}
               </p>
             </Area>
             <Area $shadow="none" $direction="column">
@@ -120,7 +120,7 @@ const MypageComp = ({ userData }) => {
                   borderBottom: "1px solid rgba(0, 0, 0, 0.5)",
                 }}
               >
-                {userData.phone}
+                {memberInfo.phone}
               </p>
             </Area>
             <Area $shadow="none" $direction="column">
@@ -141,7 +141,7 @@ const MypageComp = ({ userData }) => {
                   borderBottom: "1px solid rgba(0, 0, 0, 0.5)",
                 }}
               >
-                {userData.addr}
+                {memberInfo.addr}
               </p>
             </Area>
             <Area $justify="center" $align="center" $shadow="none">

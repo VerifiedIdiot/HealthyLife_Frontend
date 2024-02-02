@@ -1,5 +1,6 @@
 import axios from "axios";
 import Common from "../utils/Common";
+import AxiosInstance from "../utils/AxiosInstance";
 
 const BACKEND_DOMAIN = process.env.REACT_APP_BACKEND_DOMAIN;
 
@@ -68,6 +69,10 @@ const MemberApi = {
     };
     return await axios.post(Common.WEELV_DOMAIN + "/Body/new", data);
   },
-};
 
+  // 회원 상세 조회
+  getMemberDetail: async () => {
+    return await AxiosInstance.get(Common.WEELV_DOMAIN + "/member/detail");
+  },
+};
 export default MemberApi;

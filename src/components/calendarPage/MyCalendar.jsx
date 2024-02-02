@@ -43,15 +43,12 @@ export const MyCalendar = forwardRef(({ isBasic }, ref) => {
   useEffect(() => {
     const mealInput = async () => {
       try {
-        const result = await CalendarApi.getFoodListBySearch();
-        if (result.status === 200) {
-          console.log(result.data);
-        }
+        const result = await CalendarApi.getFoodListBySearch({ keyword: "someKeyword" });
+        
       } catch (e) {
-        console.error(e);
+        console.log(e);
       }
     };
-    mealInput();
   }, []);
 
   // api 연결

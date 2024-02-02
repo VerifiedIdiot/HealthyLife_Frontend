@@ -7,7 +7,7 @@ const CalendarApi = {
   getFoodListBySearch: async (params) => {
     try {
       const response = await axios.get(
-        console.log("zzzz")
+
         `${BACKEND_DOMAIN}/meal/search`, { params }
         
       );

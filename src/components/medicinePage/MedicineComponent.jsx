@@ -137,11 +137,13 @@ export const SearchSection = ({
   handleSearchQueryChange,
   typeList,
   checkBox,
-  handleSelectionChange
+  handleSelectionChange,
+  openComboBoxes,
+  toggleComboBox,
 }) => {
   useEffect(() => {
     if (Object.keys(typeList).length > 0) {
-      console.log('typeList:', typeList);
+      console.log("typeList:", typeList);
     }
   }, [typeList]);
 
@@ -168,32 +170,27 @@ export const SearchSection = ({
               <SearchBox onChange={handleSearchQueryChange} />
             </SearchItemRight>
           </ResponsiveItemBox>
-          <ResponsiveItemBox>
-            <SearchItemLeft>
-              <p>기능성 검색</p>
-            </SearchItemLeft>
-            <SearchItemRight>
-              <ComboBox
-                typeList={typeList["영양소 기능"]}
-                onSelectionChange={(selectedItems) =>
-                  handleSelectionChange("영양소 기능", selectedItems)
-                
-                }
-              />
-              <ComboBox
-                typeList={typeList["생리활성기능"]}
-                onSelectionChange={(selectedItems) =>
-                  handleSelectionChange("생리활성기능", selectedItems)
-                }
-              />
-              <ComboBox
-                typeList={typeList["질병발생위험감소기능"]}
-                onSelectionChange={(selectedItems) =>
-                  handleSelectionChange("질병발생위험감소기능", selectedItems)
-                }
-              />
-            </SearchItemRight>
-          </ResponsiveItemBox>
+          
+            <ResponsiveItemBox >
+              <SearchItemLeft>
+                <p>기능성 검색</p>
+              </SearchItemLeft>
+              {Object.keys(typeList).map((key) => (
+                typeList[key] ? (
+              <SearchItemRight $width="33.9%" key={key}>
+                <ComboBox
+                  typeList={typeList[key]}
+                  onSelectionChange={(selectedItems) =>
+                    handleSelectionChange(key, selectedItems)
+                  }
+                  $isOpen={openComboBoxes[key]}
+                  toggleComboBox={() => toggleComboBox(key)}
+                />
+              </SearchItemRight>
+                ) : null
+              ))}
+            </ResponsiveItemBox>
+         
           <ResponsiveItemBox>
             <SearchItemLeft>
               <p>초성 검색</p>

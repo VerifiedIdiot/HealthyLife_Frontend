@@ -1,8 +1,7 @@
 import styled from "styled-components";
-import { useState } from "react";
-import {useApiRequestParams} from "../../hooks/useApiRequest";
+import { useState, useEffect, useCallback } from "react";
+import { useApiRequestParams } from "../../hooks/useApiRequest";
 import MedicineApi from "../../api/MedicineApi";
-
 
 // ComboSearchBox 컴포넌트
 const ComboSearchContainer = styled.div`
@@ -134,16 +133,14 @@ const SelectBox = styled.div`
   border-radius: 4px;
   padding: 5px;
 
-
   @media (max-width: 768px) {
     width: 19.5vw;
     margin-left: 0.5vw;
   }
-
 `;
 
 const DropdownItem = styled.div`
- padding: 10px;
+  padding: 10px;
   cursor: pointer;
   display: flex;
   justify-content: flex-end;
@@ -153,14 +150,14 @@ const DropdownItem = styled.div`
 `;
 
 const DropdownContent = styled.div`
-  display: ${props => props.show ? 'flex' : 'none'};
+  display: ${(props) => (props.$show ? "flex" : "none")};
   flex-wrap: wrap;
   position: absolute;
   top: 100%;
   left: 0;
   background-color: #f9f9f9;
   min-width: 100%;
-  box-shadow: 0 8px 16px rgba(0,0,0,0.2);
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
   z-index: 1;
   padding: 10px;
 `;
@@ -178,22 +175,22 @@ const ResetButton = styled.button`
   width: 100%;
   padding: 10px;
   margin-top: 10px;
-  background-color: #11009E; // 초기화 버튼 색상 변경
+  background-color: #11009e; // 초기화 버튼 색상 변경
   color: white;
   border: none;
   cursor: pointer;
   border-radius: 4px;
- 
 `;
 
-export const ComboBox = ({ typeList, onSelectionChange }) => {
+export const ComboBox = ({ typeList, onSelectionChange, $isOpen, toggleComboBox }) => {
   const [showDropdown, setShowDropdown] = useState(false);
   // 체크된 항목들을 functionality 값으로 관리
   const [selectedItems, setSelectedItems] = useState(new Set());
 
   const itemList = typeList || [];
 
-  const handleCheckboxChange = (functionality) => {
+  // 이벤트 핸들러 메모이제이션
+  const handleCheckboxChange = useCallback((functionality) => {
     setSelectedItems((prev) => {
       const newSelectedItems = new Set(prev);
       if (newSelectedItems.has(functionality)) {
@@ -201,38 +198,43 @@ export const ComboBox = ({ typeList, onSelectionChange }) => {
       } else {
         newSelectedItems.add(functionality);
       }
-      onSelectionChange(Array.from(newSelectedItems)); // 선택된 항목들을 상위 컴포넌트로 전달
+      // 선택된 항목들을 상위 컴포넌트로 전달
+      onSelectionChange(Array.from(newSelectedItems));
       return newSelectedItems;
     });
-  };
+  }, [onSelectionChange]);
 
-  const handleReset = () => {
+  // 리셋 핸들러 메모이제이션
+  const handleReset = useCallback(() => {
     setSelectedItems(new Set());
     onSelectionChange([]); // 리셋 시 빈 배열을 상위 컴포넌트로 전달
-  };
+  }, [onSelectionChange]);
 
-  const toggleDropdown = () => setShowDropdown((prev) => !prev);
+  useEffect(() => {
+    setShowDropdown($isOpen);
+  }, [$isOpen]);
 
   return (
     <SelectBox>
-    <DropdownItem onClick={() => setShowDropdown(!showDropdown)}>
-      선택된 항목 {selectedItems.size}개 <span>▼</span>
-    </DropdownItem>
-    <DropdownContent show={showDropdown}>
-      {itemList.map((item) => (
-        <CheckboxLabel key={item.id}>
-          <input
-            type="checkbox"
-            checked={selectedItems.has(item.functionality)}
-            onChange={() => handleCheckboxChange(item.functionality)}
-          /> {item.functionality}
-        </CheckboxLabel>
-      ))}
-      <ResetButton onClick={handleReset}>초기화</ResetButton>
-    </DropdownContent>
-  </SelectBox>
-);
+      <DropdownItem onClick={() => toggleComboBox(!$isOpen)}>
+        {selectedItems.size}개 <span>▼</span>
+      </DropdownItem>
+      <DropdownContent $show={showDropdown}>
+        {itemList.map((item) => (
+          <CheckboxLabel key={item.id}>
+            <input
+              type="checkbox"
+              checked={selectedItems.has(item.functionality)}
+              onChange={() => handleCheckboxChange(item.functionality)}
+            /> {item.functionality}
+          </CheckboxLabel>
+        ))}
+        <ResetButton onClick={handleReset}>초기화</ResetButton>
+      </DropdownContent>
+    </SelectBox>
+  );
 };
+
 export const FilterDropdown = () => {
   const searchTypes = ["10개씩", "30개씩", "50개씩", "100개씩"];
   const [searchType, setSearchType] = useState(searchTypes[0]);
@@ -244,7 +246,6 @@ export const FilterDropdown = () => {
   };
 
   // API 요청을 위한 함수
-  
 
   const { data, loading, error } = useApiRequestParams(
     MedicineApi.getSortByOffSet,

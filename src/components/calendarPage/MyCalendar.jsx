@@ -2,6 +2,7 @@ import React, { useState, useEffect, forwardRef, useCallback } from "react";
 import MiddleModal from "../../styles/modals/MiddleModal";
 import { Container, Section, Area } from "../../styles/Layouts";
 import styled from "styled-components";
+import Common from "../../utils/Common"
 
 // 캘린더 API 적용
 import Calendar from "react-calendar";
@@ -9,9 +10,59 @@ import "react-calendar/dist/Calendar.css";
 import moment from "moment";
 import CalendarApi from "../../api/CalendarApi";
 
+const handleSaveMeal = async (mealData, clickedDate,memberId ) => {
+  const mealInfo = {
+    ...mealData,
+    date: moment(clickedDate).format("YYYY-MM-DD"),
+    userId: memberId, 
+  };
+
+  try {
+    await CalendarApi.addMeal(mealInfo);
+    // 성공적으로 저장된 후의 로직 처리
+  } catch (error) {
+    console.error('Error saving meal data', error);
+  }
+};
+
+// Meal 입력 폼
+export const MealForm = ({ onSave,clickedDate }) => {
+  const [meal, setMeal] = useState('');
+  const [mealTime, setMealTime] = useState('');
+
+  const handleSubmit = (event) => {
+    event.preventDefault();
+    if (onSave) {
+      onSave({ meal, mealTime }, clickedDate );
+    }
+  };
+  
+  return (
+    <form onSubmit={handleSubmit}>
+      <input
+        type="text"
+        placeholder="음식 이름"
+        value={meal}
+        onChange={(e) => setMeal(e.target.value)}
+      />
+      <input
+        type="text"
+        placeholder="아침/점심/저녁"
+        value={mealTime}
+        onChange={(e) => setMealTime(e.target.value)}
+      />
+      <button type="submit">저장</button>
+    </form>
+  );
+};
+
+
+
+
 export const MyCalendar = forwardRef(({ isBasic }, ref) => {
   const [clickedDate, setClickedDate] = useState(null);
   const [modalOpen, setModalOpen] = useState(false);
+
   const openModal = () => {
     setModalOpen(true);
   };
@@ -30,7 +81,6 @@ export const MyCalendar = forwardRef(({ isBasic }, ref) => {
     openModal();
   };
 
-  // 전후 날짜
   const handleNextDay = () => {
     const nextDay = moment(value).add(1, "day").toDate();
     setValue(nextDay);
@@ -40,24 +90,38 @@ export const MyCalendar = forwardRef(({ isBasic }, ref) => {
     setValue(beforeDay);
   };
 
-  useEffect(() => {
+  useEffect((params) => {
     const mealInput = async () => {
       try {
-        const result = await CalendarApi.getFoodListBySearch({ keyword: "someKeyword" });
-        
+        const result = await CalendarApi.getFoodListBySearch(params);
+        return result.date;
       } catch (e) {
         console.log(e);
       }
     };
+    mealInput();
+  }, []);
+
+  useEffect(() => {
+    const UserToken = async () => {
+      try {
+        const response = await Common.TakenToken();
+        return response.data;
+      } catch (error) {
+        console.error("오류발생", error);
+      }
+    };
+
+    UserToken();
   }, []);
 
   // api 연결
   const [mealDates, setMealDates] = useState([]);
   const [mealAmounts, setMealAmounts] = useState([]);
   const [workoutDates, setworkoutDates] = useState([]);
-  // const [todayExercise, settodayExercise] = useState([]);
 
   // 컨텐츠 날짜 리스트
+
   const scList = [
     "2024-02-02",
     "2024-02-04",
@@ -68,8 +132,7 @@ export const MyCalendar = forwardRef(({ isBasic }, ref) => {
   ];
 
   // 각 날짜 타일에 컨텐츠 추가
-  const addContent = ({ date }) => {
-
+  const addContent = ({ value }) => {
     // 해당 날짜에 추가할 컨텐츠의 배열
     const contentMeal = [];
     const contentWorkout = [];
@@ -77,17 +140,17 @@ export const MyCalendar = forwardRef(({ isBasic }, ref) => {
 
     // data가 리스트의 날짜와 일치하면 해당 컨텐츠 추가
     // 식단
-    if (scList.find((day) => day === moment(date).format("YYYY-MM-DD"))) {
+    if (scList.find((day) => day === moment(value).format("YYYY-MM-DD"))) {
       contentMeal.push(
         <>
           {isBasic ? (
-            <div className="dot-meal"></div>
-          ) : (
-            <div className="box-meal">
+            <div className="dot-meal">
               <p>아침</p>
               <p>점심</p>
               <p>저녁</p>
             </div>
+          ) : (
+            <div className="box-meal"></div>
           )}
         </>
       );
@@ -127,9 +190,7 @@ export const MyCalendar = forwardRef(({ isBasic }, ref) => {
             formatMonthYear={(locale, value) =>
               value.toLocaleDateString("ko", { year: "numeric", month: "long" })
             }
-            tileContent={({date}) => (
-              <addContent date={date}/>
-            )}
+            tileContent={({ date }) => <addContent date={date} />}
             isBasic={true}
             minDetail="month"
             maxDetail="month"
@@ -155,6 +216,7 @@ export const MyCalendar = forwardRef(({ isBasic }, ref) => {
         {clickedDate && (
           <MiddleModal $isOpen={modalOpen} $onClose={closeModal}>
             <DayContainer>
+            <MealForm onSave={handleSaveMeal} />
               <DayButton onClick={handleBeforeDay}></DayButton>
               <SelectDay>{moment(value).format("YYYY년 MM월 DD일")}</SelectDay>
               <DayButton onClick={handleNextDay}></DayButton>

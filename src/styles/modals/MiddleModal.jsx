@@ -50,6 +50,7 @@ const CloseButton = styled.button`
 const ContentSection = styled.div`
   display: flex;
   justify-content: center;
+  width: 100%;
 `;
 
 const MiddleModal = ({ $isOpen, $onClose, imageSrc, children }) => {

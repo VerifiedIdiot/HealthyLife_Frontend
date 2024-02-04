@@ -1,42 +1,43 @@
 import React, { useState, useEffect, forwardRef, useCallback } from "react";
-import MiddleModal from "../../styles/modals/MiddleModal";
-import { Container, Section, Area } from "../../styles/Layouts";
+import MiddleModal from "../../../styles/modals/MiddleModal";
+import { Container, Section, Area } from "../../../styles/Layouts";
 import styled from "styled-components";
-import Common from "../../utils/Common"
+import Common from "../../../utils/Common";
 
 // 캘린더 API 적용
 import Calendar from "react-calendar";
 import "react-calendar/dist/Calendar.css";
 import moment from "moment";
-import CalendarApi from "../../api/CalendarApi";
+import CalendarApi from "../../../api/CalendarApi";
+import { AxiosHeaders } from "axios";
 
-const handleSaveMeal = async (mealData, clickedDate,memberId ) => {
+const handleSaveMeal = async (mealData, clickedDate, memberId) => {
   const mealInfo = {
     ...mealData,
     date: moment(clickedDate).format("YYYY-MM-DD"),
-    userId: memberId, 
+    userId: memberId,
   };
 
   try {
     await CalendarApi.addMeal(mealInfo);
     // 성공적으로 저장된 후의 로직 처리
   } catch (error) {
-    console.error('Error saving meal data', error);
+    console.error("Error saving meal data", error);
   }
 };
 
 // Meal 입력 폼
-export const MealForm = ({ onSave,clickedDate }) => {
-  const [meal, setMeal] = useState('');
-  const [mealTime, setMealTime] = useState('');
+export const MealForm = ({ onSave, clickedDate }) => {
+  const [meal, setMeal] = useState("");
+  const [mealTime, setMealTime] = useState("");
 
   const handleSubmit = (event) => {
     event.preventDefault();
     if (onSave) {
-      onSave({ meal, mealTime }, clickedDate );
+      onSave({ meal, mealTime }, clickedDate);
     }
   };
-  
+
   return (
     <form onSubmit={handleSubmit}>
       <input
@@ -55,9 +56,6 @@ export const MealForm = ({ onSave,clickedDate }) => {
     </form>
   );
 };
-
-
-
 
 export const MyCalendar = forwardRef(({ isBasic }, ref) => {
   const [clickedDate, setClickedDate] = useState(null);
@@ -106,7 +104,9 @@ export const MyCalendar = forwardRef(({ isBasic }, ref) => {
     const UserToken = async () => {
       try {
         const response = await Common.TakenToken();
-        return response.data;
+        const authorization = response.headers.get("Authorization");
+        console.log(authorization);
+        return authorization;
       } catch (error) {
         console.error("오류발생", error);
       }
@@ -216,7 +216,7 @@ export const MyCalendar = forwardRef(({ isBasic }, ref) => {
         {clickedDate && (
           <MiddleModal $isOpen={modalOpen} $onClose={closeModal}>
             <DayContainer>
-            <MealForm onSave={handleSaveMeal} />
+              <MealForm onSave={handleSaveMeal} />
               <DayButton onClick={handleBeforeDay}></DayButton>
               <SelectDay>{moment(value).format("YYYY년 MM월 DD일")}</SelectDay>
               <DayButton onClick={handleNextDay}></DayButton>

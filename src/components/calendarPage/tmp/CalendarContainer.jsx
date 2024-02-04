@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
-import { Container, Section, Area, Box } from "../../styles/Layouts";
+import { Container, Section, Area, Box } from "../../../styles/Layouts";
 import {
   SmallButton,
   MiddleButton,
-} from "../../styles/styledComponents/StyledComponents";
-import MiddleModal from "../../styles/modals/MiddleModal";
+} from "../../../styles/styledComponents/StyledComponents";
+import MiddleModal from "../../../styles/modals/MiddleModal";
 
 const SearchContainer = styled.div`
   display: flex;

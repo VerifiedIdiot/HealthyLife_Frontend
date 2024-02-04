@@ -2,7 +2,9 @@ import moment from "moment";
 import axios from "axios";
 import "moment/locale/ko"; // 한글 로컬라이제이션
 moment.locale("ko"); // 한글 설정 적용
+
 const Common = {
+  
   WEELV_DOMAIN: "http://localhost:8111",
   truncateText: (text, maxLength) => {
     if (text.length > maxLength) {

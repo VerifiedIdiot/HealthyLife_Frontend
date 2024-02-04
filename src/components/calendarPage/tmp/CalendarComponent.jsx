@@ -2,8 +2,8 @@ import React, { useState, useRef, useCallback } from "react";
 import FullCalendar from "@fullcalendar/react";
 import dayGridPlugin from "@fullcalendar/daygrid";
 import interactionPlugin from "@fullcalendar/interaction";
-import MiddleModal from "../../styles/modals/MiddleModal";
-import { Section, Area } from "../../styles/Layouts";
+import MiddleModal from "../../../styles/modals/MiddleModal";
+import { Section, Area } from "../../../styles/Layouts";
 import { SelectBox } from "./CalendarContainer";
 import styled from "styled-components";
 

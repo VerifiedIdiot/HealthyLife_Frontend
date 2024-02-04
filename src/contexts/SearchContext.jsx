@@ -14,10 +14,11 @@ const initialState = {
   searchQuery: "", // 사용자의 검색 쿼리
   pageSize: 10, // 검색 결과의 페이지 크기
   searchResults: [], // 검색 결과 저장
+  totalCount: 0,
 };
 
 // Reducer 함수 정의
-function searchReducer(state, action) {
+const searchReducer = (state, action) => {
   switch (action.type) {
     case "SET_TYPE_LIST":
       return { ...state, typeList: action.payload };
@@ -75,7 +76,7 @@ export const SearchProvider = ({ children }) => {
     actions: {
       toggleComboBox: (comboBoxId) => dispatch({ type: "TOGGLE_COMBOBOX", payload: comboBoxId }),
       handleCheckboxChange: (comboBoxId, checkBoxId, isChecked) =>
-        dispatch({ type: "SET_CHECKBOX_STATES", payload: { comboBoxId, checkBoxId, isChecked } }),
+      dispatch({ type: "SET_CHECKBOX_STATES", payload: { comboBoxId, checkBoxId, isChecked } }),
       setSearchQuery: (query) => dispatch({ type: "SET_SEARCH_QUERY", payload: query }),
       performSearch: () => dispatch({ type: "PERFORM_SEARCH" }),
     },

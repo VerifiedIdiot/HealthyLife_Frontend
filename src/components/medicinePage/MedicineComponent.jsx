@@ -232,7 +232,10 @@ const ResponsiveBoardBox = styled(Box)`
   height: auto;
 `;
 
-export const BoardSection = ({ totalCount }) => {
+export const BoardSection = () => {
+  const { state, actions } = useSearch();
+  const { totalCount, searchResults } = state;
+
   return (
     <>
       <ResponsiveBoardSection>

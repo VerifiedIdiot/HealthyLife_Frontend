@@ -183,10 +183,10 @@ const ResetButton = styled.button`
   border-radius: 4px;
 `;
 
-export const ComboBox = ({ comboBoxId, typeList, toggleComboBox }) => {
+export const ComboBox = ({ comboBoxId}) => {
   const { state, actions } = useSearch();
-  const { checkBoxStates } = state;
-
+  const { checkBoxStates, typeList} = state;
+  const { toggleComboBox } = actions;
   const $isOpen = state.openComboBox === comboBoxId;
 
   // 체크박스 변경 핸들러
@@ -221,7 +221,7 @@ export const ComboBox = ({ comboBoxId, typeList, toggleComboBox }) => {
         개 <span>▼</span>
       </DropdownItem>
       <DropdownContent $isOpen={$isOpen}>
-        {typeList.map((item) => (
+        {typeList[comboBoxId]?.map((item) => (
           <CheckboxLabel key={item.functionality}>
             <input
               type="checkbox"

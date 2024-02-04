@@ -1,4 +1,5 @@
 import { useState, useEffect, useLayoutEffect } from "react";
+import { useSearch } from "../../contexts/SearchContext";
 import styled from "styled-components";
 import { Section, Area, Box, Item } from "../../styles/Layouts";
 import { LargeButton } from "../../styles/styledComponents/StyledComponents";
@@ -129,23 +130,20 @@ const StyledButton = styled(LargeButton)`
   }
 `;
 
-export const SearchSection = ({
-  comboSearch,
-  searchQuery,
-  handleSearch,
-  handleComboSearchChange,
-  handleSearchQueryChange,
-  typeList,
-  checkBox,
-  handleSelectionChange,
-  openComboBoxes,
-  toggleComboBox,
-}) => {
-  useEffect(() => {
-    if (Object.keys(typeList).length > 0) {
-      console.log("typeList:", typeList);
-    }
-  }, [typeList]);
+export const SearchSection = () => {
+// Context에서 상태와 함수를 불러옵니다.
+const { state, actions } = useSearch();
+const { typeList, searchQuery, pageSize } = state;
+const { toggleComboBox, handleCheckboxChange, setSearchQuery, performSearch } = actions;
+
+// 콤보박스 토글 핸들러: 콤보박스의 열림/닫힘 상태를 관리합니다.
+const handleToggleComboBox = comboBoxId => toggleComboBox(comboBoxId);
+
+// 검색 실행: 사용자가 설정한 조건에 따라 검색을 수행합니다.
+const handleSearch = () => performSearch();
+
+// typeList의 키를 정렬하여 UI에 순서대로 표시합니다.
+const orderedKeys = Object.keys(typeList).sort((a, b) => a.localeCompare(b));
 
   return (
     <>
@@ -159,7 +157,7 @@ export const SearchSection = ({
           </ResponsiveItemBox>
           <ResponsiveItemBox>
             <ResponsiveItem>
-              <ComboSearchBox onChange={handleComboSearchChange} />
+              <ComboSearchBox />
             </ResponsiveItem>
           </ResponsiveItemBox>
           <ResponsiveItemBox>
@@ -167,30 +165,27 @@ export const SearchSection = ({
               <p>원료검색</p>
             </SearchItemLeft>
             <SearchItemRight>
-              <SearchBox onChange={handleSearchQueryChange} />
+              <SearchBox />
             </SearchItemRight>
           </ResponsiveItemBox>
-          
-            <ResponsiveItemBox >
-              <SearchItemLeft>
-                <p>기능성 검색</p>
-              </SearchItemLeft>
-              {Object.keys(typeList).map((key) => (
-                typeList[key] ? (
-              <SearchItemRight $width="33.9%" key={key}>
-                <ComboBox
-                  typeList={typeList[key]}
-                  onSelectionChange={(selectedItems) =>
-                    handleSelectionChange(key, selectedItems)
-                  }
-                  $isOpen={openComboBoxes[key]}
-                  toggleComboBox={() => toggleComboBox(key)}
-                />
-              </SearchItemRight>
-                ) : null
-              ))}
-            </ResponsiveItemBox>
-         
+
+          <ResponsiveItemBox>
+            <SearchItemLeft>
+              <p>기능성 검색</p>
+            </SearchItemLeft>
+            {orderedKeys.map((key) =>
+              typeList[key] ? (
+                <SearchItemRight $width="33.9%" key={key}>
+                  <ComboBox
+                    comboBoxId={key}
+                    typeList={typeList[key]}
+                    toggleComboBox={() => handleToggleComboBox(key)}
+                  />
+                </SearchItemRight>
+              ) : null
+            )}
+          </ResponsiveItemBox>
+
           <ResponsiveItemBox>
             <SearchItemLeft>
               <p>초성 검색</p>
@@ -198,9 +193,7 @@ export const SearchSection = ({
             <SearchItemRight $width="100%">
               <InitialConsonant>ㄱㄴㄷㄹㅁㅂㅅ</InitialConsonant>
               <ButtonItem>
-                <StyledButton type="button" onClick={handleSearch}>
-                  검색
-                </StyledButton>
+                <StyledButton type="button" onClick={handleSearch}>검색</StyledButton>
               </ButtonItem>
             </SearchItemRight>
           </ResponsiveItemBox>

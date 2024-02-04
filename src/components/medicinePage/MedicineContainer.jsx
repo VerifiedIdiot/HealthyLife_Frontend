@@ -1,5 +1,6 @@
 import styled from "styled-components";
 import { useState, useEffect, useCallback } from "react";
+import { useSearch } from "../../contexts/SearchContext";
 import { useApiRequestParams } from "../../hooks/useApiRequest";
 import MedicineApi from "../../api/MedicineApi";
 
@@ -150,7 +151,7 @@ const DropdownItem = styled.div`
 `;
 
 const DropdownContent = styled.div`
-  display: ${(props) => (props.$show ? "flex" : "none")};
+  display: ${({ $isOpen }) => ($isOpen ? "block" : "none")};
   flex-wrap: wrap;
   position: absolute;
   top: 100%;
@@ -182,54 +183,54 @@ const ResetButton = styled.button`
   border-radius: 4px;
 `;
 
-export const ComboBox = ({ typeList, onSelectionChange, $isOpen, toggleComboBox }) => {
-  const [showDropdown, setShowDropdown] = useState(false);
-  // 체크된 항목들을 functionality 값으로 관리
-  const [selectedItems, setSelectedItems] = useState(new Set());
+export const ComboBox = ({ comboBoxId, typeList, toggleComboBox }) => {
+  const { state, actions } = useSearch();
+  const { checkBoxStates } = state;
 
-  const itemList = typeList || [];
+  const $isOpen = state.openComboBox === comboBoxId;
 
-  // 이벤트 핸들러 메모이제이션
-  const handleCheckboxChange = useCallback((functionality) => {
-    setSelectedItems((prev) => {
-      const newSelectedItems = new Set(prev);
-      if (newSelectedItems.has(functionality)) {
-        newSelectedItems.delete(functionality);
-      } else {
-        newSelectedItems.add(functionality);
-      }
-      // 선택된 항목들을 상위 컴포넌트로 전달
-      onSelectionChange(Array.from(newSelectedItems));
-      return newSelectedItems;
-    });
-  }, [onSelectionChange]);
+  // 체크박스 변경 핸들러
+  const handleChange = (functionality) => {
+    // functionality 값으로 체크 상태 결정
+    const isChecked = !!checkBoxStates[comboBoxId]?.[functionality];
+    actions.handleCheckboxChange(comboBoxId, functionality, !isChecked);
+    // console.log(`콤보박스 아이디 : ${comboBoxId} 콤보박스 아이디 : ${functionality} isChecked : ${comboBoxId}`)
 
-  // 리셋 핸들러 메모이제이션
-  const handleReset = useCallback(() => {
-    setSelectedItems(new Set());
-    onSelectionChange([]); // 리셋 시 빈 배열을 상위 컴포넌트로 전달
-  }, [onSelectionChange]);
+    const selectedCheckboxes = checkBoxStates[comboBoxId];
 
-  useEffect(() => {
-    setShowDropdown($isOpen);
-  }, [$isOpen]);
+    if (selectedCheckboxes) {
+      const selectedFunctionalityList = Object.keys(selectedCheckboxes).filter(
+        (functionality) => selectedCheckboxes[functionality]
+      );
+
+      console.log("선택한 체크박스 목록:", selectedFunctionalityList);
+    } else {
+      console.log("아직 아무 체크박스도 선택되지 않았습니다.");
+    }
+  };
 
   return (
     <SelectBox>
-      <DropdownItem onClick={() => toggleComboBox(!$isOpen)}>
-        {selectedItems.size}개 <span>▼</span>
+      <DropdownItem onClick={() => toggleComboBox(comboBoxId)}>
+        {/* 체크된 항목 수 계산 */}
+        {
+          Object.keys(checkBoxStates[comboBoxId] || {}).filter(
+            (key) => checkBoxStates[comboBoxId][key]
+          ).length
+        }
+        개 <span>▼</span>
       </DropdownItem>
-      <DropdownContent $show={showDropdown}>
-        {itemList.map((item) => (
-          <CheckboxLabel key={item.id}>
+      <DropdownContent $isOpen={$isOpen}>
+        {typeList.map((item) => (
+          <CheckboxLabel key={item.functionality}>
             <input
               type="checkbox"
-              checked={selectedItems.has(item.functionality)}
-              onChange={() => handleCheckboxChange(item.functionality)}
-            /> {item.functionality}
+              checked={!!checkBoxStates[comboBoxId]?.[item.functionality]}
+              onChange={() => handleChange(item.functionality)}
+            />{" "}
+            {item.functionality}
           </CheckboxLabel>
         ))}
-        <ResetButton onClick={handleReset}>초기화</ResetButton>
       </DropdownContent>
     </SelectBox>
   );

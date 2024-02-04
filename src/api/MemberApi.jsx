@@ -72,7 +72,10 @@ const MemberApi = {
 
   // 회원 상세 조회
   getMemberDetail: async () => {
-    return await AxiosInstance.get(Common.WEELV_DOMAIN + "/member/detail");
+    return await AxiosInstance.get(
+      Common.WEELV_DOMAIN + "/member/detail",
+      Common.tokenHeader()
+    );
   },
 };
 export default MemberApi;

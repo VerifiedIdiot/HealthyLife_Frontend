@@ -2,19 +2,9 @@ import moment from "moment";
 import axios from "axios";
 import "moment/locale/ko"; // 한글 로컬라이제이션
 moment.locale("ko"); // 한글 설정 적용
-
 const Common = {
-  
   WEELV_DOMAIN: "http://localhost:8111",
-  truncateText: (text, maxLength) => {
-    if (text.length > maxLength) {
-      return text.substring(0, maxLength) + "...";
-    }
-    return text;
-  },
-  timeFromNow: (timestamp) => {
-    return moment(timestamp).fromNow();
-  },
+
   formatDate: (timestamp) => {
     const date = new Date(timestamp);
     const year = date.getFullYear();
@@ -38,11 +28,25 @@ const Common = {
     localStorage.setItem("refreshToken", token);
   },
 
+  // 헤더
+  tokenHeader: () => {
+    const accessToken = Common.getAccessToken();
+    // console.log("헤더 토큰 : " + accessToken);
+    return {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: "Bearer " + accessToken,
+      },
+    };
+  },
+
   // 401 에러 처리 함수 (토큰 리프래쉬토큰 재발급)
   handleUnauthorized: async () => {
     console.log("에세스토큰 재발급");
     const accessToken = Common.getAccessToken();
     const refreshToken = Common.getRefreshToken();
+    console.log("refreshToken : " + refreshToken);
+    console.log("재발행 전 : " + accessToken);
     const config = {
       headers: {
         Authorization: `Bearer ${accessToken}`,
@@ -50,7 +54,7 @@ const Common = {
     };
     try {
       const res = await axios.post(
-        `${Common.BACKEND_DOMAIN}/auth/refresh`,
+        `${Common.WEELV_DOMAIN}/auth/refresh`,
         refreshToken,
         config
       );
@@ -59,7 +63,7 @@ const Common = {
       Common.setAccessToken(res.data);
       return true;
     } catch (err) {
-      // console.log(err);
+      console.log("재발급 err : " + err);
       return false;
     }
   },
@@ -68,7 +72,7 @@ const Common = {
   TakenToken: async () => {
     const accessToken = Common.getAccessToken();
     try {
-      return await axios.get(Common.BACKEND_DOMAIN + `/sale/takenEmail`, {
+      return await axios.get(Common.WEELV_DOMAIN + `/sale/takenEmail`, {
         headers: {
           "Content-Type": "application/json",
           Authorization: "Bearer " + accessToken,
@@ -79,7 +83,7 @@ const Common = {
         await Common.handleUnauthorized();
         const newToken = Common.getAccessToken();
         if (newToken !== accessToken) {
-          return await axios.get(Common.BACKEND_DOMAIN + `/sale/takenEmail`, {
+          return await axios.get(Common.WEELV_DOMAIN + `/sale/takenEmail`, {
             headers: {
               "Content-Type": "application/json",
               Authorization: "Bearer " + newToken,
@@ -94,7 +98,7 @@ const Common = {
   IsLogin: async () => {
     const accessToken = Common.getAccessToken();
     return await axios.get(
-      Common.BACKEND_DOMAIN + `/sale/isLogin/${accessToken}`,
+      Common.WEELV_DOMAIN + `/sale/isLogin/${accessToken}`,
       {
         headers: {
           "Content-Type": "application/json",

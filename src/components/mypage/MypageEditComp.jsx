@@ -1,17 +1,20 @@
 import { useNavigate } from "react-router";
 import { Area, Box, Container, Main, Section } from "../../styles/Layouts";
 import { MiddleButton } from "../../styles/styledComponents/StyledComponents";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { LabelComp } from "../joinPage/JoinStyle";
 import { Input, InputButton } from "../joinPage/JoinInput";
+import basicProfile from "../../assets/imgs/basicUser.png";
+import MemberApi from "../../api/MemberApi";
 
 const MypageEditComp = ({ userData }) => {
   const myPageNavigate = useNavigate();
 
+  const [memberInfo, setMemberInfo] = useState(null);
+
   // 프로필 관련
   const [imgSrc, setImgSrc] = useState("");
   const [file, setFile] = useState("");
-  const [url, setUrl] = useState("");
 
   // 입력받은 이미지 파일 주소
   const handleFileInputChange = (e) => {
@@ -62,6 +65,32 @@ const MypageEditComp = ({ userData }) => {
     //phone
     /^\d{3}-\d{4}-\d{4}$/,
   ];
+
+  //중복체크
+  const isUnique = async (num, checkVal) => {
+    const msgList = ["", setNickNameMessage, setPhoneMessage];
+    const validList = ["", setIsNickName, setIsPhone];
+    const originVal = ["", memberInfo.nickName, memberInfo.phone];
+    if (checkVal !== originVal[num]) {
+      try {
+        const res = await MemberApi.checkUnique(num, checkVal);
+        console.log("중복여부 : " + !res.data);
+        if (!res.data) {
+          msgList[num]("사용 가능합니다.");
+          validList[num](true);
+        } else {
+          msgList[num]("이미 사용중입니다.");
+          validList[num](false);
+        }
+      } catch (err) {
+        console.log("중복오류 : " + err);
+      }
+    } else {
+      // 기존 내용일 경우
+      msgList[num]("");
+      validList[num](true);
+    }
+  };
 
   // 비밀번호 확인
   const onChangeOriginPw = (e) => {
@@ -139,6 +168,38 @@ const MypageEditComp = ({ userData }) => {
       //   isUnique(2, currPhone);
     }
   };
+
+  //주소////////////////////////////////////////////////////////
+  const [inputAddr, setInputAddr] = useState("");
+  const [isPopUpOpen, setIsPopUpOpen] = useState(false);
+  const openPostCode = () => {
+    setIsPopUpOpen(true);
+  };
+  const closePostCode = () => {
+    setIsPopUpOpen(false);
+  };
+
+  const setAddr = (addr) => {
+    setInputAddr(addr);
+    setIsAddr(true);
+  };
+
+  // 회원 정보 가져오기
+  useEffect(() => {
+    const fetchMemberInfo = async () => {
+      const res = await MemberApi.getMemberDetail();
+      if (res.data !== null) {
+        console.log("상세회원정보 : " + res.data);
+        setMemberInfo(res.data);
+        setInputNickName(res.data.alias);
+        setInputPhone(res.data.phone);
+        setInputAddr(res.data.addr);
+        res.data.image ? setImgSrc(res.data.image) : setImgSrc(basicProfile);
+      }
+    };
+    fetchMemberInfo();
+  }, []);
+
   return (
     <>
       <Main $direction="column" $width="100%" $height="auto">
@@ -211,7 +272,7 @@ const MypageEditComp = ({ userData }) => {
                 Email
               </p>
               {userData ? (
-                <Input value={userData.email} disabled={true} />
+                <Input value={memberInfo.email} disabled={true} />
               ) : (
                 <Input value="" disabled={false} />
               )}
@@ -292,7 +353,7 @@ const MypageEditComp = ({ userData }) => {
               </p>
               <Input
                 holder="이름"
-                value={userData ? userData.name : ""}
+                value={memberInfo ? memberInfo.name : ""}
                 disabled={true}
               />
             </Area>

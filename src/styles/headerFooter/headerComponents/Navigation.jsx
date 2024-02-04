@@ -79,7 +79,7 @@ const Navigation = ({ $scrolledDown = true }) => {
           <p>Ranking</p>
         </NavLink>
       </NavContainer>
-      <NavContainer>
+      <NavContainer $width="auto">
         <NavLink
           $scrolledDown={$scrolledDown}
           onClick={() => navigate("/login")}

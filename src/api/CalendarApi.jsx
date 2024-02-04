@@ -16,9 +16,9 @@ const CalendarApi = {
     }
   },
   // 새로운 음식 데이터를 추가하는 함수
-  addMeal: async (mealInfo) => {
+  addMeal: async (mealDto) => {
     try {
-      const response = await axios.post(`${BACKEND_DOMAIN}/meal/add`, mealInfo);
+      const response = await axios.post(`${BACKEND_DOMAIN}/meal/add`, mealDto);
       return response.data;
     } catch (error) {
       console.error("Error in addMeal API call", error);

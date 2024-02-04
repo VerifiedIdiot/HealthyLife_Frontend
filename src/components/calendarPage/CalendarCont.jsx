@@ -36,7 +36,7 @@ const SearchResultContainer = styled.div`
 export const MealInutBox = ({ closeModal, mealType, onAddItem }) => {
   const [searchQuery, setSearchQuery] = useState("");
   const [searchResults, setSearchResults] = useState([]);
-  const [selectedItem, setSelectedItem] = useState(null);
+  const [selectedItem, setSelectedItem] = useState({});
 
   const handleSearchQueryChange = (e) => {
     setSearchQuery(e.target.value);
@@ -44,15 +44,16 @@ export const MealInutBox = ({ closeModal, mealType, onAddItem }) => {
   };
 
   const handleSearchResultClick = async (item) => {
-    setSelectedItem(item);
+    setSelectedItem({ meal_name : item.name, meal_type: mealType });
     setSearchQuery(item.name);
+    console.log(item.name);
   };
 
   const handleAddClick = async () => {
     if (selectedItem) {
       try {
-        const mealData = { mealType, ...selectedItem };
-        const savedItem = await CalendarApi.addMeal(mealData);
+        const mealDto = selectedItem;
+        const savedItem = await CalendarApi.addMeal(mealDto);
       console.log("savedItem:", savedItem);
         onAddItem(selectedItem);
         closeModal();

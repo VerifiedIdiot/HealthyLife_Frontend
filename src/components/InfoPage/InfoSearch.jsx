@@ -20,17 +20,24 @@ const Search1 = styled.input`
   box-sizing: border-box;
 `;
 
-const InfoSearch = () => {
+const InfoSearch = ({ setdata }) => {
+  const [keyword, setKeyword] = useState("");
+
+  const keywordChange = (e) => {
+    setKeyword(e.target.value);
+  };
+
   return (
     <Main $justify="center" $align="center" $width="90%">
       <Container $justify="end" $align="center" $direction="row" $height="auto">
-        <Search1></Search1>
+        <Search1 value={keyword} onChange={keywordChange}></Search1>
         <MiddleButton
           style={{
             borderRadius: "0px 8px 8px 0px",
             height: "35px",
             boxSizing: "border-box",
           }}
+          onClick={() => setdata(keyword)}
         >
           검색
         </MiddleButton>

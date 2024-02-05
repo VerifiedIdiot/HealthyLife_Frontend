@@ -10,99 +10,6 @@ import {
 } from "../../styles/Layouts";
 import styled, { css } from "styled-components";
 
-const FoodData = [
-  {
-    name: "돼지국밥",
-    size: 1200,
-    kcal: 991.4,
-    carbo: 74.7,
-    sugar: 0,
-    protein: 66.4,
-    fat: 28.6,
-    satFat: 8.4,
-    transFat: 0.2,
-    chole: 142.55,
-    sodium: 8.4,
-    image:
-      "https://i.namu.wiki/i/L32GLwp47iMGvV8ryEDAVWoxe9XF0RhU5iisHuoSbETlINBr8y_KScsF92tfORGZZvY8-vJi5tC_q_FJIyHdmg.webp",
-  },
-  {
-    name: "돼지국밥",
-    size: 1200,
-    kcal: 991.4,
-    carbo: 74.7,
-    sugar: 0,
-    protein: 66.4,
-    fat: 28.6,
-    satFat: 8.4,
-    transFat: 0.2,
-    chole: 142.55,
-    sodium: 8.4,
-    image:
-      "https://i.namu.wiki/i/L32GLwp47iMGvV8ryEDAVWoxe9XF0RhU5iisHuoSbETlINBr8y_KScsF92tfORGZZvY8-vJi5tC_q_FJIyHdmg.webp",
-  },
-  {
-    name: "돼지국밥",
-    size: 1200,
-    kcal: 991.4,
-    carbo: 74.7,
-    sugar: 0,
-    protein: 66.4,
-    fat: 28.6,
-    satFat: 8.4,
-    transFat: 0.2,
-    chole: 142.55,
-    sodium: 8.4,
-    image:
-      "https://i.namu.wiki/i/L32GLwp47iMGvV8ryEDAVWoxe9XF0RhU5iisHuoSbETlINBr8y_KScsF92tfORGZZvY8-vJi5tC_q_FJIyHdmg.webp",
-  },
-  {
-    name: "돼지국밥",
-    size: 1200,
-    kcal: 991.4,
-    carbo: 74.7,
-    sugar: 0,
-    protein: 66.4,
-    fat: 28.6,
-    satFat: 8.4,
-    transFat: 0.2,
-    chole: 142.55,
-    sodium: 8.4,
-    image:
-      "https://i.namu.wiki/i/L32GLwp47iMGvV8ryEDAVWoxe9XF0RhU5iisHuoSbETlINBr8y_KScsF92tfORGZZvY8-vJi5tC_q_FJIyHdmg.webp",
-  },
-  {
-    name: "돼지국밥",
-    size: 1200,
-    kcal: 991.4,
-    carbo: 74.7,
-    sugar: 0,
-    protein: 66.4,
-    fat: 28.6,
-    satFat: 8.4,
-    transFat: 0.2,
-    chole: 142.55,
-    sodium: 8.4,
-    image:
-      "https://i.namu.wiki/i/L32GLwp47iMGvV8ryEDAVWoxe9XF0RhU5iisHuoSbETlINBr8y_KScsF92tfORGZZvY8-vJi5tC_q_FJIyHdmg.webp",
-  },
-  {
-    name: "돼지국밥",
-    size: 1200,
-    kcal: 991.4,
-    carbo: 74.7,
-    sugar: 0,
-    protein: 66.4,
-    fat: 28.6,
-    satFat: 8.4,
-    transFat: 0.2,
-    chole: 142.55,
-    sodium: 8.4,
-    image:
-      "https://i.namu.wiki/i/L32GLwp47iMGvV8ryEDAVWoxe9XF0RhU5iisHuoSbETlINBr8y_KScsF92tfORGZZvY8-vJi5tC_q_FJIyHdmg.webp",
-  },
-];
-
 const Food = styled.div`
   display: flex;
   flex-direction: column;
@@ -142,7 +49,7 @@ const FoodDetail2 = styled.div`
 
 const FoodDetail3 = styled.div``;
 
-const FoodInfo = () => {
+const FoodInfo = ({ foodData }) => {
   return (
     <Main $justify="center" $align="center" $width="90%">
       <Container
@@ -150,7 +57,7 @@ const FoodInfo = () => {
         $justify="center"
         style={{ flexWrap: "wrap" }}
       >
-        {FoodData.map((item, index) => (
+        {foodData.map((item, index) => (
           <Food key={index}>
             <FoodImg src={item.image}></FoodImg>
             <FoodName>{item.name}</FoodName>

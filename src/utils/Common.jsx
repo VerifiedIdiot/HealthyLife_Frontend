@@ -94,7 +94,7 @@ const Common = {
     }
   },
     //토큰에서 아아디 뽑기 (Long Id)
-    TakenToken: async () => {
+    TakenId: async () => {
       const accessToken = Common.getAccessToken();
       try {
         return await axios.get(Common.WEELV_DOMAIN + `/member/takenId`, {

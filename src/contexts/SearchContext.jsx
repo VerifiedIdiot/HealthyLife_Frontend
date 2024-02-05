@@ -22,18 +22,19 @@ const initialState = {
 const searchReducer = (state, action) => {
   switch (action.type) {
     case "SET_TYPE_LIST":
-      return { ...state, typeList: action.payload }; // 타입 리스트 상태 업데이트
-    case "TOGGLE_COMBOBOX":
+      return { ...state, typeList: action.payload };
+    case "TOGGLE_COMBOBOX": {
       const isAlreadyOpen = state.openComboBox === action.payload;
       return {
         ...state,
-        openComboBox: isAlreadyOpen ? null : action.payload, // 콤보박스의 열림/닫힘 상태 토글
+        openComboBox: isAlreadyOpen ? null : action.payload,
       };
-    case "SET_CHECKBOX_STATES":
+    }
+    case "SET_CHECKBOX_STATES": {
       const { comboBoxId, checkBoxId, isChecked } = action.payload;
       return {
         ...state,
-        checkBoxStates: { // 체크박스 상태 업데이트
+        checkBoxStates: {
           ...state.checkBoxStates,
           [comboBoxId]: {
             ...state.checkBoxStates[comboBoxId],
@@ -41,20 +42,26 @@ const searchReducer = (state, action) => {
           },
         },
       };
+    }
+    case "RESET_COMBOBOX": {
+      const { comboBoxId } = action.payload;
+      const resetCheckBoxStates = { ...state.checkBoxStates, [comboBoxId]: {} };
+      return {
+        ...state,
+        checkBoxStates: resetCheckBoxStates,
+      };
+    }
     case "SET_SEARCH_QUERY":
-      return { ...state, searchQuery: action.payload }; // 검색 쿼리 상태 업데이트
-
-    case "PERFORM_SEARCH":
-      const results = performSearchLogic(
-        state.checkBoxStates,
-        state.searchQuery,
-        state.pageSize
-      );
-      return { ...state, searchResults: results }; // 검색 결과 상태 업데이트
+      return { ...state, searchQuery: action.payload };
+    case "PERFORM_SEARCH": {
+      const results = performSearchLogic(state.checkBoxStates, state.searchQuery, state.pageSize);
+      return { ...state, searchResults: results };
+    }
     default:
-      return state; // 액션 타입이 일치하지 않는 경우 현재 상태 유지
+      return state;
   }
-}
+};
+
 
 // SearchProvider 컴포넌트: 검색 관련 상태와 액션을 자식 컴포넌트에게 제공합니다.
 export const SearchProvider = ({ children }) => {
@@ -75,8 +82,8 @@ export const SearchProvider = ({ children }) => {
     state,
     actions: {
       toggleComboBox: (comboBoxId) => dispatch({ type: "TOGGLE_COMBOBOX", payload: comboBoxId }),
-      handleCheckboxChange: (comboBoxId, checkBoxId, isChecked) =>
-        dispatch({ type: "SET_CHECKBOX_STATES", payload: { comboBoxId, checkBoxId, isChecked } }),
+      handleCheckboxChange: (comboBoxId, checkBoxId, isChecked) =>dispatch({ type: "SET_CHECKBOX_STATES", payload: { comboBoxId, checkBoxId, isChecked } }),
+      resetComboBox: (comboBoxId) => dispatch({ type: "RESET_COMBOBOX", payload: { comboBoxId } }),
       setSearchQuery: (query) => dispatch({ type: "SET_SEARCH_QUERY", payload: query }),
       performSearch: () => dispatch({ type: "PERFORM_SEARCH" }),
     },
@@ -84,7 +91,7 @@ export const SearchProvider = ({ children }) => {
 
   return (
     <SearchContext.Provider value={contextValue}>
-      {children} // Context Provider를 사용하여 contextValue를 하위 컴포넌트에게 전달
+      {children} 
     </SearchContext.Provider>
   );
 };

@@ -28,7 +28,7 @@ const ComboSelectBox = styled.select`
 `;
 
 const ComboInputField = styled.input`
-  width: 54%;
+  width: 100%;
   height: 40px;
 
   margin: 10px 0;
@@ -148,44 +148,74 @@ const DropdownItem = styled.div`
   &:hover {
     background-color: #f0f0f0;
   }
+  h3 {
+    display: flex;
+
+    white-space: nowrap;
+  }
 `;
 
+const DropdownItemName = styled.div`
+  position: absolute;
+  right: 40%;
+  white-space: nowrap;
+  h3 {
+    font-size: 1rem;
+    
+  }
+`
+
 const DropdownContent = styled.div`
-  display: ${({ $isOpen }) => ($isOpen ? "block" : "none")};
+  display: ${({ $isOpen }) => ($isOpen ? "flex" : "none")};
   flex-wrap: wrap;
   position: absolute;
   top: 100%;
   left: 0;
   background-color: #f9f9f9;
-  min-width: 100%;
+  width: auto; // 자동으로 내용물에 맞춰 조정
+  min-width: calc(99% * 3); // 콤보박스 3개의 너비 합계로 최대 너비 설정 (가정)
   box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
   z-index: 1;
   padding: 10px;
+
+  ${({ position }) => position === 'right' && `
+    right: 50%;
+    transform: translateX(-67%);
+  `}
+
+  ${({ position }) => position === 'middle' && `
+    left: 50%;
+    transform: translateX(-50%);
+  `}
 `;
 
 const CheckboxLabel = styled.label`
-  flex-basis: calc(33.3% - 10px); // 3개씩 배열되도록 너비 계산, 여백 고려
-  margin: 5px; // 여백 추가
+  flex: 0 1 calc(33.33% - 20px); // 한 줄에 3개씩, 항목 사이 간격 고려
+  margin: 10px; // 항목 사이의 간격
   display: flex;
-  align-items: center;
-  box-sizing: border-box;
+  align-items: center; // 체크박스와 레이블을 세로 중앙 정렬
   white-space: nowrap; // 줄바꿈 방지
 `;
 
 const ResetButton = styled.button`
-  width: 100%;
+  position: absolute;
+  width: 80px;
   padding: 10px;
-  margin-top: 10px;
-  background-color: #11009e; // 초기화 버튼 색상 변경
+  right: 10px;
+  background-color: #4942E4; // 초기화 버튼 색상 변경
   color: white;
   border: none;
+  transition: 0.2s ease-in;
   cursor: pointer;
   border-radius: 4px;
+  &:hover {
+      background-color: #11009e;
+    }
 `;
 
-export const ComboBox = ({ comboBoxId}) => {
+export const ComboBox = ({ comboBoxId, position }) => {
   const { state, actions } = useSearch();
-  const { checkBoxStates, typeList} = state;
+  const { checkBoxStates, typeList } = state;
   const { toggleComboBox } = actions;
   const $isOpen = state.openComboBox === comboBoxId;
 
@@ -194,25 +224,15 @@ export const ComboBox = ({ comboBoxId}) => {
     // functionality 값으로 체크 상태 결정
     const isChecked = !!checkBoxStates[comboBoxId]?.[functionality];
     actions.handleCheckboxChange(comboBoxId, functionality, !isChecked);
-    // console.log(`콤보박스 아이디 : ${comboBoxId} 콤보박스 아이디 : ${functionality} isChecked : ${comboBoxId}`)
-
-    const selectedCheckboxes = checkBoxStates[comboBoxId];
-
-    if (selectedCheckboxes) {
-      const selectedFunctionalityList = Object.keys(selectedCheckboxes).filter(
-        (functionality) => selectedCheckboxes[functionality]
-      );
-
-      console.log("선택한 체크박스 목록:", selectedFunctionalityList);
-    } else {
-      console.log("아직 아무 체크박스도 선택되지 않았습니다.");
-    }
   };
 
+  const handleReset = () => {
+    actions.resetComboBox(comboBoxId);
+  };
   return (
     <SelectBox>
       <DropdownItem onClick={() => toggleComboBox(comboBoxId)}>
-        {/* 체크된 항목 수 계산 */}
+      <DropdownItemName><h3>{comboBoxId}</h3></DropdownItemName>
         {
           Object.keys(checkBoxStates[comboBoxId] || {}).filter(
             (key) => checkBoxStates[comboBoxId][key]
@@ -220,7 +240,8 @@ export const ComboBox = ({ comboBoxId}) => {
         }
         개 <span>▼</span>
       </DropdownItem>
-      <DropdownContent $isOpen={$isOpen}>
+
+      <DropdownContent $isOpen={$isOpen} position={position}>
         {typeList[comboBoxId]?.map((item) => (
           <CheckboxLabel key={item.functionality}>
             <input
@@ -231,6 +252,7 @@ export const ComboBox = ({ comboBoxId}) => {
             {item.functionality}
           </CheckboxLabel>
         ))}
+        <ResetButton onClick={handleReset}>초기화</ResetButton>
       </DropdownContent>
     </SelectBox>
   );

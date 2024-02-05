@@ -37,7 +37,7 @@ const LogoItem = styled(Item)`
 `;
 
 const ResponsiveSearchSection = styled(Section)`
-  height: 350px;
+  height: 200px;
   justify-content: center;
   align-items: center;
 
@@ -106,44 +106,48 @@ const SearchItemRight = styled(Item)`
 
 const ButtonItem = styled(Item)`
   display: flex;
-  /* justify-content: center; */
+  justify-content: center;
   align-items: center;
-  width: 25%;
+  width: 20%;
   box-shadow: none;
   @media (max-width: 768px) {
   }
 `;
 
-const InitialConsonant = styled.div`
-  display: flex;
-  align-items: center;
-  width: 75%;
-
-  @media (max-width: 768px) {
-    width: 73%;
-  }
-`;
-
 const StyledButton = styled(LargeButton)`
+  width: 200px;
+  height: 45px;
   @media (max-width: 768px) {
     width: 100%;
   }
 `;
 
 export const SearchSection = () => {
-// Context에서 상태와 함수를 불러옵니다.
-const { state, actions } = useSearch();
-const { typeList, searchQuery, pageSize } = state;
-const { toggleComboBox, handleCheckboxChange, setSearchQuery, performSearch } = actions;
+  // Context에서 상태와 함수를 불러옵니다.
+  const { state, actions } = useSearch();
+  const { typeList, searchQuery, pageSize } = state;
+  const {
+    toggleComboBox,
+    handleCheckboxChange,
+    setSearchQuery,
+    performSearch,
+  } = actions;
 
-// 콤보박스 토글 핸들러: 콤보박스의 열림/닫힘 상태를 관리합니다.
-const handleToggleComboBox = comboBoxId => toggleComboBox(comboBoxId);
+  // 콤보박스 토글 핸들러: 콤보박스의 열림/닫힘 상태를 관리합니다.
+  const handleToggleComboBox = (comboBoxId) => toggleComboBox(comboBoxId);
 
-// 검색 실행: 사용자가 설정한 조건에 따라 검색을 수행합니다.
-const handleSearch = () => performSearch();
+  // 검색 실행: 사용자가 설정한 조건에 따라 검색을 수행합니다.
+  const handleSearch = () => performSearch();
 
-// typeList의 키를 정렬하여 UI에 순서대로 표시합니다.
-const orderedKeys = Object.keys(typeList).sort((a, b) => a.localeCompare(b));
+  // typeList의 키를 정렬하여 UI에 순서대로 표시합니다.
+  const orderedKeys = Object.keys(typeList).sort((a, b) => a.localeCompare(b));
+
+   // 콤보박스 위치 결정 로직
+   const getPosition = (index, arrayLength) => {
+    if (index === 0) return 'left'; // 배열의 첫 번째 요소
+    if (index === 2) return 'right'; // 배열의 마지막 요소
+    return 'middle'; // 그 외 중간 위치
+  };
 
   return (
     <>
@@ -158,44 +162,28 @@ const orderedKeys = Object.keys(typeList).sort((a, b) => a.localeCompare(b));
           <ResponsiveItemBox>
             <ResponsiveItem>
               <ComboSearchBox />
+              <ButtonItem>
+                <StyledButton type="button" onClick={handleSearch}>검색</StyledButton>
+              </ButtonItem>
             </ResponsiveItem>
-          </ResponsiveItemBox>
-          <ResponsiveItemBox>
-            <SearchItemLeft>
-              <p>원료검색</p>
-            </SearchItemLeft>
-            <SearchItemRight>
-              <SearchBox />
-            </SearchItemRight>
           </ResponsiveItemBox>
 
           <ResponsiveItemBox>
             <SearchItemLeft>
               <p>기능성 검색</p>
             </SearchItemLeft>
-            {orderedKeys.map((key) =>
+            {orderedKeys.map((key, index) =>
               typeList[key] ? (
                 <SearchItemRight $width="33.9%" key={key}>
                   <ComboBox
                     comboBoxId={key}
                     typeList={typeList[key]}
-                    toggleComboBox={() => handleToggleComboBox(key)}
-                  />
+                    position={getPosition(index, orderedKeys.length)} // 콤보박스 위치 전달
+                    toggleComboBox={() => handleToggleComboBox(key)}></ComboBox>
                 </SearchItemRight>
               ) : null
             )}
-          </ResponsiveItemBox>
-
-          <ResponsiveItemBox>
-            <SearchItemLeft>
-              <p>초성 검색</p>
-            </SearchItemLeft>
-            <SearchItemRight $width="100%">
-              <InitialConsonant>ㄱㄴㄷㄹㅁㅂㅅ</InitialConsonant>
-              <ButtonItem>
-                <StyledButton type="button" onClick={handleSearch}>검색</StyledButton>
-              </ButtonItem>
-            </SearchItemRight>
+            
           </ResponsiveItemBox>
         </ResponsiveSearchArea>
       </ResponsiveSearchSection>

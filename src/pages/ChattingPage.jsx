@@ -24,7 +24,7 @@ const ChattingPage=()=>{
         {state === "FRIENDS" && <FriendsList setState={selected} setChatNum={chatNumed} />}
         {state === "CHATTING" && <Chatting roomId={chatNum}/> }
     </ChatHeader> 
-    <FriendBox/>
+    <FriendBox userId={2}/>
   </>
   )
 }

@@ -7,11 +7,11 @@ import { ButtonComp } from "../../styles/example/Button";
 const ChatList  =(props)=>{
   const {setState} =props;
   const [chatRoomTitle, setChatRoomTitle] = useState("");
+  const [chatRooms, setChatRooms] = useState([]);
+
   const stateClick = (state) => {
     setState(state)
   };
-
-  const [chatRooms, setChatRooms] = useState([]);
 
   useEffect(() => {
     // 서버로부터 채팅방 목록을 가져오는 API 호출
@@ -23,14 +23,7 @@ const ChatList  =(props)=>{
         console.log(e);
       }
     };
-    // 페이지가 로드될 때 한 번 채팅방 목록을 가져오고,
-    // 그 이후로는 일정 주기마다 업데이트를 수행
-    // const intervalID = setInterval(getChatRoom, 1000);
-    // return () => {
-    //   clearInterval(intervalID);
-    // };
   }, []);
-
 
   const enterChatRoom = (roomId) => {
     // 채팅방으로 이동하는 로직 작성
@@ -63,9 +56,12 @@ const ChatList  =(props)=>{
   return(
     <>
       <ScrollBox>
+      {chatRooms.map((chatRoom, index) => (
+          <ChatBox key={index} roomName={chatRoom} />
+        ))}
         <ChatBox/>
         <ChatBox/>
-        <ButtonComp onClick={handleCreateChatRoom}></ButtonComp>
+        <ButtonComp onClick={handleCreateChatRoom}/>
         <button onClick={ClickChatRoom}>zzzzzzzzzzzzzzzzzz</button>
       </ScrollBox>
     </>

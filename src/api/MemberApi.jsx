@@ -82,5 +82,12 @@ const MemberApi = {
       Common.tokenHeader()
     );
   },
+
+  // 타 회원 정보 가져오기
+  getMemberInfo: async (memberId) => {
+    return await AxiosInstance.get(
+      Common.WEELV_DOMAIN + `/member/detail/${memberId}`
+    );
+  },
 };
 export default MemberApi;

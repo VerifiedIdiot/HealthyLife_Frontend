@@ -102,6 +102,13 @@ const LoginComp = () => {
     }
   };
 
+  // 카카오 로그인
+  const CLIENT_ID = process.env.REACT_APP_KAKAO_API_KEY;
+  const REDIRECT_URI = process.env.REACT_APP_KAKAO_REDIRECT_URI;
+  const KAKAO_URL = `https://kauth.kakao.com/oauth/authorize?client_id=${CLIENT_ID}&redirect_uri=${REDIRECT_URI}&response_type=code`;
+  const handleLogin = () => {
+    window.location.href = KAKAO_URL;
+  };
   return (
     <>
       <MainStyle $direction="row" $width="100%">
@@ -212,7 +219,7 @@ const LoginComp = () => {
             $align="center"
             $height="auto"
           >
-            <LargeButton onClick={() => loginClick("결제하기, true")}>
+            <LargeButton onClick={() => loginClick("로그인, true")}>
               로그인
             </LargeButton>
           </Section>
@@ -222,7 +229,9 @@ const LoginComp = () => {
             $align="center"
             $marginTop="20px"
           >
-            <LargeButton>카카오 로그인</LargeButton>
+            <LargeButton onClick={() => handleLogin()}>
+              카카오 로그인
+            </LargeButton>
           </Section>
         </Container2Style>
       </MainStyle>

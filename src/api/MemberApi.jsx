@@ -56,6 +56,11 @@ const MemberApi = {
     return await axios.post(Common.WEELV_DOMAIN + "/auth/login", data);
   },
 
+  // 카카오 로그인
+  KakaoLogin: async (code) => {
+    return await axios.get(Common.WEELV_DOMAIN + `/auth/kakao/${code}`);
+  },
+
   // 인바디정보
   BodyRegister: async (height, weight, muscle, fatPercent, bmr, bmi) => {
     console.log("인바디 진입 : " + height);

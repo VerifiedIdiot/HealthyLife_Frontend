@@ -19,7 +19,6 @@ const BoxList = styled.div`
 const FriendBox =(props)=>{
 const { nickName,userId,x,y } = props;
 
-
 // 사용할 구문에 예정
 // const handleContainerClick = (event) => {
 //   const { clientX, clientY } = event;

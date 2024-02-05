@@ -1,9 +1,29 @@
 import { Box,Item, ScrollBox } from "../../styles/Layouts"
 import { ChatImage, MemberImg, MemberInfo} from "./ChattingStyle"
 import chatIcon from "../../assets/icons/chatIcon.svg"
+import ChatApi from "../../api/ChatAPi";
+import { West } from "@mui/icons-material";
 
 
 const FriendsList  =(props)=>{
+  
+
+  const handleCreateChatRoom = async (name) => {
+    try {
+      const response = await ChatApi.chatCreate(name);
+      console.log(response.data);
+      props.setChatNum(response.data);
+      props.setState("CHATTING");
+      // navigate(`/chatting/${response.data}`);
+    } catch (e) {
+      console.log(e);
+    }
+  };
+
+  const handleCancel = () => {
+    // wes.soket.close
+    // navigate(-1);
+  };
 
   return(
   <>
@@ -20,6 +40,9 @@ const FriendsList  =(props)=>{
 }
 
 export default FriendsList;
+
+
+
 
 // user정보 ItemBox
 const FriendBoxs  =(props)=>{

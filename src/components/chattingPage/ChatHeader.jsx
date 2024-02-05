@@ -20,7 +20,7 @@ const Containerstyle = styled(Container)`
   &::before {
   content: '';
   position: absolute;
-  top: -2%;
+  top: -2%; 
   left: 10%;
   transform: translateX(700%);
   width: 0;

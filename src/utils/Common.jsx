@@ -4,7 +4,7 @@ import "moment/locale/ko"; // 한글 로컬라이제이션
 moment.locale("ko"); // 한글 설정 적용
 const Common = {
   WEELV_DOMAIN: "http://localhost:8111",
-
+  SOCKET_URL: "ws://localhost:8111/ws/chat",
   formatDate: (timestamp) => {
     const date = new Date(timestamp);
     const year = date.getFullYear();
@@ -68,11 +68,11 @@ const Common = {
     }
   },
 
-  //토큰에서 이메일 뽑기 (String)
+  //토큰에서 이메일 뽑기 (String email)
   TakenToken: async () => {
     const accessToken = Common.getAccessToken();
     try {
-      return await axios.get(Common.WEELV_DOMAIN + `/sale/takenEmail`, {
+      return await axios.get(Common.WEELV_DOMAIN + `/member/takenEmail`, {
         headers: {
           "Content-Type": "application/json",
           Authorization: "Bearer " + accessToken,
@@ -83,7 +83,7 @@ const Common = {
         await Common.handleUnauthorized();
         const newToken = Common.getAccessToken();
         if (newToken !== accessToken) {
-          return await axios.get(Common.WEELV_DOMAIN + `/sale/takenEmail`, {
+          return await axios.get(Common.WEELV_DOMAIN + `/member/takenEmail`, {
             headers: {
               "Content-Type": "application/json",
               Authorization: "Bearer " + newToken,
@@ -93,6 +93,31 @@ const Common = {
       }
     }
   },
+    //토큰에서 아아디 뽑기 (Long Id)
+    TakenToken: async () => {
+      const accessToken = Common.getAccessToken();
+      try {
+        return await axios.get(Common.WEELV_DOMAIN + `/member/takenId`, {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: "Bearer " + accessToken,
+          },
+        });
+      } catch (e) {
+        if (e.response.status === 401) {
+          await Common.handleUnauthorized();
+          const newToken = Common.getAccessToken();
+          if (newToken !== accessToken) {
+            return await axios.get(Common.WEELV_DOMAIN + `/member/takenId`, {
+              headers: {
+                "Content-Type": "application/json",
+                Authorization: "Bearer " + newToken,
+              },
+            });
+          }
+        }
+      }
+    },
 
   //토큰으로 로그인여부 확인 (Buloan)
   IsLogin: async () => {

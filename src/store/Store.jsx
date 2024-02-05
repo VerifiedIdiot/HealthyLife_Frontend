@@ -6,7 +6,7 @@ import chatReducer from './reducers/ChattingReducer';
 const Store = configureStore({
   reducer: {
     // visit: TrackUserReducer,
-    message : chatReducer // 채팅리듀서추가
+    // message : chatReducer // 채팅리듀서추가
   },
 });
 

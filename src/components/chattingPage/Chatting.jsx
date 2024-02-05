@@ -46,7 +46,6 @@ const Chatting = (props) => {
         setChatList((prevItems) => [...prevItems, data]);
       };
     }
-  
     // 정리 함수: 컴포넌트가 언마운트될 때 웹소켓 연결 및 이벤트 리스너 제거
     return () => {
       if (ws.current) {

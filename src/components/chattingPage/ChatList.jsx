@@ -4,10 +4,6 @@ import { ChatImage,  ChatIndexBox, MemberImg, MemberInfo} from "./ChattingStyle"
 import ChatApi from "../../api/ChatAPi";
 import { ButtonComp } from "../../styles/example/Button";
 
-
-
-
-
 const ChatList  =(props)=>{
   const {setState} =props;
   const [chatRoomTitle, setChatRoomTitle] = useState("");

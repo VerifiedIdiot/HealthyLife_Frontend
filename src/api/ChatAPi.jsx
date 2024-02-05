@@ -45,11 +45,65 @@ import AxiosInstance from "./AxiosInstance";
     console.log("메세지 가져오기"+roomId);
     return await AxiosInstance.post(Common.WEELV_DOMAIN + `/chat/messages/${roomId}`);
   },
+  ////////////////////////////////////친구차단 관리 ////////////////////////////////////////////////////
+  //친구목록출력
+  friendList: async()=>{
+    const res = Common.TakenId();
+    const memberId =res.data;
+    return await AxiosInstance.get(Common.WEELV_DOMAIN + `/friend/list/${memberId}/true`)
+  },
 
+  //친구추가
+  addFriend:async(friendId)=>{
+    const res = Common.TakenId();
+    const memberId =res.data;
+    const friendDto={
+        friendsId: friendId,
+        memberId: memberId,
+    }
+    return await AxiosInstance.post(Common.WEELV_DOMAIN + "/friend/add/friend",friendDto)
+  },
 
+  //차단추가
+  addBlock:async(friendId)=>{
+    const res = Common.TakenId();
+    const memberId =res.data;
+    const friendDto={
+      friendsId: friendId,
+      memberId: memberId,
+  }
+    return await AxiosInstance.post(Common.WEELV_DOMAIN + "/friend/add/block",friendDto)
+  },
 
+  //차단/친구 삭제
+  deletefriend:async(id)=>{
+    return await AxiosInstance.delete(Common.WEELV_DOMAIN + `/friend/delete/${id}`)
+  },
 
-
-
+////////////////////////////////////회원 상태 관리 ////////////////////////////////////////////////////
+  // 회원 상태변경 접속중, 바쁨, 이딴거
+  statusChange: async(status)=>{
+    const res = Common.TakenId();
+    const memberId =res.data;
+    return await AxiosInstance.put(Common.WEELV_DOMAIN + `/status/changeStatus/${memberId}/${status}`)
+  },
+  //최근 접속시간 업데이트 
+  timeUpdate: async()=>{
+    const res = Common.TakenId();
+    const memberId =res.data;
+    return await AxiosInstance.put(Common.WEELV_DOMAIN + `/status/updateLastAccessTime/${memberId}`)
+  },
+  //상태 메세지 변경 
+  statusMessageChange: async(message)=>{
+    const res = Common.TakenId();
+    const memberId =res.data;
+    return await AxiosInstance.put(Common.WEELV_DOMAIN + `/status/updateStatusMessage/${memberId}/${message}`)
+  },
+  // 상태 출력 
+  statusInfo: async()=>{
+    const res = Common.TakenId();
+    const memberId =res.data;
+    return await AxiosInstance.get(Common.WEELV_DOMAIN + `/status/getMemberStatusInfo/${memberId}`)
+  }
 }
 export default ChatApi;

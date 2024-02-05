@@ -51,7 +51,7 @@ function App() {
             <Route path="/join" element={<JoinPage />} />
             <Route path="/join/bodyInfo" element={<BodyInfoComp />} />
             <Route path="/join/payment" element={<PaymentPage />} />
-            <Route path="/oauth/kakao" element={<Kakao />} />
+            <Route path="/auth" element={<Kakao />} />
             <Route path="/test" element={<ChattingPage />} />
             {/*다이나믹한 헤더와 푸터가 포함된 라우트 그룹 */}
             <Route element={<DynamicHeaderFooter />}>

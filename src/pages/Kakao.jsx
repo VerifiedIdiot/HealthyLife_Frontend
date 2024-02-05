@@ -1,5 +1,11 @@
+import Auth from "../components/loginPage/KakaoAuth";
+
 const Kakao = () => {
-  return <></>;
+  return (
+    <>
+      <Auth />
+    </>
+  );
 };
 
 export default Kakao;

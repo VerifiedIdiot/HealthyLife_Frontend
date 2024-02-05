@@ -103,10 +103,10 @@ const LoginComp = () => {
   };
 
   // 카카오 로그인
-  const CLIENT_ID = process.env.REACT_APP_KAKAO_API_KEY;
-  const REDIRECT_URI = process.env.REACT_APP_KAKAO_REDIRECT_URI;
-  const KAKAO_URL = `https://kauth.kakao.com/oauth/authorize?client_id=${CLIENT_ID}&redirect_uri=${REDIRECT_URI}&response_type=code`;
-  const handleLogin = () => {
+  const kakaoLogin = () => {
+    const CLIENT_ID = process.env.REACT_APP_KAKAO_API_KEY;
+    const REDIRECT_URI = process.env.REACT_APP_KAKAO_REDIRECT_URI;
+    const KAKAO_URL = `https://kauth.kakao.com/oauth/authorize?client_id=${CLIENT_ID}&redirect_uri=${REDIRECT_URI}&response_type=code`;
     window.location.href = KAKAO_URL;
   };
   return (
@@ -229,7 +229,7 @@ const LoginComp = () => {
             $align="center"
             $marginTop="20px"
           >
-            <LargeButton onClick={() => handleLogin()}>
+            <LargeButton onClick={() => kakaoLogin()}>
               카카오 로그인
             </LargeButton>
           </Section>

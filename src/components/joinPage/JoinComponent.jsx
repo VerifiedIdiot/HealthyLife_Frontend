@@ -2,7 +2,7 @@ import { useNavigate } from "react-router";
 import { Area, Box, Container, Main, Section } from "../../styles/Layouts";
 import logo from "../../assets/icons/logo.svg";
 import basicUser from "../../assets/imgs/basicUser.png";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { LabelComp } from "./JoinStyle";
 import { Address, Input, InputButton } from "./JoinInput";
 import MemberApi from "../../api/MemberApi";
@@ -12,6 +12,7 @@ import SmallModal from "../../styles/modals/SmallModal";
 import DaumPostPopup from "../../api/DaumPost";
 import { storage } from "../../api/firebase";
 import BodyInfoComp from "./BodyInfoComponent";
+import { UserContext } from "../../contexts/UserStore";
 
 const JoinComp = ({ email, profile }) => {
   const navigate = useNavigate();
@@ -58,6 +59,7 @@ const JoinComp = ({ email, profile }) => {
   const [phoneMessage, setPhoneMessage] = useState("");
 
   // 유효성
+  const [isKakao, setIsKakao] = useState(false);
   const [isEmail, setIsEmail] = useState(false);
   const [isCode, setIsCode] = useState(false);
   const [isPw, setIsPw] = useState(false);
@@ -67,6 +69,13 @@ const JoinComp = ({ email, profile }) => {
   const [isNickName, setIsNickName] = useState(false);
   const [isPhone, setIsPhone] = useState(false);
   const [isAddr, setIsAddr] = useState(false);
+
+  // 카카오 아이디, 비밀번호
+  const context = useContext(UserContext);
+  const { kakaoId, kakaoPw, setKakaoId, setKakaoPw } = context;
+
+  // 카카오 회원가입 시, 아이디, 비밀번호 input 비활성화
+  const [readOnly, setReadOnly] = useState(false);
 
   // 모달
   const [isModalOpen, setIsModalOpen] = useState({
@@ -121,11 +130,14 @@ const JoinComp = ({ email, profile }) => {
     console.log("currr" + currEmail);
     console.log("currr" + imgSrc);
     setInputEmail(currEmail);
-    if (!regexList[0].test(currEmail)) {
-      setEmailMessage("잘못된 형식입니다.");
-      setIsEmail(false);
-    } else {
-      isUnique(0, currEmail);
+    if (isKakao) {
+      setInputEmail(kakaoId);
+      if (!regexList[0].test(currEmail)) {
+        setEmailMessage("잘못된 형식입니다.");
+        setIsEmail(false);
+      } else {
+        isUnique(0, currEmail);
+      }
     }
   };
 

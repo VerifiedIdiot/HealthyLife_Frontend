@@ -33,13 +33,13 @@ const Kakao = () => {
         const kakaoEmail = kakaoEmailMatch ? kakaoEmailMatch[1] : null;
         setKakaoId(kakaoEmail);
         setKakaoPw(kakaoId);
-        const rsp = await MemberApi.checkUnique("0", kakaoEmail);
+        const rsp = await MemberApi.checkUnique(0, kakaoEmail);
         console.log("rsp : " + rsp.data);
         if (resp.status === 200) {
           console.log(kakaoEmail);
-          console.log("Kakao ID : ", kakaoId);
-          console.log("resp.data : " + resp.data);
-          if (rsp.data === true) {
+          console.log("ㅋㅋ : ", kakaoId);
+          console.log("ㅎㅇ : " + resp.data);
+          if (!rsp.data) {
             // 회원가입 페이지로 이동
             navigate("/join"); // 실제 경로에 맞게 수정
           } else {

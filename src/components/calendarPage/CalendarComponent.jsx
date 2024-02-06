@@ -5,7 +5,7 @@ import {
   MiddleButton,
 } from "../../styles/styledComponents/StyledComponents";
 import MiddleModal from "../../styles/modals/MiddleModal";
-import { MealBox } from "./CalendarCont";
+import { MealBox } from "./CalendarContainer";
 import styled from "styled-components";
 
 // 캘린더 API 적용
@@ -116,7 +116,7 @@ export const CalendarSection = () => {
           formatMonthYear={(locale, value) =>
             value.toLocaleDateString("ko", { year: "numeric", month: "long" })
           }
-          //   tileContent={<ComboBox />} // 달력 내용 표시
+            tileContent={<tileContent />} // 달력 내용 표시
           isBasic={true}
           minDetail="month"
           maxDetail="month"

@@ -7,8 +7,7 @@ import {
   Item,
   Element,
 } from "../styles/Layouts";
-import { CalendarSection } from "../components/calendarPage/CalendarComp";
-import { MyCalendar } from "../components/calendarPage/tmp/MyCalendar";
+import { CalendarSection } from "../components/calendarPage/CalendarComponent";
 
 const CalendarPage = () => {
   return (
@@ -16,8 +15,6 @@ const CalendarPage = () => {
       <Main $width="100%">
         <Container >
           <CalendarSection />
-          {/* <MyCalendar $height="100%" /> */}
-          
         </Container>
       </Main>
     </>

@@ -1,8 +1,10 @@
 import styled from "styled-components";
 import React, { useEffect, useState } from "react";
 import MiddleModal from "../../styles/modals/MiddleModal";
+import { useCalendar } from "../../contexts/CalendarContext";
 import { MiddleButton } from "../../styles/styledComponents/StyledComponents";
 import CalendarApi from "../../api/CalendarApi";
+import moment from "moment";
 
 const InputField = styled.input`
   width: 30vw;
@@ -17,6 +19,7 @@ const InputField = styled.input`
 `;
 
 const InputAddBtn = styled(MiddleButton)`
+  padding: 10px;
   margin: 10px;
 `;
 
@@ -25,18 +28,27 @@ const SearchResultContainer = styled.div`
   overflow-y: auto; // 높이 초과할 경우 스크롤바 생성
   p {
     margin: 0;
-    padding: 3px;
+    padding: 5px;
   }
   @media (max-width: 768px) {
     height: auto;
   }
 `;
 
-// MealInput 컴포넌트
-export const MealInutBox = ({ closeModal, mealType, onAddItem }) => {
+// 식사 항목 검색 및 추가 컴포넌트
+export const MealInutBox = ({
+  closeModal,
+  mealType,
+  onAddItem,
+  selectedDate,
+  onMealAdd,
+  globalAddedMeals
+}) => {
   const [searchQuery, setSearchQuery] = useState("");
   const [searchResults, setSearchResults] = useState([]);
   const [selectedItem, setSelectedItem] = useState({});
+
+  const { updateAddedMeals } = useCalendar();
 
   const handleSearchQueryChange = (e) => {
     setSearchQuery(e.target.value);
@@ -44,7 +56,7 @@ export const MealInutBox = ({ closeModal, mealType, onAddItem }) => {
   };
 
   const handleSearchResultClick = async (item) => {
-    setSelectedItem({ meal_name : item.name, meal_type: mealType });
+    setSelectedItem({ meal_name: item.name, meal_type: mealType });
     setSearchQuery(item.name);
     console.log(item.name);
   };
@@ -52,11 +64,12 @@ export const MealInutBox = ({ closeModal, mealType, onAddItem }) => {
   const handleAddClick = async () => {
     if (selectedItem) {
       try {
-        const mealDto = selectedItem;
+        const mealDto = { ...selectedItem, meal_type: mealType };
         const savedItem = await CalendarApi.addMeal(mealDto);
-      console.log("savedItem:", savedItem);
-        onAddItem(selectedItem);
-        closeModal();
+        onMealAdd(savedItem);
+        console.log("savedItem:", savedItem);
+
+        
       } catch (e) {
         console.error("데이터 저장 중 오류 발생", e);
       }
@@ -67,7 +80,7 @@ export const MealInutBox = ({ closeModal, mealType, onAddItem }) => {
     if (searchQuery) {
       const fetchSearchResults = async () => {
         try {
-          const result = await CalendarApi.getFoodListBySearch({
+          const result = await CalendarApi.getFoodList({
             keyword: searchQuery,
           });
           setSearchResults(result);
@@ -83,13 +96,15 @@ export const MealInutBox = ({ closeModal, mealType, onAddItem }) => {
     <>
       <ComboBoxContainer>
         <ComboBoxSection>
-          <ComboSelectBox $height="90%" $justify="flex-start">
+          <ComboSelectBox>
             <InputField
               type="text"
               placeholder="메뉴를 입력하세요."
               value={searchQuery}
               onChange={handleSearchQueryChange}
             />
+            <MealInput value={selectedItem?.meal_name || ""} readOnly />
+            {/* <InputAddBtn onClick={handleAddClick}>추가하기</InputAddBtn> */}
           </ComboSelectBox>
         </ComboBoxSection>
 
@@ -117,7 +132,7 @@ const ComboBoxContainer = styled.div.attrs({
   display: flex;
   flex-direction: column;
   align-items: center;
-  width: 100%;
+  height: ${(props) => props.$width || "100%"};
 
   @media (max-width: 768px) {
     width: 100%;
@@ -139,19 +154,19 @@ const ComboSelectBox = styled.div.attrs({
   align-items: center;
   width: 100%;
   height: ${(props) => props.$height || "100%"};
-
   border-radius: 4px;
 
   @media (max-width: 768px) {
-    width: 110px;
+    width: 100%;
   }
 `;
 
 const ComboBox = styled.div`
-display: flex;
-flex-flow: row;
+  display: flex;
+  flex-direction: column;
   justify-content: center;
-  align-items: center;`;
+  align-items: center;
+`;
 
 const MealInput = styled.div`
   padding: 10px 0;
@@ -178,11 +193,19 @@ const AddButton = styled.button`
   }
 `;
 
+
+// 식사 유형 컴포넌트
 export const MealBox = () => {
   const MealTypes = ["아침", "점심", "저녁"];
   const [modalOpen, setModalOpen] = useState(false);
   const [selectedMealType, setSelectedMealType] = useState("");
-  const [addedMeals, setAddedMeals] = useState({});
+
+  // addedMeals를 globalAddedMeals로 참조
+  const { addedMeals: globalAddedMeals, updateAddedMeals } = useCalendar();
+
+  // const [addedMeals, setAddedMeals] = useState({});
+  const [selectedItem, setSelectedItem] = useState({});
+  const [selectedDate, setSelectedDate] = useState(new Date());
 
   const openModal = (mealType) => {
     setSelectedMealType(mealType);
@@ -193,10 +216,43 @@ export const MealBox = () => {
     setModalOpen(false);
   };
 
-  const handleMealAdd = (meal) => {
-    setAddedMeals({ ...addedMeals, [selectedMealType]: meal });
+  const handleMealAdd = (mealType, meal) => {
+    const dateKey = moment(selectedDate).format('YYYY-MM-DD'); // 날짜 키를 포맷팅합니다.
+    updateAddedMeals(dateKey, {
+        ...globalAddedMeals[dateKey],
+        [mealType]: meal
+    });
     closeModal();
   };
+
+  const handleSelectedItemChange = (item) => {
+    setSelectedItem(item);
+};
+
+  const fetchMealsByDate = async (date) => {
+    try {
+      const meals = await CalendarApi.getMealsByDate(date);
+      updateAddedMeals(date, meals); // Context 함수 사용
+    } catch (error) {
+      console.error("식사 데이터 로딩 중 오류 발생", error);
+    }
+  };
+
+  useEffect(() => {
+    const fetchSelectedItem = async () => {
+      try {
+        const selectedItemData = await CalendarApi.MealDetail();
+        setSelectedItem(selectedItemData);
+      } catch (error) {
+        console.error("데이터 가져오는 중 오류 발생", error);
+      }
+    };
+    fetchSelectedItem();
+  }, []);
+
+  useEffect(() => {
+    fetchMealsByDate(selectedDate);
+  }, [selectedDate]);
 
   return (
     <>
@@ -205,17 +261,20 @@ export const MealBox = () => {
           {MealTypes.map((mealType) => (
             <ComboBox key={mealType}>
               <MealLabel>{mealType}</MealLabel>
-              <MealInput value={addedMeals[mealType]?.name || ""} readOnly />
+              <MealInput value={globalAddedMeals[selectedDate]?.[mealType]?.meal_name || ""} readOnly />
               <AddButton onClick={() => openModal(mealType)}> + </AddButton>
             </ComboBox>
           ))}
         </ComboSelectBox>
       </ComboBoxContainer>
       <MiddleModal $isOpen={modalOpen} $onClose={closeModal}>
-        <MealInutBox 
-        closeModal={closeModal} 
-        mealType={selectedMealType} 
-        onAddItem={handleMealAdd}
+        <MealInutBox
+          closeModal={closeModal}
+          mealType={selectedMealType}
+          selectedDate={selectedDate} // 날짜 추가
+          globalAddedMeals={globalAddedMeals}
+          onSelectedItemChange={handleSelectedItemChange}
+          onMealAdd={(meal) => handleMealAdd(selectedMealType, meal)}
         />
       </MiddleModal>
     </>

@@ -36,6 +36,8 @@ import MyPageEdit from "./pages/MyPageEdit";
 import Post from "./components/communityPage/PostRoomComponent";
 import WriteComponent from "./components/communityPage/CommunityWriteComponent";
 import UserStore from "./contexts/UserStore";
+import { CalendarProvider } from "./contexts/CalendarContext";
+
 function App() {
   // 방문자 추적 커스텀 훅
   useTrackUserVisit();
@@ -48,6 +50,7 @@ function App() {
         <GlobalStyle />
         <Wrapper>
           <Router>
+          <CalendarProvider>
             <Routes>
               <Route path="/login" element={<LoginPage />} />
               <Route path="/join" element={<JoinPage />} />
@@ -76,14 +79,17 @@ function App() {
                 />
                 <Route path="/ranking" element={<RankingPage />} />
               </Route>
+              
               <Route element={<HeaderOnly />}>
                 <Route path="/calendar" element={<CalendarPage />} />
               </Route>
+              
               {/* 사용자가 잘못된 URL을 입력했을 때 홈으로 리다이렉션 */}
               {/* <Route path="*" element={<Navigate to="/" replace />} /> */}
 
               <Route path="/test2" element={<TestPage />} />
             </Routes>
+            </CalendarProvider>
           </Router>
         </Wrapper>
       </UserStore>

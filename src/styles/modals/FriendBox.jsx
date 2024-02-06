@@ -7,7 +7,7 @@ const BoxList = styled.div`
   height: 100%;
   display: flex;
   background-color:${(props) => props.$background || "#989898"} ;
-  color:${(props) => props.$color || "white"} ;
+  color:${(props) => props.$color || "white"};
   justify-content: center;
   align-items: center;
   box-shadow: ${(props) => props.$shadow || "0 2px 8px rgba(0, 0, 0, 0.2)"};

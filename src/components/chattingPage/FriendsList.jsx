@@ -10,19 +10,9 @@ import { Button } from "@mui/base";
 import { ButtonComp } from "../../styles/example/Button";
 
 const FriendsList = (props) => {
+  const { userId } = props;
   const [friends, setFriends] = useState([]);
 
-  const handleCreateChatRoom = async (name) => {
-    try {
-      const response = await ChatApi.chatCreate(name);
-      console.log(response.data);
-      props.setChatNum(response.data);
-      props.setState("CHATTING");
-      // navigate(`/chatting/${response.data}`);
-    } catch (e) {
-      console.log(e);
-    }
-  };
   useEffect(() => {
     const fetchFriendList = async () => {
       try {
@@ -37,12 +27,26 @@ const FriendsList = (props) => {
     fetchFriendList();
   }, []); // 빈 배열을 전달하여 컴포넌트가 마운트될 때 한 번만 실행
 
+  const chatClick = async (a) => {
+    try {
+      const response = await ChatApi.chatCreate(userId, a);
+      props.setChatNum(response.data);
+      props.setState("CHATTING");
+    } catch (error) {
+      console.error("채팅 에러 발생:", error);
+    }
+  };
+
   return (
     <>
       <ScrollBox>
-        <FriendBoxs friendId={1} myfam={true} />
+        <FriendBoxs friendId={userId} myfam={true} />
         {friends.map((friend, index) => (
-          <FriendBoxs key={index} friendId={friend.friendsId} />
+          <FriendBoxs
+            key={index}
+            friendId={friend.friendsId}
+            onClick={() => chatClick(friend.friendsId)}
+          />
         ))}
       </ScrollBox>
     </>
@@ -54,7 +58,7 @@ export default FriendsList;
 const FriendBoxs = (props) => {
   const { friendId, myfam } = props;
   const [userInfo, setUserInfo] = useState([]);
-  const [message, setMessage] = useState();
+  const [message, setMessage] = useState("");
   const [inputValue, setInputValue] = useState(""); // 입력값을 상태로 관리
 
   useEffect(() => {
@@ -63,15 +67,16 @@ const FriendBoxs = (props) => {
         console.log(friendId);
         const res = await MemberApi.getMemberInfo(friendId);
         console.log(res);
-        console.log(res.data.friendsId + "zzzzzzzzzz111zzz");
+        console.log(res.data.friendsId + "놈의 정보불러와 ");
         setUserInfo(res.data);
       } catch (error) {
         console.error("회원정보를 불러오는 동안 에러 발생:", error);
         // 에러 처리 로직 추가
       }
       try {
-        console.log(friendId);
         const res1 = await ChatApi.statusInfo(friendId);
+        console.log(friendId + "상태메세지 불러와");
+        console.log(res1.data);
         setMessage(res1.data);
       } catch (error) {
         console.log(friendId + "의 상태메세지가없습니다.");
@@ -85,6 +90,7 @@ const FriendBoxs = (props) => {
     try {
       console.log(message);
       await ChatApi.statusMessageChange(message);
+      console.log("상태 메세지 변경완료");
       // 성공적으로 업데이트되었다면, 추가적인 로직이나 상태 업데이트를 수행할 수 있습니다.
     } catch (error) {
       console.error("상태 메세지 변경 중 에러 발생:", error);
@@ -103,7 +109,7 @@ const FriendBoxs = (props) => {
 
   return (
     <>
-      <Box $height="100px" $align="center">
+      <Box $height="100px" $align="center" onClick={props.onClick}>
         <MemberImg>
           <ChatImage
             src={

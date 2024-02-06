@@ -3,8 +3,9 @@ import AxiosInstance from "./AxiosInstance";
 
 const ChatApi = {
   // 내 채팅방 목록 보기
-  chatList: async (memberId) => {
-    console.log("채팅방목록보기" + memberId);
+  chatList: async () => {
+    const res = await Common.TakenId();
+    const memberId = res.data;
     return await AxiosInstance.get(
       Common.WEELV_DOMAIN + `/chat/list/${memberId}`
     );
@@ -15,7 +16,7 @@ const ChatApi = {
       Common.WEELV_DOMAIN + `/chat/room/${roomId}`
     );
   },
-  // 채팅방 생성
+  // 채팅방 생성 및 입장
   chatCreate: async (memberId, senderId) => {
     const chat = {
       memberId: memberId,
@@ -24,29 +25,26 @@ const ChatApi = {
     console.log("채팅방생성" + memberId + "_" + senderId);
     return await AxiosInstance.post(Common.WEELV_DOMAIN + "/chat/new", chat);
   },
-  //메세지 저장
-  saveMessage: async (message, roomId) => {
+// 메시지 저장
+saveMessage: async (message) => {
+  try {
     const chat = {
-      message: message,
-      roomId: roomId,
-      sender: 0,
+      message: message.message, // 수정: message.content가 아니라 message.message여야 함
+      roomId: message.roomId,
+      sender: message.sender, // 수정: message.sneder가 아니라 message.sender여야 함
       type: "TALK",
     };
-    console.log("저장하기" + message);
-    return await AxiosInstance.post(
+    console.log("저장하기", message); // 수정: 문자열과 객체를 함께 출력하려면 쉼표로 구분
+    const response = await AxiosInstance.post(
       Common.WEELV_DOMAIN + "/chat/message",
       chat
     );
-  },
-  //입장
-  enterRoom: async (memberId, senderId) => {
-    const chat = {
-      memberId: memberId,
-      senderId: senderId,
-    };
-    console.log("입장하기" + memberId + senderId);
-    return await AxiosInstance.get(Common.WEELV_DOMAIN + "/chat/enter", chat);
-  },
+    console.log("메시지 저장 성공:", response.data);
+  } catch (error) {
+    console.error("메시지 저장 중 에러 발생:", error);
+    // 에러 처리 로직 추가
+  }
+},
   //채팅방 메세지 가져오기
   takenMessage: async (roomId) => {
     console.log("메세지 가져오기" + roomId);
@@ -121,11 +119,12 @@ const ChatApi = {
   statusMessageChange: async (message) => {
     const res = await Common.TakenId();
     const memberId = res.data;
+    console.log(memberId);
     return await AxiosInstance.put(
       Common.WEELV_DOMAIN + `/status/updateStatusMessage/${memberId}/${message}`
     );
   },
-  // 상태 출력
+  // 상태 메세지 출력
   statusInfo: async (memberId) => {
     return await AxiosInstance.get(
       Common.WEELV_DOMAIN + `/status/getMemberStatusInfo/${memberId}`

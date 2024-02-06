@@ -53,6 +53,7 @@ export const InputButton = (props) => {
           placeholder={holder}
           onChange={(e) => changeEvt(e)}
           disabled={disabled}
+          readOnly={readOnly}
         />
         <Button
           children={btnChild}

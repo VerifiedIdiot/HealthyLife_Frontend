@@ -1,14 +1,18 @@
 import { useNavigate } from "react-router";
 import { Area, Box, Container, Main, Section } from "../../styles/Layouts";
 import { MiddleButton } from "../../styles/styledComponents/StyledComponents";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { LabelComp } from "../joinPage/JoinStyle";
 import { Input, InputButton } from "../joinPage/JoinInput";
 import basicProfile from "../../assets/imgs/basicUser.png";
 import MemberApi from "../../api/MemberApi";
+import { storage } from "../../api/firebase";
+import { UserContext } from "../../contexts/UserStore";
 
-const MypageEditComp = ({ userData }) => {
+const MypageEditComp = () => {
   const myPageNavigate = useNavigate();
+  const context = useContext(UserContext);
+  const { setLoginStatus } = context;
 
   const [memberInfo, setMemberInfo] = useState(null);
 
@@ -100,7 +104,7 @@ const MypageEditComp = ({ userData }) => {
   };
 
   const fetchIsOriginPw = async () => {
-    const res = userData.password(inputOriginPw);
+    const res = MemberApi.isPassword(inputOriginPw);
     console.log("비밀번호 확인 : " + res.data);
     if (res.data) {
       setIsOriginPw(true);
@@ -191,7 +195,7 @@ const MypageEditComp = ({ userData }) => {
       if (res.data !== null) {
         console.log("상세회원정보 : " + res.data);
         setMemberInfo(res.data);
-        setInputNickName(res.data.alias);
+        setInputNickName(res.data.nickName);
         setInputPhone(res.data.phone);
         setInputAddr(res.data.addr);
         res.data.image ? setImgSrc(res.data.image) : setImgSrc(basicProfile);
@@ -199,7 +203,43 @@ const MypageEditComp = ({ userData }) => {
     };
     fetchMemberInfo();
   }, []);
+  // 회원 정보 수정
+  const onSubmit = () => {
+    if (imgSrc !== basicProfile && imgSrc !== memberInfo.image) {
+      const storageRef = storage.ref();
+      const fileRef = storageRef.child(file.name);
+      fileRef.put(file).then(() => {
+        // console.log("저장성공!");
+        fileRef.getDownloadURL().then((url) => {
+          // console.log("저장경로 확인 : " + url);
+          //수정
+          saveMemberInfo(url);
+        });
+      });
+    } else {
+      saveMemberInfo();
+    }
+  };
 
+  // 수정
+  const saveMemberInfo = async (url = "") => {
+    const originImage = imgSrc === basicProfile ? "" : imgSrc;
+    const image = url !== "" ? url : originImage;
+    const res = await MemberApi.changeMemberInfo(
+      memberInfo.email,
+      inputPw2,
+      memberInfo.name,
+      inputNickName,
+      inputPhone,
+      inputAddr,
+      image,
+      memberInfo.isKakao
+    );
+    if (res.data) {
+      console.log("회원정보 수정 성공!");
+      // handleModal("성공", "정보가 수정되었습니다.", false);
+    }
+  };
   return (
     <>
       <Main $direction="column" $width="100%" $height="auto">
@@ -271,7 +311,7 @@ const MypageEditComp = ({ userData }) => {
               >
                 Email
               </p>
-              {userData ? (
+              {memberInfo ? (
                 <Input value={memberInfo.email} disabled={true} />
               ) : (
                 <Input value="" disabled={false} />

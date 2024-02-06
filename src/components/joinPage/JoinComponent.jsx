@@ -59,7 +59,6 @@ const JoinComp = ({ email, profile }) => {
   const [phoneMessage, setPhoneMessage] = useState("");
 
   // 유효성
-  const [isKakao, setIsKakao] = useState(false);
   const [isEmail, setIsEmail] = useState(false);
   const [isCode, setIsCode] = useState(false);
   const [isPw, setIsPw] = useState(false);
@@ -130,14 +129,11 @@ const JoinComp = ({ email, profile }) => {
     console.log("currr" + currEmail);
     console.log("currr" + imgSrc);
     setInputEmail(currEmail);
-    if (isKakao) {
-      setInputEmail(kakaoId);
-      if (!regexList[0].test(currEmail)) {
-        setEmailMessage("잘못된 형식입니다.");
-        setIsEmail(false);
-      } else {
-        isUnique(0, currEmail);
-      }
+    if (!regexList[0].test(currEmail)) {
+      setEmailMessage("잘못된 형식입니다.");
+      setIsEmail(false);
+    } else {
+      isUnique(0, currEmail);
     }
   };
 
@@ -158,6 +154,7 @@ const JoinComp = ({ email, profile }) => {
       console.log("이메일전송 결과 : " + res.data);
       if (res.data !== null) {
         setSendCode(res.data);
+        alert("인증번호 : " + res.data);
         // setIsModalOpen(true);
       }
     } catch (e) {
@@ -347,6 +344,26 @@ const JoinComp = ({ email, profile }) => {
     }
   };
 
+  useEffect(() => {
+    if (kakaoId !== "" && kakaoPw !== "") {
+      setInputEmail(kakaoId);
+      setInputPw(kakaoPw);
+      setInputPw2(kakaoPw);
+      setReadOnly(true);
+      setIsEmail(false);
+      setIsCode(false);
+      setIsPw(true);
+      setIsPw2(true);
+    }
+  }, []);
+
+  useEffect(() => {
+    return () => {
+      setKakaoId("");
+      setKakaoPw("");
+    };
+  }, []);
+
   return (
     <>
       <Main $direction="row" $width="100%" $height="auto">
@@ -463,6 +480,7 @@ const JoinComp = ({ email, profile }) => {
                 clickEvt={authorizeMail}
                 msg={emailMessage}
                 msgType={isEmail}
+                readOnly={readOnly}
               />
             </Area>
             <Area $direction="column" $shadow="none" $marginBottom="20px">
@@ -483,6 +501,7 @@ const JoinComp = ({ email, profile }) => {
                 clickEvt={checkCode}
                 msg={codeMessage}
                 msgType={isCode}
+                readOnly={readOnly}
               />
             </Area>
             <Area $shadow="none" $width="100%" $justify="space-between">
@@ -507,6 +526,7 @@ const JoinComp = ({ email, profile }) => {
                   msg={pwMessage}
                   msgType={isPw}
                   changeEvt={onChangePw}
+                  readOnly={readOnly}
                 />
               </Box>
               <Box $shadow="none" $direction="column" $width="50%">
@@ -525,6 +545,7 @@ const JoinComp = ({ email, profile }) => {
                   msg={pw2Message}
                   msgType={isPw2}
                   changeEvt={onChangePw2}
+                  readOnly={readOnly}
                 />
               </Box>
             </Area>

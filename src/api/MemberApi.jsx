@@ -77,16 +77,24 @@ const MemberApi = {
 
   // 회원 상세 조회
   getMemberDetail: async () => {
-    return await AxiosInstance.get(
-      Common.WEELV_DOMAIN + "/member/detail",
-      Common.tokenHeader()
-    );
+    return await AxiosInstance.get(Common.WEELV_DOMAIN + "/member/detail");
   },
 
   // 타 회원 정보 가져오기
   getMemberInfo: async (memberId) => {
     return await AxiosInstance.get(
       Common.WEELV_DOMAIN + `/member/detail/${memberId}`
+    );
+  },
+
+  // 비밀번호 일치 체크
+  isPassword: async (password) => {
+    const data = {
+      password: password,
+    };
+    return await AxiosInstance.post(
+      Common.MV_DOMAIN + "/member/ispassword",
+      data
     );
   },
 };

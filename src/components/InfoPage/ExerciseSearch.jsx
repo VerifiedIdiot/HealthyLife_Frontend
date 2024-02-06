@@ -20,7 +20,7 @@ const Search1 = styled.input`
   box-sizing: border-box;
 `;
 
-const InfoSearch = ({ setdata }) => {
+const ExerciseSearch = ({ setdata }) => {
   const [keyword, setKeyword] = useState("");
 
   const keywordChange = (e) => {
@@ -39,11 +39,11 @@ const InfoSearch = ({ setdata }) => {
           }}
           onClick={() => setdata(keyword)}
         >
-          검색
+          운동검색
         </MiddleButton>
       </Container>
     </Main>
   );
 };
 
-export default InfoSearch;
+export default ExerciseSearch;

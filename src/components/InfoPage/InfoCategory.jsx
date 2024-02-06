@@ -49,7 +49,7 @@ const BtnText = styled.div`
   z-index: 10;
   left: ${(props) => (!props.Text ? "72px" : "267px")};
   display: inline;
-  color: ${(props) => (!props.toggle ? "gray" : "white")};
+  color: ${(props) => (!props.toggle ? "gray" : "white ")};
   font-size: 15px;
   font-weight: bold;
   transition: all 0.5s ease;

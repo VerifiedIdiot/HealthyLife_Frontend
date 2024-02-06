@@ -50,6 +50,9 @@ const FoodDetail2 = styled.div`
 const FoodDetail3 = styled.div``;
 
 const FoodInfo = ({ foodData }) => {
+  const Open = () => {
+    console.log(foodData);
+  };
   return (
     <Main $justify="center" $align="center" $width="90%">
       <Container
@@ -59,22 +62,22 @@ const FoodInfo = ({ foodData }) => {
       >
         {foodData.map((item, index) => (
           <Food key={index}>
-            <FoodImg src={item.image}></FoodImg>
+            <FoodImg src={`${item.image}`} onClick={Open}></FoodImg>
             <FoodName>{item.name}</FoodName>
-            <FoodSize>(1회 제공량 {item.size}g)</FoodSize>
+            <FoodSize>(1회 제공량 {item.servingSize}g)</FoodSize>
             <FoodDetail1>
               <FoodDetail2>
                 <FoodDetail3>칼로리:{item.kcal}kcal</FoodDetail3>
                 <FoodDetail3>당류:{item.sugar}g</FoodDetail3>
-                <FoodDetail3>지방:{item.chole}g</FoodDetail3>
+                <FoodDetail3>지방:{item.fat}g</FoodDetail3>
                 <FoodDetail3>트랜스지방:{item.transFat}g</FoodDetail3>
-                <FoodDetail3>나트륨:{item.sodium}g</FoodDetail3>
+                <FoodDetail3>나트륨:{item.salt}g</FoodDetail3>
               </FoodDetail2>
               <FoodDetail2>
-                <FoodDetail3>탄수화물:{item.carbo}g</FoodDetail3>
+                <FoodDetail3>탄수화물:{item.carbohydrate}g</FoodDetail3>
                 <FoodDetail3>단백질:{item.protein}g</FoodDetail3>
-                <FoodDetail3>포화지방:{item.satFat}g</FoodDetail3>
-                <FoodDetail3>콜레스테롤:{item.chole}g</FoodDetail3>
+                <FoodDetail3>포화지방:{item.saturatedFat}g</FoodDetail3>
+                <FoodDetail3>콜레스테롤:{item.cholesterol}g</FoodDetail3>
               </FoodDetail2>
             </FoodDetail1>
           </Food>

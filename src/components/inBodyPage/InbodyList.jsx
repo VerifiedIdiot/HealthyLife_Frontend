@@ -162,7 +162,7 @@ const InbodyList = () => {
                     fontWeight: "bold",
                   }}
                 >
-                  김현빈님의 {new Date(item.date).getFullYear()}년{" "}
+                  {new Date(item.date).getFullYear()}년{" "}
                   {new Date(item.date).getMonth() + 1}월{" "}
                   {new Date(item.date).getDate()}일 신체정보
                 </Section>
@@ -186,6 +186,10 @@ const InbodyList = () => {
                   <Input1>
                     <Input2>체지방량</Input2>
                     <Input3>{item.fat} kg</Input3>
+                  </Input1>
+                  <Input1>
+                    <Input2>체지방률</Input2>
+                    <Input2>{item.fatPercent}</Input2>
                   </Input1>
                   <Input1>
                     <Input2>BMI</Input2>

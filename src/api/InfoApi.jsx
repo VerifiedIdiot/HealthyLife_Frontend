@@ -29,5 +29,30 @@ const InfoApi = {
       throw error;
     }
   },
+
+  ExerciseInsert: async () => {
+    return await axios.post(BACKEND_DOMAIN + "/api/exercise/insert");
+  },
+
+  ExerciseSearch: async (keyword, muscle, difficulty, page, size) => {
+    try {
+      const response = await axios.get(
+        BACKEND_DOMAIN + `/api/exercise/view/search`,
+        {
+          params: {
+            keyword: keyword,
+            muscle: muscle,
+            difficulty: difficulty,
+            page: page,
+            size: size,
+          },
+        }
+      );
+      return response.data;
+    } catch (error) {
+      console.error("운동 검색 중 오류 발생:", error);
+      throw error;
+    }
+  },
 };
 export default InfoApi;

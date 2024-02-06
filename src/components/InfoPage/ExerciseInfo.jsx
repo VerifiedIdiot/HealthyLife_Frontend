@@ -10,34 +10,7 @@ import {
 } from "../../styles/Layouts";
 import styled, { css } from "styled-components";
 
-const ExerciseData = [
-  {
-    name: "팔굽혀펴기",
-    type: "맨몸 운동",
-    muscle: "가슴",
-    equipment: "맨몸",
-    difficulty: "쉬움",
-    kcal: 100,
-  },
-  {
-    name: "팔굽혀펴기",
-    type: "맨몸 운동",
-    muscle: "가슴",
-    equipment: "맨몸",
-    difficulty: "쉬움",
-    kcal: 100,
-  },
-  {
-    name: "팔굽혀펴기",
-    type: "맨몸 운동",
-    muscle: "가슴",
-    equipment: "맨몸",
-    difficulty: "쉬움",
-    kcal: 100,
-  },
-];
-
-const Food = styled.div`
+const Exercise = styled.div`
   display: flex;
   flex-direction: column;
   width: 25%;
@@ -48,29 +21,38 @@ const Food = styled.div`
   margin: 1rem;
 `;
 
-const FoodName = styled.div`
+const ExerciseImg = styled.img`
+  width: 170px;
+  height: 170px;
+  border-radius: 100%;
+`;
+
+const ExerciseName = styled.div`
   font-size: 25px;
   font-weight: bold;
 `;
 
-const FoodSize = styled.div``;
-
-const FoodDetail1 = styled.div`
+const ExerciseDetail1 = styled.div`
   width: 100%;
   display: flex;
   justify-content: space-around;
 `;
 
-const FoodDetail2 = styled.div`
+const ExerciseDetail2 = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: space-around;
   height: 180px;
 `;
 
-const FoodDetail3 = styled.div``;
+const ExerciseDetail3 = styled.div``;
 
-const FoodInfo = () => {
+const ExerciseInfo = ({ exerciseData }) => {
+  const Open = () => {
+    console.log(exerciseData);
+  };
+
+  const ImageofMuscle = (muscle) => {};
   return (
     <Main $justify="center" $align="center" $width="90%">
       <Container
@@ -78,23 +60,26 @@ const FoodInfo = () => {
         $justify="center"
         style={{ flexWrap: "wrap" }}
       >
-        {ExerciseData.map((item, index) => (
-          <Food key={index}>
-            <FoodName>{item.name}</FoodName>
-            <FoodSize>(1시간당 소모 칼로리 {item.kcal}kcal)</FoodSize>
-            <FoodDetail1>
-              <FoodDetail2>
-                <FoodDetail3>종류:{item.kcal}</FoodDetail3>
-                <FoodDetail3>운동 부위:{item.muscle}</FoodDetail3>
-                <FoodDetail3>장비:{item.equipment}</FoodDetail3>
-                <FoodDetail3>난이도:{item.difficulty}</FoodDetail3>
-              </FoodDetail2>
-            </FoodDetail1>
-          </Food>
+        {exerciseData.map((item, index) => (
+          <Exercise key={index} onClick={Open}>
+            <ExerciseImg
+              src={`${ImageofMuscle(item.muscle)}`}
+              onClick={Open}
+            ></ExerciseImg>
+            <ExerciseName>{item.name}</ExerciseName>
+            <ExerciseDetail1>
+              <ExerciseDetail2>
+                <ExerciseDetail3>종류:{item.type}</ExerciseDetail3>
+                <ExerciseDetail3>운동 부위:{item.muscle}</ExerciseDetail3>
+                <ExerciseDetail3>장비:{item.equipment}</ExerciseDetail3>
+                <ExerciseDetail3>난이도:{item.difficulty}</ExerciseDetail3>
+              </ExerciseDetail2>
+            </ExerciseDetail1>
+          </Exercise>
         ))}
       </Container>
     </Main>
   );
 };
 
-export default FoodInfo;
+export default ExerciseInfo;

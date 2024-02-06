@@ -1,8 +1,7 @@
 import styled from "styled-components";
 import { useState, useEffect, useCallback } from "react";
 import { useSearch } from "../../contexts/SearchContext";
-import { useApiRequestParams } from "../../hooks/useApiRequest";
-import MedicineApi from "../../api/MedicineApi";
+
 
 // ComboSearchBox 컴포넌트
 const ComboSearchContainer = styled.div`
@@ -173,6 +172,7 @@ export const ComboBox = ({ comboBoxId, $position }) => {
     // functionality 값으로 체크 상태 결정
     const isChecked = !!checkBoxStates[comboBoxId]?.[functionality];
     actions.handleCheckboxChange(comboBoxId, functionality, !isChecked);
+    
   };
 
   const handleReset = () => {
@@ -208,8 +208,15 @@ export const ComboBox = ({ comboBoxId, $position }) => {
 };
 
 export const FilterDropdown = () => {
+  const { state, actions } = useSearch();
   const searchTypes = ["10개씩", "30개씩", "50개씩", "100개씩"];
-  const [searchType, setSearchType] = useState(searchTypes[0]);
+
+  // 페이지 사이즈 변경 핸들러
+  const handleSearchTypeChange = async (e) => {
+    const newSize = extractNumber(e.target.value);
+    actions.setPageSize(newSize); // 페이지 사이즈 상태 업데이트
+    await actions.performSearch(state); // 변경된 페이지 사이즈를 반영하여 검색 재실행
+  };
 
   // 숫자만 추출하는 함수
   const extractNumber = (string) => {
@@ -217,26 +224,13 @@ export const FilterDropdown = () => {
     return matches ? parseInt(matches[0], 10) : null;
   };
 
-  // API 요청을 위한 함수
-
-  const { data, loading, error } = useApiRequestParams(
-    MedicineApi.getSortByOffSet,
-    extractNumber(searchType)
-  );
-
-  const handleSearchTypeChange = (e) => {
-    setSearchType(e.target.value);
-  };
-
   return (
-    <>
-      <ComboSelectBox value={searchType} onChange={handleSearchTypeChange}>
-        {searchTypes.map((type) => (
-          <option key={type} value={type}>
-            {type}
-          </option>
-        ))}
-      </ComboSelectBox>
-    </>
+    <ComboSelectBox value={`${state.size}개씩`} onChange={handleSearchTypeChange}>
+      {searchTypes.map((type) => (
+        <option key={type} value={type}>
+          {type}
+        </option>
+      ))}
+    </ComboSelectBox>
   );
 };

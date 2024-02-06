@@ -223,6 +223,7 @@ const ResponsiveBoardBox = styled(Box)`
 export const BoardSection = () => {
   const { state, actions } = useSearch();
   const { totalCount, searchResults } = state;
+  
 
   return (
     <>

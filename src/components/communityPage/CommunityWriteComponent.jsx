@@ -2,7 +2,7 @@ import { useState, useEffect, useRef } from "react";
 import CommunityAxiosApi from "../../api/CommunityAxios";
 import { useNavigate } from "react-router-dom";
 import Common from "../../utils/Common";
-// import { jwtDecode } from "jwt-decode";
+
 import { Main, Container } from "../../styles/Layouts";
 import "react-quill/dist/quill.snow.css";
 import ReactQuill from "react-quill";
@@ -97,28 +97,17 @@ const ButtonContainer = styled.div`
   gap: 5px;
 `;
 const WriteComponent = () => {
-  // const token = Common.getAccessToken();
-  // const decode = token ? jwtDecode(token) : null;
   const [title, setTitle] = useState("");
   const [text, setText] = useState("");
   const [content, setContent] = useState("");
   const navigate = useNavigate();
   const [categories, setCategories] = useState([]);
   const [selectedCategory, setSelectedCategory] = useState("");
+  const [email, setEmail] = useState("");
 
   const quillRef = useRef(null);
 
   useEffect(() => {
-    // if (decode) {
-    // setEmail(decode.sub);
-    // const fetchData = async () => {
-    //   const userInfoResponse = await MemberApi.getUserInfo(
-    // decode.sub
-    // );
-    // setNickName(userInfoResponse.userNickname);
-    // };
-    //fetchData();
-    // }
     const getCategories = async () => {
       try {
         const rsp = await CommunityAxiosApi.cateList();
@@ -159,23 +148,26 @@ const WriteComponent = () => {
       quillInstance.off("text-change", changeHandler);
     };
   }, []);
-
   const PostRegister = async () => {
-    if (!title.trim() || !content.trim()) {
-      alert("제목과 내용을 입력하세요.");
-      return;
-    }
-
-    const communityDto = {
-      title: title,
-      content: content,
-      text: text,
-      categoryId: selectedCategory,
-    };
     try {
-      const response = await CommunityAxiosApi.communityPost(communityDto);
-      console.log(response.data);
-      if (response.status === 200) {
+      const response = await MemberApi.getMemberDetail();
+      const email = response.data.email;
+      setEmail(email);
+
+      if (!title.trim() || !content.trim()) {
+        alert("제목과 내용을 입력하세요.");
+        return;
+      }
+      const communityDto = {
+        title: title,
+        content: content,
+        text: content,
+        categoryId: selectedCategory,
+        email: email,
+      };
+      const response2 = await CommunityAxiosApi.communityPost(communityDto);
+      console.log(response2.data);
+      if (response2.status === 200) {
         alert("게시글이 등록되었습니다.");
         navigate("/");
       }
@@ -226,8 +218,11 @@ const WriteComponent = () => {
             placeholder="내용을 입력해주세요."
             defaultValue={content}
             onChange={(value) => setContent(value)}
+            formats={["image"]}
             modules={modules}
+            readOnly={false}
           />
+
           <ButtonContainer>
             <SmallButton onClick={() => navigate("/")}>취소</SmallButton>
             <SmallButton onClick={PostRegister}>작성</SmallButton>

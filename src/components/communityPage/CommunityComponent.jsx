@@ -13,70 +13,6 @@ import { IoIosArrowForward } from "react-icons/io";
 import axios from "axios";
 import SearchComponent from "./SearchComponent";
 import { ReactComponent as Down } from "../../assets/imgs/communityImges/Down.svg";
-const createDummyPost = (
-  id,
-  categoryId,
-  categoryName,
-  title,
-  content,
-  nickName,
-  email,
-  regDate,
-  likeItCount,
-  viewCount
-) => {
-  return {
-    id,
-    categoryId,
-    categoryName,
-    title,
-    content,
-    nickName,
-    email,
-    regDate,
-    likeItCount,
-    viewCount,
-  };
-};
-const dummyPosts = [
-  createDummyPost(
-    1,
-    1,
-    "사과",
-    "사과와 그의 매력",
-    "사과는 매우 영양가 있는 과일로, 많은 사람들에게 사랑받고 있습니다.",
-    "과일맛나는사람",
-    "admin@admin.com",
-    "2024-01-27",
-    35,
-    72
-  ),
-  createDummyPost(
-    2,
-    2,
-    "포도",
-    "포도의 다양한 종류와 특징",
-    "포도에는 레드 와인과 화이트 와인을 만드는 다양한 종류가 있으며, 각각의 특징이 있습니다.",
-    "와인연구가",
-    "admin@admin.com",
-    "2024-01-27",
-    42,
-    85
-  ),
-  createDummyPost(
-    3,
-    1,
-    "사과",
-    "사과의 다양한 요리 아이디어",
-    "사과를 활용한 다양한 요리 아이디어를 소개합니다. 사과를 활용한 디저트부터 메인 요리까지 다양한 아이디어를 찾아보세요!",
-    "요리하는 사람",
-    "admin@admin.com",
-    "2024-01-27",
-    28,
-    63
-  ),
-  // 나머지 데이터도 유사한 방식으로 추가
-];
 
 const PostSection = styled.div`
   align-self: stretch;
@@ -256,39 +192,41 @@ const Dropdown = styled.select`
 `;
 
 const CommunityComponent = () => {
-  const { categoryId } = useParams();
   const navigate = useNavigate();
-  const [posts, setPosts] = useState(dummyPosts);
+  const [posts, setPosts] = useState([]);
   const [currentPage, setCurrentPage] = useState(0);
   const [totalPages, setTotalPages] = useState(0);
   const [visiblePageStart, setVisiblePageStart] = useState(0);
-  const [currentCategory, setCurrentCategory] = useState(categoryId || "");
-
+  const categoryId = Number(useParams().categoryId) || undefined;
+  const validCategoryId = isNaN(categoryId) ? undefined : categoryId;
+  const [categoryName, setCategoryName] = useState("전체");
   const [sortType, setSortType] = useState(0);
-  const [categories, setCategories] = useState([
-    {
-      categoryId: 1,
-      categoryName: "사과",
-      email: "admin@admin.com",
-    },
-    {
-      categoryId: 2,
-      categoryName: "포도",
-      email: "admin@admin.com",
-    },
-  ]);
+  const [categories, setCategories] = useState([]);
   const [showDropdown, setShowDropdown] = useState(false);
   const PAGE_SIZE = 10;
   // CategoryDropdown의 클릭 이벤트를 처리하여 드롭다운 상태를 토글하는 함수
   useEffect(() => {
-    if (categoryId === "") {
-      setCurrentCategory("");
-      navigate(`/communitypage`);
-    } else if (categoryId) {
-      setCurrentCategory(categoryId);
-      navigate(`/communitypage/${categoryId}`);
-    }
-  }, [categoryId, navigate]);
+    const getCategories = async () => {
+      try {
+        const rsp = await CommunityAxiosApi.cateList(validCategoryId);
+        console.log(rsp.data);
+        setCategories(rsp.data);
+        const selectedCategory = rsp.data.find(
+          (cat) => cat.categoryId === categoryId
+        );
+        console.log(selectedCategory);
+        if (selectedCategory) {
+          console.log(selectedCategory.categoryName);
+          setCategoryName(selectedCategory.categoryName);
+        } else {
+          setCategoryName("전체");
+        }
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    getCategories();
+  }, [validCategoryId, categoryId]);
   const toggleDropdown = () => {
     setShowDropdown(!showDropdown);
   };
@@ -351,9 +289,7 @@ const CommunityComponent = () => {
       video: videoTag !== null || iframeTag !== null, // iframe 태그 추가
     }; // 이미지 태그와 동영상 태그가 각각 있으면 true, 없으면 false를 반환
   };
-  useEffect(() => {
-    setPosts(dummyPosts);
-  }, []);
+
   useEffect(() => {
     // 서버에서 데이터를 가져오는 함수
     const postPage = async () => {
@@ -368,13 +304,14 @@ const CommunityComponent = () => {
             ? await CommunityAxiosApi.getCommunityTotalPages(PAGE_SIZE)
             : await CommunityAxiosApi.getCommunityTotalPagesByCategory(
                 categoryId,
+                currentPage,
                 PAGE_SIZE,
                 sortType
               );
         setTotalPages(responsePages.data);
         const rsp =
           categoryId === undefined
-            ? await CommunityAxiosApi.getCommunityList(0, PAGE_SIZE)
+            ? await CommunityAxiosApi.getCommunityList(currentPage, PAGE_SIZE)
             : await CommunityAxiosApi.getCommunityListByCategory(
                 categoryId,
                 0,
@@ -422,16 +359,7 @@ const CommunityComponent = () => {
       cancelTokenSource.cancel();
     };
   }, [categoryId, currentPage, PAGE_SIZE, totalPages, sortType]);
-  const getCategoryNameById = (categoryId) => {
-    if (!categoryId) {
-      return "전체";
-    } else {
-      const category = categories.find(
-        (cat) => cat.categoryId === parseInt(categoryId)
-      );
-      return category ? category.categoryName : "전체";
-    }
-  };
+
   return (
     <Main>
       <Container>
@@ -439,12 +367,11 @@ const CommunityComponent = () => {
           <InputContainer>
             <PostListTitle>
               <TitleContent onClick={toggleDropdown}>
-                {getCategoryNameById(currentCategory)}
+                {categoryName}
                 <RotatedDown isRotated={showDropdown} />
                 <CategoryDropdown showDropdown={showDropdown}>
                   <div
                     onClick={() => {
-                      setCurrentCategory("");
                       navigate(`/communitypage`);
                     }}
                   >
@@ -454,7 +381,6 @@ const CommunityComponent = () => {
                     <div
                       key={category.categoryId}
                       onClick={() => {
-                        setCurrentCategory(category.categoryId);
                         navigate(`/communitypage/${category.categoryId}`);
                       }}
                     >
@@ -497,9 +423,9 @@ const CommunityComponent = () => {
                     : `${Common.truncateText(post.nickName, 10)}`;
                   return (
                     <TableNormalRow
-                      key={post.id}
+                      key={post.communityId}
                       onClick={() => {
-                        navigate(`/communitypage/detail/${post.id}`);
+                        navigate(`/communitypage/detail/${post.communityId}`);
                       }}
                     >
                       <TableRowDataIcon>
@@ -516,7 +442,7 @@ const CommunityComponent = () => {
                       <TableRowDataDate>
                         {Common.timeFromNow(post.regDate)}
                       </TableRowDataDate>
-                      <TableRowDataLikes>{post.likeItCount}</TableRowDataLikes>
+                      <TableRowDataLikes>{post.likeCount}</TableRowDataLikes>
                       <TableRowDataViews>{post.viewCount}</TableRowDataViews>
                     </TableNormalRow>
                   );

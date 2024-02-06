@@ -5,6 +5,15 @@ moment.locale("ko"); // 한글 설정 적용
 const Common = {
   WEELV_DOMAIN: "http://localhost:8111",
   SOCKET_URL: "ws://localhost:8111/ws/chat",
+  truncateText: (text, maxLength) => {
+    if (text.length > maxLength) {
+      return text.substring(0, maxLength) + "...";
+    }
+    return text;
+  },
+  timeFromNow: (timestamp) => {
+    return moment(timestamp).fromNow();
+  },
   formatDate: (timestamp) => {
     const date = new Date(timestamp);
     const year = date.getFullYear();

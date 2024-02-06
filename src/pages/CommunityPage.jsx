@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import styled, { keyframes } from "styled-components";
 import { Main } from "../styles/Layouts";
 import CommunityAxiosApi from "../api/CommunityAxios";
-// import { jwtDecode } from "jwt-decode";
+
 import CommunityComponent from "../components/communityPage/CommunityComponent";
 import CommunitySearchComponent from "../components/communityPage/CommunitySearchComponent";
 import WriteComponent from "../components/communityPage/CommunityWriteComponent";
@@ -144,20 +144,8 @@ const CommunityPage = () => {
   const [isList, setIsList] = useState(false);
   const [isActive, setIsActive] = useState(false);
 
-  const [categories, setCategories] = useState([
-    {
-      categoryId: 1,
-      categoryName: "사과",
-      email: "admin@admin.com",
-    },
-    {
-      categoryId: 2,
-      categoryName: "포도",
-      email: "admin@admin.com",
-    },
-  ]);
-  // const token = Common.getAccessToken();
-  // const decode = token ? jwtDecode(token) : null;
+  const [categories, setCategories] = useState([]);
+
   const ListOpen = () => {
     setIsList(!isList);
   };
@@ -171,9 +159,6 @@ const CommunityPage = () => {
   `;
   useEffect(() => {
     const getCategories = async () => {
-      // if (decode) {
-      // setEmail(decode.sub);
-      // }
       try {
         const rsp = await CommunityAxiosApi.cateList();
         console.log(rsp.data);
@@ -236,12 +221,11 @@ const CommunityPage = () => {
             </Aside>
             <Routes>
               <Route path="/" element={<CommunityComponent />} />
-              <Route path=":categoryId" element={<CommunityComponent />} />
-
               <Route
                 path="search/:searchTerm"
                 element={<CommunitySearchComponent />}
               />
+              <Route path=":categoryId" element={<CommunityComponent />} />
               <Route path="detail/:id" element={<CommunityDetailComponent />} />
               <Route path="write" element={<WriteComponent />} />
             </Routes>

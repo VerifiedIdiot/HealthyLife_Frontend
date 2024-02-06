@@ -3,10 +3,9 @@ import styled, { css } from "styled-components";
 import CommunityAxiosApi from "../../api/CommunityAxios";
 import { useNavigate, useParams } from "react-router-dom";
 import Common from "../../utils/Common";
-// import { jwtDecode } from "jwt-decode";
 import { Main, Container } from "../../styles/Layouts";
 import { SmallButton } from "../../styles/styledComponents/StyledComponents";
-
+import MemberApi from "../../api/MemberApi";
 const HeadText = styled.span`
   cursor: pointer;
 `;
@@ -25,7 +24,6 @@ const CommentNickname = styled.p`
 const LargeInput = styled.textarea`
   width: 100%;
   height: 100px;
-  border: 1px solid #2446da;
   border-radius: 5px;
   background: rgba(255, 255, 255, 0.9);
 
@@ -45,45 +43,19 @@ const FormContainer = styled.div`
 
 const CommentForm = styled.form``;
 
-const createDummyComment = (commentId, content, nickName, regDate) => {
-  return {
-    commentId,
-    content,
-    nickName,
-    regDate,
-  };
-};
-
-// 가상의 댓글 데이터 배열
-const dummyComments = [
-  createDummyComment(1, "댓글1", "User1", "2024-01-27T10:00:00Z"),
-  createDummyComment(2, "댓글2", "User2", "2024-01-27T11:00:00Z"),
-  // ... 더 많은 데이터 추가 가능
-];
-
 const PostRoom = () => {
-  const [comments, setComments] = useState(dummyComments);
+  const [comments, setComments] = useState([]);
   const [post, setPost] = useState([]);
   const [currentCommentPage, setCurrentCommentPage] = useState(0);
   const [totalCommentPages, setTotalCommentPages] = useState(0);
   const [sortType, setSortType] = useState("");
   const [newComment, setNewComment] = useState("");
   const [newReply, setNewReply] = useState("");
-  const [email, setEmail] = useState("");
-  // const token = Common.getAccessToken();
-  // const decode = token ? jwtDecode(token) : null;
-  const [nickName, setNickName] = useState("");
-  const [password, setPassword] = useState("");
 
   const [totalComment, setTotalComment] = useState(0);
 
   const { id } = useParams();
 
-  useEffect(() => {
-    // if (decode) {
-    //   setEmail(decode.sub);
-    // }
-  }, []);
   useEffect(() => {
     const postDetail = async () => {
       try {
@@ -112,42 +84,34 @@ const PostRoom = () => {
 
   const commentWrite = async () => {
     try {
-      const response = await CommunityAxiosApi.commentWrite(
-        email,
-        id,
-        newComment,
-        null
-      );
-      setComments([...comments, response.data]);
+      const response = await MemberApi.getMemberDetail();
+      const email = response.data.email;
+
+      // 댓글 등록 요청을 보내기 전에 필요한 데이터 준비
+      const commentDto = {
+        email: email,
+        communityId: id,
+        content: newComment,
+      };
+
+      // 댓글 등록 API 호출
+      const commentResponse = await CommunityAxiosApi.commentWrite(commentDto);
+
+      // 댓글 목록에 새로운 댓글 추가
+      setComments([...comments, commentResponse.data]);
+
+      // 입력 필드 초기화
       setNewComment("");
-      // 댓글 작성 후 댓글 목록 다시 불러오기
-      const commentResponse = await CommunityAxiosApi.getCommentList(
+
+      // 댓글 목록 갱신
+      const refreshedCommentResponse = await CommunityAxiosApi.getCommentList(
         id,
         sortType,
         currentCommentPage
       );
-      setComments(commentResponse.data.content);
+      setComments(refreshedCommentResponse.data.content);
     } catch (error) {
       console.error(error);
-    }
-  };
-  const likeIt = async (isLikeIt) => {
-    try {
-      await CommunityAxiosApi.likeIt(id, isLikeIt);
-      const response = await CommunityAxiosApi.getCommunityDetail(id);
-      setPost(response.data);
-      if (isLikeIt) {
-        alert("추천이 완료되었습니다.");
-      } else {
-        alert("비추천이 완료되었습니다.");
-      }
-    } catch (error) {
-      console.log(error.response);
-      if (error.response && error.response.status === 400) {
-        alert(error.response.data);
-      } else {
-        alert("오류가 발생하였습니다.");
-      }
     }
   };
 
@@ -155,7 +119,7 @@ const PostRoom = () => {
     <>
       <CommentContainer>
         {comments
-          .filter((comment) => comment.parentCommentId === null)
+          .filter((comment) => comment.communityId === null)
           .map((comment) => (
             <CommentBox key={comment.commentId}>
               <CommentContent>
@@ -182,7 +146,7 @@ const PostRoom = () => {
             onChange={(e) => setNewComment(e.target.value)}
           />
           <FormContainer>
-            <SmallButton>댓글작성</SmallButton>
+            <SmallButton onClick={commentWrite}>댓글작성</SmallButton>
           </FormContainer>
         </CommentForm>
       </CommentContainer>

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useLayoutEffect, useEffect } from "react";
 import { Container, Section, Area, Box, Item } from "../../styles/Layouts";
 import {
   SmallButton,
@@ -12,6 +12,7 @@ import styled from "styled-components";
 import Calendar from "react-calendar";
 import "react-calendar/dist/Calendar.css";
 import moment from "moment";
+import CalendarApi from "../../api/CalendarApi";
 
 const InputSearchSection = styled(Section).attrs({
   className: "InputSearchSection",
@@ -89,6 +90,12 @@ export const CalendarSection = () => {
   const curDate = new Date();
   const [value, setValue] = useState(curDate);
 
+  const selectedDate =(date) =>{
+    const nextDay = new Date(date);
+    nextDay.setDate(nextDay.getDate() + 1);
+    return nextDay.toISOString().split('T')[0];
+  }
+
   // 날짜 클릭 시 모달 창 열기
   const handleDayClick = (value) => {
     console.log("클릭한 날짜");
@@ -105,6 +112,23 @@ export const CalendarSection = () => {
     setValue(beforeDay);
   };
 
+useLayoutEffect(()=> {
+  const fetchData = async () => {
+    try {
+      const response = await CalendarApi.MealDetail();
+      console.log(response.data);
+    } catch (error) {
+      console.error("조회 실패", error);
+    }
+  };
+  fetchData();
+},[]);
+
+const tileContent = ({ date }) => {
+  const formattedDate =selectedDate(date);
+  
+}
+
   return (
     <>
       <CalendarContainer>
@@ -116,7 +140,7 @@ export const CalendarSection = () => {
           formatMonthYear={(locale, value) =>
             value.toLocaleDateString("ko", { year: "numeric", month: "long" })
           }
-            tileContent={<tileContent />} // 달력 내용 표시
+            tileContent={tileContent}  // 달력 내용 표시
           isBasic={true}
           minDetail="month"
           maxDetail="month"

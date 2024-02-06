@@ -29,6 +29,7 @@ const CalendarApi = {
   // 식사기록 출력
   mealInfo: async (mealId, day) => {
     try {
+      console.log(`${mealId} : ${day}`);
       const response = await axios.get(`${BACKEND_DOMAIN}/detail/${mealId}`, day);
       return response.data;
     } catch (error) {

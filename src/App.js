@@ -36,7 +36,6 @@ import MyPageEdit from "./pages/MyPageEdit";
 import Post from "./components/communityPage/PostRoomComponent";
 import WriteComponent from "./components/communityPage/CommunityWriteComponent";
 import UserStore from "./contexts/UserStore";
-import { CalendarProvider } from "./contexts/CalendarContext";
 
 function App() {
   // 방문자 추적 커스텀 훅
@@ -50,7 +49,7 @@ function App() {
         <GlobalStyle />
         <Wrapper>
           <Router>
-          <CalendarProvider>
+          
             <Routes>
               <Route path="/login" element={<LoginPage />} />
               <Route path="/join" element={<JoinPage />} />
@@ -89,7 +88,6 @@ function App() {
 
               <Route path="/test2" element={<TestPage />} />
             </Routes>
-            </CalendarProvider>
           </Router>
         </Wrapper>
       </UserStore>

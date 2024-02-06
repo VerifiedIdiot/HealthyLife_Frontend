@@ -40,9 +40,8 @@ export const MealInutBox = ({
   closeModal,
   mealType,
   onAddItem,
-  selectedDate,
   onMealAdd,
-  globalAddedMeals
+  globalAddedMeals,
 }) => {
   const [searchQuery, setSearchQuery] = useState("");
   const [searchResults, setSearchResults] = useState([]);
@@ -66,10 +65,10 @@ export const MealInutBox = ({
       try {
         const mealDto = { ...selectedItem, meal_type: mealType };
         const savedItem = await CalendarApi.addMeal(mealDto);
-        onMealAdd(savedItem);
+        setSelectedItem(savedItem);
+        onMealAdd(mealType, savedItem);
         console.log("savedItem:", savedItem);
-
-        
+        closeModal();
       } catch (e) {
         console.error("데이터 저장 중 오류 발생", e);
       }
@@ -103,8 +102,6 @@ export const MealInutBox = ({
               value={searchQuery}
               onChange={handleSearchQueryChange}
             />
-            <MealInput value={selectedItem?.meal_name || ""} readOnly />
-            {/* <InputAddBtn onClick={handleAddClick}>추가하기</InputAddBtn> */}
           </ComboSelectBox>
         </ComboBoxSection>
 
@@ -193,12 +190,12 @@ const AddButton = styled.button`
   }
 `;
 
-
 // 식사 유형 컴포넌트
 export const MealBox = () => {
   const MealTypes = ["아침", "점심", "저녁"];
   const [modalOpen, setModalOpen] = useState(false);
   const [selectedMealType, setSelectedMealType] = useState("");
+  const [addedMeals, setAddedMeals] = useState({ 아침:{}, 점심:{}, 저녁:{}});
 
   // addedMeals를 globalAddedMeals로 참조
   const { addedMeals: globalAddedMeals, updateAddedMeals } = useCalendar();
@@ -217,17 +214,16 @@ export const MealBox = () => {
   };
 
   const handleMealAdd = (mealType, meal) => {
-    const dateKey = moment(selectedDate).format('YYYY-MM-DD'); // 날짜 키를 포맷팅합니다.
-    updateAddedMeals(dateKey, {
-        ...globalAddedMeals[dateKey],
-        [mealType]: meal
-    });
+    setAddedMeals(prevMeals => ({
+      ...prevMeals,
+      [mealType]: meal
+    }));
     closeModal();
   };
 
   const handleSelectedItemChange = (item) => {
     setSelectedItem(item);
-};
+  };
 
   const fetchMealsByDate = async (date) => {
     try {
@@ -250,10 +246,6 @@ export const MealBox = () => {
     fetchSelectedItem();
   }, []);
 
-  useEffect(() => {
-    fetchMealsByDate(selectedDate);
-  }, [selectedDate]);
-
   return (
     <>
       <ComboBoxContainer>
@@ -261,7 +253,7 @@ export const MealBox = () => {
           {MealTypes.map((mealType) => (
             <ComboBox key={mealType}>
               <MealLabel>{mealType}</MealLabel>
-              <MealInput value={globalAddedMeals[selectedDate]?.[mealType]?.meal_name || ""} readOnly />
+              <MealInput> {selectedItem?.meal_name || ""} </MealInput>
               <AddButton onClick={() => openModal(mealType)}> + </AddButton>
             </ComboBox>
           ))}
@@ -271,9 +263,10 @@ export const MealBox = () => {
         <MealInutBox
           closeModal={closeModal}
           mealType={selectedMealType}
-          selectedDate={selectedDate} // 날짜 추가
+          selectedDate={selectedDate}
           globalAddedMeals={globalAddedMeals}
           onSelectedItemChange={handleSelectedItemChange}
+          // onAddItem={handleMealAdd}
           onMealAdd={(meal) => handleMealAdd(selectedMealType, meal)}
         />
       </MiddleModal>

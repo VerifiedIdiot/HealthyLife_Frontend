@@ -42,87 +42,36 @@ const ComboInputField = styled.input`
 `;
 
 export const ComboSearchBox = () => {
-  const searchTypes = ["통합", "제조사", "제품명"];
-  const [searchType, setSearchType] = useState(searchTypes[0]);
-  const [searchQuery, setSearchQuery] = useState("");
+  const { state, actions } = useSearch();
+  
+  const searchTypes = ["통합", "제품명", "제조사", "신고 번호"];
 
+  // 검색 유형과 쿼리 변경 핸들러
   const handleSearchTypeChange = (e) => {
-    setSearchType(e.target.value);
-    // console.log(e.target.value);
+    actions.setSearchType(e.target.value);
   };
 
   const handleSearchQueryChange = (e) => {
-    setSearchQuery(e.target.value);
-    // console.log(searchQuery);
+    actions.setSearchQuery(e.target.value);
   };
 
   return (
-    <>
-      <ComboSearchContainer>
-        <ComboSelectBox value={searchType} onChange={handleSearchTypeChange}>
-          {searchTypes.map((type) => (
-            <option key={type} value={type}>
-              {type}
-            </option>
-          ))}
-        </ComboSelectBox>
-        <ComboInputField
-          type="text"
-          placeholder="검색어를 입력하세요."
-          value={searchQuery}
-          onChange={handleSearchQueryChange}
-        />
-      </ComboSearchContainer>
-    </>
-  );
-};
-
-// SearchBox 영역
-const SearchContainer = styled.div`
-  display: flex;
-  align-items: center;
-
-  width: 100%;
-
-  /* @media (max-width: 768px) {
-    
-    width: 100%;
-  } */
-`;
-
-const SearchInputField = styled.input`
-  width: 75%;
-  height: 40px;
-
-  margin: 10px 0;
-  border: 1px solid #ccc;
-  border-radius: 4px;
-
-  @media (max-width: 768px) {
-    width: 60vw;
-    margin-left: 5px;
-  }
-`;
-
-export const SearchBox = () => {
-  const [searchQuery, setSearchQuery] = useState("");
-
-  const handleSearchQueryChange = (e) => {
-    setSearchQuery(e.target.value);
-    // console.log(searchQuery);
-  };
-
-  return (
-    <SearchContainer>
-      <SearchInputField
+    <ComboSearchContainer>
+      <ComboSelectBox value={state.searchType} onChange={handleSearchTypeChange}>
+        {searchTypes.map((type) => (
+          <option key={type} value={type}>{type}</option>
+        ))}
+      </ComboSelectBox>
+      <ComboInputField
         type="text"
-        placeholder="원료를 입력해주세요."
-        value={searchQuery}
+        placeholder="검색어를 입력하세요."
+        value={state.searchQuery}
         onChange={handleSearchQueryChange}
       />
-    </SearchContainer>
+    </ComboSearchContainer>
   );
 };
+
 
 // ComboBox 컴포넌트
 
@@ -178,12 +127,12 @@ const DropdownContent = styled.div`
   z-index: 1;
   padding: 10px;
 
-  ${({ position }) => position === 'right' && `
+  ${({ $position }) => $position === 'right' && `
     right: 50%;
     transform: translateX(-67%);
   `}
 
-  ${({ position }) => position === 'middle' && `
+  ${({ $position }) => $position === 'middle' && `
     left: 50%;
     transform: translateX(-50%);
   `}
@@ -213,7 +162,7 @@ const ResetButton = styled.button`
     }
 `;
 
-export const ComboBox = ({ comboBoxId, position }) => {
+export const ComboBox = ({ comboBoxId, $position }) => {
   const { state, actions } = useSearch();
   const { checkBoxStates, typeList } = state;
   const { toggleComboBox } = actions;
@@ -241,7 +190,7 @@ export const ComboBox = ({ comboBoxId, position }) => {
         개 <span>▼</span>
       </DropdownItem>
 
-      <DropdownContent $isOpen={$isOpen} position={position}>
+      <DropdownContent $isOpen={$isOpen} $position={$position}>
         {typeList[comboBoxId]?.map((item) => (
           <CheckboxLabel key={item.functionality}>
             <input

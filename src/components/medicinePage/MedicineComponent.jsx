@@ -143,7 +143,7 @@ export const SearchSection = () => {
   const orderedKeys = Object.keys(typeList).sort((a, b) => a.localeCompare(b));
 
    // 콤보박스 위치 결정 로직
-   const getPosition = (index, arrayLength) => {
+   const getPosition = (index) => {
     if (index === 0) return 'left'; // 배열의 첫 번째 요소
     if (index === 2) return 'right'; // 배열의 마지막 요소
     return 'middle'; // 그 외 중간 위치
@@ -178,7 +178,7 @@ export const SearchSection = () => {
                   <ComboBox
                     comboBoxId={key}
                     typeList={typeList[key]}
-                    position={getPosition(index, orderedKeys.length)} // 콤보박스 위치 전달
+                    $position={getPosition(index, orderedKeys.length)} // 콤보박스 위치 전달
                     toggleComboBox={() => handleToggleComboBox(key)}></ComboBox>
                 </SearchItemRight>
               ) : null

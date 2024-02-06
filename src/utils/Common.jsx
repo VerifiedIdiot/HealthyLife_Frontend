@@ -93,31 +93,31 @@ const Common = {
       }
     }
   },
-    //토큰에서 아아디 뽑기 (Long Id)
-    TakenId: async () => {
-      const accessToken = Common.getAccessToken();
-      try {
-        return await axios.get(Common.WEELV_DOMAIN + `/member/takenId`, {
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: "Bearer " + accessToken,
-          },
-        });
-      } catch (e) {
-        if (e.response.status === 401) {
-          await Common.handleUnauthorized();
-          const newToken = Common.getAccessToken();
-          if (newToken !== accessToken) {
-            return await axios.get(Common.WEELV_DOMAIN + `/member/takenId`, {
-              headers: {
-                "Content-Type": "application/json",
-                Authorization: "Bearer " + newToken,
-              },
-            });
-          }
+  //토큰에서 아아디 뽑기 (Long Id)
+  TakenId: async () => {
+    const accessToken = Common.getAccessToken();
+    try {
+      return await axios.get(Common.WEELV_DOMAIN + `/member/takenId`, {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: "Bearer " + accessToken,
+        },
+      });
+    } catch (e) {
+      if (e.response.status === 401) {
+        await Common.handleUnauthorized();
+        const newToken = Common.getAccessToken();
+        if (newToken !== accessToken) {
+          return await axios.get(Common.WEELV_DOMAIN + `/member/takenId`, {
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: "Bearer " + newToken,
+            },
+          });
         }
       }
-    },
+    }
+  },
 
   //토큰으로 로그인여부 확인 (Buloan)
   IsLogin: async () => {

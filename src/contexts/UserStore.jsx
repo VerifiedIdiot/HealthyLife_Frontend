@@ -5,6 +5,8 @@ const UserStore = (props) => {
   const [loginStatus, setLoginStatus] = useState(
     localStorage.getItem("loginStatus") || ""
   );
+  const [kakaoId, setKakaoId] = useState("");
+  const [kakaoPw, setKakaoPw] = useState("");
 
   useEffect(() => {
     localStorage.setItem("loginStatus", loginStatus);
@@ -15,6 +17,10 @@ const UserStore = (props) => {
       value={{
         loginStatus,
         setLoginStatus,
+        kakaoId,
+        setKakaoId,
+        kakaoPw,
+        setKakaoPw,
       }}
     >
       {props.children}

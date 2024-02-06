@@ -7,6 +7,7 @@ import { media } from "../../utils/MediaQuery";
 import { useEffect, useState } from "react";
 import MemberApi from "../../api/MemberApi";
 import Common from "../../utils/Common";
+import kakaoimg from "../../assets/imgs/KakaoTalk.png";
 const MainStyle = styled(Main)`
   ${media.small`
     flex-direction:column;
@@ -103,10 +104,10 @@ const LoginComp = () => {
   };
 
   // 카카오 로그인
-  const kakaoLogin = () => {
-    const CLIENT_ID = process.env.REACT_APP_KAKAO_API_KEY;
-    const REDIRECT_URI = process.env.REACT_APP_KAKAO_REDIRECT_URI;
-    const KAKAO_URL = `https://kauth.kakao.com/oauth/authorize?client_id=${CLIENT_ID}&redirect_uri=${REDIRECT_URI}&response_type=code`;
+  const CLIENT_ID = process.env.REACT_APP_KAKAO_API_KEY;
+  const REDIRECT_URI = process.env.REACT_APP_KAKAO_REDIRECT_URI;
+  const KAKAO_URL = `https://kauth.kakao.com/oauth/authorize?client_id=${CLIENT_ID}&redirect_uri=${REDIRECT_URI}&response_type=code`;
+  const handleLogin = () => {
     window.location.href = KAKAO_URL;
   };
   return (
@@ -229,9 +230,14 @@ const LoginComp = () => {
             $align="center"
             $marginTop="20px"
           >
-            <LargeButton onClick={() => kakaoLogin()}>
-              카카오 로그인
-            </LargeButton>
+            <LargeButton
+              style={{
+                backgroundImage: `url(${kakaoimg})`,
+                backgroundPosition: "center",
+                backgroundSize: "cover",
+              }}
+              onClick={() => handleLogin()}
+            ></LargeButton>
           </Section>
         </Container2Style>
       </MainStyle>

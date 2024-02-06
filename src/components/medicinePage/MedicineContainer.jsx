@@ -211,11 +211,12 @@ export const FilterDropdown = () => {
   const { state, actions } = useSearch();
   const searchTypes = ["10개씩", "30개씩", "50개씩", "100개씩"];
 
-  // 페이지 사이즈 변경 핸들러
+ 
+ 
   const handleSearchTypeChange = async (e) => {
     const newSize = extractNumber(e.target.value);
-    actions.setPageSize(newSize); // 페이지 사이즈 상태 업데이트
-    await actions.performSearch(state); // 변경된 페이지 사이즈를 반영하여 검색 재실행
+    actions.setPageSize(newSize); 
+    actions.performSearch(); 
   };
 
   // 숫자만 추출하는 함수

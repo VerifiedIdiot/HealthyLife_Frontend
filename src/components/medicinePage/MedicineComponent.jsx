@@ -1,5 +1,7 @@
 import { useState, useEffect, useLayoutEffect } from "react";
 import { useSearch } from "../../contexts/SearchContext";
+import { useTable } from 'react-table';
+import ReactTable from "./ReactTable";
 import styled from "styled-components";
 import { Section, Area, Box, Item } from "../../styles/Layouts";
 import { LargeButton } from "../../styles/styledComponents/StyledComponents";
@@ -125,7 +127,7 @@ const StyledButton = styled(LargeButton)`
 export const SearchSection = () => {
   // Context에서 상태와 함수를 불러옵니다.
   const { state, actions } = useSearch();
-  const { typeList, searchQuery, pageSize } = state;
+  const { typeList } = state;
   const {
     toggleComboBox,
     handleCheckboxChange,
@@ -137,8 +139,9 @@ export const SearchSection = () => {
   const handleToggleComboBox = (comboBoxId) => toggleComboBox(comboBoxId);
 
   // 검색 실행: 사용자가 설정한 조건에 따라 검색을 수행합니다.
-  const handleSearch = () => performSearch();
-
+  const handleSearch = () => {
+    actions.performSearch(); // 검색 실행
+  };
   // typeList의 키를 정렬하여 UI에 순서대로 표시합니다.
   const orderedKeys = Object.keys(typeList).sort((a, b) => a.localeCompare(b));
 
@@ -222,8 +225,8 @@ const ResponsiveBoardBox = styled(Box)`
 
 export const BoardSection = () => {
   const { state, actions } = useSearch();
-  const { totalCount, searchResults } = state;
-  
+  const { totalCount, } = state;
+ 
 
   return (
     <>
@@ -243,7 +246,11 @@ export const BoardSection = () => {
         </ResponsiveBoardArea>
 
         <ResponsiveBoardArea>
-          <ResponsiveBoardBox></ResponsiveBoardBox>
+          <ResponsiveBoardBox>
+            <ReactTable>
+              
+            </ReactTable>
+          </ResponsiveBoardBox>
         </ResponsiveBoardArea>
       </ResponsiveBoardSection>
     </>

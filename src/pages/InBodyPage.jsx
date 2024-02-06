@@ -11,22 +11,18 @@ import InbodyGraph from "../components/inBodyPage/InbodyGraph";
 import InbodyInput from "../components/inBodyPage/InbodyInput";
 import InbodyList from "../components/inBodyPage/InbodyList";
 import React, { useEffect, useState } from "react";
-import InfoApi from "../api/InfoApi";
+import BodyApi from "../api/BodyApi";
 
 const InbodyPage = () => {
   const [bodyData, setBodyData] = useState("");
 
-  const Out = () => {
-    console.log(bodyData);
-  };
-
   useEffect(() => {
     const loadBody = async () => {
-      const resp = await InfoApi.LoadBody();
+      const resp = await BodyApi.LoadBody();
       setBodyData(resp);
     };
     loadBody();
-  }, []);
+  }, [bodyData]);
 
   return (
     <>
@@ -38,7 +34,6 @@ const InbodyPage = () => {
               fontSize: "50px",
               fontWeight: "bold",
             }}
-            onClick={Out}
           >
             My Records
           </Section>

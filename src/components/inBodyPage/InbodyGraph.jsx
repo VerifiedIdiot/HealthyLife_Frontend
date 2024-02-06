@@ -54,17 +54,23 @@ const data = [
   },
 ];
 
-const InbodyGraph = () => {
-  const weightData = data.map((item) => ({
-    date: item.date,
-    weight: item.weight,
-  }));
-  const bmiData = data.map((item) => ({ date: item.date, BMI: item.BMI }));
-  const muscleData = data.map((item) => ({
-    date: item.date,
-    muscle: item.muscle,
-  }));
-  const fatData = data.map((item) => ({ date: item.date, fat: item.fat }));
+const InbodyGraph = ({ bodyData }) => {
+  const weightData =
+    bodyData &&
+    bodyData.map((item) => ({
+      date: item.date,
+      weight: item.weight,
+    }));
+  const bmiData =
+    bodyData && bodyData.map((item) => ({ date: item.date, BMI: item.bmi }));
+  const muscleData =
+    bodyData &&
+    bodyData.map((item) => ({
+      date: item.date,
+      muscle: item.muscle,
+    }));
+  const fatData =
+    bodyData && bodyData.map((item) => ({ date: item.date, fat: item.fat }));
 
   return (
     <>

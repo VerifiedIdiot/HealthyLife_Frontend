@@ -1,6 +1,38 @@
 import React from "react";
+import styled from "styled-components";
 import { useSearch } from "../../contexts/SearchContext";
 import { useTable } from "react-table";
+
+const TableArea = styled.table`
+   
+`
+const TableHeader = styled.thead`
+  vertical-align: middle;
+  
+  height: 50px;
+  
+`
+const TableRow = styled.tr`
+    min-height: 60px; /* 원하는 높이로 조정하세요 */
+    vertical-align: middle;
+    box-shadow: ${(props) => props.$shadow || "0 2px 4px rgba(0, 0, 0, 0.1)"};
+`
+const TableHeaderCell = styled.th`
+    height: 60px; 
+  text-align: center; 
+  vertical-align: middle;
+  
+`
+const TableBody = styled.tbody`
+vertical-align: middle;
+
+  
+`
+const TableDataCell = styled.td`
+  height: 8vh; 
+  vertical-align: middle;
+  padding-left: 5px;
+`
 
 const ReactTable = () => {
   const { state } = useSearch();
@@ -47,29 +79,29 @@ const ReactTable = () => {
   });
 
   return (
-    <table {...getTableProps()}>
-      <thead>
+    <TableArea {...getTableProps()}>
+      <TableHeader>
         {headerGroups.map((headerGroup) => (
-          <tr {...headerGroup.getHeaderGroupProps()}>
+          <TableRow {...headerGroup.getHeaderGroupProps()}>
             {headerGroup.headers.map((column) => (
-              <th {...column.getHeaderProps()}>{column.render("Header")}</th>
+              <TableHeaderCell {...column.getHeaderProps()}>{column.render("Header")}</TableHeaderCell>
             ))}
-          </tr>
+          </TableRow>
         ))}
-      </thead>
-      <tbody {...getTableBodyProps()}>
+      </TableHeader>
+      <TableBody {...getTableBodyProps()}>
         {rows.map((row) => {
           prepareRow(row);
           return (
-            <tr {...row.getRowProps()}>
+            <TableRow {...row.getRowProps()}>
               {row.cells.map((cell) => {
-                return <td {...cell.getCellProps()}>{cell.render("Cell")}</td>;
+                return <TableDataCell {...cell.getCellProps()}>{cell.render("Cell")}</TableDataCell>;
               })}
-            </tr>
+            </TableRow>
           );
         })}
-      </tbody>
-    </table>
+      </TableBody>
+    </TableArea>
   );
 };
 

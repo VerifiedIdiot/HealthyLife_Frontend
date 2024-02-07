@@ -1,6 +1,6 @@
 import { useState, useEffect, useLayoutEffect } from "react";
 import { useSearch } from "../../contexts/SearchContext";
-import { useTable } from 'react-table';
+import { useTable } from "react-table";
 import ReactTable from "./ReactTable";
 import styled from "styled-components";
 import { Section, Area, Box, Item } from "../../styles/Layouts";
@@ -145,11 +145,11 @@ export const SearchSection = () => {
   // typeList의 키를 정렬하여 UI에 순서대로 표시합니다.
   const orderedKeys = Object.keys(typeList).sort((a, b) => a.localeCompare(b));
 
-   // 콤보박스 위치 결정 로직
-   const getPosition = (index) => {
-    if (index === 0) return 'left'; // 배열의 첫 번째 요소
-    if (index === 2) return 'right'; // 배열의 마지막 요소
-    return 'middle'; // 그 외 중간 위치
+  // 콤보박스 위치 결정 로직
+  const getPosition = (index) => {
+    if (index === 0) return "left"; // 배열의 첫 번째 요소
+    if (index === 2) return "right"; // 배열의 마지막 요소
+    return "middle"; // 그 외 중간 위치
   };
 
   return (
@@ -166,7 +166,12 @@ export const SearchSection = () => {
             <ResponsiveItem>
               <ComboSearchBox />
               <ButtonItem>
-                <StyledButton type="button" onClick={handleSearch} onChange={actions.updateSearchConditions}>검색</StyledButton>
+                <StyledButton
+                  type="button"
+                  onClick={handleSearch}
+                  onChange={actions.updateSearchConditions}>
+                  검색
+                </StyledButton>
               </ButtonItem>
             </ResponsiveItem>
           </ResponsiveItemBox>
@@ -186,7 +191,6 @@ export const SearchSection = () => {
                 </SearchItemRight>
               ) : null
             )}
-            
           </ResponsiveItemBox>
         </ResponsiveSearchArea>
       </ResponsiveSearchSection>
@@ -225,8 +229,7 @@ const ResponsiveBoardBox = styled(Box)`
 
 export const BoardSection = () => {
   const { state, actions } = useSearch();
-  const { totalCount, } = state;
- 
+  const { totalCount } = state;
 
   return (
     <>
@@ -247,9 +250,7 @@ export const BoardSection = () => {
 
         <ResponsiveBoardArea>
           <ResponsiveBoardBox>
-            <ReactTable>
-              
-            </ReactTable>
+            <ReactTable></ReactTable>
           </ResponsiveBoardBox>
         </ResponsiveBoardArea>
       </ResponsiveBoardSection>
@@ -265,26 +266,36 @@ const ResponsivePaginationSection = styled(Section)`
 `;
 
 const ResponsivePaginationArea = styled(Area)`
+  display: flex;
+  justify-content: center;
+  
   height: 90%;
   width: 95%;
 `;
 
+const PaginationButton = styled.button`
+  height: 30px;
+  width: 30px;
+  margin-right: 2px;
+`
+
 export const PaginationSection = () => {
   const { state, actions } = useSearch();
   const { page, size, totalCount } = state;
-  
 
   const totalPages = Math.ceil(totalCount / size);
-// 페이지 범위를 계산하여 현재 페이지가 속한 그룹의 첫 페이지를 결정
-const currentPageGroupStart = Math.floor((page ) / 10) * 10 + 1;
+  // 페이지 범위를 계산하여 현재 페이지가 속한 그룹의 첫 페이지를 결정
+  const currentPageGroupStart = Math.floor(page / 10) * 10 + 1;
 
-const startPage = currentPageGroupStart;
-let endPage = startPage + 9;
-if (endPage > totalPages) {
+  const startPage = currentPageGroupStart;
+  let endPage = startPage + 9;
+  if (endPage > totalPages) {
     endPage = totalPages;
-}
+  }
 
-const pageNumbers = [...Array(endPage - startPage + 1).keys()].map(i => startPage + i);
+  const pageNumbers = [...Array(endPage - startPage + 1).keys()].map(
+    (i) => startPage + i
+  );
 
   const goToPage = (pageNumber) => {
     actions.setPage(pageNumber); // 페이지 번호를 설정하는 액션 호출
@@ -295,29 +306,27 @@ const pageNumbers = [...Array(endPage - startPage + 1).keys()].map(i => startPag
     <>
       <ResponsivePaginationSection>
         <ResponsivePaginationArea>
-          <div>
+          
             {/* 이전 페이지 그룹으로 이동 */}
             {startPage > 1 && (
-              <button onClick={() => goToPage(startPage - 1)}>{"<"}</button>
+              <PaginationButton onClick={() => goToPage(startPage - 10)}>{"<"}</PaginationButton>
             )}
             {/* 페이지 번호 버튼 */}
             {pageNumbers.map((pageNumber) => (
-              <button
+              <PaginationButton
                 key={pageNumber}
                 className={page === pageNumber ? "active" : ""}
-                onClick={() => goToPage(pageNumber)}
-              >
+                onClick={() => goToPage(pageNumber)}>
                 {pageNumber}
-              </button>
+              </PaginationButton>
             ))}
             {/* 다음 페이지 그룹으로 이동 */}
             {endPage < totalPages && (
-              <button onClick={() => goToPage(endPage + 1)}>{">"}</button>
+              <PaginationButton onClick={() => goToPage(endPage + 1)}>{">"}</PaginationButton>
             )}
-          </div>
+          
         </ResponsivePaginationArea>
       </ResponsivePaginationSection>
     </>
   );
 };
-

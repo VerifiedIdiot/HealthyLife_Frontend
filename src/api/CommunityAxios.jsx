@@ -1,13 +1,11 @@
-import axios from "axios";
 import Common from "../utils/Common";
 import AxiosInstance from "../utils/AxiosInstance";
-const BACKEND_DOMAIN = process.env.REACT_APP_BACKEND_DOMAIN;
 
 const CommunityAxiosApi = {
   // 게시글 조회
   getCommunityList: async (page, size) => {
     try {
-      return await axios.get(
+      return await AxiosInstance.get(
         Common.WEELV_DOMAIN +
           `/api/community/list/page?page=${page}&size=${size}`
       );
@@ -20,7 +18,7 @@ const CommunityAxiosApi = {
   // 게시글 조회 (카테고리 별)
   getCommunityListByCategory: async (categoryId, page, size) => {
     try {
-      return await axios.get(
+      return await AxiosInstance.get(
         Common.WEELV_DOMAIN +
           `/api/community/list/page/category?categoryId=${categoryId}&page=${page}&size=${size}`
       );
@@ -34,7 +32,10 @@ const CommunityAxiosApi = {
   // 카테고리 조회
   cateList: async () => {
     try {
-      return await axios.get(Common.WEELV_DOMAIN + `/api/category/list`, {});
+      return await AxiosInstance.get(
+        Common.WEELV_DOMAIN + `/api/category/list`,
+        {}
+      );
     } catch (error) {
       // 오류 처리
       console.error("Error in cateList API call", error);
@@ -45,7 +46,7 @@ const CommunityAxiosApi = {
   // 페이지 수 조회
   getCommunityTotalPages: async (size) => {
     try {
-      return await axios.get(
+      return await AxiosInstance.get(
         Common.WEELV_DOMAIN + `/api/community/count?size=${size}`
       );
     } catch (error) {
@@ -57,7 +58,7 @@ const CommunityAxiosApi = {
   // 카테고리에 따른 페이지 수 조회
   getCommunityTotalPagesByCategory: async (categoryId, size) => {
     try {
-      return await axios.get(
+      return await AxiosInstance.get(
         Common.WEELV_DOMAIN +
           `/api/community/count/${categoryId}?page=0&size=${size}`
       );
@@ -73,7 +74,7 @@ const CommunityAxiosApi = {
   // 게시글 등록
   communityPost: async (communityDto) => {
     try {
-      return await axios.post(
+      return await AxiosInstance.post(
         Common.WEELV_DOMAIN + "/api/community/new",
         communityDto
       );
@@ -86,7 +87,7 @@ const CommunityAxiosApi = {
   // 게시글 상세 조회
   getCommunityDetail: async (communityId) => {
     try {
-      return await axios.get(
+      return await AxiosInstance.get(
         Common.WEELV_DOMAIN + `/api/community/detail/${communityId}`
       );
     } catch (error) {
@@ -98,7 +99,7 @@ const CommunityAxiosApi = {
   // 수정
   modifyCommunity: async (communityId, communityDto) => {
     try {
-      return await axios.put(
+      return await AxiosInstance.put(
         Common.WEELV_DOMAIN + `/api/community/${communityId}`,
         communityDto
       );
@@ -117,7 +118,7 @@ const CommunityAxiosApi = {
     size = 10
   ) => {
     try {
-      return await axios.get(
+      return await AxiosInstance.get(
         Common.WEELV_DOMAIN + `/api/comment/list/${communityId}/page`,
         {
           params: {
@@ -135,18 +136,15 @@ const CommunityAxiosApi = {
   },
 
   // 댓글 쓰기
-  commentRegister: async (email, nickName, communityId, content) => {
+  commentRegister: async (comment) => {
     try {
-      const comment = {
-        email: email,
-        nickName: nickName,
-        communityId: communityId,
-        content: content,
-      };
-      return await axios.post(
+      const tokenResponse = await Common.TakenToken(); // 토큰 가져오기
+      const email = tokenResponse.data;
+
+      return await AxiosInstance.post(
         Common.WEELV_DOMAIN + `/api/comment/new`,
         comment,
-        {}
+        email
       );
     } catch (error) {
       // 오류 처리
@@ -156,21 +154,13 @@ const CommunityAxiosApi = {
   },
 
   // 좋아요 보내기
-  likeIt: async (communityId, isLikted, email) => {
+  likeIt: async (communityId, isLikted) => {
     try {
       const tokenResponse = await Common.TakenToken(); // 토큰 가져오기
-      const token = tokenResponse.data.accessToken; // 토큰 추출
+      const email = tokenResponse.data;
       return await AxiosInstance.put(
         `${Common.WEELV_DOMAIN}/api/community/like/${communityId}/${isLikted}`,
-        null,
-        {
-          headers: {
-            Authorization: "Bearer " + token,
-          },
-          params: {
-            email: email,
-          },
-        }
+        email
       );
     } catch (error) {
       // 오류 처리
@@ -193,7 +183,7 @@ const CommunityAxiosApi = {
   // 전체 댓글 수 조회
   getTotalComments: async (communityId) => {
     try {
-      return await axios.get(
+      return await AxiosInstance.get(
         Common.WEELV_DOMAIN + `/api/comment/count/${communityId}`
       );
     } catch (error) {
@@ -206,7 +196,7 @@ const CommunityAxiosApi = {
   // 게시글 삭제
   deleteCommunity: async (communityId) => {
     try {
-      return await axios.delete(
+      return await AxiosInstance.delete(
         Common.WEELV_DOMAIN + `/api/community/${communityId}`
       );
     } catch (error) {
@@ -218,7 +208,7 @@ const CommunityAxiosApi = {
   // 댓글 삭제
   commentDelete: async (commentId) => {
     try {
-      return await axios.delete(
+      return await AxiosInstance.delete(
         Common.WEELV_DOMAIN + `/api/comment/delete/${commentId}`
       );
     } catch (error) {
@@ -231,7 +221,7 @@ const CommunityAxiosApi = {
   // 게시글 검색
   searchCommunity: async (searchType, keyword, page = 0, size = 10) => {
     try {
-      return await axios.get(
+      return await AxiosInstance.get(
         Common.WEELV_DOMAIN +
           `/api/community/search/${searchType}?page=${page}&size=${size}&keyword=${keyword}`
       );
@@ -242,17 +232,17 @@ const CommunityAxiosApi = {
     }
   },
   // 카테고리 쓰기
-  cateInsert: async (email, category) => {
+  cateInsert: async (category) => {
     try {
-      // const accessToken = Common.getAccessToken();
+      const tokenResponse = await Common.TakenToken(); // 토큰 가져오기
+      const email = tokenResponse.data;
       const cate = {
         email: email,
         categoryName: category,
       };
-      return await axios.post(
+      return await AxiosInstance.post(
         Common.WEELV_DOMAIN + "/api/category/new",
-        cate,
-        {}
+        cate
       );
     } catch (error) {
       // 오류 처리
@@ -263,8 +253,7 @@ const CommunityAxiosApi = {
   // 카테고리 삭제
   cateDelete: async (categoryId) => {
     try {
-      // const accessToken = Common.getAccessToken();
-      return await axios.delete(
+      return await AxiosInstance.delete(
         Common.WEELV_DOMAIN + `/api/category/delete/${categoryId}`
       );
     } catch (error) {

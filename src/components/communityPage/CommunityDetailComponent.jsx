@@ -1,5 +1,5 @@
 import { Main, Container } from "../../styles/Layouts";
-import styled, { css } from "styled-components";
+import styled from "styled-components";
 import Common from "../../utils/Common";
 import { useParams } from "react-router-dom";
 import { useState, useEffect, useRef } from "react";
@@ -11,6 +11,8 @@ import { SmallButton } from "../../styles/styledComponents/StyledComponents";
 import PostRoom from "./PostRoomComponent";
 import { ReactComponent as Down } from "../../assets/imgs/communityImges/Down.svg";
 import MemberApi from "../../api/MemberApi";
+import React from "react";
+
 const InputContainer = styled.div`
   display: flex;
   flex-direction: column;
@@ -55,13 +57,11 @@ const ButtonContainer = styled.div`
 const LargeInput = styled.textarea`
   width: 100%;
   height: 100px;
-  border: 1px solid #333;
   border-radius: 5px;
   background: rgba(255, 255, 255, 0.9);
-  overflow-y: scroll;
 
   @media (max-width: 1024px) {
-    height: 200px;
+    height: 100px;
   }
 `;
 const FormContainer = styled.div`
@@ -70,6 +70,10 @@ const FormContainer = styled.div`
   justify-content: space-between;
   align-items: center;
   padding: 5px;
+`;
+const CenterFormContainer = styled.div`
+  display: flex;
+  justify-content: center;
 `;
 const CommentButton = styled.div`
   width: 100px;
@@ -80,15 +84,57 @@ const RotatedDown = styled(Down)`
   transform: ${(props) =>
     props.isRotated ? "rotate(180deg)" : "rotate(0deg)"};
 `;
+
+// 이미지 URL을 미리보기로 표시하는 컴포넌트
+const ImagePreview = ({ imageUrl }) => {
+  return (
+    <img
+      src={imageUrl}
+      alt="이미지 미리보기"
+      style={{
+        maxWidth: "30%",
+        height: "auto",
+      }}
+    />
+  );
+};
+const extractTextFromContent = (content) => {
+  // 이미지 태그 제거
+  if (!content) {
+    return "";
+  }
+  const textWithoutImages = content.replace(
+    /<img[^>]+src=["'][^"']+\.(jpg|jpeg|gif|png)["'][^>]*>/g,
+    ""
+  );
+  // 피태그 제거
+  const textWithoutPtags = textWithoutImages
+    .replace(/<p.*?>/g, "")
+    .replace(/<\/p>/g, "");
+
+  return textWithoutPtags;
+};
+
+// 이미지 URL을 추출하여 배열로 반환하는 함수
+const extractImageUrls = (content) => {
+  const imageUrls = [];
+  const regex = /<img[^>]+src=["']([^"']+)["']/g;
+  let match;
+  while ((match = regex.exec(content)) !== null) {
+    imageUrls.push(match[1]);
+  }
+  return imageUrls;
+};
 const CommunityDetailComponent = () => {
   const { id } = useParams();
   const [isLiked, setIsLiked] = useState(null); // 좋아요 상태를 저장하는 상태
   const [post, setPost] = useState(null);
-  const [newContent, setNewContent] = useState(""); // 빈 문자열에서 빈 배열로 변경
+  const [newText, setNewText] = useState("");
+  const [newImageUrls, setNewImageUrls] = useState([]); // 빈 문자열에서 빈 배열로 변경
   const [showPostRoom, setShowPostRoom] = useState(false); // PostRoom 표시 여부 상태
   const [editing, setEditing] = useState(false);
   const [comments, setComments] = useState([]);
-  const [email, setEmail] = useState("");
+  const [nickName, setNickName] = useState("");
   const inputRef = useRef(null);
   const navigate = useNavigate();
   useEffect(() => {
@@ -97,23 +143,60 @@ const CommunityDetailComponent = () => {
         // 게시물 정보 가져오기
         const postResponse = await CommunityAxiosApi.getCommunityDetail(id);
         setPost(postResponse.data);
-        setNewContent(postResponse.data.content);
+        // content가 null이면 빈 문자열로 설정
+        const content = postResponse.data.content || "";
+
+        // content에서 이미지 URL 추출
+        const imageUrls = extractImageUrls(content);
+
+        // content에서 텍스트만 추출
+        const text = extractTextFromContent(content);
+
+        // 상태 업데이트
+        setNewText(text); // 텍스트만 저장
+        setNewImageUrls(imageUrls); // 이미지 URL 저장
+        console.log(postResponse.data);
+        console.log(content);
 
         // 좋아요 상태 확인하기
         const tokenResponse = await Common.TakenToken(); // 토큰 가져오기
-        const email = tokenResponse.data.email; // 토큰 추출
-        const likeResponse = await CommunityAxiosApi.checkLikeStatus(id, email);
-        setIsLiked(likeResponse.data.isLiked);
+        if (tokenResponse && tokenResponse.data && tokenResponse.data.email) {
+          const email = tokenResponse.data.email; // 토큰 추출
+          const likeResponse = await CommunityAxiosApi.checkLikeStatus(
+            id,
+            email
+          );
+          setIsLiked(likeResponse.data.isLiked);
+        } else {
+          console.error("Invalid token response:", tokenResponse);
+          // 토큰이 없거나 유효하지 않은 경우 처리할 작업 추가
+        }
 
-        // 댓글 정보 가져오기
-        const commentResponse = await CommunityAxiosApi.getCommentList(id);
-        setComments(commentResponse.data);
+        // // 댓글 정보 가져오기
+        // const commentResponse = await CommunityAxiosApi.getCommentList(
+        //   id,
+        //   "최신순",
+        //   0,
+        //   10
+        // );
+        // setComments(commentResponse.data);
       } catch (error) {
-        console.error(error);
+        console.error("Error fetchPostAndComments ", error);
       }
     };
 
     fetchPostAndComments();
+    // 사용자 닉네임 가져오기
+    const fetchNickname = async () => {
+      try {
+        const memberDetail = await MemberApi.getMemberDetail();
+        setNickName(memberDetail.data.nickName);
+      } catch (error) {
+        console.error("Error fetching user nickName:", error);
+      }
+    };
+
+    fetchNickname();
   }, [id]);
 
   if (!post) {
@@ -122,6 +205,7 @@ const CommunityDetailComponent = () => {
   const likeIt = async () => {
     try {
       const tokenResponse = await Common.TakenToken(); // 토큰 가져오기
+      console.log(tokenResponse.data);
       const email = tokenResponse.data.email;
       const likeResponse = await CommunityAxiosApi.likeIt(id, !isLiked, email);
       console.log(likeResponse);
@@ -142,10 +226,12 @@ const CommunityDetailComponent = () => {
   };
   // 수정 버튼 클릭 시 수정 모드로 전환
   const handleEdit = () => {
-    setNewContent(post.content);
+    setNewText(extractTextFromContent(post.text));
+    setNewImageUrls(extractImageUrls(post.content)); // 이미지 URL도 함께 업데이트
     setEditing(true);
     inputRef.current && inputRef.current.focus();
   };
+
   // 수정된 내용 저장 함수
   const saveEdit = async () => {
     try {
@@ -154,7 +240,7 @@ const CommunityDetailComponent = () => {
 
       const communityDto = {
         title: post.title,
-        content: newContent,
+        content: newText,
         email: email,
       };
       // 수정된 내용을 API로 전송
@@ -164,9 +250,11 @@ const CommunityDetailComponent = () => {
         id
       );
       setPost(updatedPostResponse.data);
-      setNewContent(updatedPostResponse.data.content);
+      setNewText(extractTextFromContent(updatedPostResponse.data.content));
+      setNewImageUrls(extractImageUrls(updatedPostResponse.data.content)); // 이미지 URL도 함께 업데이트
       setEditing(false);
       console.log("게시물 수정 성공");
+      navigate("/communitypage");
     } catch (error) {
       console.error("Error saving edited content:", error);
     }
@@ -210,24 +298,32 @@ const CommunityDetailComponent = () => {
             <DetailInfoContent>
               {post.nickName} {Common.formatDate(post.regDate)}
             </DetailInfoContent>
-            <ButtonContainer>
-              {editing ? (
-                <SmallButton onClick={saveEdit}>저장</SmallButton>
-              ) : (
-                <SmallButton onClick={handleEdit}>수정</SmallButton>
-              )}
-              <SmallButton onClick={deleteCommunity}>삭제</SmallButton>
-            </ButtonContainer>
           </FormContainer>
+          <CenterFormContainer>
+            {newImageUrls.map((imageUrl, index) => (
+              <ImagePreview key={index} imageUrl={imageUrl} />
+            ))}
+          </CenterFormContainer>
+          <ButtonContainer>
+            {post.nickName === nickName && (
+              <>
+                {editing ? (
+                  <SmallButton onClick={saveEdit}>저장</SmallButton>
+                ) : (
+                  <SmallButton onClick={handleEdit}>수정</SmallButton>
+                )}
+                <SmallButton onClick={deleteCommunity}>삭제</SmallButton>
+              </>
+            )}
+          </ButtonContainer>
           <LargeInput
-            type="text"
-            value={newContent}
-            onChange={(e) => setNewContent(e.target.value)}
+            value={newText}
+            onChange={(e) => setNewText(e.target.value)}
             readOnly={!editing}
             ref={inputRef}
           />
           <FormContainer>
-            {post.nickName}
+            {nickName}
             {comments}
             <CommentButton onClick={() => setShowPostRoom(!showPostRoom)}>
               답글달기

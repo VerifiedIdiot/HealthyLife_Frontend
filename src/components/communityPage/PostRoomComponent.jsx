@@ -28,7 +28,7 @@ const LargeInput = styled.textarea`
   background: rgba(255, 255, 255, 0.9);
 
   @media (max-width: 1024px) {
-    height: 200px;
+    height: 100px;
   }
 `;
 
@@ -79,23 +79,22 @@ const PostRoom = () => {
       }
     };
     postDetail();
-    console.log(post.mediaPaths);
   }, [id, currentCommentPage, sortType]);
-
+  useEffect(() => {
+    console.log(post.mediaPaths);
+  }, [post]);
   const commentWrite = async () => {
     try {
-      const response = await MemberApi.getMemberDetail();
-      const email = response.data.email;
-
       // 댓글 등록 요청을 보내기 전에 필요한 데이터 준비
       const commentDto = {
-        email: email,
         communityId: id,
         content: newComment,
       };
 
       // 댓글 등록 API 호출
-      const commentResponse = await CommunityAxiosApi.commentWrite(commentDto);
+      const commentResponse = await CommunityAxiosApi.commentRegister(
+        commentDto
+      );
 
       // 댓글 목록에 새로운 댓글 추가
       setComments([...comments, commentResponse.data]);
@@ -103,25 +102,19 @@ const PostRoom = () => {
       // 입력 필드 초기화
       setNewComment("");
 
-      // 댓글 목록 갱신
-      const refreshedCommentResponse = await CommunityAxiosApi.getCommentList(
-        id,
-        sortType,
-        currentCommentPage
-      );
-      setComments(refreshedCommentResponse.data.content);
+      // 새로운 댓글을 기존 댓글 목록에 추가하여 상태 업데이트
+      setComments([...comments, commentResponse.data]);
     } catch (error) {
       console.error(error);
     }
   };
-
   return (
     <>
       <CommentContainer>
         {comments
           .filter((comment) => comment.communityId === null)
           .map((comment) => (
-            <CommentBox key={comment.commentId}>
+            <CommentBox key={comment.communityId}>
               <CommentContent>
                 <CommentNickname>{comment.nickName}</CommentNickname>
                 <>{Common.formatDate(comment.regDate)}</>

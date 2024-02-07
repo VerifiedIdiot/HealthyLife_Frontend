@@ -161,7 +161,7 @@ const WriteComponent = () => {
       const communityDto = {
         title: title,
         content: content,
-        text: content,
+        text: text,
         categoryId: selectedCategory,
         email: email,
       };

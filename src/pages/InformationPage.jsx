@@ -1,5 +1,5 @@
 import InfoCategory from "../components/InfoPage/InfoCategory";
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState, useRef } from "react";
 import {
   Main,
   Container,
@@ -16,6 +16,7 @@ import ExerciseSearch from "../components/InfoPage/ExerciseSearch";
 import FoodInfo from "../components/InfoPage/FoodInfo";
 import ExerciseInfo from "../components/InfoPage/ExerciseInfo";
 import InfoApi from "../api/InfoApi";
+import { useInView } from "react-intersection-observer";
 
 const InformationPage = () => {
   const [isExInfo, setIstExInfo] = useState(false);
@@ -27,6 +28,8 @@ const InformationPage = () => {
   const [getExerciseClass2, setGetExerciseClass2] = useState("");
   const [foodData, setFoodData] = useState([]);
   const [exerciseData, setExerciseData] = useState([]);
+  const loaderRef = useRef(null);
+  const [page, setPage] = useState(0); // 현재 페이지
 
   const handleDataFromChild = useCallback((data) => {
     setIstExInfo(data);
@@ -84,9 +87,39 @@ const InformationPage = () => {
     }
   };
 
+  const [inViewRef, inView] = useInView({
+    triggerOnce: true,
+    threshold: 0.1,
+  });
+
+  useEffect(() => {
+    const handleObserver = (objects) => {
+      const target = objects[0];
+      if (target.isIntersecting) {
+        setPage((prevPage) => prevPage + 1);
+        console.log("페이지 로딩");
+      }
+    };
+
+    const observer = new IntersectionObserver(handleObserver, {
+      root: null,
+      rootMargin: "5%",
+      threshold: 1.0,
+    });
+
+    if (loaderRef.current) {
+      observer.observe(loaderRef.current);
+    }
+
+    return () => {
+      if (loaderRef.current) {
+        observer.unobserve(loaderRef.current);
+      }
+    };
+  }, [loaderRef]);
+
   useEffect(() => {
     const FoodSearch = async () => {
-      const page = 0;
       const size = 9;
       const resp = await InfoApi.FoodSearch(
         getFoodKeyword,
@@ -95,10 +128,11 @@ const InformationPage = () => {
         page,
         size
       );
-      setFoodData(resp);
+      setFoodData((prevData) => [...prevData, ...resp]); // 이전 데이터와 새로운 데이터를 합침
     };
+
     FoodSearch();
-  }, [getFoodKeyword, getFoodClass1, getFoodClass2]);
+  }, [getFoodKeyword, getFoodClass1, getFoodClass2, page]);
 
   useEffect(() => {
     const ExerciseSearch = async () => {
@@ -179,6 +213,7 @@ const InformationPage = () => {
             )}
           </Section>
         </Container>
+        <div ref={loaderRef} style={{ height: "100px" }} />
       </Main>
     </>
   );

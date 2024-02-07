@@ -1,5 +1,6 @@
 import React from "react";
 import useTrackUserVisit from "./hooks/useTrackUserVisit";
+import { SearchProvider } from './contexts/SearchContext';
 import useMobileView from "./hooks/useMobileView";
 import GlobalStyle, { Wrapper } from "./styles/GlobalStyle";
 import {

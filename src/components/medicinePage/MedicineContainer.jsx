@@ -217,6 +217,7 @@ export const FilterDropdown = () => {
     const newSize = extractNumber(e.target.value);
     actions.setPageSize(newSize); 
     actions.performSearch(); 
+    
   };
 
   // 숫자만 추출하는 함수

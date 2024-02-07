@@ -166,7 +166,7 @@ export const SearchSection = () => {
             <ResponsiveItem>
               <ComboSearchBox />
               <ButtonItem>
-                <StyledButton type="button" onClick={handleSearch}>검색</StyledButton>
+                <StyledButton type="button" onClick={handleSearch} onChange={actions.updateSearchConditions}>검색</StyledButton>
               </ButtonItem>
             </ResponsiveItem>
           </ResponsiveItemBox>
@@ -270,13 +270,54 @@ const ResponsivePaginationArea = styled(Area)`
 `;
 
 export const PaginationSection = () => {
+  const { state, actions } = useSearch();
+  const { page, size, totalCount } = state;
+  
+
+  const totalPages = Math.ceil(totalCount / size);
+// 페이지 범위를 계산하여 현재 페이지가 속한 그룹의 첫 페이지를 결정
+const currentPageGroupStart = Math.floor((page ) / 10) * 10 + 1;
+
+const startPage = currentPageGroupStart;
+let endPage = startPage + 9;
+if (endPage > totalPages) {
+    endPage = totalPages;
+}
+
+const pageNumbers = [...Array(endPage - startPage + 1).keys()].map(i => startPage + i);
+
+  const goToPage = (pageNumber) => {
+    actions.setPage(pageNumber); // 페이지 번호를 설정하는 액션 호출
+    actions.performSearch(); // 새 페이지 번호로 검색을 다시 수행
+  };
+
   return (
     <>
       <ResponsivePaginationSection>
         <ResponsivePaginationArea>
-          <p>페이지네이션</p>
+          <div>
+            {/* 이전 페이지 그룹으로 이동 */}
+            {startPage > 1 && (
+              <button onClick={() => goToPage(startPage - 1)}>{"<"}</button>
+            )}
+            {/* 페이지 번호 버튼 */}
+            {pageNumbers.map((pageNumber) => (
+              <button
+                key={pageNumber}
+                className={page === pageNumber ? "active" : ""}
+                onClick={() => goToPage(pageNumber)}
+              >
+                {pageNumber}
+              </button>
+            ))}
+            {/* 다음 페이지 그룹으로 이동 */}
+            {endPage < totalPages && (
+              <button onClick={() => goToPage(endPage + 1)}>{">"}</button>
+            )}
+          </div>
         </ResponsivePaginationArea>
       </ResponsivePaginationSection>
     </>
   );
 };
+

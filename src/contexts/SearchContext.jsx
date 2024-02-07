@@ -21,10 +21,10 @@ const initialState = {
   searchType: "통합",
   originType: "",
   searchQuery: "",
-  page: 1,
-  size: 10,
+  page: null,
+  size: null,
   searchResults: [],
-  totalCount: 0,
+  totalCount: null,
 };
 
 const searchReducer = (state, action) => {
@@ -59,6 +59,8 @@ const searchReducer = (state, action) => {
       return { ...state, originType: action.payload };
     case "SET_SEARCH_QUERY":
       return { ...state, searchQuery: action.payload };
+    case "SET_PAGE":
+      return { ...state, page: action.payload };
     case "SET_PAGE_SIZE":
       return { ...state, size: action.payload };
     case "SET_TOTAL_COUNT":
@@ -67,7 +69,7 @@ const searchReducer = (state, action) => {
       return {
         ...state,
         searchResults: action.payload.results,
-        totalCount: action.payload.totalCount,
+        // totalCount: action.payload.totalCount,
       };
     default:
       return state;
@@ -90,14 +92,15 @@ export const SearchProvider = ({ children }) => {
     }
   }, [listByTypeData]);
 
+  useLayoutEffect(() => {
+    actions.fetchTotalCount();
+    // console.log(state.totalCount);
+  }, []);
+
   useEffect(() => {
     // 상태가 변경되었을 때 performSearch 실행
     actions.performSearch();
-  }, [
-   
-    state.size,
-    state.page,
-  ]);
+  }, [state.size, state.page]);
 
   const actions = {
     toggleComboBox: (comboBoxId) =>
@@ -116,6 +119,19 @@ export const SearchProvider = ({ children }) => {
     setSearchQuery: (query) =>
       dispatch({ type: "SET_SEARCH_QUERY", payload: query }),
     setPageSize: (size) => dispatch({ type: "SET_PAGE_SIZE", payload: size }),
+    setPage: (page) => dispatch({ type: "SET_PAGE", payload: page }),
+    fetchTotalCount: async () => {
+      try {
+        const response = await axios.get(`${BACKEND_DOMAIN}/api/filter/total-count`);
+        dispatch({
+          type: "SET_TOTAL_COUNT",
+          payload: response.data,
+        });
+        console.log(response.data);
+      } catch (error) {
+        console.error("전체 문서 수 조회 실패:", error);
+      }
+    },
     performSearch: async () => {
       const {
         searchQuery,

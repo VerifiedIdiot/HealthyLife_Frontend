@@ -59,7 +59,7 @@ const calculateFatPercent = (fat, weight) => {
   return ((fat / weight) * 100).toFixed(2);
 };
 
-const InbodyInput = () => {
+const InbodyInput = (props) => {
   const [height, setHeight] = useState("");
   const [weight, setWeight] = useState("");
   const [muscle, setMuscle] = useState("");
@@ -113,14 +113,17 @@ const InbodyInput = () => {
           muscle,
           weight
         );
+        console.log(rsp.data);
         const confirmationMessage = `키 : ${height}, 몸무게 : ${weight}, 골격근량 : ${muscle}, 체지방량 : ${fat} 이 맞습니까?`;
         if (window.confirm(confirmationMessage)) {
           if (rsp.data === true) {
             alert("등록 성공");
+            console.log("씨빨 안뜨네");
             setHeight("");
             setWeight("");
             setMuscle("");
             setFat("");
+            props.handleClick();
           } else {
             alert("등록 실패");
             console.log(rsp);

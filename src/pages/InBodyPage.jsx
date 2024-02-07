@@ -15,6 +15,7 @@ import BodyApi from "../api/BodyApi";
 
 const InbodyPage = () => {
   const [bodyData, setBodyData] = useState("");
+  const [isClicked, setIsClicked] = useState(false);
 
   useEffect(() => {
     const loadBody = async () => {
@@ -22,7 +23,12 @@ const InbodyPage = () => {
       setBodyData(resp);
     };
     loadBody();
-  }, [bodyData]);
+  }, [isClicked]);
+
+  // 클릭 이벤트 핸들러
+  const handleClick = () => {
+    setIsClicked((prevState) => !prevState); // 현재 상태를 반전
+  };
 
   return (
     <>
@@ -51,7 +57,7 @@ const InbodyPage = () => {
             <InbodyGraph bodyData={bodyData} />
           </Section>
           <Section $justify="center" style={{ marginBottom: "1rem" }}>
-            <InbodyInput />
+            <InbodyInput handleClick={handleClick} />
           </Section>
           <Section $justify="center" $height="85vh">
             <InbodyList bodyData={bodyData} />

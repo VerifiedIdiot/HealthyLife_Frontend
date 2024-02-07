@@ -54,8 +54,9 @@ const FoodInfo = ({ foodData }) => {
     console.log(foodData);
   };
   return (
-    <Main $justify="center" $align="center" $width="90%">
+    <Main $justify="center" $align="center" $width="90%" $height="auto">
       <Container
+        $height="auto"
         $direction="row"
         $justify="center"
         style={{ flexWrap: "wrap" }}

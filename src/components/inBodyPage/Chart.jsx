@@ -24,10 +24,20 @@ export default class Chart extends PureComponent {
             domain={yAxisRange} // Y축 범위를 동적으로 설정
           />
           <Tooltip />
-          <Line type="monotone" dataKey="weight" stroke="#4942E4" />
-          <Line type="monotone" dataKey="BMI" stroke="#4942E4" />
-          <Line type="monotone" dataKey="muscle" stroke="#4942E4" />
-          <Line type="monotone" dataKey="fat" stroke="#4942E4" />
+          <Line
+            type="monotone"
+            dataKey="weight"
+            stroke="#4942E4"
+            dot={{ r: 2 }}
+          />
+          <Line type="monotone" dataKey="BMI" stroke="#4942E4" dot={{ r: 2 }} />
+          <Line
+            type="monotone"
+            dataKey="muscle"
+            stroke="#4942E4"
+            dot={{ r: 2 }}
+          />
+          <Line type="monotone" dataKey="fat" stroke="#4942E4" dot={{ r: 2 }} />
           <LabelList dataKey="weight" position="top" />
         </LineChart>
       </ResponsiveContainer>

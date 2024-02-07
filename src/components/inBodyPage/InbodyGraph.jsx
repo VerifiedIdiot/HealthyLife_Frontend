@@ -16,44 +16,6 @@ const Title = styled.div`
   margin-bottom: 0.5rem;
 `;
 
-const data = [
-  {
-    date: "2023-12-22",
-    BMI: 21.5,
-    weight: 89.5,
-    muscle: 31.5,
-    fat: 31.5,
-  },
-  {
-    date: "2023-12-26",
-    BMI: 21.5,
-    weight: 85.5,
-    muscle: 31.5,
-    fat: 31.5,
-  },
-  {
-    date: "2023-12-30",
-    BMI: 20.9,
-    weight: 82.2,
-    muscle: 32.9,
-    fat: 30.9,
-  },
-  {
-    date: "2024-01-05",
-    BMI: 20.9,
-    weight: 81.9,
-    muscle: 32.9,
-    fat: 30.9,
-  },
-  {
-    date: "2024-01-17",
-    BMI: 20.7,
-    weight: 75.1,
-    muscle: 33.7,
-    fat: 30.7,
-  },
-];
-
 const InbodyGraph = ({ bodyData }) => {
   const weightData =
     bodyData &&

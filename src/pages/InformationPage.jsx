@@ -55,7 +55,6 @@ const InformationPage = () => {
   const handleDataFromChild5 = useCallback((data1) => {
     setGetExerciseClass1(data1);
     console.warn(data1);
-    console.log("시발럼아" + exerciseData);
   }, []);
 
   const handleDataFromChild6 = useCallback((data2) => {
@@ -88,7 +87,7 @@ const InformationPage = () => {
   useEffect(() => {
     const FoodSearch = async () => {
       const page = 0;
-      const size = 12;
+      const size = 9;
       const resp = await InfoApi.FoodSearch(
         getFoodKeyword,
         getFoodClass1,
@@ -104,7 +103,7 @@ const InformationPage = () => {
   useEffect(() => {
     const ExerciseSearch = async () => {
       const page = 0;
-      const size = 12;
+      const size = 9;
       const resp = await InfoApi.ExerciseSearch(
         getExerciseKeyword,
         getExerciseClass1,
@@ -124,7 +123,7 @@ const InformationPage = () => {
 
   return (
     <>
-      <Main>
+      <Main $height="auto">
         <Container $align="center" $height="auto">
           <Section
             $height="auto"

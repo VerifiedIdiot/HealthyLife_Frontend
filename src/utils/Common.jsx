@@ -132,7 +132,7 @@ const Common = {
   IsLogin: async () => {
     const accessToken = Common.getAccessToken();
     return await axios.get(
-      Common.WEELV_DOMAIN + `/sale/isLogin/${accessToken}`,
+      Common.WEELV_DOMAIN + `/member/isLogin/${accessToken}`,
       {
         headers: {
           "Content-Type": "application/json",

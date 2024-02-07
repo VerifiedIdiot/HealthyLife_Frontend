@@ -44,5 +44,19 @@ const BodyApi = {
     };
     return await axios.post(BACKEND_DOMAIN + "/Body/new", userBody);
   },
+
+  LifeGet: async(Bmi,Year)=>{
+    const inputData ={
+      BMI: Bmi,  // 설정
+      Year: Year //태어난년도 
+    };
+       // Content-Type 설정 추가
+       const config = {
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      };
+    return await AxiosInstance.post(BACKEND_DOMAIN+"/ml/life",inputData,config);
+  }
 };
 export default BodyApi;

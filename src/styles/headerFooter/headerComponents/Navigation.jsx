@@ -1,9 +1,9 @@
 // 리액트
-import React from "react";
+import React, { useContext, useEffect, useState } from "react";
 import styled from "styled-components";
 import { useNavigate } from "react-router-dom";
 import useRequireAuth from "../../../hooks/useRequireAuth";
-
+import ChattingPage from "../../../pages/ChattingPage"
 // 폰트어썸 아이콘 영역
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
@@ -12,6 +12,9 @@ import {
   faCircleUser,
   faBell,
 } from "@fortawesome/free-regular-svg-icons";
+import { UserContext } from "../../../contexts/UserStore";
+import Common from "../../../utils/Common";
+import { Icon } from "@mui/material";
 
 const NavContainer = styled.nav.attrs({
   className: "nav-bar",
@@ -22,7 +25,6 @@ const NavContainer = styled.nav.attrs({
   height: 100%;
   width: ${(props) => props.$width || "60%"};
   /* border: 1px solid black; */
-  
 `;
 
 const NavLink = styled.div.attrs({
@@ -36,14 +38,39 @@ const NavLink = styled.div.attrs({
   &.hover {
     color: #000;
   }
-
-  
-  
 `;
 
 const Navigation = ({ $scrolledDown = true }) => {
   const { isUnauthorized } = useRequireAuth("USER");
+  const [modalOpen,setModalOpen] =useState(false);
+  const [loginStatus, setLoginStatus] = useState(false);
   const navigate = useNavigate();
+
+ const modalClick=()=>{
+  setModalOpen(prev => !prev);
+ }
+
+  useEffect(() => {
+    const isLogin = async () => {
+      try {
+        const res = await Common.IsLogin();
+        console.log(res.data + "로그인 중입니다.");
+        localStorage.setItem("loginStatus", res.data);
+        setLoginStatus(res.data);
+      } catch (error) {
+        console.error("로그인 상태 확인 중 오류 발생:", error);
+      }
+    };
+    isLogin();
+  }, [loginStatus]);
+
+  const logOutClick = () => {
+    localStorage.setItem("loginStatus", "false");
+    Common.setAccessToken("");
+    Common.setRefreshToken("");
+    navigate("/");
+    setLoginStatus(false);
+  };
 
   return (
     <>
@@ -80,12 +107,28 @@ const Navigation = ({ $scrolledDown = true }) => {
         </NavLink>
       </NavContainer>
       <NavContainer $width="auto">
-        <NavLink
-          $scrolledDown={$scrolledDown}
-          onClick={() => navigate("/login")}
-        >
-          <p>LogIn/SignIn</p>
-        </NavLink>
+        {loginStatus ? (
+          // 로그인 상태일 때
+          <>
+          <NavLink $scrolledDown={$scrolledDown} onClick={modalClick}>
+              <p>채팅</p>
+          </NavLink>
+          <ChattingPage modalOpen={modalOpen}/>
+            <NavLink $scrolledDown={$scrolledDown} onClick={logOutClick}>
+              <p>LogOut</p>
+            </NavLink>
+          </>
+        ) : (
+          // 로그아웃 상태일 때
+          <>
+            <NavLink
+              $scrolledDown={$scrolledDown}
+              onClick={() => navigate("/login")}
+            >
+              <p>LogIn/SignIn</p>
+            </NavLink>
+          </>
+        )}
       </NavContainer>
     </>
   );

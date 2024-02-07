@@ -73,6 +73,7 @@ const FriendBoxs = (props) => {
         console.error("회원정보를 불러오는 동안 에러 발생:", error);
         // 에러 처리 로직 추가
       }
+    
       try {
         const res1 = await ChatApi.statusInfo(friendId);
         console.log(friendId + "상태메세지 불러와");

@@ -3,16 +3,17 @@ import { Area, Box, Container, Main, Section } from "../../styles/Layouts";
 import { MiddleButton } from "../../styles/styledComponents/StyledComponents";
 import { useContext, useEffect, useState } from "react";
 import { LabelComp } from "../joinPage/JoinStyle";
-import { Input, InputButton } from "../joinPage/JoinInput";
+import { Address, Input, InputButton } from "../joinPage/JoinInput";
 import basicProfile from "../../assets/imgs/basicUser.png";
 import MemberApi from "../../api/MemberApi";
 import { storage } from "../../api/firebase";
 import { UserContext } from "../../contexts/UserStore";
+import DaumPostPopup from "../../api/DaumPost";
 
 const MypageEditComp = () => {
   const myPageNavigate = useNavigate();
   const context = useContext(UserContext);
-  const { setLoginStatus } = context;
+  const { setLoginStatus, kakaoId } = context;
 
   const [memberInfo, setMemberInfo] = useState(null);
 
@@ -48,6 +49,7 @@ const MypageEditComp = () => {
   const [phoneMessage, setPhoneMessage] = useState("");
 
   //유효성
+  const [isKakaoStatus, setIsKakaoStatus] = useState(false);
   const [isOriginPw, setIsOriginPw] = useState(false);
   const [isPw, setIsPw] = useState(false);
   const [isPw2, setIsPw2] = useState(false);
@@ -104,14 +106,20 @@ const MypageEditComp = () => {
   };
 
   const fetchIsOriginPw = async () => {
-    const res = MemberApi.isPassword(inputOriginPw);
+    const res = MemberApi.checkPw(inputOriginPw);
+    console.log("넌 되니 ? " + inputOriginPw);
+    setOriginBtn(res.data);
     console.log("비밀번호 확인 : " + res.data);
     if (res.data) {
+      alert("비밀번호가 일치합니다.");
       setIsOriginPw(true);
     } else {
+      console.log("비밀번호 일치 왜 안하냐고 : " + res.data);
+      alert("비밀번호를 확인해주세요.");
       setIsOriginPw(false);
     }
   };
+  const checkPw = fetchIsOriginPw;
 
   // 새 비밀번호
   const onChangePw = (e) => {
@@ -156,7 +164,7 @@ const MypageEditComp = () => {
       setNickNameMessage("2자 이상 8자 이하로 입력하세요");
       setIsNickName(false);
     } else {
-      //   isUnique(1, currNickName);
+      isUnique(1, currNickName);
     }
   };
 
@@ -169,7 +177,7 @@ const MypageEditComp = () => {
       setPhoneMessage("잘못 입력 하셨습니다.");
       setIsPhone(false);
     } else {
-      //   isUnique(2, currPhone);
+      isUnique(2, currPhone);
     }
   };
 
@@ -192,14 +200,18 @@ const MypageEditComp = () => {
   useEffect(() => {
     const fetchMemberInfo = async () => {
       const res = await MemberApi.getMemberDetail();
-      if (res.data !== null) {
-        console.log("상세회원정보 : " + res.data);
-        setMemberInfo(res.data);
-        setInputNickName(res.data.nickName);
-        setInputPhone(res.data.phone);
-        setInputAddr(res.data.addr);
-        res.data.image ? setImgSrc(res.data.image) : setImgSrc(basicProfile);
-      }
+      console.log("상세회원정보 : " + res.data);
+      setMemberInfo(res.data);
+      setInputNickName(res.data.nickName);
+      setInputPhone(res.data.phone);
+      setInputAddr(res.data.addr);
+      setIsKakaoStatus(res.data.isKakao);
+      res.data.image ? setImgSrc(res.data.image) : setImgSrc(basicProfile);
+      console.log("inputEmail : " + res.data.email);
+      console.log("setInputNickName : " + res.data.nickName);
+      console.log("setInputPhone : " + res.data.phone);
+      console.log("setInputAddr : " + res.data.addr);
+      console.log("setIsKakaoStatus : " + res.data.isKakao);
     };
     fetchMemberInfo();
   }, []);
@@ -237,9 +249,11 @@ const MypageEditComp = () => {
     );
     if (res.data) {
       console.log("회원정보 수정 성공!");
+      alert("정보가 수정되었습니다.");
       // handleModal("성공", "정보가 수정되었습니다.", false);
     }
   };
+
   return (
     <>
       <Main $direction="column" $width="100%" $height="auto">
@@ -317,71 +331,76 @@ const MypageEditComp = () => {
                 <Input value="" disabled={false} />
               )}
             </Area>
-            <Area $direction="column" $shadow="none" $marginBottom="20px">
-              <p
-                style={{
-                  color: "rgba(0, 0, 0, 0.5)",
-                  fontWeight: "600",
-                }}
+            {!isKakaoStatus && (
+              <Area $direction="column" $shadow="none" $marginBottom="20px">
+                <p
+                  style={{
+                    color: "rgba(0, 0, 0, 0.5)",
+                    fontWeight: "600",
+                  }}
+                >
+                  Existing Password
+                </p>
+                <InputButton
+                  holder="기존 비밀번호 입력"
+                  value={inputOriginPw}
+                  type="password"
+                  changeEvt={onChangeOriginPw}
+                  btnChild="확인"
+                  active={oringinBtn}
+                  clickEvt={checkPw}
+                  msgType={isOriginPw}
+                />
+              </Area>
+            )}
+            {!isKakaoStatus && (
+              <Area
+                $shadow="none"
+                $width="100%"
+                $direction="row"
+                $marginBottom="20px"
+                $dis
               >
-                Existing Password
-              </p>
-              <InputButton
-                holder="기존 비밀번호 입력"
-                value={inputOriginPw}
-                type="password"
-                changeEvt={onChangeOriginPw}
-                btnChild="확인"
-                active={oringinBtn}
-                clickEvt={fetchIsOriginPw}
-                msgType={isOriginPw}
-              />
-            </Area>
-            <Area
-              $shadow="none"
-              $width="100%"
-              $direction="row"
-              $marginBottom="20px"
-            >
-              <Box $shadow="none" $width="100%" $direction="column">
-                <p
-                  style={{
-                    color: "rgba(0, 0, 0, 0.5)",
-                    fontWeight: "600",
-                  }}
-                >
-                  New password
-                </p>
-                <Input
-                  holder="새 비밀번호"
-                  value={inputPw}
-                  type="password"
-                  msg={pwMessage}
-                  msgType={isPw}
-                  changeEvt={onChangePw}
-                  disabled={!isOriginPw}
-                />
-              </Box>
-              <Box $shadow="none" $direction="column">
-                <p
-                  style={{
-                    color: "rgba(0, 0, 0, 0.5)",
-                    fontWeight: "600",
-                  }}
-                >
-                  Repeat New password
-                </p>
-                <Input
-                  holder="비밀번호 다시 입력"
-                  value={inputPw2}
-                  type="password"
-                  msg={pw2Message}
-                  msgType={isPw2}
-                  changeEvt={onChangePw2}
-                  disabled={!isOriginPw}
-                />
-              </Box>
-            </Area>
+                <Box $shadow="none" $width="100%" $direction="column">
+                  <p
+                    style={{
+                      color: "rgba(0, 0, 0, 0.5)",
+                      fontWeight: "600",
+                    }}
+                  >
+                    New password
+                  </p>
+                  <Input
+                    holder="새 비밀번호"
+                    value={inputPw}
+                    type="password"
+                    msg={pwMessage}
+                    msgType={isPw}
+                    changeEvt={onChangePw}
+                    disabled={!isOriginPw}
+                  />
+                </Box>
+                <Box $shadow="none" $direction="column">
+                  <p
+                    style={{
+                      color: "rgba(0, 0, 0, 0.5)",
+                      fontWeight: "600",
+                    }}
+                  >
+                    Repeat New password
+                  </p>
+                  <Input
+                    holder="비밀번호 다시 입력"
+                    value={inputPw2}
+                    type="password"
+                    msg={pw2Message}
+                    msgType={isPw2}
+                    changeEvt={onChangePw2}
+                    disabled={!isOriginPw}
+                  />
+                </Box>
+              </Area>
+            )}
             <Area $direction="column" $shadow="none" $marginBottom="20px">
               <p
                 style={{
@@ -431,27 +450,32 @@ const MypageEditComp = () => {
                 changeEvt={onChangePhone}
               />
             </Area>
-            <Area $direction="column" $shadow="none" $marginBottom="20px">
+            <Area
+              $direction="column"
+              $shadow="none"
+              $marginTop="20px"
+              $marginBottom="40px"
+            >
               <p
                 style={{
                   color: "rgba(0, 0, 0, 0.5)",
                   fontWeight: "600",
                 }}
               >
-                Address
+                ADDRESS (*)
               </p>
-              <Input
-                holder="주소를 입력해주세요."
-                // value={}
-                // msg={phoneMessage}
-                // msgType={isPhone}
-                // changeEvt={onChangePhone}
-              />
+              {/* 주소 */}
+              <Address value={inputAddr} open={openPostCode} />
+              {isPopUpOpen && (
+                <DaumPostPopup
+                  onClose={closePostCode}
+                  setAddr={setAddr}
+                  open={isPopUpOpen}
+                />
+              )}
             </Area>
 
-            <MiddleButton onClick={() => myPageNavigate("/mypage")}>
-              수정하기
-            </MiddleButton>
+            <MiddleButton onClick={() => onSubmit()}>수정하기</MiddleButton>
           </Section>
         </Container>
       </Main>

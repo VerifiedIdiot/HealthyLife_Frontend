@@ -30,7 +30,8 @@ const MemberApi = {
     gender,
     phone,
     addr,
-    image
+    image,
+    isKakao
   ) => {
     console.log("회원가입 진입 : " + email);
     const data = {
@@ -42,6 +43,7 @@ const MemberApi = {
       phone: phone,
       addr: addr,
       image: image,
+      isKakao: isKakao,
     };
     return await axios.post(Common.WEELV_DOMAIN + "/auth/signup", data);
   },
@@ -88,12 +90,13 @@ const MemberApi = {
   },
 
   // 비밀번호 일치 체크
-  isPassword: async (password) => {
+  checkPw: async (password) => {
     const data = {
       password: password,
     };
+    console.log("잘 보내주고있니 ? " + password);
     return await AxiosInstance.post(
-      Common.MV_DOMAIN + "/member/ispassword",
+      Common.WEELV_DOMAIN + "/member/isPassword",
       data
     );
   },

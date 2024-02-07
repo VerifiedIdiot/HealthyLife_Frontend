@@ -68,6 +68,7 @@ const JoinComp = ({ email, profile }) => {
   const [isNickName, setIsNickName] = useState(false);
   const [isPhone, setIsPhone] = useState(false);
   const [isAddr, setIsAddr] = useState(false);
+  const [isKakao, setIsKakao] = useState(false);
 
   // 카카오 아이디, 비밀번호
   const context = useContext(UserContext);
@@ -327,12 +328,12 @@ const JoinComp = ({ email, profile }) => {
         inputGender,
         inputPhone,
         inputAddr,
-        url
-        // isKakao
+        url,
+        isKakao
       );
       if (res.data !== null) {
         console.log("회원가입 성공!");
-        bodyNavigate("/join/bodyInfo");
+        bodyNavigate("/join/payment");
         // setModalOpen(true);
         // setModalHeader("회원가입");
         // setModalMsg("회원가입에 성공했습니다!");
@@ -354,6 +355,7 @@ const JoinComp = ({ email, profile }) => {
       setIsCode(false);
       setIsPw(true);
       setIsPw2(true);
+      setIsKakao(true);
     }
   }, []);
 

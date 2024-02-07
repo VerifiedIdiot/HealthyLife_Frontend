@@ -106,8 +106,9 @@ const MypageEditComp = () => {
   };
 
   const fetchIsOriginPw = async () => {
-    const res = MemberApi.checkPw(inputOriginPw);
+    const res = await MemberApi.checkPw(inputOriginPw);
     console.log("넌 되니 ? " + inputOriginPw);
+    console.log(res);
     setOriginBtn(res.data);
     console.log("비밀번호 확인 : " + res.data);
     if (res.data) {
@@ -221,9 +222,9 @@ const MypageEditComp = () => {
       const storageRef = storage.ref();
       const fileRef = storageRef.child(file.name);
       fileRef.put(file).then(() => {
-        // console.log("저장성공!");
+        console.log("저장성공!");
         fileRef.getDownloadURL().then((url) => {
-          // console.log("저장경로 확인 : " + url);
+          console.log("저장경로 확인 : " + url);
           //수정
           saveMemberInfo(url);
         });
@@ -250,6 +251,7 @@ const MypageEditComp = () => {
     if (res.data) {
       console.log("회원정보 수정 성공!");
       alert("정보가 수정되었습니다.");
+      myPageNavigate("/mypage");
       // handleModal("성공", "정보가 수정되었습니다.", false);
     }
   };

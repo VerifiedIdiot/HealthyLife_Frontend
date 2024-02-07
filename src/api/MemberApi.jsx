@@ -96,7 +96,35 @@ const MemberApi = {
     };
     console.log("잘 보내주고있니 ? " + password);
     return await AxiosInstance.post(
-      Common.WEELV_DOMAIN + "/member/isPassword",
+      Common.WEELV_DOMAIN + "/member/isPassword", // URL 먼저 전달
+      data // 데이터 그 다음에 전달
+    );
+  },
+
+  //회원 정보 수정
+  changeMemberInfo: async (
+    email,
+    password,
+    name,
+    nickName,
+    phone,
+    addr,
+    image,
+    isKakao
+  ) => {
+    console.log("회원정보 수정 : " + email);
+    const data = {
+      email: email,
+      password: password,
+      name: name,
+      nickName: nickName,
+      phone: phone,
+      addr: addr,
+      image: image,
+      isKakao: isKakao,
+    };
+    return await AxiosInstance.post(
+      Common.WEELV_DOMAIN + "/member/update",
       data
     );
   },

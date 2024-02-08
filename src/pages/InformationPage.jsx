@@ -28,8 +28,10 @@ const InformationPage = () => {
   const [getExerciseClass2, setGetExerciseClass2] = useState("");
   const [foodData, setFoodData] = useState([]);
   const [exerciseData, setExerciseData] = useState([]);
-  const loaderRef = useRef(null);
-  const [page, setPage] = useState(0); // 현재 페이지
+  const foodLoaderRef = useRef(null);
+  const [foodPage, setFoodPage] = useState(0); // 현재 페이지
+  const exerciseLoaderRef = useRef(null);
+  const [exercisePage, setExercisePage] = useState(0);
 
   const handleDataFromChild = useCallback((data) => {
     setIstExInfo(data);
@@ -87,17 +89,13 @@ const InformationPage = () => {
     }
   };
 
-  const [inViewRef, inView] = useInView({
-    triggerOnce: true,
-    threshold: 0.1,
-  });
-
+  // 음식 페이지 무한스크롤
   useEffect(() => {
     const handleObserver = (objects) => {
       const target = objects[0];
       if (target.isIntersecting) {
-        setPage((prevPage) => prevPage + 1);
-        console.log("페이지 로딩");
+        setFoodPage((prevPage) => prevPage + 1);
+        console.log("음식 페이지 로딩");
       }
     };
 
@@ -107,47 +105,96 @@ const InformationPage = () => {
       threshold: 1.0,
     });
 
-    if (loaderRef.current) {
-      observer.observe(loaderRef.current);
+    if (foodLoaderRef.current) {
+      observer.observe(foodLoaderRef.current);
     }
 
     return () => {
-      if (loaderRef.current) {
-        observer.unobserve(loaderRef.current);
+      if (foodLoaderRef.current) {
+        observer.unobserve(foodLoaderRef.current);
       }
     };
-  }, [loaderRef]);
+  }, [foodLoaderRef]);
 
   useEffect(() => {
     const FoodSearch = async () => {
       const size = 9;
-      const resp = await InfoApi.FoodSearch(
-        getFoodKeyword,
-        getFoodClass1,
-        getFoodClass2,
-        page,
-        size
-      );
-      setFoodData((prevData) => [...prevData, ...resp]); // 이전 데이터와 새로운 데이터를 합침
+      let resp;
+      // 검색어가 존재하는 경우에만 새로운 데이터를 가져옵니다.
+      if (getFoodKeyword || getFoodClass1 || getFoodClass2) {
+        resp = await InfoApi.FoodSearch(
+          getFoodKeyword,
+          getFoodClass1,
+          getFoodClass2,
+          foodPage,
+          size
+        );
+      } else {
+        // 검색어가 없는 경우에는 모든 데이터를 가져옵니다.
+        resp = await InfoApi.FoodSearch("", "", "", foodPage, size);
+      }
+      setFoodData((prevData) => [...prevData, ...resp]); // 이전 데이터와 새로운 데이터를 합칩니다.
+    };
+    FoodSearch();
+  }, [getFoodKeyword, getFoodClass1, getFoodClass2, foodPage]);
+
+  useEffect(() => {
+    setFoodPage(0); // 검색어나 분류가 변경될 때마다 페이지를 초기화합니다.
+    setFoodData([]); // 검색어나 분류가 변경될 때마다 이전 데이터를 삭제합니다.
+  }, [getFoodKeyword, getFoodClass1, getFoodClass2]);
+
+  // 운동페이지 무한스크롤
+  useEffect(() => {
+    const handleExerciseObserver = (objects) => {
+      const target = objects[0];
+      if (target.isIntersecting) {
+        setExercisePage((prevPage) => prevPage + 1);
+        console.log("운동 페이지 로딩");
+      }
     };
 
-    FoodSearch();
-  }, [getFoodKeyword, getFoodClass1, getFoodClass2, page]);
+    const exerciseObserver = new IntersectionObserver(handleExerciseObserver, {
+      root: null,
+      rootMargin: "5%",
+      threshold: 1.0,
+    });
+
+    if (exerciseLoaderRef.current) {
+      exerciseObserver.observe(exerciseLoaderRef.current);
+    }
+
+    return () => {
+      if (exerciseLoaderRef.current) {
+        exerciseObserver.unobserve(exerciseLoaderRef.current);
+      }
+    };
+  }, [exerciseLoaderRef]);
 
   useEffect(() => {
     const ExerciseSearch = async () => {
-      const page = 0;
       const size = 9;
-      const resp = await InfoApi.ExerciseSearch(
-        getExerciseKeyword,
-        getExerciseClass1,
-        getExerciseClass2,
-        page,
-        size
-      );
-      setExerciseData(resp);
+      let resp;
+      // 검색어가 존재하는 경우에만 새로운 데이터를 가져옵니다.
+      if (getExerciseKeyword || getExerciseClass1 || getExerciseClass2) {
+        resp = await InfoApi.ExerciseSearch(
+          getExerciseKeyword,
+          getExerciseClass1,
+          getExerciseClass2,
+          exercisePage,
+          size
+        );
+      } else {
+        // 검색어가 없는 경우에는 모든 데이터를 가져옵니다.
+        resp = await InfoApi.ExerciseSearch("", "", "", exercisePage, size);
+      }
+      setExerciseData((prevData) => [...prevData, ...resp]); // 이전 데이터와 새로운 데이터를 합칩니다.
     };
     ExerciseSearch();
+  }, [getExerciseKeyword, getExerciseClass1, getExerciseClass2, exercisePage]);
+
+  useEffect(() => {
+    setExercisePage(0); // 검색어나 분류가 변경될 때마다 페이지를 초기화합니다.
+    setExerciseData([]); // 검색어나 분류가 변경될 때마다 이전 데이터를 삭제합니다.
   }, [getExerciseKeyword, getExerciseClass1, getExerciseClass2]);
 
   const Insert = () => {
@@ -213,7 +260,11 @@ const InformationPage = () => {
             )}
           </Section>
         </Container>
-        <div ref={loaderRef} style={{ height: "100px" }} />
+        {isExInfo ? (
+          <div ref={exerciseLoaderRef} style={{ height: "100px" }} />
+        ) : (
+          <div ref={foodLoaderRef} style={{ height: "100px" }} />
+        )}
       </Main>
     </>
   );

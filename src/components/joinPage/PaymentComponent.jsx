@@ -2,14 +2,88 @@ import { useNavigate } from "react-router";
 import { Area, Container, Main, Section } from "../../styles/Layouts";
 
 import logo from "../../assets/icons/logo.svg";
-import { useEffect } from "react";
+import { useContext, useEffect } from "react";
+import basicUser from "../../assets/imgs/basicUser.png";
 
 import { LargeButton } from "../../styles/styledComponents/StyledComponents";
+import { UserContext } from "../../contexts/UserStore";
+import MemberApi from "../../api/MemberApi";
+import { storage } from "../../api/firebase";
 
-const PaymentComp = () => {
+const PaymentComp = ({ profile }) => {
   const navigate = useNavigate();
   const loginGate = useNavigate();
-  const homeNavigate = useNavigate();
+  const paymentNavigate = useNavigate();
+
+  // 카카오 아이디, 비밀번호
+  const context = useContext(UserContext);
+  const {
+    inputEmail,
+    inputPw,
+
+    inputGender,
+    inputName,
+    inputAge,
+    inputNickName,
+    inputPhone,
+    inputAddr,
+    isKakao,
+    imgSrc,
+    file,
+    setUrl,
+  } = context;
+  // 회원가입 /////////////////////////////////////////////////////
+  const onSubmit = () => {
+    if (imgSrc !== basicUser && imgSrc !== profile) {
+      const storageRef = storage.ref();
+      const fileRef = storageRef.child(file.name);
+      console.log("Storage Ref:", storageRef);
+      console.log("File Ref:", fileRef);
+      fileRef.put(file).then(() => {
+        console.log("저장성공!");
+        fileRef.getDownloadURL().then((url) => {
+          console.log("저장경로 확인 : " + url);
+          setUrl(url);
+          addNewMember(url);
+        });
+      });
+    } else {
+      if (imgSrc === profile) {
+        addNewMember(profile);
+      } else {
+        addNewMember();
+      }
+    }
+  };
+
+  const addNewMember = async (url) => {
+    try {
+      const res = await MemberApi.signup(
+        inputEmail,
+        inputPw,
+        inputName,
+        inputNickName,
+        inputGender,
+        inputPhone,
+        inputAddr,
+        url,
+        isKakao,
+        inputAge
+      );
+      if (res.data !== null) {
+        alert("결제 성공");
+        console.log("회원가입 성공!");
+        paymentNavigate("/login");
+        // setModalOpen(true);
+        // setModalHeader("회원가입");
+        // setModalMsg("회원가입에 성공했습니다!");
+        // setModalType("회원가입");
+      }
+    } catch (err) {
+      console.log(url);
+      console.log("회원가입 : " + err);
+    }
+  };
 
   useEffect(() => {
     const jquery = document.createElement("script");
@@ -56,10 +130,10 @@ const PaymentComp = () => {
     } = response;
 
     if (success) {
-      alert("결제 성공");
-      navigate("/");
+      onSubmit();
     } else {
       alert(`결제 실패: ${error_msg}`);
+      navigate("/");
     }
   };
   return (

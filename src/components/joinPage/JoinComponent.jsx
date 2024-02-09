@@ -2,7 +2,7 @@ import { useNavigate } from "react-router";
 import { Area, Box, Container, Main, Section } from "../../styles/Layouts";
 import logo from "../../assets/icons/logo.svg";
 import basicUser from "../../assets/imgs/basicUser.png";
-import { useContext, useEffect, useState } from "react";
+import { useContext, useEffect, useMemo, useState } from "react";
 import { LabelComp } from "./JoinStyle";
 import { Address, Input, InputButton } from "./JoinInput";
 import MemberApi from "../../api/MemberApi";
@@ -17,14 +17,51 @@ import { UserContext } from "../../contexts/UserStore";
 const JoinComp = ({ email, profile }) => {
   const navigate = useNavigate();
   const loginGate = useNavigate();
-  const bodyNavigate = useNavigate();
+  const paymentNavigate = useNavigate();
 
-  // 프로필 관련
-  const [imgSrc, setImgSrc] = useState(
-    profile && profile ? profile : basicUser
-  );
-  const [file, setFile] = useState("");
-  const [url, setUrl] = useState("");
+  // // 프로필 관련
+  // const [imgSrc, setImgSrc] = useState(
+  //   profile && profile ? profile : basicUser
+  // );
+  // const [file, setFile] = useState("");
+  // const [url, setUrl] = useState("");
+
+  // 카카오 아이디, 비밀번호
+  const context = useContext(UserContext);
+  const {
+    kakaoId,
+    setKakaoId,
+    kakaoPw,
+    setKakaoPw,
+    inputEmail,
+    setInputEmail,
+    inputCode,
+    setInputCode,
+    inputPw,
+    setInputPw,
+    inputPw2,
+    setInputPw2,
+    inputGender,
+    setInputGender,
+    inputName,
+    setInputName,
+    inputAge,
+    setInputAge,
+    inputNickName,
+    setInputNickName,
+    inputPhone,
+    setInputPhone,
+    inputAddr,
+    setInputAddr,
+    isKakao,
+    setIsKakao,
+    imgSrc,
+    setImgSrc,
+    file,
+    setFile,
+    url,
+    setUrl,
+  } = context;
 
   // 입력받은 이미지 파일 주소
   const handleFileInputChange = (e) => {
@@ -39,22 +76,13 @@ const JoinComp = ({ email, profile }) => {
     }
   };
 
-  // 키보드 입력
-  const [inputEmail, setInputEmail] = useState("");
-  const [inputCode, setInputCode] = useState("");
-  const [inputPw, setInputPw] = useState("");
-  const [inputPw2, setInputPw2] = useState("");
-  const [inputGender, setInputGender] = useState("");
-  const [inputName, setInputName] = useState("");
-  const [inputNickName, setInputNickName] = useState("");
-  const [inputPhone, setInputPhone] = useState("");
-
   // 오류 메세지
   const [emailMessage, setEmailMessage] = useState("");
   const [codeMessage, setCodeMessage] = useState("");
   const [pwMessage, setPwMessage] = useState("");
   const [pw2Message, setPw2Message] = useState("");
   const [nameMessage, setNameMessage] = useState("");
+  const [ageMessage, setAgeMessage] = useState("");
   const [nickNameMessage, setNickNameMessage] = useState("");
   const [phoneMessage, setPhoneMessage] = useState("");
 
@@ -65,14 +93,10 @@ const JoinComp = ({ email, profile }) => {
   const [isPw2, setIsPw2] = useState(false);
   const [isGender, setIsGender] = useState("");
   const [isName, setIsName] = useState(false);
+  const [isAge, setIsAge] = useState(false);
   const [isNickName, setIsNickName] = useState(false);
   const [isPhone, setIsPhone] = useState(false);
   const [isAddr, setIsAddr] = useState(false);
-  const [isKakao, setIsKakao] = useState(false);
-
-  // 카카오 아이디, 비밀번호
-  const context = useContext(UserContext);
-  const { kakaoId, kakaoPw, setKakaoId, setKakaoPw } = context;
 
   // 카카오 회원가입 시, 아이디, 비밀번호 input 비활성화
   const [readOnly, setReadOnly] = useState(false);
@@ -225,6 +249,19 @@ const JoinComp = ({ email, profile }) => {
     }
   };
 
+  // 나이
+  const onChangeAge = (e) => {
+    const currAge = e.target.value;
+    setInputAge(currAge);
+    if (currAge.length !== 8) {
+      setAgeMessage("나이는 8자리의 숫자로 입력해주세요. 예시: 19961203");
+      setIsAge(false);
+    } else {
+      setAgeMessage("사용 가능합니다.");
+      setIsAge(true);
+    }
+  };
+
   // 닉네임
   const onChangeNickName = (e) => {
     const currNickName = e.target.value;
@@ -251,7 +288,6 @@ const JoinComp = ({ email, profile }) => {
   };
 
   // 주소
-  const [inputAddr, setInputAddr] = useState("");
   const [isPopUpOpen, setIsPopUpOpen] = useState(false);
   const openPostCode = () => {
     setIsPopUpOpen(true);
@@ -293,57 +329,6 @@ const JoinComp = ({ email, profile }) => {
       setCheckedAll(false);
     }
   }, [checked1, checked2]);
-
-  // 회원가입 /////////////////////////////////////////////////////
-  const onSubmit = () => {
-    if (imgSrc !== basicUser && imgSrc !== profile) {
-      const storageRef = storage.ref();
-      const fileRef = storageRef.child(file.name);
-      console.log("Storage Ref:", storageRef);
-      console.log("File Ref:", fileRef);
-      fileRef.put(file).then(() => {
-        console.log("저장성공!");
-        fileRef.getDownloadURL().then((url) => {
-          console.log("저장경로 확인 : " + url);
-          setUrl(url);
-          addNewMember(url);
-        });
-      });
-    } else {
-      if (imgSrc === profile) {
-        addNewMember(profile);
-      } else {
-        addNewMember();
-      }
-    }
-  };
-
-  const addNewMember = async (url) => {
-    try {
-      const res = await MemberApi.signup(
-        inputEmail,
-        inputPw,
-        inputName,
-        inputNickName,
-        inputGender,
-        inputPhone,
-        inputAddr,
-        url,
-        isKakao
-      );
-      if (res.data !== null) {
-        console.log("회원가입 성공!");
-        bodyNavigate("/join/payment");
-        // setModalOpen(true);
-        // setModalHeader("회원가입");
-        // setModalMsg("회원가입에 성공했습니다!");
-        // setModalType("회원가입");
-      }
-    } catch (err) {
-      console.log(url);
-      console.log("회원가입 : " + err);
-    }
-  };
 
   useEffect(() => {
     if (kakaoId !== "" && kakaoPw !== "") {
@@ -615,6 +600,23 @@ const JoinComp = ({ email, profile }) => {
                 changeEvt={onChangeName}
               />
             </Area>
+            {/* <Area $direction="column" $shadow="none" $marginTop="10px">
+              <p
+                style={{
+                  color: "rgba(0, 0, 0, 0.5)",
+                  fontWeight: "600",
+                }}
+              >
+                AGE (*)
+              </p>
+              <Input
+                holder="나이를 입력해주세요 (ex 19961203)"
+                value={inputAge}
+                msg={ageMessage}
+                msgType={isAge}
+                changeEvt={onChangeAge}
+              />
+            </Area> */}
 
             <Area $direction="column" $shadow="none" $marginTop="20px">
               <p
@@ -692,7 +694,9 @@ const JoinComp = ({ email, profile }) => {
               />
             </Area>
             <Area $display="flex" $justify="center" $shadow="none">
-              <MiddleButton onClick={() => onSubmit()}>다음</MiddleButton>
+              <MiddleButton onClick={() => paymentNavigate("/join/payment")}>
+                다음
+              </MiddleButton>
             </Area>
           </Section>
           <SmallModal

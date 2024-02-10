@@ -7,7 +7,7 @@ import FriendBox from "../styles/modals/FriendBox";
 import Common from "../utils/Common";
 
 const ChattingPage = (props) => {
-  const { modalOpen }=props;
+  const { modalOpen } = props;
   const [state, setState] = useState("CHAT");
   const [chatNum, setChatNum] = useState("");
   const [userId, setUserId] = useState("");
@@ -48,7 +48,7 @@ const ChattingPage = (props) => {
         )}
         {state === "CHATTING" && <Chatting roomId={chatNum} userId={userId} />}
       </ChatHeader>
-      {/* <FriendBox userId={77}/> */}
+      {/* <FriendBox userId={4} /> */}
     </>
   );
 };

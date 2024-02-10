@@ -8,6 +8,8 @@ import {
 } from "./ChattingStyle";
 import ChatApi from "../../api/ChatAPi";
 import { ButtonComp } from "../../styles/example/Button";
+import Common from "../../utils/Common";
+import { LastPage } from "@mui/icons-material";
 
 const ChatList = (props) => {
   const { setState } = props;
@@ -19,16 +21,35 @@ const ChatList = (props) => {
   };
 
   useEffect(() => {
-    // 서버로부터 채팅방 목록을 가져오는 API 호출
     const getChatRoom = async () => {
       try {
+        const userId = await Common.TakenId();
         const rsp = await ChatApi.chatList();
-        console.log(rsp.data);
-        setChatRooms(rsp.data);
+
+        // 서버로부터 받아온 채팅방 목록에 대해 각각 읽지 않은 메시지 수를 가져옴
+        const chatRoomsWithUnreadCount = await Promise.all(
+          rsp.data.map(async (chatRoom) => {
+            let senderId;
+            if (chatRoom.senderId === userId.data) {
+              senderId = chatRoom.userId;
+            } else {
+              senderId = chatRoom.senderId;
+            }
+            const unreadMessageCount = await ChatApi.getUnreadMessageCount(
+              chatRoom.roomId,
+              senderId
+            );
+            return { ...chatRoom, unreadMessageCount };
+          })
+        );
+
+        console.log(chatRoomsWithUnreadCount);
+        setChatRooms(chatRoomsWithUnreadCount);
       } catch (e) {
         console.log(e);
       }
     };
+
     getChatRoom();
   }, []);
 
@@ -39,7 +60,7 @@ const ChatList = (props) => {
       const a1 = parseInt(values[0], 10);
       const a2 = parseInt(values[1], 10);
 
-      const response = await ChatApi.chatCreate(a1,a2);
+      const response = await ChatApi.chatCreate(a1, a2);
       props.setChatNum(response.data);
       props.setState("CHATTING");
     } catch (error) {
@@ -51,7 +72,11 @@ const ChatList = (props) => {
     <>
       <ScrollBox>
         {chatRooms.map((chatRoom, index) => (
-          <ChatBox key={index} roomInfo={chatRoom} onClick={()=>chatClick(chatRoom.roomId)}/>
+          <ChatBox
+            key={index}
+            roomInfo={chatRoom}
+            onClick={() => chatClick(chatRoom.roomId)}
+          />
         ))}
       </ScrollBox>
     </>
@@ -61,7 +86,24 @@ export default ChatList;
 
 // 채팅정보 ItemBox
 const ChatBox = (props) => {
-  const { roomInfo, recMessege, messegeIndex } = props;
+  const { roomInfo } = props;
+  const [latestMessage, setLatestMessage] = useState("");
+
+  useEffect(() => {
+    const fetchLatestMessage = async () => {
+      try {
+        const latestMessageResponse = await ChatApi.getLatestMessage(
+          roomInfo.roomId
+        );
+        // 응답 및 응답의 data 속성이 null 또는 정의되지 않은지 확인합니다.
+          setLatestMessage(latestMessageResponse);
+      } catch (error) {
+        console.error("최신 메시지 조회 중 에러 발생:", error);
+      }
+    };
+
+    fetchLatestMessage();
+  }, [roomInfo.roomId]);
 
   return (
     <>
@@ -77,9 +119,10 @@ const ChatBox = (props) => {
         <MemberInfo>
           <Item $shadow="none">{roomInfo.roomId}</Item>
           <Item $color="grey" $shadow="none">
-            최근 메세지...{recMessege}
+            {/* Display the latest message here */}
+            {latestMessage || "대화를 시작해주세요"}
           </Item>
-          <ChatIndexBox>999{messegeIndex}</ChatIndexBox>
+          <ChatIndexBox>{roomInfo.unreadMessageCount}</ChatIndexBox>
         </MemberInfo>
       </Box>
     </>

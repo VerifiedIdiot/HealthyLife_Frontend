@@ -8,7 +8,7 @@ import { useState } from "react";
 
 const Containerstyle = styled(Container)`
   position: absolute;
-  display: ${(props) => (props.$modal ? 'flex' : 'none')};
+  display: ${(props) => (props.$modal ? "flex" : "none")};
   display: prosp;
   width: 400px;
   height: 600px;
@@ -63,7 +63,7 @@ export const ChatHeader = (props) => {
         <Area $height="none">
           <ButtonComp
             onClick={() => stateClick("FRIENDS", true)}
-            className={isDisabled ? "false" : ""}
+            className={isDisabled ? "" : "false"} // 변경 필요
             $width="50%"
             $height="70px"
             $fontSize="1.5em"
@@ -73,7 +73,7 @@ export const ChatHeader = (props) => {
           </ButtonComp>
           <ButtonComp
             onClick={() => stateClick("CHAT", false)}
-            className={isDisabled ? "" : "false"}
+            className={isDisabled ? "false" : ""} // 변경 필요
             $width="50%"
             $height="70px"
             $fontSize="1.5em"

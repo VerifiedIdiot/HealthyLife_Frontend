@@ -29,14 +29,11 @@ const Chatting = (props) => {
 
   useEffect(() => {
     console.log("방번호 : " + roomId);
-
     const connectWebSocket = () => {
       ws.current = new WebSocket(Common.SOCKET_URL);
-
       ws.current.onopen = () => {
         console.log("connected to " + Common.SOCKET_URL);
         setSocketConnected(true);
-
         // 서버에 입장 메시지 전송
         ws.current.send(
           JSON.stringify({
@@ -104,6 +101,7 @@ const Chatting = (props) => {
       roomId: roomId,
       sender: userId,
       message: inputMsg,
+      messageState: "안읽음",
     };
     ws.current.send(JSON.stringify(message));
     //db저장
@@ -149,18 +147,21 @@ const Chatting = (props) => {
   return (
     <>
       <Container $height="100%">
-        <Box $align="center" $justify="space-between" $height="50px">
-          <ButtonComp>뺵</ButtonComp>
+        <Box $align="center" $justify="center" $height="50px">
           채팅방 {roomName}
-          <CloseButton onClick={onClickMsgClose}>x</CloseButton>
         </Box>
         <ScrollBox $height="350px" ref={chatContainerRef}>
           {/* 채팅 메시지 출력 */}
           {chatList.map((item, index) => (
             <MessageInfo
               key={index}
+              roomId={roomId}
+              senderId={item.sender}
               isSender={item.sender === userId}
+              userId={userId}
+              messageTime={item.messageTime}
               message={item.message}
+              messageStatus={item.messageStatus}
             />
           ))}
         </ScrollBox>
@@ -188,7 +189,37 @@ const Chatting = (props) => {
 export default Chatting;
 
 const MessageInfo = (props) => {
-  const { isSender, message, sender, messageTime, messageState } = props;
+  const { isSender, message, messageTime,senderId, messageStatus,roomId } = props;
+  // messageTime을 Date 객체로 변환
+  const messageDate = new Date(messageTime);
+
+  // 옵션 설정 (timeZone를 undefined로 변경)
+  const options = {
+    hour: "numeric",
+    minute: "numeric",
+    hour12: true,
+    timeZone: "Asia/Seoul",
+  };
+
+  // 형식에 맞게 시간을 포맷
+  const formattedTime = new Intl.DateTimeFormat("ko-KR", options).format(
+    messageDate
+  );
+  useEffect(() => {
+    const updateMessageStatus = async () => {
+      try {
+        // 서버에 메시지 읽음 상태 업데이트 요청 보내기
+        await ChatApi.updateMessageStatus(roomId, senderId);
+      } catch (error) {
+        console.error("메시지 읽음 상태 업데이트 실패:", error);
+        // 에러 처리 로직 추가
+      }
+    };
+    // 여기에서 필요한 로직 수행
+    if(isSender){
+    updateMessageStatus();}
+  }, [isSender]);
+
   return (
     <>
       <MessegeContainer>
@@ -204,7 +235,18 @@ const MessageInfo = (props) => {
           <ChatBox isSender={isSender}>
             <Message isSender={isSender}>{message}</Message>
             <MassegeState>
-              12:20{messageTime} 읽음{messageState}
+              {isSender && (
+                <>
+                  <p style={{ color: "red" }}>{messageStatus}</p>
+                  {formattedTime}
+                </>
+              )}
+              {!isSender && (
+                <>
+                  {formattedTime}
+                  <p style={{ color: "red" }}>{messageStatus}</p>
+                </>
+              )}
             </MassegeState>
           </ChatBox>
         </ChatBox1>

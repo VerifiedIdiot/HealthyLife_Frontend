@@ -2,17 +2,19 @@ import { useState, useEffect, useRef } from "react";
 import CommunityAxiosApi from "../../api/CommunityAxios";
 import { useNavigate } from "react-router-dom";
 import Common from "../../utils/Common";
-
+import { useParams } from "react-router-dom";
 import { Main, Container } from "../../styles/Layouts";
 import "react-quill/dist/quill.snow.css";
 import ReactQuill from "react-quill";
 import styled from "styled-components";
-import { SmallButton } from "../../styles/styledComponents/StyledComponents";
+import { MiddleButton } from "../../styles/styledComponents/StyledComponents";
 import MemberApi from "../../api/MemberApi";
 
 const WriteSection = styled.div`
   display: flex;
   flex-direction: column;
+  height: 100%;
+
   @media (max-width: 1024px) {
     width: 100%;
   }
@@ -20,26 +22,26 @@ const WriteSection = styled.div`
 
 const WriteHeading = styled.div`
   display: flex;
-  flex-direction: column;
   align-items: flex-start;
-  margin-top: 10px;
 `;
 const WriteHeadingText = styled.p`
-  width: 200px;
   color: #2446da;
   font-size: 1.5rem;
-  font-family: "noto sans";
+  font-weight: bold;
+  margin-top: 10px;
+  margin-bottom: 10px;
 `;
 
 const Line = styled.div`
   width: 100%;
   height: 2px;
+  flex-shrink: 0;
   margin-bottom: 10px;
   border-top: 2px solid #2446da;
 `;
 const WriteBorder = styled.input`
   display: flex;
-  font-size: 1.4rem;
+  font-size: 1.2rem;
   font-family: "noto sans";
   width: ${(props) => props.width || "100%"};
   align-items: center;
@@ -50,7 +52,6 @@ const CategorySelect = styled.select`
   // 카테고리 선택 드롭다운에 대한 스타일 정의
   padding: 5px;
   font-size: 1.2rem;
-  font-family: "noto sans";
   border-radius: 4px;
   margin-bottom: 10px;
   width: 150px; // 드롭다운 너비 조정
@@ -59,17 +60,16 @@ const StyledReactQuill = styled(ReactQuill)`
   background-color: rgba(36, 70, 218, 0.6);
   z-index: 4;
   margin-top: 10px;
+  margin-bottom: 10px;
+
   .ql-container {
     width: 100%;
-    height: 50vh;
-    font-size: 1.2rem;
-    font-family: "noto sans";
-
-    overflow-y: auto;
+    font-size: 1rem;
     opacity: 1;
     background: #fff;
-    box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25) inset;
-    border: none;
+    max-height: 60vh;
+    min-height: 60vh;
+    overflow-y: scroll;
   }
 
   .ql-toolbar {
@@ -83,6 +83,7 @@ const StyledReactQuill = styled(ReactQuill)`
   @media (max-width: 1024px) {
     .ql-container {
       width: 100%; // 모바일 환경에서는 에디터의 높이를 줄입니다.
+      height: auto;
     }
     .ql-toolbar {
     }
@@ -92,19 +93,19 @@ const StyledReactQuill = styled(ReactQuill)`
 `;
 const ButtonContainer = styled.div`
   display: flex;
-  justify-content: flex-end;
+  justify-content: center;
   align-items: center;
   gap: 5px;
 `;
 const WriteComponent = () => {
   const [title, setTitle] = useState("");
-  const [text, setText] = useState("");
   const [content, setContent] = useState("");
   const navigate = useNavigate();
   const [categories, setCategories] = useState([]);
+  const [text, setText] = useState("");
   const [selectedCategory, setSelectedCategory] = useState("");
-  const [email, setEmail] = useState("");
-
+  const [posts, setPosts] = useState("");
+  const { id } = useParams();
   const quillRef = useRef(null);
 
   useEffect(() => {
@@ -112,67 +113,95 @@ const WriteComponent = () => {
       try {
         const rsp = await CommunityAxiosApi.cateList();
         setCategories(rsp.data);
-        setSelectedCategory(rsp.data[0].categoryId);
       } catch (error) {
         console.log(error);
       }
     };
-
-    const quillInstance = quillRef.current.getEditor();
-    const changeHandler = function () {
-      // 편집기 내용에서 이미지와 동영상 태그 찾기
-      const Delta = quillInstance.getContents();
-      const mediaTags = [];
-
-      Delta.ops.forEach((op) => {
-        if (op.insert && op.insert.image) {
-          mediaTags.push(op.insert.image);
-        }
-        if (op.insert && op.insert.video) {
-          mediaTags.push(op.insert.video);
-        }
-      });
-
-      // content에서 이미지와 동영상 태그 제거하고 상태 업데이트
-      const textOnly = quillInstance.getText();
-      setText(textOnly);
-      console.log(textOnly);
-    };
-
-    quillInstance.on("text-change", changeHandler);
-
     getCategories();
-
-    return () => {
-      // Cleanup function
-      quillInstance.off("text-change", changeHandler);
-    };
   }, []);
+
+  useEffect(() => {
+    if (id) {
+      const fetchData = async () => {
+        try {
+          const postResponse = await CommunityAxiosApi.getCommunityDetail(id);
+          setPosts(postResponse.data);
+          setTitle(postResponse.data.title);
+          setContent(postResponse.data.content);
+          setSelectedCategory(postResponse.data.categoryId);
+          console.log(postResponse.data);
+        } catch (error) {
+          console.log(error);
+        }
+      };
+      fetchData();
+    }
+  }, [id]);
+  useEffect(() => {
+    if (quillRef.current) {
+      const quillInstance = quillRef.current.getEditor();
+      const changeHandler = function () {
+        // 편집기 내용에서 이미지와 동영상 태그 찾기
+        const Delta = quillInstance.getContents();
+        const mediaTags = [];
+
+        Delta.ops.forEach((op) => {
+          if (op.insert && op.insert.image) {
+            mediaTags.push(op.insert.image);
+          }
+          if (op.insert && op.insert.video) {
+            mediaTags.push(op.insert.video);
+          }
+        });
+
+        // content에서 이미지와 동영상 태그 제거하고 상태 업데이트
+        const textOnly = quillInstance.getText();
+        setText(textOnly);
+        console.log(textOnly);
+      };
+
+      quillInstance.on("text-change", changeHandler);
+
+      return () => {
+        // Cleanup function
+        quillInstance.off("text-change", changeHandler);
+      };
+    }
+  }, [quillRef]);
   const PostRegister = async () => {
     try {
-      const response = await MemberApi.getMemberDetail();
+      let response = await MemberApi.getMemberDetail();
       const email = response.data.email;
-      setEmail(email);
 
-      if (!title.trim() || !content.trim()) {
-        alert("제목과 내용을 입력하세요.");
+      if (
+        !id &&
+        (!title.trim() || !content.trim() || !selectedCategory.trim())
+      ) {
+        alert("제목, 내용, 카테고리를 모두 입력해주세요.");
         return;
       }
+
       const communityDto = {
         title: title,
         content: content,
-        text: text,
+        text: content,
         categoryId: selectedCategory,
         email: email,
       };
-      const response2 = await CommunityAxiosApi.communityPost(communityDto);
-      console.log(response2.data);
-      if (response2.status === 200) {
-        alert("게시글이 등록되었습니다.");
-        navigate("/");
+
+      if (id) {
+        response = await CommunityAxiosApi.modifyCommunity(id, communityDto);
+      } else {
+        response = await CommunityAxiosApi.communityPost(communityDto);
+      }
+
+      if (response.status === 200) {
+        alert(id ? "게시글이 수정되었습니다." : "게시글이 등록되었습니다.");
+        navigate("/communitypage");
       }
     } catch (error) {
-      alert("게시글 등록에 실패했습니다.");
+      console.error("게시글 등록 또는 수정 중 오류:", error);
+      alert("게시글 등록 또는 수정 중 오류가 발생했습니다.");
     }
   };
 
@@ -200,9 +229,10 @@ const WriteComponent = () => {
           </WriteHeading>
           <Line />
           <CategorySelect
-            value={selectedCategory}
+            value={selectedCategory || ""} // selectedCategory가 undefined이면 빈 문자열로 설정
             onChange={(e) => setSelectedCategory(e.target.value)}
           >
+            <option value="">카테고리를 선택하세요.</option>
             {categories.map((category) => (
               <option key={category.categoryId} value={category.categoryId}>
                 {category.categoryName}
@@ -211,21 +241,24 @@ const WriteComponent = () => {
           </CategorySelect>
           <WriteBorder
             placeholder="제목을 입력해주세요."
+            value={title}
             onChange={(e) => setTitle(e.target.value)}
           />
           <StyledReactQuill
             ref={quillRef}
             placeholder="내용을 입력해주세요."
-            defaultValue={content}
+            value={content !== undefined ? content : ""}
             onChange={(value) => setContent(value)}
-            formats={["image"]}
             modules={modules}
-            readOnly={false}
           />
 
           <ButtonContainer>
-            <SmallButton onClick={() => navigate("/")}>취소</SmallButton>
-            <SmallButton onClick={PostRegister}>작성</SmallButton>
+            <MiddleButton onClick={() => navigate("/communitypage")}>
+              취소
+            </MiddleButton>
+            <MiddleButton onClick={PostRegister}>
+              {id ? "저장" : "작성"}
+            </MiddleButton>
           </ButtonContainer>
         </WriteSection>
       </Container>

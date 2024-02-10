@@ -2,7 +2,7 @@ import { ReactComponent as Down } from "../assets/imgs/communityImges/Down.svg";
 import { Routes, Route, Link, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import styled, { keyframes } from "styled-components";
-import { Main } from "../styles/Layouts";
+import { Main, Container } from "../styles/Layouts";
 import CommunityAxiosApi from "../api/CommunityAxios";
 
 import CommunityComponent from "../components/communityPage/CommunityComponent";
@@ -11,30 +11,14 @@ import WriteComponent from "../components/communityPage/CommunityWriteComponent"
 import CommunityDetailComponent from "../components/communityPage/CommunityDetailComponent";
 // import { SmallButton } from "../styles/styledComponents/StyledComponents";
 
-const Container = styled.div`
-  display: flex;
-  padding: 60px 170px;
-  justify-content: center;
-  align-items: center;
-  gap: 60px;
-  align-self: stretch;
-`;
-
-const Section = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 24px;
-  flex: 1;
-`;
-
 const CommunityList = styled.div`
   display: flex;
-  height: 70vh;
-  width: 100%;
+  padding: 0 10px 0 0;
+
   @media (max-width: 1024px) {
     flex-direction: column;
-    padding: 0;
+    align-items: center;
+    padding: 0 10px 0 10px;
   }
 `;
 const Aside = styled.div`
@@ -43,36 +27,35 @@ const Aside = styled.div`
   max-width: 264px;
   padding-bottom: 49.83px;
   flex-direction: column;
-  align-items: flex-end;
-  gap: 14.39px;
+  align-items: flex-start;
   flex-shrink: 0;
-  align-self: stretch;
   @media (max-width: 1024px) {
     max-width: 100%;
     padding-bottom: 0;
   }
 `;
-
+// 카테고리 전체
 const CommunityMenuList = styled.div`
   flex-direction: row;
+  margin-top: 10px;
   @media (max-width: 1024px) {
-    width: auto;
   }
 `;
+//카테고리 이름만
 const CommunityMenuItem = styled.div`
-  display: flex;
-  flex-direction: column;
+  background-color: #f3f3f3;
+
   @media (max-width: 1024px) {
     width: 100%;
     flex-direction: row;
+    display: none;
   }
 `;
+// //카테고리 리스트
 const CommunityLink = styled.div`
   display: flex;
-  margin: 10px 10px 10px 0px;
   align-items: center;
   justify-content: flex-start;
-  align-self: stretch;
 
   @media (max-width: 1024px) {
     width: 100%;
@@ -88,15 +71,17 @@ const CommunitySVG = styled.div`
   align-items: center;
   gap: 10px;
   align-self: stretch;
+
   @media (max-width: 1024px) {
     width: 100%;
   }
 `;
-const CommunityMenuText = styled.a`
+const CommunityMenuText = styled.div`
   justify-content: center;
   font-size: 1.2rem;
-  font-family: "noto sans";
   text-decoration: none;
+  margin: 10px 10px 10px 0px; // 칸넓이
+
   @media (max-width: 1024px) {
     width: 100%;
     text-align: center;
@@ -104,11 +89,12 @@ const CommunityMenuText = styled.a`
 `;
 
 const CommunityMenuButton = styled.div`
+  background-color: #f3f3f3;
   display: flex;
-  justify-content: flex-start;
-  padding: 10px 10px 10px 0px;
+  align-items: center;
   background-color: ${(props) => (props.isActive ? "#2446da" : "#fff")};
   color: ${(props) => (props.isActive ? "#fff" : "#333")};
+
   @media (max-width: 1024px) {
     width: 100%;
   }
@@ -131,15 +117,35 @@ const CommunityItem = styled.div`
 `;
 const CommunityItemList = styled.div`
   display: flex;
-  width: 100%;
   flex-direction: column;
   align-items: center;
+  justify-content: center;
+  border: 1px solid #2446da;
 
   @media (max-width: 1024px) {
     flex-direction: row;
+    display: none;
   }
 `;
 
+const StyledLink = styled(Link)`
+  color: #333;
+  text-decoration: none;
+
+  &:hover,
+  &:focus {
+    color: #2446da;
+  }
+`;
+const RotatedDown = styled(Down)`
+  transition: transform 0.3s ease-in-out;
+  transform: ${(props) =>
+    props.isRotated ? "rotate(180deg)" : "rotate(0deg)"};
+  display: block;
+  @media (max-width: 1024px) {
+    display: none;
+  }
+`;
 const CommunityPage = () => {
   const [isList, setIsList] = useState(false);
   const [isActive, setIsActive] = useState(false);
@@ -152,11 +158,7 @@ const CommunityPage = () => {
   const handleClick = () => {
     setIsActive(!isActive);
   };
-  const RotatedDown = styled(Down)`
-    transition: transform 0.3s ease-in-out;
-    transform: ${(props) =>
-      props.isRotated ? "rotate(180deg)" : "rotate(0deg)"};
-  `;
+
   useEffect(() => {
     const getCategories = async () => {
       try {
@@ -172,51 +174,54 @@ const CommunityPage = () => {
   }, []);
   return (
     <>
-      <Main>
+      <Main $justify="center" $align="center">
         <Container>
           <CommunityList>
             <Aside>
               <CommunityMenuList>
+                <StyledLink to="/communitypage/*">
+                  <CommunityLink>
+                    <CommunitySVG>
+                      <CommunityItem>
+                        <CommunityMenuText>Community</CommunityMenuText>
+                      </CommunityItem>
+                    </CommunitySVG>
+                  </CommunityLink>
+                </StyledLink>
                 <CommunityMenuItem>
-                  <Link to="/communitypage">
-                    <CommunityLink>
-                      <CommunitySVG>
-                        <CommunityItem>
-                          <CommunityMenuText>Community</CommunityMenuText>
-                        </CommunityItem>
-                      </CommunitySVG>
-                    </CommunityLink>
-                  </Link>
                   <CommunityLink>
                     <CommunityMenuButton
-                      isActive={isActive}
+                      isActive={isActive ? "true" : "false"}
                       onClick={handleClick}
                     >
                       <CommunityItem onClick={ListOpen}>
                         <CommunityMenuText>Category</CommunityMenuText>
                       </CommunityItem>
-                      <RotatedDown isRotated={isList}></RotatedDown>
+                      <RotatedDown
+                        isRotated={isList}
+                        style={{ fill: "#fff" }}
+                      ></RotatedDown>
                     </CommunityMenuButton>
                   </CommunityLink>
-                  {isList && (
-                    <CommunityItemList>
-                      {categories.map((category) => (
-                        <Link
-                          to={`/communitypage/${category.categoryId}`}
-                          key={category.categoryId}
-                        >
-                          <CommunityLink key={category.categoryId}>
-                            <CommunityItem>
-                              <CommunityMenuText>
-                                {category.categoryName}
-                              </CommunityMenuText>
-                            </CommunityItem>
-                          </CommunityLink>
-                        </Link>
-                      ))}
-                    </CommunityItemList>
-                  )}
                 </CommunityMenuItem>
+                {isList && (
+                  <CommunityItemList>
+                    {categories.map((category) => (
+                      <StyledLink
+                        to={`/communitypage/${category.categoryId}`}
+                        key={category.categoryId}
+                      >
+                        <CommunityLink key={category.categoryId}>
+                          <CommunityItem>
+                            <CommunityMenuText>
+                              {category.categoryName}
+                            </CommunityMenuText>
+                          </CommunityItem>
+                        </CommunityLink>
+                      </StyledLink>
+                    ))}
+                  </CommunityItemList>
+                )}
               </CommunityMenuList>
             </Aside>
             <Routes>
@@ -227,7 +232,7 @@ const CommunityPage = () => {
               />
               <Route path=":categoryId" element={<CommunityComponent />} />
               <Route path="detail/:id" element={<CommunityDetailComponent />} />
-              <Route path="write" element={<WriteComponent />} />
+              <Route path="write/:id" element={<WriteComponent />} />
             </Routes>
           </CommunityList>
         </Container>

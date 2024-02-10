@@ -119,7 +119,7 @@ const CommunityAxiosApi = {
   ) => {
     try {
       return await AxiosInstance.get(
-        Common.WEELV_DOMAIN + `/api/comment/list/${communityId}/page`,
+        Common.WEELV_DOMAIN + `/api/comment/list/${communityId}`,
         {
           params: {
             sortType,
@@ -136,43 +136,42 @@ const CommunityAxiosApi = {
   },
 
   // 댓글 쓰기
-  commentRegister: async (comment) => {
+  commentRegister: async (commentDto) => {
     try {
-      const tokenResponse = await Common.TakenToken(); // 토큰 가져오기
-      const email = tokenResponse.data;
-
       return await AxiosInstance.post(
         Common.WEELV_DOMAIN + `/api/comment/new`,
-        comment,
-        email
+        commentDto
       );
     } catch (error) {
       // 오류 처리
-      console.error("Error in communityPost API call", error);
+      console.error("Error in commentRegister API call", error);
       throw error;
     }
   },
 
   // 좋아요 보내기
-  likeIt: async (communityId, isLikted) => {
+  likeIt: async (communityId, isLiked, email) => {
     try {
-      const tokenResponse = await Common.TakenToken(); // 토큰 가져오기
-      const email = tokenResponse.data;
+      const encodedEmail = encodeURIComponent(email);
       return await AxiosInstance.put(
-        `${Common.WEELV_DOMAIN}/api/community/like/${communityId}/${isLikted}`,
-        email
+        `${Common.WEELV_DOMAIN}/api/community/like/${communityId}/${isLiked}?email=${encodedEmail}`
       );
     } catch (error) {
-      // 오류 처리
       console.error("Error in likeIt API call", error);
       throw error;
     }
   },
+
   // 상태조회
-  checkLikeStatus: async (communityId) => {
+  checkLikeStatus: async (communityId, email) => {
     try {
       return await AxiosInstance.get(
-        `${Common.WEELV_DOMAIN}/api/community/like/${communityId}`
+        `${Common.WEELV_DOMAIN}/api/community/like/${communityId}`,
+        {
+          params: {
+            email: email,
+          },
+        }
       );
     } catch (error) {
       // 오류 처리
@@ -180,6 +179,7 @@ const CommunityAxiosApi = {
       throw error;
     }
   },
+
   // 전체 댓글 수 조회
   getTotalComments: async (communityId) => {
     try {

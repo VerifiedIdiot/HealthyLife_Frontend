@@ -21,7 +21,8 @@ const Common = {
     const day = ("0" + date.getDate()).slice(-2);
     const hour = ("0" + date.getHours()).slice(-2);
     const minute = ("0" + date.getMinutes()).slice(-2);
-    return `${year}년 ${month}월 ${day}일 ${hour}시 ${minute}분`;
+    const seconds = ("0" + date.getSeconds()).slice(-2);
+    return `${year}/${month}/${day} ${hour}:${minute}:${seconds}`;
   },
   //토큰 게터 세터
   getAccessToken: () => {

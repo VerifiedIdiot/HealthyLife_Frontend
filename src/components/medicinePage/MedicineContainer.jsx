@@ -1,7 +1,7 @@
 import styled from "styled-components";
 import { useState, useEffect, useCallback } from "react";
 import { useSearch } from "../../contexts/SearchContext";
-
+import { type } from "@testing-library/user-event/dist/type";
 
 // ComboSearchBox 컴포넌트
 const ComboSearchContainer = styled.div`
@@ -42,9 +42,10 @@ const ComboInputField = styled.input`
 
 export const ComboSearchBox = () => {
   const { state, actions } = useSearch();
-  
-  const searchTypes = ["통합", "제품명", "제조사", "신고 번호"];
 
+  const searchTypes = ["통합", "제품명", "제조사", "신고 번호"];
+  
+  
   // 검색 유형과 쿼리 변경 핸들러
   const handleSearchTypeChange = (e) => {
     actions.setSearchType(e.target.value);
@@ -56,9 +57,13 @@ export const ComboSearchBox = () => {
 
   return (
     <ComboSearchContainer>
-      <ComboSelectBox value={state.searchType} onChange={handleSearchTypeChange}>
+      <ComboSelectBox
+        value={state.searchType}
+        onChange={handleSearchTypeChange}>
         {searchTypes.map((type) => (
-          <option key={type} value={type}>{type}</option>
+          <option key={type} value={type}>
+            {type}
+          </option>
         ))}
       </ComboSelectBox>
       <ComboInputField
@@ -70,7 +75,6 @@ export const ComboSearchBox = () => {
     </ComboSearchContainer>
   );
 };
-
 
 // ComboBox 컴포넌트
 
@@ -109,9 +113,8 @@ const DropdownItemName = styled.div`
   white-space: nowrap;
   h3 {
     font-size: 1rem;
-    
   }
-`
+`;
 
 const DropdownContent = styled.div`
   display: ${({ $isOpen }) => ($isOpen ? "flex" : "none")};
@@ -126,12 +129,16 @@ const DropdownContent = styled.div`
   z-index: 1;
   padding: 10px;
 
-  ${({ $position }) => $position === 'right' && `
+  ${({ $position }) =>
+    $position === "right" &&
+    `
     right: 50%;
     transform: translateX(-67%);
   `}
 
-  ${({ $position }) => $position === 'middle' && `
+  ${({ $position }) =>
+    $position === "middle" &&
+    `
     left: 50%;
     transform: translateX(-50%);
   `}
@@ -150,15 +157,15 @@ const ResetButton = styled.button`
   width: 80px;
   padding: 10px;
   right: 10px;
-  background-color: #4942E4; // 초기화 버튼 색상 변경
+  background-color: #4942e4; // 초기화 버튼 색상 변경
   color: white;
   border: none;
   transition: 0.2s ease-in;
   cursor: pointer;
   border-radius: 4px;
   &:hover {
-      background-color: #11009e;
-    }
+    background-color: #11009e;
+  }
 `;
 
 export const ComboBox = ({ comboBoxId, $position }) => {
@@ -172,7 +179,6 @@ export const ComboBox = ({ comboBoxId, $position }) => {
     // functionality 값으로 체크 상태 결정
     const isChecked = !!checkBoxStates[comboBoxId]?.[functionality];
     actions.handleCheckboxChange(comboBoxId, functionality, !isChecked);
-    
   };
 
   const handleReset = () => {
@@ -181,7 +187,9 @@ export const ComboBox = ({ comboBoxId, $position }) => {
   return (
     <SelectBox>
       <DropdownItem onClick={() => toggleComboBox(comboBoxId)}>
-      <DropdownItemName><h3>{comboBoxId}</h3></DropdownItemName>
+        <DropdownItemName>
+          <h3>{comboBoxId}</h3>
+        </DropdownItemName>
         {
           Object.keys(checkBoxStates[comboBoxId] || {}).filter(
             (key) => checkBoxStates[comboBoxId][key]
@@ -209,28 +217,18 @@ export const ComboBox = ({ comboBoxId, $position }) => {
 
 export const FilterDropdown = () => {
   const { state, actions } = useSearch();
-  const searchTypes = ["10개씩", "30개씩", "50개씩", "100개씩"];
+  const searchTypes = ["10", "30", "50", "100"];
 
- 
- 
-  const handleSearchTypeChange = async (e) => {
-    const newSize = extractNumber(e.target.value);
-    actions.setPageSize(newSize); 
-    actions.performSearch(); 
-    
-  };
-
-  // 숫자만 추출하는 함수
-  const extractNumber = (string) => {
-    const matches = string.match(/\d+/);
-    return matches ? parseInt(matches[0], 10) : null;
+  const handleSearchTypeChange = (e) => {
+    actions.setSize(e.target.value);
+    // console.log(e.target.value);
   };
 
   return (
-    <ComboSelectBox value={`${state.size}개씩`} onChange={handleSearchTypeChange}>
+    <ComboSelectBox value={state.size} onChange={handleSearchTypeChange}>
       {searchTypes.map((type) => (
         <option key={type} value={type}>
-          {type}
+          {type}개씩
         </option>
       ))}
     </ComboSelectBox>

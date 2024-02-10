@@ -128,19 +128,15 @@ export const SearchSection = () => {
   // Context에서 상태와 함수를 불러옵니다.
   const { state, actions } = useSearch();
   const { typeList } = state;
-  const {
-    toggleComboBox,
-    handleCheckboxChange,
-    setSearchQuery,
-    performSearch,
-  } = actions;
+  const {toggleComboBox} = actions;
 
   // 콤보박스 토글 핸들러: 콤보박스의 열림/닫힘 상태를 관리합니다.
   const handleToggleComboBox = (comboBoxId) => toggleComboBox(comboBoxId);
 
   // 검색 실행: 사용자가 설정한 조건에 따라 검색을 수행합니다.
   const handleSearch = () => {
-    actions.performSearch(); // 검색 실행
+    
+    actions.performSearch();
   };
   // typeList의 키를 정렬하여 UI에 순서대로 표시합니다.
   const orderedKeys = Object.keys(typeList).sort((a, b) => a.localeCompare(b));
@@ -169,7 +165,7 @@ export const SearchSection = () => {
                 <StyledButton
                   type="button"
                   onClick={handleSearch}
-                  onChange={actions.updateSearchConditions}>
+                  >
                   검색
                 </StyledButton>
               </ButtonItem>
@@ -228,7 +224,7 @@ const ResponsiveBoardBox = styled(Box)`
 `;
 
 export const BoardSection = () => {
-  const { state, actions } = useSearch();
+  const { state } = useSearch();
   const { totalCount } = state;
 
   return (
@@ -299,7 +295,7 @@ export const PaginationSection = () => {
 
   const goToPage = (pageNumber) => {
     actions.setPage(pageNumber); // 페이지 번호를 설정하는 액션 호출
-    actions.performSearch(); // 새 페이지 번호로 검색을 다시 수행
+    // actions.performSearch(); // 새 페이지 번호로 검색을 다시 수행
   };
 
   return (

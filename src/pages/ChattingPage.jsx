@@ -48,7 +48,7 @@ const ChattingPage = (props) => {
         )}
         {state === "CHATTING" && <Chatting roomId={chatNum} userId={userId} />}
       </ChatHeader>
-      {/* <FriendBox userId={64}/> */}
+      {/* <FriendBox userId={77}/> */}
     </>
   );
 };

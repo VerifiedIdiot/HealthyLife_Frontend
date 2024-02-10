@@ -1,4 +1,4 @@
-import React from "react";
+import React , { useEffect } from "react";
 import styled from "styled-components";
 import { useSearch } from "../../contexts/SearchContext";
 import { useTable } from "react-table";
@@ -35,8 +35,13 @@ const TableDataCell = styled.td`
 `
 
 const ReactTable = () => {
-  const { state } = useSearch();
-  const { searchResults } = state;
+  const { state , actions} = useSearch();
+  const { searchResults, searchExecuted } = state;
+  
+
+
+  
+
 
   // columns의 선언 및 초기화를 useTable 호출 이전으로 이동
   const columns = React.useMemo(
@@ -75,10 +80,12 @@ const ReactTable = () => {
     prepareRow,
   } = useTable({
     columns,
-    data: searchResults,
+    data: Array.isArray(searchResults) ? searchResults : [],
   });
-
+  
   return (
+
+    
     <TableArea {...getTableProps()}>
       <TableHeader>
         {headerGroups.map((headerGroup) => (

@@ -17,6 +17,31 @@ const MedicineApi = {
     }
   },
 
+  getSearchResults: async (params) => {
+    try {
+      const response = await axios.get(`${BACKEND_DOMAIN}/api/filter/search`, { params: params });
+      // console.log(response); // 응답 구조 확인
+      // console.log(response.data);
+      return response.data;
+      
+    } catch (error) {
+      console.error("Error in fetchSearchResults API call", error);
+      throw error;
+    }
+  },
+
+  getTotalCount: async () => {
+    try {
+      const response = await axios.get(`${BACKEND_DOMAIN}/api/filter/total-count`);
+      // console.log(response.data);
+      return response.data;
+    } catch (error) {
+      console.error("Error in fetchTotalCount API call", error);
+      throw error;
+    }
+  },
+
+
   // // 건강기능식품 관련 api
   // getSortByColumn: async (params) => {
   //   try {

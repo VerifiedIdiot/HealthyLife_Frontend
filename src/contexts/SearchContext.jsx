@@ -7,9 +7,7 @@ import React, {
 } from "react";
 import MedicineApi from "../api/MedicineApi";
 import { useApiRequest } from "../hooks/useApiRequest";
-import axios from "axios";
-
-const BACKEND_DOMAIN = process.env.REACT_APP_BACKEND_DOMAIN;
+import { useNavigate, useLocation } from "react-router-dom";
 
 const SearchContext = createContext();
 
@@ -21,10 +19,12 @@ const initialState = {
   searchType: "통합",
   originType: "",
   searchQuery: "",
-  page: null,
-  size: null,
+  page: 1,
+  size: 10,
   searchResults: [],
+  savedQuery: [],
   totalCount: null,
+
 };
 
 const searchReducer = (state, action) => {
@@ -59,6 +59,8 @@ const searchReducer = (state, action) => {
       return { ...state, originType: action.payload };
     case "SET_SEARCH_QUERY":
       return { ...state, searchQuery: action.payload };
+    case "SET_SEARCH_TRUE" :
+      return { ...state, pressSearch: action.payload};
     case "SET_PAGE":
       return { ...state, page: action.payload };
     case "SET_PAGE_SIZE":
@@ -68,8 +70,17 @@ const searchReducer = (state, action) => {
     case "SET_SEARCH_RESULTS":
       return {
         ...state,
-        searchResults: action.payload.results,
-        // totalCount: action.payload.totalCount,
+        searchResults: action.payload
+      };
+    case "SET_SAVED_QUERY" :
+      return {
+        ...state,
+        savedQuery: action.payload
+      }
+      case "SET_SEARCH_EXECUTED":
+      return {
+        ...state,
+        searchExecuted: action.payload,
       };
     default:
       return state;
@@ -78,11 +89,10 @@ const searchReducer = (state, action) => {
 
 export const SearchProvider = ({ children }) => {
   const [state, dispatch] = useReducer(searchReducer, initialState);
-
+  const navigate = useNavigate();
+  const location = useLocation();
   const {
     data: listByTypeData,
-    loading,
-    error,
   } = useApiRequest(MedicineApi.getListByType); // API 요청을 위한 커스텀 훅 사용
 
   useLayoutEffect(() => {
@@ -94,15 +104,20 @@ export const SearchProvider = ({ children }) => {
 
   useLayoutEffect(() => {
     actions.fetchTotalCount();
-    // console.log(state.totalCount);
+    
   }, []);
-
+  // 이전 검색 원복로직
   useEffect(() => {
-    // 상태가 변경되었을 때 performSearch 실행
-    actions.performSearch();
-  }, [state.size, state.page]);
+    // 컴포넌트가 마운트되었을 때 URL의 쿼리 스트링을 파싱하여 검색 조건 복원
+    const searchParams = Object.fromEntries(new URLSearchParams(location.search));
+    // 여기서는 searchParams 객체를 직접 performSearch 함수에 전달합니다.
+    // performSearch 함수 내에서 overrideParams를 처리하는 로직을 확인하세요.
+    actions.performSearch(searchParams);
+  }, [location.search]);
 
   const actions = {
+
+    // 검색 필터 영역
     toggleComboBox: (comboBoxId) =>
       dispatch({ type: "TOGGLE_COMBOBOX", payload: comboBoxId }),
     handleCheckboxChange: (comboBoxId, checkBoxId, isChecked) =>
@@ -118,30 +133,28 @@ export const SearchProvider = ({ children }) => {
       dispatch({ type: "SET_ORIGIN_TYPE", payload: originType }),
     setSearchQuery: (query) =>
       dispatch({ type: "SET_SEARCH_QUERY", payload: query }),
-    setPageSize: (size) => dispatch({ type: "SET_PAGE_SIZE", payload: size }),
-    setPage: (page) => dispatch({ type: "SET_PAGE", payload: page }),
-    fetchTotalCount: async () => {
-      try {
-        const response = await axios.get(`${BACKEND_DOMAIN}/api/filter/total-count`);
-        dispatch({
-          type: "SET_TOTAL_COUNT",
-          payload: response.data,
-        });
-        console.log(response.data);
-      } catch (error) {
-        console.error("전체 문서 수 조회 실패:", error);
-      }
-    },
-    performSearch: async () => {
-      const {
-        searchQuery,
-        size,
-        checkBoxStates,
-        searchType,
-        originType,
-        page,
-      } = state; // 이 부분에서 state를 직접 사용합니다.
+    setSavedQuery: (savedQuery) =>
+      dispatch({ type: "SET_SAVED_QUERY", payload: savedQuery}),
+      // 실제 검색 실행을 통제하는 액션
+      setSearchExecuted: (searchExecuted) => 
+    dispatch({ type: "SET_SEARCH_EXECUTED", payload:  searchExecuted }),
+    
 
+    // 최초의 페이지 랜더링시 엘라스틱서치 서버의 총 문서수를 가져오는 액션
+    fetchTotalCount: async ()  => {
+      const totalCount = await MedicineApi.getTotalCount();
+      dispatch({
+        type: "SET_TOTAL_COUNT",
+        payload: totalCount,
+      });
+      console.log(totalCount);
+    },
+
+
+    // 다수의 필터를 통해 "검색" 클릭시 실행되는 액션
+    performSearch: async (overrideParams = {}) => {
+      // 검색 파라미터가 함수 인자로 전달되었다면, 이를 사용하고, 그렇지 않으면 state에서 파라미터를 구성
+      const { searchQuery, checkBoxStates, searchType, originType, page } = state;
       let functionalities = [null];
       Object.entries(checkBoxStates).forEach(([key, value]) => {
         Object.entries(value).forEach(([functionality, isChecked]) => {
@@ -150,35 +163,37 @@ export const SearchProvider = ({ children }) => {
           }
         });
       });
-      // 배열을 콤마로 구분된 문자열로 변환
-      const functionalitiesParam = functionalities.join(",");
 
+      const functionalitiesParam = functionalities.join(",");
       const params = {
         query: searchQuery,
         functionalities: functionalitiesParam,
         filter: searchType,
         originType: originType,
-        page: page,
-        size: size,
+        page,
+        ...overrideParams, // URL에서 복원된 파라미터가 있다면 이를 우선적으로 사용
       };
 
-      try {
-        console.log(params);
+      const response = await MedicineApi.getSearchResults(params);
+      dispatch({
+        type: "SET_SEARCH_RESULTS",
+        payload: response,
+      });
 
-        const response = await axios.get(
-          `${BACKEND_DOMAIN}/api/filter/search`,
-          { params }
-        );
-        console.log(response.data); // API 응답 확인
-        dispatch({
-          type: "SET_SEARCH_RESULTS",
-          payload: { results: response.data, totalCount: response.data.length },
-        });
-      } catch (error) {
-        console.error("검색 실패:", error);
+      // URL 쿼리 스트링 업데이트. 첫 로딩 또는 URL에서 복원될 때는 실행하지 않음.
+      if (Object.keys(overrideParams).length === 0) {
+        const query = new URLSearchParams(params).toString();
+        navigate(`?${query}`); // 현재 검색 조건을 URL 쿼리 스트링으로 반영
       }
     },
   };
+
+  useEffect(() => {
+    // 컴포넌트가 마운트되었을 때 URL의 쿼리 스트링을 파싱하여 검색 조건 복원
+    const searchParams = Object.fromEntries(new URLSearchParams(location.search));
+    actions.performSearch(searchParams); // URL에서 복원된 검색 파라미터를 사용하여 검색 수행
+  }, [location.search]); // location.search가 변경될 때마다 이 효과를 재실행
+
 
   return (
     <SearchContext.Provider value={{ state, actions }}>

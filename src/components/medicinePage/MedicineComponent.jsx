@@ -295,7 +295,9 @@ export const PaginationSection = () => {
 
   const goToPage = (pageNumber) => {
     actions.setPage(pageNumber); // 페이지 번호를 설정하는 액션 호출
-    // actions.performSearch(); // 새 페이지 번호로 검색을 다시 수행
+    actions.performSearch({page : pageNumber}); // 새 페이지 번호로 검색을 다시 수행
+
+    
   };
 
   return (

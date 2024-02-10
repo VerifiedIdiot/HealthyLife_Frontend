@@ -218,14 +218,19 @@ export const ComboBox = ({ comboBoxId, $position }) => {
 export const FilterDropdown = () => {
   const { state, actions } = useSearch();
   const searchTypes = ["10", "30", "50", "100"];
+  const { size } = state;
 
-  const handleSearchTypeChange = (e) => {
-    actions.setSize(e.target.value);
-    // console.log(e.target.value);
+  const handleSize = (e) => {
+    const size = e.target.value;
+    // Dispatch an action to update the size in the context
+    actions.setSize(size);
+    // Perform the search with the new size
+    actions.performSearch({ size: size });
+    
   };
 
   return (
-    <ComboSelectBox value={state.size} onChange={handleSearchTypeChange}>
+    <ComboSelectBox value={state.size} onChange={handleSize}>
       {searchTypes.map((type) => (
         <option key={type} value={type}>
           {type}개씩

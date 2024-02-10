@@ -16,7 +16,7 @@ const MedicinePage = () => {
       <Container $height="auto">
         <SearchSection/>
         <BoardSection />
-        {/* <PaginationSection /> */}
+        <PaginationSection />
       </Container>
     </Main>
     </SearchProvider>

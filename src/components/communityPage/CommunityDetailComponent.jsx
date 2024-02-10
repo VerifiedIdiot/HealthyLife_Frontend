@@ -79,7 +79,7 @@ const ButtonContainer = styled.div`
 `;
 
 const LargeInput = styled.textarea`
-  width: calc(100%-10px);
+  width: calc(100% - 10px);
   height: 100px;
   border-radius: 5px;
   background: rgba(255, 255, 255, 0.9);
@@ -101,7 +101,7 @@ const CenterFormContainer = styled.div`
   align-items: center;
   width: 100%;
   min-height: 200px;
-  max-height: 400px;
+  max-height: 350px;
   border-bottom: 1px solid #c4c4c4;
   overflow-y: scroll;
   margin-bottom: 10px;
@@ -117,23 +117,53 @@ const RotatedDown = styled(Down)`
 `;
 
 const CommentBox = styled.div`
-  width: 100%;
-  border-radius: 5px;
-  background: rgba(255, 255, 255, 0.9);
-  resize: none;
-  border: 1px solid #c4c4c4;
+  display: flex;
 `;
 
 const CommentNickname = styled.p`
   color: #2446da;
   font-weight: bold;
-  cursor: pointer;
+  margin-left: 5px;
+  margin-top: 5px;
 `;
-const HeadText = styled.span`
-  cursor: pointer;
-  border: 1px solid red;
+const HeadText = styled.div`
+  justify-content: flex-start;
+  align-items: center;
+  display: flex;
+  margin: 5px;
+  font-size: 0.8rem;
+  word-break: break-word;
 `;
-const CommentContent = styled.div``;
+const CommentContent = styled.div`
+  border-radius: 5px;
+  background: rgba(255, 255, 255, 0.9);
+  resize: none;
+  border: 1px solid #c4c4c4;
+  margin-bottom: 5px;
+  height: auto;
+  width: 100%;
+`;
+const CommentContainer = styled.div`
+  height: 15vh;
+  overflow-y: scroll;
+`;
+const CommentItem = styled.div`
+  display: flex;
+  flex-direction: column;
+`;
+const Day = styled.div`
+  display: flex;
+  font-size: 0.6rem;
+`;
+const Img = styled.img`
+  border-radius: 50px;
+  height: 50px;
+  width: 50px;
+`;
+const Box = styled.div`
+  display: flex;
+  align-items: center;
+`;
 const CommunityDetailComponent = () => {
   const { id } = useParams();
   const [isLiked, setIsLiked] = useState(""); // 좋아요 상태를 저장하는 상태
@@ -141,6 +171,8 @@ const CommunityDetailComponent = () => {
   const [showPostRoom, setShowPostRoom] = useState(false); // PostRoom 표시 여부 상태
   const [comments, setComments] = useState([]);
   const [nickName, setNickName] = useState("");
+  const [photo, setPhoto] = useState("");
+
   const [email, setEmail] = useState("");
   const navigate = useNavigate();
   const [currentCommentPage, setCurrentCommentPage] = useState(0);
@@ -151,6 +183,7 @@ const CommunityDetailComponent = () => {
         const memberDetail = await MemberApi.getMemberDetail();
         setNickName(memberDetail.data.nickName);
         setEmail(memberDetail.data.email);
+        setPhoto(memberDetail.data.image);
         // 게시물 정보 가져오기
         const postResponse = await CommunityAxiosApi.getCommunityDetail(id);
         setPost(postResponse.data);
@@ -239,7 +272,6 @@ const CommunityDetailComponent = () => {
           </TitleContent>
         </FormContainer>
         <Line2 />
-
         <FormContainer>
           <DetailInfoContent>
             작성자 {post.nickName}, 좋아요
@@ -266,27 +298,38 @@ const CommunityDetailComponent = () => {
             </>
           )}
         </ButtonContainer>
-        {comments &&
-          comments.map((comment, communityId) => (
-            <CommentBox key={communityId}>
-              <CommentContent>
-                <CommentNickname>{comment.nickName}</CommentNickname>
-                <>{Common.formatDate(comment.regDate)}</>
-                <HeadText>{comment.content}</HeadText>
-              </CommentContent>
-            </CommentBox>
-          ))}
-
-        {currentCommentPage > 0 && (
-          <button onClick={() => setCurrentCommentPage(currentCommentPage - 1)}>
-            이전
-          </button>
-        )}
-        {currentCommentPage + 1 < totalCommentPages && (
-          <button onClick={() => setCurrentCommentPage(currentCommentPage + 1)}>
-            다음
-          </button>
-        )}
+        <CommentContainer>
+          <CommentItem>
+            {comments &&
+              comments.map((comment, communityId) => (
+                <CommentBox key={communityId}>
+                  <Img src={photo} alt="Member Photo" />
+                  <CommentContent>
+                    <Box>
+                      <CommentNickname>{comment.nickName}</CommentNickname>
+                      &nbsp;
+                      <Day>{Common.timeFromNow(comment.regDate)}</Day>
+                    </Box>
+                    <HeadText>{comment.content}</HeadText>
+                  </CommentContent>
+                </CommentBox>
+              ))}
+          </CommentItem>
+          {currentCommentPage > 0 && (
+            <button
+              onClick={() => setCurrentCommentPage(currentCommentPage - 1)}
+            >
+              이전
+            </button>
+          )}
+          {currentCommentPage + 1 < totalCommentPages && (
+            <button
+              onClick={() => setCurrentCommentPage(currentCommentPage + 1)}
+            >
+              다음
+            </button>
+          )}
+        </CommentContainer>
         <FormContainer>
           {nickName}
           <CommentButton onClick={() => setShowPostRoom(!showPostRoom)}>

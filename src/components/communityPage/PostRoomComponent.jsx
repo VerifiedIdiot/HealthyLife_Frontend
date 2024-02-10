@@ -35,6 +35,19 @@ const CommentForm = styled.form``;
 const PostRoom = () => {
   const [content, setContent] = useState("");
   const { id } = useParams();
+  const [comments, setComments] = useState([]);
+
+  useEffect(() => {
+    loadComments();
+  }, []); //
+  const loadComments = async () => {
+    try {
+      const response = await CommunityAxiosApi.getCommentList(id);
+      setComments(response.data);
+    } catch (error) {
+      console.error("댓글 목록 불러오기 오류:", error);
+    }
+  };
 
   const CommentWrite = async () => {
     try {
@@ -56,7 +69,7 @@ const PostRoom = () => {
         // 입력 필드 초기화
         setContent("");
         // 댓글 목록 다시 불러오기
-        PostRoom();
+        loadComments();
       }
     } catch (error) {
       console.error("댓글 등록 오류:", error);

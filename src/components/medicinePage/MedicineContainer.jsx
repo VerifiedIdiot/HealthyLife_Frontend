@@ -42,7 +42,7 @@ const ComboInputField = styled.input`
 
 export const ComboSearchBox = () => {
   const { state, actions } = useSearch();
-  const searchTypes = ["통합", "제품명", "제조사", "신고 번호"];
+  const searchTypes = ["통합", "제품명", "제조사", "신고번호"];
   const navigate = useNavigate();
   
   

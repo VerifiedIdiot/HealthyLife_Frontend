@@ -36,6 +36,7 @@ import InformationPage from "./pages/InformationPage";
 import MyPageEdit from "./pages/MyPageEdit";
 import WriteComponent from "./components/communityPage/CommunityWriteComponent";
 import UserStore from "./contexts/UserStore";
+import AdminPage from "./pages/AdminPage";
 
 function App() {
   // 방문자 추적 커스텀 훅
@@ -56,6 +57,7 @@ function App() {
               <Route path="/join/payment" element={<PaymentPage />} />
               <Route path="/auth" element={<Kakao />} />
               <Route path="/test" element={<ChattingPage />} />
+              <Route path="/ad" element={<AdminPage />} />
               {/*다이나믹한 헤더와 푸터가 포함된 라우트 그룹 */}
               <Route element={<DynamicHeaderFooter />}></Route>
               {/*일반 헤더푸터만 포함된 라우트 그룹 */}

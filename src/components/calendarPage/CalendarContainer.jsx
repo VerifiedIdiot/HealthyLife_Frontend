@@ -16,7 +16,7 @@ import {
   SearchResultContainer,
 } from "./CalendarStyle";
 
-export const MealInputBox = ({ closeModal, mealType, onAddItem }) => {
+export const MealInputBox = ({ closeModal, mealType }) => {
   const [searchQuery, setSearchQuery] = useState("");
   const [searchResults, setSearchResults] = useState([]);
   const [selectedItem, setSelectedItem] = useState({});
@@ -27,20 +27,20 @@ export const MealInputBox = ({ closeModal, mealType, onAddItem }) => {
   };
 
   const handleSearchResultClick = async (item) => {
-    setSelectedItem({ meal_name: item.name});
+    setSelectedItem({ meal_name: item.name });
     setSearchQuery(item.name);
     // console.log("확인필요", mealType);
   };
-  
+
   const handleAddClick = async (mealType) => {
     if (Object.keys(selectedItem).length > 0) {
       try {
         const mealName = selectedItem.meal_name;
-        onAddItem(mealType, mealName);
-        console.log(mealType);
+        console.log(mealType, mealName);
         closeModal();
+        setSelectedItem({ meal_type: mealType, meal_name: mealName });
       } catch (e) {
-        console.error("데이터 저장 중 오류 발생", e);
+        console.error("데이터 가져오는 중 오류 발생", e);
       }
     }
   };
@@ -79,34 +79,61 @@ export const MealInputBox = ({ closeModal, mealType, onAddItem }) => {
         {searchQuery && (
           <SearchResultContainer>
             {searchResults.map((item, index) => (
-              <div key={index} onClick={() => handleSearchResultClick(item, mealType)}>
+              <div
+                key={index}
+                onClick={() => handleSearchResultClick(item, mealType)}
+              >
                 <p>{item.name}</p>
               </div>
             ))}
           </SearchResultContainer>
         )}
 
-        <InputAddBtn onClick={() =>handleAddClick(mealType)}>추가하기</InputAddBtn>
+        <InputAddBtn onClick={() => handleAddClick(mealType)}>
+          추가하기
+        </InputAddBtn>
       </ComboBoxContainer>
     </>
   );
 };
 
-export const MealBox = () => {
+export const MealBox = (email) => {
   const MealTypes = ["아침", "점심", "저녁"];
   const [modalOpen, setModalOpen] = useState(false);
   const [selectedMealType, setSelectedMealType] = useState("");
-  const [addedMeals, setAddedMeals] = useState({});
+  const [selectedItem, setSelectedItem] = useState({});
 
   const openModal = (mealType) => {
     setModalOpen(true);
     setSelectedMealType(mealType);
-    console.log("테스트 : "+mealType);
+    console.log("테스트 : " + mealType);
   };
 
   const closeModal = () => {
     setModalOpen(false);
   };
+
+  const MealInput = ({ mealType, mealName }) => {
+    console.log("meal test", mealType, mealName)
+    return (
+      <div>
+        <h3>{mealType}</h3>
+        <h3>{mealName}</h3>
+      </div>
+    );
+  };
+
+  useEffect(() => {
+    console.log(selectedItem.mealName);
+    try {
+      const response = async (email) => await CalendarApi.mealInfo()
+      console.log(response.data);
+    } catch (error) {
+      console.log(error);
+    }
+
+
+  },[selectedItem])
 
   return (
     <>
@@ -114,20 +141,11 @@ export const MealBox = () => {
         <ComboSelectBox>
           {MealTypes.map((mealType) => (
             <ComboBox key={mealType}>
-              <MealLabel>{mealType}</MealLabel>
-              <MealInput>
-                {Object.entries(addedMeals).map(([addedMealType, meal]) => {
-                  if (addedMealType === mealType) {
-                    return (
-                      <div key={mealType}>
-                        <h3>{addedMealType}</h3>
-                        <h3>{meal}</h3>
-                      </div>
-                    );
-                  }
-                  return null;
-                })}
-              </MealInput>
+              <MealInput
+                mealType={mealType}
+                mealName={selectedItem.mealName}
+              />
+              <p>{selectedItem.mealName}</p>
               <AddButton onClick={() => openModal(mealType)}> + </AddButton>
             </ComboBox>
           ))}
@@ -137,7 +155,8 @@ export const MealBox = () => {
         <MealInputBox
           closeModal={closeModal}
           mealType={selectedMealType}
-          setSelectedMealType={setSelectedMealType}
+          selectedItem={setSelectedItem}
+
           // onAddItem={handleMealAdd}
         />
       </MiddleModal>

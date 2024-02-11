@@ -1,6 +1,6 @@
 import React from "react";
 import useTrackUserVisit from "./hooks/useTrackUserVisit";
-import { SearchProvider } from './contexts/SearchContext';
+import { SearchProvider } from "./contexts/SearchContext";
 import useMobileView from "./hooks/useMobileView";
 import GlobalStyle, { Wrapper } from "./styles/GlobalStyle";
 import {
@@ -57,11 +57,10 @@ function App() {
               <Route path="/auth" element={<Kakao />} />
               <Route path="/test" element={<ChattingPage />} />
               {/*다이나믹한 헤더와 푸터가 포함된 라우트 그룹 */}
-              <Route element={<DynamicHeaderFooter />}>
-                <Route path="/" element={<HomePage />} />
-              </Route>
+              <Route element={<DynamicHeaderFooter />}></Route>
               {/*일반 헤더푸터만 포함된 라우트 그룹 */}
               <Route element={<HeaderFooter />}>
+                <Route path="/" element={<HomePage />} />
                 <Route path="/medicine" element={<MedicinePage />} />
                 <Route path="/inbody" element={<InbodyPage />} />
                 <Route path="/information" element={<InformationPage />} />

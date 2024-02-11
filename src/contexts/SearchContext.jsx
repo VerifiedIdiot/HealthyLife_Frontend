@@ -28,6 +28,9 @@ const initialState = {
 const searchReducer = (state, action) => {
   switch (action.type) {
     case "SET_TYPE_LIST":
+      if (state.typeList === action.payload) {
+        return state;
+      }
       return { ...state, typeList: action.payload };
     case "TOGGLE_COMBOBOX":
       return {
@@ -52,20 +55,36 @@ const searchReducer = (state, action) => {
         checkBoxStates: { ...state.checkBoxStates, [action.payload]: {} },
       };
     case "SET_SEARCH_TYPE":
+      if (state.searchType === action.payload) {
+        return state;
+      }
       return { ...state, searchType: action.payload };
     case "SET_ORIGIN_TYPE":
+      if (state.originType === action.payload) {
+        return state;
+      }
       return { ...state, originType: action.payload };
     case "SET_SEARCH_QUERY":
+      if (state.searchQuery === action.payload) {
+        return state;
+      }
       return { ...state, searchQuery: action.payload };
-    case "SET_SEARCH_TRUE":
-      return { ...state, pressSearch: action.payload };
-    case "SET_PAGE":
-      return { ...state, page: action.payload };
+      case "SET_PAGE":
+        if (state.page === action.payload) {
+          return state; 
+        }
+        return { ...state, page: action.payload };
     case "SET_SIZE":
+        if (state.size === action.payload) {
+          return state;
+        }
       return { ...state, size: action.payload };
     case "SET_TOTAL_COUNT":
       return { ...state, totalCount: action.payload };
     case "SET_SEARCH_RESULTS":
+      if (state.searchResults === action.payload) {
+        return state;
+      }
       return {
         ...state,
         searchResults: action.payload,
@@ -97,11 +116,29 @@ export const SearchProvider = ({ children }) => {
     const searchParams = Object.fromEntries(
       new URLSearchParams(location.search)
     );
-    // 여기서는 searchParams 객체를 직접 performSearch 함수에 전달합니다.
-    // performSearch 함수 내에서 overrideParams를 처리하는 로직을 확인하세요.
+    // 여기서는 searchParams 객체를 직접 performSearch 함수에 전달.
+    // performSearch 함수 내에서 overrideParams를 처리하는 로직을 확인.
     actions.performSearch(searchParams);
     console.log(searchParams);
   }, [location.search]);
+
+  useEffect(() => {
+    const searchParams = new URLSearchParams(location.search);
+    const page = searchParams.get('page') || '1'; // 기본값을 제공
+    const size = searchParams.get('size') || '10'; // 기본값을 제공
+    const searchType = searchParams.get('searchType') || '통합'; // 기본값 설정
+    const searchQuery = searchParams.get('searchQuery') || ''; // 기본값 설정
+
+    actions.setSearchType(searchType);
+    actions.setSearchQuery(searchQuery);
+    
+    // 상태 업데이트 함수 호출
+    actions.setPage(page);
+    actions.setSize(size);
+  }, []);
+
+
+
 
   const actions = {
     // 검색 필터 영역
@@ -196,13 +233,6 @@ export const SearchProvider = ({ children }) => {
       }
     },
   };
-
-  useEffect(() => {
-    // 컴포넌트가 마운트되었거나 location.search가 변경될 때 실행됩니다.
-    // URL의 쿼리 스트링을 파싱하여 검색 조건을 복원합니다.
-    const searchParams = Object.fromEntries(new URLSearchParams(location.search));
-    actions.performSearch(searchParams); // 복원된 검색 파라미터를 사용하여 검색을 수행합니다.
-  }, [location.search]); // location.search가 변경될 때마다 이 효과를 재실행합니다.
 
   return (
     <SearchContext.Provider value={{ state, actions }}>

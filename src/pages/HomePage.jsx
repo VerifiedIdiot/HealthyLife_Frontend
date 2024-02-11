@@ -7,42 +7,27 @@ import {
   Item,
   Element,
 } from "../styles/Layouts";
-import sample from '../assets/imgs/sample.jpg'
-import styled from "styled-components";
+import HomeSlide from "../components/homePage/HomeSlide";
+import HomeCal from "../components/homePage/HomeCal";
 
-const StyledImageContainer = styled.img.attrs({
-  className: "image-container",
-})`
-  height: 100vh;
-  object-fit: cover;
-`
 const HomePage = () => {
   return (
     <>
-      <Main $width = "100%">
-        <Container $height = "100vh">
-          <StyledImageContainer $img src={sample}/>
+      <Main $width="100%">
+        <Container
+          $height="auto"
+          $align="center"
+          $shadow="none"
+          style={{ fontSize: "70px", fontWeight: "bold", marginTop: "10px" }}
+        >
+          SMART FITNESS COMPANION, Wellv
         </Container>
-        {/* <Container $height = "100vh">
-          
-        </Container> */}
-        {/* <Container></Container>
-        <Container $border="1px solid black">
-          <Section $border="1px solid black">
-            <p>페이지입니다.</p>
-          </Section>
-          <Section $border="1px solid black">
-            <p>페이지입니다.</p>
-          </Section>
+        <Container $height="auto" $shadow="none">
+          <HomeSlide />
         </Container>
         <Container>
-          <Section $border="1px solid black">
-            <p>페이지입니다.</p>
-          </Section>
-          <Section $border="1px solid black">
-            <p>페이지입니다.</p>
-          </Section>
-        </Container> */}
+          <HomeCal />
+        </Container>
       </Main>
     </>
   );

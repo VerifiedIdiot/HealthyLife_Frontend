@@ -1,7 +1,7 @@
 import styled from "styled-components";
-import { useState, useEffect, useCallback } from "react";
 import { useSearch } from "../../contexts/SearchContext";
-import { type } from "@testing-library/user-event/dist/type";
+import { useNavigate } from "react-router-dom";
+import { useCallback, useMemo } from "react";
 
 // ComboSearchBox 컴포넌트
 const ComboSearchContainer = styled.div`
@@ -42,14 +42,19 @@ const ComboInputField = styled.input`
 
 export const ComboSearchBox = () => {
   const { state, actions } = useSearch();
-
   const searchTypes = ["통합", "제품명", "제조사", "신고 번호"];
+  const navigate = useNavigate();
   
   
   // 검색 유형과 쿼리 변경 핸들러
-  const handleSearchTypeChange = (e) => {
-    actions.setSearchType(e.target.value);
-  };
+  const handleSearchTypeChange = useCallback((e) => {
+    const newSearchType = e.target.value;
+    actions.setSearchType(newSearchType);
+
+    const searchParams = new URLSearchParams(window.location.search);
+    searchParams.set('searchType', newSearchType);
+    navigate(`?${searchParams.toString()}`, { replace: true });
+  }, [actions, navigate]);
 
   const handleSearchQueryChange = (e) => {
     actions.setSearchQuery(e.target.value);
@@ -69,7 +74,7 @@ export const ComboSearchBox = () => {
       <ComboInputField
         type="text"
         placeholder="검색어를 입력하세요."
-        value={state.searchQuery}
+        // value={state.searchQuery}
         onChange={handleSearchQueryChange}
       />
     </ComboSearchContainer>
@@ -175,27 +180,26 @@ export const ComboBox = ({ comboBoxId, $position }) => {
   const $isOpen = state.openComboBox === comboBoxId;
 
   // 체크박스 변경 핸들러
-  const handleChange = (functionality) => {
-    // functionality 값으로 체크 상태 결정
+  const handleChange = useCallback((functionality) => {
     const isChecked = !!checkBoxStates[comboBoxId]?.[functionality];
     actions.handleCheckboxChange(comboBoxId, functionality, !isChecked);
-  };
+  }, [checkBoxStates, comboBoxId, actions.handleCheckboxChange]);
 
-  const handleReset = () => {
+  const handleReset = useCallback(() => {
     actions.resetComboBox(comboBoxId);
-  };
+  }, [actions, comboBoxId]);
+
+  const checkedItemsCount = useMemo(() => {
+    return Object.keys(checkBoxStates[comboBoxId] || {}).filter(key => checkBoxStates[comboBoxId][key]).length;
+  }, [checkBoxStates, comboBoxId])
+  
   return (
     <SelectBox>
       <DropdownItem onClick={() => toggleComboBox(comboBoxId)}>
         <DropdownItemName>
           <h3>{comboBoxId}</h3>
         </DropdownItemName>
-        {
-          Object.keys(checkBoxStates[comboBoxId] || {}).filter(
-            (key) => checkBoxStates[comboBoxId][key]
-          ).length
-        }
-        개 <span>▼</span>
+        {checkedItemsCount}개 <span>▼</span>
       </DropdownItem>
 
       <DropdownContent $isOpen={$isOpen} $position={$position}>
@@ -217,17 +221,19 @@ export const ComboBox = ({ comboBoxId, $position }) => {
 
 export const FilterDropdown = () => {
   const { state, actions } = useSearch();
+  const navigate = useNavigate(); // useNavigate 훅 추가
+  
   const searchTypes = ["10", "30", "50", "100"];
-  const { size } = state;
+  
 
-  const handleSize = (e) => {
-    const size = e.target.value;
-    // Dispatch an action to update the size in the context
-    actions.setSize(size);
-    // Perform the search with the new size
-    actions.performSearch({ size: size });
-    
-  };
+  const handleSize = useCallback((e) => {
+    const newSize = e.target.value;
+    actions.setSize(newSize);
+  
+    const searchParams = new URLSearchParams(window.location.search);
+    searchParams.set('size', newSize);
+    navigate(`?${searchParams.toString()}`, { replace: true });
+  }, [actions, navigate]);
 
   return (
     <ComboSelectBox value={state.size} onChange={handleSize}>

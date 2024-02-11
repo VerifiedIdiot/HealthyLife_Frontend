@@ -1,6 +1,7 @@
-import { useState, useEffect, useLayoutEffect } from "react";
+import { useCallback, useMemo } from "react";
 import { useSearch } from "../../contexts/SearchContext";
-import { useTable } from "react-table";
+import { useNavigate } from "react-router-dom";
+
 import ReactTable from "./ReactTable";
 import styled from "styled-components";
 import { Section, Area, Box, Item } from "../../styles/Layouts";
@@ -128,14 +129,13 @@ export const SearchSection = () => {
   // Context에서 상태와 함수를 불러옵니다.
   const { state, actions } = useSearch();
   const { typeList } = state;
-  const {toggleComboBox} = actions;
+  const { toggleComboBox } = actions;
 
   // 콤보박스 토글 핸들러: 콤보박스의 열림/닫힘 상태를 관리합니다.
   const handleToggleComboBox = (comboBoxId) => toggleComboBox(comboBoxId);
 
   // 검색 실행: 사용자가 설정한 조건에 따라 검색을 수행합니다.
   const handleSearch = () => {
-    
     actions.performSearch();
   };
   // typeList의 키를 정렬하여 UI에 순서대로 표시합니다.
@@ -162,10 +162,7 @@ export const SearchSection = () => {
             <ResponsiveItem>
               <ComboSearchBox />
               <ButtonItem>
-                <StyledButton
-                  type="button"
-                  onClick={handleSearch}
-                  >
+                <StyledButton type="button" onClick={handleSearch}>
                   검색
                 </StyledButton>
               </ButtonItem>
@@ -264,7 +261,7 @@ const ResponsivePaginationSection = styled(Section)`
 const ResponsivePaginationArea = styled(Area)`
   display: flex;
   justify-content: center;
-  
+
   height: 90%;
   width: 95%;
 `;
@@ -273,12 +270,24 @@ const PaginationButton = styled.button`
   height: 30px;
   width: 30px;
   margin-right: 2px;
-`
+  padding: 10px;
+  border: 1px solid #ccc;
+  background-color: white;
+  cursor: pointer;
+
+  &:hover {
+    background-color: #f0f0f0;
+  }
+
+  /* 현재 선택된 페이지 버튼 스타일 */
+  background-color: ${(props) => (props.$isActive ? "#007bff" : "white")};
+  color: ${(props) => (props.$isActive ? "white" : "black")};
+`;
 
 export const PaginationSection = () => {
   const { state, actions } = useSearch();
   const { page, size, totalCount } = state;
-
+  const navigate = useNavigate();
   const totalPages = Math.ceil(totalCount / size);
   // 페이지 범위를 계산하여 현재 페이지가 속한 그룹의 첫 페이지를 결정
   const currentPageGroupStart = Math.floor(page / 10) * 10 + 1;
@@ -289,40 +298,47 @@ export const PaginationSection = () => {
     endPage = totalPages;
   }
 
-  const pageNumbers = [...Array(endPage - startPage + 1).keys()].map(
-    (i) => startPage + i
+  const pageNumbers = useMemo(() => {
+    return [...Array(endPage - startPage + 1).keys()].map((i) => startPage + i);
+  }, [startPage, endPage]);
+
+  const goToPage = useCallback(
+    (pageNumber) => {
+      actions.setPage(pageNumber);
+      actions.performSearch({ page: pageNumber });
+
+      const searchParams = new URLSearchParams(window.location.search);
+      searchParams.set("page", pageNumber.toString());
+      navigate(`?${searchParams.toString()}`, { replace: true });
+    },
+    [actions, navigate]
   );
-
-  const goToPage = (pageNumber) => {
-    actions.setPage(pageNumber); // 페이지 번호를 설정하는 액션 호출
-    actions.performSearch({page : pageNumber}); // 새 페이지 번호로 검색을 다시 수행
-
-    
-  };
 
   return (
     <>
       <ResponsivePaginationSection>
         <ResponsivePaginationArea>
-          
-            {/* 이전 페이지 그룹으로 이동 */}
-            {startPage > 1 && (
-              <PaginationButton onClick={() => goToPage(startPage - 10)}>{"<"}</PaginationButton>
-            )}
-            {/* 페이지 번호 버튼 */}
-            {pageNumbers.map((pageNumber) => (
-              <PaginationButton
-                key={pageNumber}
-                className={page === pageNumber ? "active" : ""}
-                onClick={() => goToPage(pageNumber)}>
-                {pageNumber}
-              </PaginationButton>
-            ))}
-            {/* 다음 페이지 그룹으로 이동 */}
-            {endPage < totalPages && (
-              <PaginationButton onClick={() => goToPage(endPage + 1)}>{">"}</PaginationButton>
-            )}
-          
+          {/* 이전 페이지 그룹으로 이동 */}
+          {startPage > 1 && (
+            <PaginationButton onClick={() => goToPage(startPage - 10)}>
+              {"<"}
+            </PaginationButton>
+          )}
+          {/* 페이지 번호 버튼 */}
+          {pageNumbers.map((pageNumber) => (
+            <PaginationButton
+              key={pageNumber}
+              $isActive={page === pageNumber}
+              onClick={() => goToPage(pageNumber)}>
+              {pageNumber}
+            </PaginationButton>
+          ))}
+          {/* 다음 페이지 그룹으로 이동 */}
+          {endPage < totalPages && (
+            <PaginationButton onClick={() => goToPage(endPage + 1)}>
+              {">"}
+            </PaginationButton>
+          )}
         </ResponsivePaginationArea>
       </ResponsivePaginationSection>
     </>

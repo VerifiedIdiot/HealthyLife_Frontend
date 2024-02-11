@@ -1,22 +1,23 @@
-import React, { createContext, useState, useContext } from 'react';
+import React, { createContext, useState } from "react";
 
-const CalendarContext = createContext();
+export const CalendarContext = createContext(null);
 
-export const useCalendar = () => useContext(CalendarContext);
-
-export const CalendarProvider = ({ children }) => {
+export const CalendarProvider = (props) => {
   const [addedMeals, setAddedMeals] = useState({});
-
-  const updateAddedMeals = (date, meal) => {
-    setAddedMeals(prevState => ({
-      ...prevState,
-      [date]: meal
-    }));
-  };
+  const [isTrue, setIsTrue] = useState();
 
   return (
-    <CalendarContext.Provider value={{ addedMeals, updateAddedMeals }}>
-      {children}
+    <CalendarContext.Provider
+      value={{
+        addedMeals,
+        setAddedMeals,
+        isTrue,
+        setIsTrue,
+        
+      }}
+    >
+      {props.children}
     </CalendarContext.Provider>
   );
 };
+

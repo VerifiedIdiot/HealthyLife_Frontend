@@ -15,11 +15,66 @@ import {
   InputAddBtn,
   SearchResultContainer,
 } from "./CalendarStyle";
+import { useCalendar } from "../../contexts/CalendarContext";
 
-export const MealInputBox = ({ closeModal, mealType }) => {
+export const MealBox = () => {
+  const { state } = useCalendar();
+  const MealTypes = ["아침", "점심", "저녁"];
+  const [modalOpen, setModalOpen] = useState(false);
+
+  const openModal = (mealType) => {
+    setModalOpen(true);
+    state.mealType = mealType;
+  };
+
+  const closeModal = () => {
+    setModalOpen(false);
+    state.mealType = "";
+  };
+
+  return (
+    <>
+      <ComboBoxContainer>
+        <ComboSelectBox>
+          {MealTypes.map((mealType) => (
+            <ComboBox key={mealType}>
+              <MealInput>
+                <h2>{mealType}</h2>
+              </MealInput>
+              <MealInfoList>
+                {/* 배열을 받아오지 못했을때 에러가 나는걸 방지하기 위한 &&연산자 */}
+                {/* && 연산자는 A && B 일때 둘다 TRUE이면 B를 실행 */}
+                {Array.isArray(state.dateDetails) &&
+                  state.dateDetails
+                    .filter((meal) => meal.meal_type === mealType)
+                    .map((meal) => (
+                      <MealInfo key={meal.id}>{meal.meal_name}</MealInfo>
+                    ))}
+              </MealInfoList>
+              <AddButton onClick={() => openModal(mealType)}> + </AddButton>
+            </ComboBox>
+          ))}
+        </ComboSelectBox>
+      </ComboBoxContainer>
+      <MiddleModal $isOpen={modalOpen} $onClose={closeModal}>
+        <MealInputBox closeModal={closeModal} />
+      </MiddleModal>
+    </>
+  );
+};
+
+const MealInfoList = styled.ul``;
+
+const MealInfo = styled.li``;
+
+
+
+
+export const MealInputBox = ({ closeModal}) => {
+  const { state } = useCalendar();
   const [searchQuery, setSearchQuery] = useState("");
   const [searchResults, setSearchResults] = useState([]);
-  const [selectedItem, setSelectedItem] = useState({});
+  const [selectedItem, setSelectedItem] = useState("");
 
   const handleSearchQueryChange = (e) => {
     setSearchQuery(e.target.value);
@@ -27,18 +82,20 @@ export const MealInputBox = ({ closeModal, mealType }) => {
   };
 
   const handleSearchResultClick = async (item) => {
-    setSelectedItem({ meal_name: item.name });
+    console.log(item);
+    setSelectedItem(item.name);
     setSearchQuery(item.name);
-    // console.log("확인필요", mealType);
+    console.log(state.mealType);
   };
 
-  const handleAddClick = async (mealType) => {
+  const handleAddClick = async () => {
     if (Object.keys(selectedItem).length > 0) {
       try {
-        const mealName = selectedItem.meal_name;
-        console.log(mealType, mealName);
+        
+        console.log(state.mealType, selectedItem, state.email, state.selectedDate);
+        
+        await CalendarApi.addMeal(state.email, state.mealType, state.selectedDate, selectedItem);
         closeModal();
-        setSelectedItem({ meal_type: mealType, meal_name: mealName });
       } catch (e) {
         console.error("데이터 가져오는 중 오류 발생", e);
       }
@@ -81,85 +138,17 @@ export const MealInputBox = ({ closeModal, mealType }) => {
             {searchResults.map((item, index) => (
               <div
                 key={index}
-                onClick={() => handleSearchResultClick(item, mealType)}
-              >
+                onClick={() => handleSearchResultClick(item)}>
                 <p>{item.name}</p>
               </div>
             ))}
           </SearchResultContainer>
         )}
 
-        <InputAddBtn onClick={() => handleAddClick(mealType)}>
+        <InputAddBtn onClick={() => handleAddClick()}>
           추가하기
         </InputAddBtn>
       </ComboBoxContainer>
-    </>
-  );
-};
-
-export const MealBox = (email) => {
-  const MealTypes = ["아침", "점심", "저녁"];
-  const [modalOpen, setModalOpen] = useState(false);
-  const [selectedMealType, setSelectedMealType] = useState("");
-  const [selectedItem, setSelectedItem] = useState({});
-
-  const openModal = (mealType) => {
-    setModalOpen(true);
-    setSelectedMealType(mealType);
-    console.log("테스트 : " + mealType);
-  };
-
-  const closeModal = () => {
-    setModalOpen(false);
-  };
-
-  const MealInput = ({ mealType, mealName }) => {
-    console.log("meal test", mealType, mealName)
-    return (
-      <div>
-        <h3>{mealType}</h3>
-        <h3>{mealName}</h3>
-      </div>
-    );
-  };
-
-  useEffect(() => {
-    console.log(selectedItem.mealName);
-    try {
-      const response = async (email) => await CalendarApi.mealInfo()
-      console.log(response.data);
-    } catch (error) {
-      console.log(error);
-    }
-
-
-  },[selectedItem])
-
-  return (
-    <>
-      <ComboBoxContainer>
-        <ComboSelectBox>
-          {MealTypes.map((mealType) => (
-            <ComboBox key={mealType}>
-              <MealInput
-                mealType={mealType}
-                mealName={selectedItem.mealName}
-              />
-              <p>{selectedItem.mealName}</p>
-              <AddButton onClick={() => openModal(mealType)}> + </AddButton>
-            </ComboBox>
-          ))}
-        </ComboSelectBox>
-      </ComboBoxContainer>
-      <MiddleModal $isOpen={modalOpen} $onClose={closeModal}>
-        <MealInputBox
-          closeModal={closeModal}
-          mealType={selectedMealType}
-          selectedItem={setSelectedItem}
-
-          // onAddItem={handleMealAdd}
-        />
-      </MiddleModal>
     </>
   );
 };

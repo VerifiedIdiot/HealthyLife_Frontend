@@ -51,6 +51,9 @@ export const MealInput = styled.div`
   border: none;
   background-color: transparent;
   font-size: 18px;
+  h2 {
+    font-size: 2rem;
+  }
 `;
 
 export const MealLabel = styled.span`

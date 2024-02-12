@@ -18,22 +18,24 @@ const CalendarApi = {
     }
   },
   // 새로운 음식 데이터 추가
-  addMeal: async (mealType) => {
+  addMeal : async (email, mealType, selectedDate, selectedItem) => {
+    console.log(mealType, selectedItem, email, selectedDate);
+    // 모든 필드 값이 유효한지 확인
+    if (!email || !mealType || !selectedDate || !selectedItem) {
+      console.error("Error: All fields are required and must not be null.");
+      throw new Error("All fields are required and must not be null.");
+    }
+  
     try {
-      const result = await Common.TakenToken();
-      const memberId = result.data;
-      console.log(mealType);
       const mealDto = {
-        email: memberId,
-        meal_type: mealType.mealType,
-        meal_name: mealType.mealName,
-        reg_date: mealType.regDate,
+        email : email, 
+        meal_type: mealType,
+        meal_name: selectedItem, 
+        reg_date: selectedDate,
       };
-      return await AxiosInstance.post(
-        Common.WEELV_DOMAIN + `/meal/add`,
-        mealDto
-      );
-      
+      const response = await axios.post(`${Common.WEELV_DOMAIN}/meal/add`, mealDto);
+      console.log("Meal successfully added", response.data);
+      return response.data;
     } catch (error) {
       console.error("Error in addMeal API call", error);
       throw error;
@@ -43,13 +45,18 @@ const CalendarApi = {
 
 
   
-  // 식사기록 출력
-  mealInfo: async () => {
+  // 날짜별 식사기록 출력
+  selectedDateMealInfo: async (email, selectedDate) => {
     try {
-      const response = await axios.get(Common.WEELV_DOMAIN + `/meal/findAll`);
+      const response = await axios.get(`${BACKEND_DOMAIN}/meal/detail`, {
+        params: { 
+        email : email, 
+        regDate : selectedDate }
+      });
       return response.data;
     } catch (error) {
       console.error("데이터 가져오는 중 오류 발생", error);
+      return null; // 오류 시 null 반환 또는 적절한 에러 처리
     }
   },
 

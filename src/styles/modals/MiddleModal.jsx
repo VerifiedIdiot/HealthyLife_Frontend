@@ -54,7 +54,7 @@ const ContentSection = styled.div`
 `;
 
 const MiddleModal = ({ $isOpen, $onClose, imageSrc, children }) => {
-  console.log("MiddleModal test");
+  // console.log("MiddleModal test");
 
   // esc 누르면 모달창 종료
   useEffect(() => {

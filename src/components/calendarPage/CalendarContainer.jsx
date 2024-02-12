@@ -18,18 +18,18 @@ import {
 import { useCalendar } from "../../contexts/CalendarContext";
 
 export const MealBox = () => {
-  const { state } = useCalendar();
+  const { state, actions } = useCalendar();
   const MealTypes = ["아침", "점심", "저녁"];
   const [modalOpen, setModalOpen] = useState(false);
 
   const openModal = (mealType) => {
     setModalOpen(true);
-    state.mealType = mealType;
+    actions.setMealType(mealType);
   };
 
   const closeModal = () => {
     setModalOpen(false);
-    state.mealType = "";
+    actions.setMealType("");
   };
 
   return (
@@ -71,7 +71,7 @@ const MealInfo = styled.li``;
 
 
 export const MealInputBox = ({ closeModal}) => {
-  const { state } = useCalendar();
+  const { state, actions } = useCalendar();
   const [searchQuery, setSearchQuery] = useState("");
   const [searchResults, setSearchResults] = useState([]);
   const [selectedItem, setSelectedItem] = useState("");
@@ -91,10 +91,10 @@ export const MealInputBox = ({ closeModal}) => {
   const handleAddClick = async () => {
     if (Object.keys(selectedItem).length > 0) {
       try {
-        
         console.log(state.mealType, selectedItem, state.email, state.selectedDate);
         
-        await CalendarApi.addMeal(state.email, state.mealType, state.selectedDate, selectedItem);
+        // addMealAndFetchUpdatedInfo 액션 호출
+        await actions.addMealAndUpdate(state.email, state.mealType, state.selectedDate, selectedItem);
         closeModal();
       } catch (e) {
         console.error("데이터 가져오는 중 오류 발생", e);

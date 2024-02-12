@@ -22,8 +22,8 @@ const CalendarApi = {
     console.log(mealType, selectedItem, email, selectedDate);
     // 모든 필드 값이 유효한지 확인
     if (!email || !mealType || !selectedDate || !selectedItem) {
-      console.error("Error: All fields are required and must not be null.");
-      throw new Error("All fields are required and must not be null.");
+      console.error("파라미터의 값이 비었음 ㅋ");
+      throw new Error("널 금지");
     }
   
     try {

@@ -6,6 +6,7 @@ import React, {
   useLayoutEffect,
 } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
+import CalendarApi from "../api/CalendarApi";
 import Common from "../utils/Common";
 
 export const CalendarContext = createContext();
@@ -17,7 +18,8 @@ const initialState = {
   selectedDate: "",
   // 선택한 날짜에 맞는 데이터들을 담을 객체 .. 참고하셈 ㅎㅎ!
   dateDetails: {},
-  searchedFoodList: {},
+  
+  
 };
 
 const calendarReducer = (state, action) => {
@@ -59,10 +61,24 @@ export const CalendarProvider = ({ children }) => {
 
   const actions = {
     setEmail: (email) => dispatch({ type: "SET_USER_EMAIL", payload: email }),
-    setMealtype: (mealType) =>
+    setMealType: (mealType) =>
       dispatch({ type: "SET_MEAL_TYPE", payload: mealType }),
     setSelectedDate: (selectedDate) => dispatch({ type: "SET_SELECTED_DATE", payload: selectedDate}),  
     setDateDetails: (dateDetails) => dispatch({ type: "SET_DATE_DETAILS", payload: dateDetails}),
+    addMealAndUpdate: async (email, mealType, selectedDate, selectedItem) => {
+      try {
+        // POST 요청을 통해 식사 정보 추가
+        await CalendarApi.addMeal(email, mealType, selectedDate, selectedItem);
+        
+        // 성공적으로 추가된 후, 해당 날짜에 대한 새로운 식사 정보를 다시 가져옴
+        const updatedDateDetails = await CalendarApi.selectedDateMealInfo(email, selectedDate);
+        
+        // 상태 업데이트
+        dispatch({ type: "SET_DATE_DETAILS", payload: updatedDateDetails });
+      } catch (error) {
+        console.error("Error adding meal and fetching updated info", error);
+      }
+    },
   };
 
   // 최초에 컨텍스트내 영역에 진입시 랜더링 되기 실행되는 email 정보 받아오기 함수

@@ -7,35 +7,22 @@ import {
   Item,
   Element,
 } from "../styles/Layouts";
+import { 
+  SortedSection,
+  SearchSection,
+  BoardSection,
+  PaginationSection
+ } from "../components/rankingPage/RankingComponent";
 
 const RankingPage = () => {
   return (
     <>
-      <Main>
-        <Container $border="1px solid black">
-          <Section $border="1px solid black">
-            <p>페이지입니다.</p>
-          </Section>
-          <Section $border="1px solid black">
-            <p>페이지입니다.</p>
-          </Section>
-        </Container>
-        <Container></Container>
-        <Container $border="1px solid black">
-          <Section $border="1px solid black">
-            <p>페이지입니다.</p>
-          </Section>
-          <Section $border="1px solid black">
-            <p>페이지입니다.</p>
-          </Section>
-        </Container>
+      <Main >
         <Container>
-          <Section $border="1px solid black">
-            <p>페이지입니다.</p>
-          </Section>
-          <Section $border="1px solid black">
-            <p>페이지입니다.</p>
-          </Section>
+          <SortedSection />
+          <SearchSection />
+          <BoardSection />
+          <PaginationSection />
         </Container>
       </Main>
     </>

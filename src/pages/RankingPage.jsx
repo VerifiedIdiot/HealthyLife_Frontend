@@ -10,6 +10,7 @@ import {
 import { 
   SortedSection,
   SearchSection,
+  ViewSection,
   BoardSection,
   PaginationSection
  } from "../components/rankingPage/RankingComponent";
@@ -21,6 +22,7 @@ const RankingPage = () => {
         <Container>
           <SortedSection />
           <SearchSection />
+          <ViewSection />
           <BoardSection />
           <PaginationSection />
         </Container>

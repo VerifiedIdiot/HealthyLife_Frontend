@@ -1,8 +1,9 @@
 import styled from "styled-components";
-import { Section, Area, Box, Item, Element } from "../../styles/Layouts";
+import { Section, Area, Box, Item } from "../../styles/Layouts";
 
 // 순위별 레이아웃
 export const SortedImgBoxSection = styled(Section)`
+margin: 30px 0;
   height: 23vh;
 `;
 
@@ -30,7 +31,7 @@ export const ItemSearchSection = styled(Section)`
   flex-direction: column;
   align-items: center;
   width: 100%;
-  height: 20vh;
+  height: 10%;
   
 
   @media (max-width: 768px) {
@@ -75,13 +76,31 @@ export const InputField = styled.input`
     margin-left: 5px;
   }
 `;
+// MyRanking 레이아웃
+export const ItemViewSection = styled(Section)`
+    border: 1px solid green;
+    height: 15%;
+`;
 
+
+// TotalRanking 레이아웃
+export const ItemBoardSection = styled(Section)`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  
+
+  @media (max-width: 768px) {
+    width: 100%;
+  }
+`;
 
 // React-Table
 export const TableArea = styled.table`
   display: flex;
   flex-direction: column;
-  width: 95%;
+  width: 100%;
 `;
 
 export const TableHeader = styled.thead`

@@ -7,6 +7,8 @@ import {
   ItemSearchSection,
   ItemArea,
   ItemBox,
+  ItemBoardSection,
+  ItemViewSection,
 } from "./RankingStyle";
 import { SearchBox } from "./RankingContainer";
 
@@ -46,18 +48,35 @@ export const SearchSection = () => {
         <ItemArea>
           <SearchBox />
         </ItemArea>
-        <ItemArea>
-          <ItemBox>
-            <ReactTable></ReactTable>
-          </ItemBox>
-        </ItemArea>
       </ItemSearchSection>
     </>
   );
 };
 
+// 
+export const ViewSection = () => {
+  return (
+  <>
+  <p> 내 랭킹 출력 </p>
+  <ItemViewSection>
+  </ItemViewSection>
+  </>
+  );
+};
+
 export const BoardSection = () => {
-  return <></>;
+  return (
+    <>
+      <p> 토탈 랭킹 출력 </p>
+      <ItemBoardSection>
+        <ItemArea>
+          <ItemBox>
+            <ReactTable></ReactTable>
+          </ItemBox>
+        </ItemArea>
+      </ItemBoardSection>
+    </>
+  );
 };
 
 export const PaginationSection = () => {

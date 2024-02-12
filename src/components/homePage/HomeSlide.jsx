@@ -199,7 +199,7 @@ const HomeSlide = () => {
             style={{ bottom: "40px" }}
             onClick={() => navigate("/login")}
           >
-            <BlueText>Wellv</BlueText> 가입하러 가기
+            Wellv 가입하러 가기
           </AdditionalText>
         </ResultContainer>
       )}

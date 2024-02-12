@@ -119,7 +119,7 @@ const CommunityAxiosApi = {
   ) => {
     try {
       return await AxiosInstance.get(
-        Common.WEELV_DOMAIN + `/api/comment/list/${communityId}`,
+        Common.WEELV_DOMAIN + `/api/comment/list/${communityId}/page`,
         {
           params: {
             sortType,

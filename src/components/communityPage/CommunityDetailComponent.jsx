@@ -1,21 +1,19 @@
-import { Main, Container } from "../../styles/Layouts";
+//2/12
+import { Main } from "../../styles/Layouts";
 import styled from "styled-components";
 import Common from "../../utils/Common";
 import { useParams } from "react-router-dom";
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { FaHeart } from "react-icons/fa6";
 import { FaRegHeart } from "react-icons/fa";
+import { FaRegCommentDots } from "react-icons/fa";
 import CommunityAxiosApi from "../../api/CommunityAxios";
-import {
-  SmallButton,
-  MiddleButton,
-} from "../../styles/styledComponents/StyledComponents";
+import { SmallButton } from "../../styles/styledComponents/StyledComponents";
 import PostRoom from "./PostRoomComponent";
 import { ReactComponent as Down } from "../../assets/imgs/communityImges/Down.svg";
 import MemberApi from "../../api/MemberApi";
 import React from "react";
-
 const InputContainer = styled.div`
   display: flex;
   flex-direction: column;
@@ -78,22 +76,10 @@ const ButtonContainer = styled.div`
   margin-bottom: 5px;
 `;
 
-const LargeInput = styled.textarea`
-  width: calc(100% - 10px);
-  height: 100px;
-  border-radius: 5px;
-  background: rgba(255, 255, 255, 0.9);
-  resize: none;
-  border: 1px solid #c4c4c4;
-  @media (max-width: 1024px) {
-    height: 100px;
-  }
-`;
 const FormContainer = styled.div`
   display: flex;
   color: #333;
   justify-content: space-between;
-  align-items: center;
   padding: 5px;
 `;
 const CenterFormContainer = styled.div`
@@ -107,8 +93,8 @@ const CenterFormContainer = styled.div`
   margin-bottom: 10px;
 `;
 const CommentButton = styled.div`
-  width: 100px;
-  border: none;
+  display: flex;
+  align-items: flex-end;
 `;
 const RotatedDown = styled(Down)`
   transition: transform 0.3s ease-in-out;
@@ -116,83 +102,29 @@ const RotatedDown = styled(Down)`
     props.isRotated ? "rotate(180deg)" : "rotate(0deg)"};
 `;
 
-const CommentBox = styled.div`
-  display: flex;
-`;
-
-const CommentNickname = styled.p`
-  color: #2446da;
-  font-weight: bold;
-  margin-left: 5px;
-  margin-top: 5px;
-`;
-const HeadText = styled.div`
-  justify-content: flex-start;
-  align-items: center;
-  display: flex;
-  margin: 5px;
-  font-size: 0.8rem;
-  word-break: break-word;
-`;
-const CommentContent = styled.div`
-  border-radius: 5px;
-  background: rgba(255, 255, 255, 0.9);
-  resize: none;
-  border: 1px solid #c4c4c4;
-  margin-bottom: 5px;
-  height: auto;
-  width: 100%;
-`;
-const CommentContainer = styled.div`
-  height: 15vh;
-  overflow-y: scroll;
-`;
-const CommentItem = styled.div`
-  display: flex;
-  flex-direction: column;
-`;
-const Day = styled.div`
-  display: flex;
-  font-size: 0.6rem;
-`;
-const Img = styled.img`
-  border-radius: 50px;
-  height: 50px;
-  width: 50px;
-`;
-const Box = styled.div`
-  display: flex;
-  align-items: center;
-`;
 const CommunityDetailComponent = () => {
   const { id } = useParams();
   const [isLiked, setIsLiked] = useState(""); // 좋아요 상태를 저장하는 상태
   const [post, setPost] = useState("");
   const [showPostRoom, setShowPostRoom] = useState(false); // PostRoom 표시 여부 상태
-  const [comments, setComments] = useState([]);
   const [nickName, setNickName] = useState("");
-  const [photo, setPhoto] = useState("");
-
-  const [email, setEmail] = useState("");
+  const [totalComment, setTotalComment] = useState(0);
   const navigate = useNavigate();
-  const [currentCommentPage, setCurrentCommentPage] = useState(0);
-  const [totalCommentPages, setTotalCommentPages] = useState(0);
   useEffect(() => {
     const fetchPostAndComments = async () => {
       try {
         const memberDetail = await MemberApi.getMemberDetail();
         setNickName(memberDetail.data.nickName);
-        setEmail(memberDetail.data.email);
-        setPhoto(memberDetail.data.image);
         // 게시물 정보 가져오기
         const postResponse = await CommunityAxiosApi.getCommunityDetail(id);
         setPost(postResponse.data);
         console.log(postResponse.data);
 
         // 댓글 정보 가져오기
-        const res = await CommunityAxiosApi.getCommentList(id);
-        setComments(res.data);
-        console.log(res.data);
+        const totalCommentsResponse = await CommunityAxiosApi.getTotalComments(
+          id
+        );
+        setTotalComment(totalCommentsResponse.data);
         // 좋아요 상태 확인하기
         const likeResponse = await CommunityAxiosApi.checkLikeStatus(
           id,
@@ -207,9 +139,6 @@ const CommunityDetailComponent = () => {
     fetchPostAndComments();
   }, [id, isLiked]);
 
-  if (!post) {
-    return <div>Loading...</div>;
-  }
   const likeIt = async () => {
     try {
       const response = await MemberApi.getMemberDetail();
@@ -225,8 +154,11 @@ const CommunityDetailComponent = () => {
       // 서버로부터 받은 데이터 처리
       console.log(likeResponse.data);
       setIsLiked(likeResponse.data);
-      if (likeResponse.data) {
-      } else {
+      // 좋아요 상태에 따라 알림 표시
+      if (isLiked === true) {
+        alert("좋아요가 취소되었습니다.");
+      } else if (isLiked === false) {
+        alert("좋아요가 완료되었습니다.");
       }
     } catch (error) {
       console.error("Error likeIt ", error);
@@ -253,6 +185,9 @@ const CommunityDetailComponent = () => {
       console.error("게시물 삭제 오류:", error);
       // 여기에 오류 처리를 추가합니다.
     }
+  };
+  const togglePostRoom = () => {
+    setShowPostRoom(!showPostRoom);
   };
 
   return (
@@ -298,47 +233,18 @@ const CommunityDetailComponent = () => {
             </>
           )}
         </ButtonContainer>
-        <CommentContainer>
-          <CommentItem>
-            {comments &&
-              comments.map((comment, communityId) => (
-                <CommentBox key={communityId}>
-                  <Img src={photo} alt="Member Photo" />
-                  <CommentContent>
-                    <Box>
-                      <CommentNickname>{comment.nickName}</CommentNickname>
-                      &nbsp;
-                      <Day>{Common.timeFromNow(comment.regDate)}</Day>
-                    </Box>
-                    <HeadText>{comment.content}</HeadText>
-                  </CommentContent>
-                </CommentBox>
-              ))}
-          </CommentItem>
-          {currentCommentPage > 0 && (
-            <button
-              onClick={() => setCurrentCommentPage(currentCommentPage - 1)}
-            >
-              이전
-            </button>
-          )}
-          {currentCommentPage + 1 < totalCommentPages && (
-            <button
-              onClick={() => setCurrentCommentPage(currentCommentPage + 1)}
-            >
-              다음
-            </button>
-          )}
-        </CommentContainer>
+
         <FormContainer>
-          {nickName}
-          <CommentButton onClick={() => setShowPostRoom(!showPostRoom)}>
-            답글달기
+          <p>
+            <FaRegCommentDots /> {totalComment}
+          </p>
+          <CommentButton onClick={togglePostRoom}>
+            댓글 보기
             <RotatedDown isRotated={showPostRoom}></RotatedDown>
           </CommentButton>
         </FormContainer>
       </InputContainer>
-      {showPostRoom && <PostRoom />}
+      {showPostRoom && <PostRoom showPostRoom={showPostRoom} />}
     </Main>
   );
 };

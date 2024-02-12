@@ -89,7 +89,6 @@ const CommunityMenuText = styled.div`
 `;
 
 const CommunityMenuButton = styled.div`
-  background-color: #f3f3f3;
   display: flex;
   align-items: center;
   background-color: ${(props) => (props.isActive ? "#2446da" : "#fff")};
@@ -191,7 +190,7 @@ const CommunityPage = () => {
                 <CommunityMenuItem>
                   <CommunityLink>
                     <CommunityMenuButton
-                      isActive={isActive ? "true" : "false"}
+                      isActive={isActive}
                       onClick={handleClick}
                     >
                       <CommunityItem onClick={ListOpen}>

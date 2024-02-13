@@ -8,9 +8,24 @@ import {
   TableDataCell,
 } from "./RankingStyle";
 
-const ReactTable = () => {
-
+export const MyReactTable = () => {
   return (
+    <TableArea $justify="center">
+      <TableHeader>
+        <TableRow>
+          <TableHeaderCell>순위</TableHeaderCell>
+          <TableHeaderCell>닉네임</TableHeaderCell>
+          <TableHeaderCell>성별</TableHeaderCell>
+          <TableHeaderCell>포인트</TableHeaderCell>
+        </TableRow>
+      </TableHeader>
+    </TableArea>
+  );
+};
+
+export const TotalReactTable = () => {
+  return (
+    <>
     <TableArea $justify="center">
       <TableHeader>
         <TableRow>
@@ -26,6 +41,7 @@ const ReactTable = () => {
         </TableRow>
       </TableBody>
     </TableArea>
-  );
-};
-export default ReactTable;
+    </>
+  )
+}
+

@@ -10,7 +10,7 @@ export const SearchBox = () => {
   <>
   <SearchSection>
     <SelectBox>
-        (닉네임) 랭킹
+        (시즌/남/여/토탈) 랭킹
     </SelectBox>
     <InputField
     type="text"

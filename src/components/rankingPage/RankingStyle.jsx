@@ -3,14 +3,22 @@ import { Section, Area, Box, Item } from "../../styles/Layouts";
 
 // 순위별 레이아웃
 export const SortedImgBoxSection = styled(Section)`
-margin: 30px 0;
+  margin: 30px 0;
   height: 23vh;
+  display: flex;
+  justify-content: space-around;
+
+  @media (max-width: 768px) {
+    & > Area {
+      width: 50%;
+    }
+  }
 `;
 
 export const SortedBoxArea = styled(Area)`
   box-shadow: none;
-  padding: 0 1vw;
-  margin: 0 2vw;
+  margin: 0 1vw;
+  border: 1px solid #333;
 `;
 
 export const ItemType = styled(Item)`
@@ -32,7 +40,6 @@ export const ItemSearchSection = styled(Section)`
   align-items: center;
   width: 100%;
   height: 10%;
-  
 
   @media (max-width: 768px) {
     width: 100%;
@@ -40,13 +47,12 @@ export const ItemSearchSection = styled(Section)`
 `;
 
 export const ItemArea = styled(Item)`
-
   align-items: center;
   flex-direction: column;
 `;
 
 export const ItemBox = styled(Box)`
-justify-content: ${(props) => props.$justify || "center"};
+  justify-content: ${(props) => props.$justify || "center"};
 `;
 
 export const SearchSection = styled(Section)`
@@ -78,10 +84,9 @@ export const InputField = styled.input`
 `;
 // MyRanking 레이아웃
 export const ItemViewSection = styled(Section)`
-    border: 1px solid green;
-    height: 15%;
+  border: 1px solid green;
+  height: 15%;
 `;
-
 
 // TotalRanking 레이아웃
 export const ItemBoardSection = styled(Section)`
@@ -89,7 +94,7 @@ export const ItemBoardSection = styled(Section)`
   flex-direction: column;
   align-items: center;
   width: 100%;
-  
+  border: 1px solid blue;
 
   @media (max-width: 768px) {
     width: 100%;
@@ -130,4 +135,38 @@ export const TableDataCell = styled.td`
   vertical-align: middle;
   padding-left: 5px;
   width: 100vw;
+`;
+
+// 페이지네이션 레이아웃
+export const ItemPaginationSection = styled(Section)`
+  height: 5%;
+  justify-content: center;
+  align-items: center;
+  min-height: 80px;
+`;
+
+export const ItemPaginationArea = styled(Area)`
+  display: flex;
+  justify-content: center;
+
+  height: 90%;
+  width: 95%;
+`;
+
+export const ItemPaginationButton = styled.button`
+    height: 30px;
+  width: 30px;
+  margin-right: 2px;
+  padding: 10px;
+  border: 1px solid #ccc;
+  background-color: white;
+  cursor: pointer;
+
+  &:hover {
+    background-color: #f0f0f0;
+  }
+
+  background-color: ${(props) => (props.$isActive ? "#007bff" : "white")};
+  color: ${(props) => (props.$isActive ? "white" : "black")};
+
 `;

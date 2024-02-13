@@ -5,6 +5,7 @@ import Community from "../../../src/assets/icons/HomeMain/Community.png";
 import Information from "../../../src/assets/icons/HomeMain/Infomation.png";
 import Ranking from "../../../src/assets/icons/HomeMain/Ranking.png";
 import { useNavigate } from "react-router";
+import { media } from "../../utils/MediaQuery";
 
 const IntroBox = styled.div`
   width: 95%;
@@ -20,6 +21,13 @@ const IntroTitle = styled.div`
   & > :not(:last-child) {
     margin-right: 5px; /* Adjust as per your preference */
   }
+
+  ${media.large`
+    font-size: 25px;
+    `}
+  ${media.small`
+    font-size: 18px;
+    `}
 `;
 
 const BlueText = styled.span`
@@ -48,6 +56,14 @@ const IntroElement1 = styled.div`
   text-align: center;
   font-weight: bold;
   height: 40px;
+
+  ${media.large`
+    font-size: 20px;
+    `}
+
+  ${media.small`
+    font-size: 12px;
+    `}
 `;
 
 const IntroElement2 = styled.div`
@@ -57,11 +73,25 @@ const IntroElement2 = styled.div`
   text-align: center;
   align-items: center;
   font-weight: bold;
+
+  ${media.large`
+    font-size: 13px;
+    `}
 `;
 
 const IntroElement3 = styled.img`
   width: 130px;
   height: 130px;
+
+  ${media.large`
+    width: 80px;
+    height: 80px;
+    `}
+
+  ${media.small`
+    width: 50px;
+    height: 50px;
+    `}
 `;
 
 const HomeIntro = () => {

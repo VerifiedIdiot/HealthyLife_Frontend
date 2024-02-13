@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import { useNavigate } from "react-router-dom";
+import { media } from "../../utils/MediaQuery";
 
 const Exercise = [
   {
@@ -120,6 +121,10 @@ const AdditionalText = styled.button`
   border: none;
   cursor: pointer;
 
+  ${media.small`
+      font-size: 14px;
+    `}
+
   &:hover {
     color: blue;
   }
@@ -132,7 +137,11 @@ const AdditionalText = styled.button`
 const Text = styled.p`
   font-size: 28px;
   line-height: 1.5; /* 텍스트의 높이를 현재 폰트 크기의 1.5배로 설정합니다. */
-  white-space: pre-line; /* 줄 바꿈을 허용합니다. */
+  white-space: nowrap; /* 줄 바꿈을 허용합니다. */
+
+  ${media.small`
+      font-size: 16px;
+    `}
 `;
 
 const BlueText = styled.span`

@@ -2,6 +2,7 @@ import { useState } from "react";
 import styled from "styled-components";
 import { MiddleButton } from "../../styles/styledComponents/StyledComponents";
 import Trainer from "../../../src/assets/icons/HomeMain/trainer.png";
+import { media } from "../../utils/MediaQuery";
 
 const CalContainer = styled.div`
   width: 95%;
@@ -37,6 +38,10 @@ const CalTitle = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
+
+  ${media.small`
+      font-size: 20px;
+    `}
 `;
 
 const CalInput1 = styled.div`
@@ -48,6 +53,14 @@ const CalInput1 = styled.div`
 const CalInput2 = styled.div`
   width: 30%;
   text-align: center;
+  white-space: nowrap;
+
+  ${media.large`
+      font-size: 18px
+    `}
+  ${media.small`
+      font-size: 13px
+    `}
 `;
 
 const CalInput3 = styled.input`
@@ -74,21 +87,30 @@ const CalInput5 = styled.div`
 `;
 
 const CalInput6 = styled.img`
-  width: 18%;
+  width: 20%;
+  min-width: 80px;
 `;
 
 const CalInput7 = styled.div``;
 
 const Balloon = styled.div`
   background-color: white;
-
-  width: 700px;
+  width: 500px;
   height: 150px;
   border-radius: 8px;
   display: flex;
   justify-content: center;
   align-items: center;
   padding: 20px; /* 글 간격 조절 */
+
+  ${media.large`
+      width: 350px;
+    `}
+  ${media.small`
+      width: 180px;
+      height: 80px;
+      font-size: 15px;
+    `}
 `;
 
 const HomeCal = () => {
@@ -127,7 +149,7 @@ const HomeCal = () => {
         <CalContainer1>
           <CalContainer2>
             <CalInput1>
-              <CalInput2>나의 키</CalInput2>
+              <CalInput2>키</CalInput2>
               <CalInput4>
                 <CalInput3
                   value={height}
@@ -137,7 +159,7 @@ const HomeCal = () => {
               </CalInput4>
             </CalInput1>
             <CalInput1>
-              <CalInput2>나의 몸무게</CalInput2>
+              <CalInput2>몸무게</CalInput2>
               <CalInput4>
                 <CalInput3
                   value={weight}
@@ -147,7 +169,7 @@ const HomeCal = () => {
               </CalInput4>
             </CalInput1>
             <CalInput1>
-              <CalInput2>나의 BMI</CalInput2>
+              <CalInput2>BMI</CalInput2>
               <CalInput4>
                 <CalInput5>{bmi}</CalInput5>
               </CalInput4>
@@ -156,7 +178,7 @@ const HomeCal = () => {
               style={{ width: "100%", height: "35px" }}
               onClick={calculateBMI}
             >
-              BMI 계산하기
+              계산하기
             </MiddleButton>
           </CalContainer2>
           <CalContainer3>

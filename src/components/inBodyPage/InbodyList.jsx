@@ -8,21 +8,33 @@ import {
   Element,
 } from "../../styles/Layouts";
 import styled from "styled-components";
+import { media } from "../../utils/MediaQuery";
 
 const Input1 = styled.div`
   display: flex;
-  width: 15%;
-  justify-content: space-between;
   align-items: center;
 `;
 
 const Input2 = styled.div`
   font-weight: bold;
+  font-size: 13px;
+  flex-wrap: nowrap;
+  width: 110px;
+  height: 20px;
+  align-items: center;
+  display: flex;
+  justify-content: center;
 `;
 
 const Input3 = styled.div`
-  width: 40%;
-  height: 30%;
+  width: 135px;
+  height: 20px;
+  font-size: 15px;
+  font-weight: bold;
+  flex-wrap: nowrap;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 `;
 
 const Input4 = styled.div`
@@ -52,6 +64,21 @@ const Input5 = styled.div`
   }
 `;
 
+const InputContainer = styled.div`
+  display: flex;
+  justify-content: space-around;
+  width: 100%;
+  flex-wrap: wrap;
+  margin-bottom: 0.5rem;
+`;
+
+const InputContainer1 = styled.div`
+  display: flex;
+  justify-content: space-around;
+  width: 100%;
+  flex-wrap: wrap;
+`;
+
 const InbodyList = ({ bodyData }) => {
   return (
     <>
@@ -68,7 +95,7 @@ const InbodyList = ({ bodyData }) => {
               .map((item, index) => (
                 <Input4 key={index}>
                   <Container
-                    $height="100px"
+                    $height="auto"
                     style={{
                       borderRadius: "8px",
                       backgroundColor: "#D9D9D9",
@@ -80,41 +107,48 @@ const InbodyList = ({ bodyData }) => {
                         alignItems: "center",
                         fontSize: "20px",
                         fontWeight: "bold",
+                        margin: "0.5rem",
                       }}
                     >
                       {new Date(item.date).getFullYear()}년{" "}
                       {new Date(item.date).getMonth() + 1}월{" "}
                       {new Date(item.date).getDate()}일 신체정보
                     </Section>
-                    <Section $height="60%" $justify="space-around">
-                      <Input1>
-                        <Input2>키</Input2>
-                        <Input3>{item.height} cm</Input3>
-                      </Input1>
-                      <Input1>
-                        <Input2>체중</Input2>
-                        <Input3>{item.weight} kg</Input3>
-                      </Input1>
-                      <Input1>
-                        <Input2>기초대사량</Input2>
-                        <Input2>{item.bmr} kcal</Input2>
-                      </Input1>
-                      <Input1>
-                        <Input2>골격근량</Input2>
-                        <Input3>{item.muscle} kg</Input3>
-                      </Input1>
-                      <Input1>
-                        <Input2>체지방량</Input2>
-                        <Input3>{item.fat} kg</Input3>
-                      </Input1>
-                      <Input1>
-                        <Input2>체지방률</Input2>
-                        <Input2>{item.fatPercent} %</Input2>
-                      </Input1>
-                      <Input1>
-                        <Input2>BMI</Input2>
-                        <Input2>{item.bmi}</Input2>
-                      </Input1>
+                    <Section $justify="center">
+                      <InputContainer>
+                        <InputContainer1>
+                          <Input1>
+                            <Input2>키</Input2>
+                            <Input3>{item.height} cm</Input3>
+                          </Input1>
+                          <Input1>
+                            <Input2>체중</Input2>
+                            <Input3>{item.weight} kg</Input3>
+                          </Input1>
+                          <Input1>
+                            <Input2>기초대사량</Input2>
+                            <Input3>{item.bmr} kcal</Input3>
+                          </Input1>
+                        </InputContainer1>
+                        <InputContainer1>
+                          <Input1>
+                            <Input2>골격근량</Input2>
+                            <Input3>{item.muscle} kg</Input3>
+                          </Input1>
+                          <Input1>
+                            <Input2>체지방량</Input2>
+                            <Input3>{item.fat} kg</Input3>
+                          </Input1>
+                          <Input1>
+                            <Input2>체지방률</Input2>
+                            <Input3>{item.fatPercent} %</Input3>
+                          </Input1>
+                          <Input1>
+                            <Input2>BMI</Input2>
+                            <Input3>{item.bmi}</Input3>
+                          </Input1>
+                        </InputContainer1>
+                      </InputContainer>
                     </Section>
                   </Container>
                 </Input4>

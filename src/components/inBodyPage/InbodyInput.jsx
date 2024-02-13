@@ -14,6 +14,7 @@ import AxiosInstance from "../../api/AxiosInstance";
 import Common from "../../utils/Common";
 import { useState, useMemo } from "react";
 import BodyApi from "../../api/BodyApi";
+import { media } from "../../utils/MediaQuery";
 
 const Input1 = styled.div`
   display: flex;
@@ -25,6 +26,10 @@ const Input1 = styled.div`
 
 const Input2 = styled.div`
   font-weight: bold;
+
+  ${media.large`
+    font-size: 15px;
+    `};
 `;
 
 const Input3 = styled.input`
@@ -34,8 +39,27 @@ const Input3 = styled.input`
   border: none;
 `;
 
+const ImgContainer = styled.div`
+  height: 100%;
+  width: 30%;
+  justify-content: center;
+  align-items: center;
+  display: flex;
+
+  ${media.small`
+    display: none;
+    `};
+`;
+
 const Runner = styled.img`
   width: 190px;
+
+  ${media.large`
+    width: 150px;
+    `};
+  ${media.small`
+    display: none;
+    `};
 `;
 
 const currentDate = new Date();
@@ -147,15 +171,9 @@ const InbodyInput = (props) => {
         $height="100%"
         style={{ backgroundColor: "#D9D9D9", borderRadius: "8px" }}
       >
-        <Container
-          $height="100%"
-          $width="30%"
-          $justify="center"
-          $align="center"
-          $shadow="none"
-        >
+        <ImgContainer>
           <Runner src={runner} />
-        </Container>
+        </ImgContainer>
         <Container $height="100%" $shadow="none">
           <Section
             $height="25%"

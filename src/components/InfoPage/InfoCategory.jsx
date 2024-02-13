@@ -62,6 +62,7 @@ const InfoCategory = ({ setdata }) => {
     // setToggle은 비동기적으로 실행되기 때문에 완료 후에 값을 사용할 수 있는 콜백 함수 전달
     setToggle((prev) => {
       const newToggle = !prev;
+      console.log(newToggle);
       // 자식 컴포넌트에서 콜백 함수 호출
       setdata(newToggle);
       return newToggle;

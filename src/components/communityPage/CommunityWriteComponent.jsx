@@ -3,13 +3,18 @@ import CommunityAxiosApi from "../../api/CommunityAxios";
 import { useNavigate } from "react-router-dom";
 import Common from "../../utils/Common";
 import { useParams } from "react-router-dom";
-import { Main, Container } from "../../styles/Layouts";
+import { Main } from "../../styles/Layouts";
 import "react-quill/dist/quill.snow.css";
 import ReactQuill from "react-quill";
 import styled from "styled-components";
 import { MiddleButton } from "../../styles/styledComponents/StyledComponents";
 import MemberApi from "../../api/MemberApi";
 
+const Container = styled.div`
+  display: flex;
+  width: 100%;
+  justify-content: center;
+`;
 const WriteSection = styled.div`
   display: flex;
   flex-direction: column;
@@ -58,18 +63,16 @@ const CategorySelect = styled.select`
 `;
 const StyledReactQuill = styled(ReactQuill)`
   background-color: rgba(36, 70, 218, 0.6);
-  z-index: 4;
   margin-top: 10px;
   margin-bottom: 10px;
 
   .ql-container {
-    width: 100%;
-    font-size: 1rem;
     opacity: 1;
     background: #fff;
-    max-height: 60vh;
-    min-height: 60vh;
-    overflow-y: scroll;
+    width: 980px;
+    height: 600px;
+    max-height: 500px;
+    overflow-y: auto;
   }
 
   .ql-toolbar {
@@ -83,7 +86,6 @@ const StyledReactQuill = styled(ReactQuill)`
   @media (max-width: 1024px) {
     .ql-container {
       width: 100%; // 모바일 환경에서는 에디터의 높이를 줄입니다.
-      height: auto;
     }
     .ql-toolbar {
     }
@@ -222,7 +224,7 @@ const WriteComponent = () => {
   };
   return (
     <Main>
-      <Container $align="center">
+      <Container>
         <WriteSection>
           <WriteHeading>
             <WriteHeadingText>Community</WriteHeadingText>

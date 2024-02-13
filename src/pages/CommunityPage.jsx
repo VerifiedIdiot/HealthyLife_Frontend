@@ -1,10 +1,9 @@
 import { ReactComponent as Down } from "../assets/imgs/communityImges/Down.svg";
 import { Routes, Route, Link, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
-import styled, { keyframes } from "styled-components";
+import styled from "styled-components";
 import { Main, Container } from "../styles/Layouts";
 import CommunityAxiosApi from "../api/CommunityAxios";
-
 import CommunityComponent from "../components/communityPage/CommunityComponent";
 import CommunitySearchComponent from "../components/communityPage/CommunitySearchComponent";
 import WriteComponent from "../components/communityPage/CommunityWriteComponent";
@@ -65,7 +64,6 @@ const CommunityLink = styled.div`
     display: none;
   }
 `;
-
 const CommunitySVG = styled.div`
   display: flex;
   align-items: center;
@@ -89,6 +87,7 @@ const CommunityMenuText = styled.div`
 `;
 
 const CommunityMenuButton = styled.div`
+  background-color: #f3f3f3;
   display: flex;
   align-items: center;
   background-color: ${(props) => (props.isActive ? "#2446da" : "#fff")};
@@ -145,6 +144,7 @@ const RotatedDown = styled(Down)`
     display: none;
   }
 `;
+
 const CommunityPage = () => {
   const [isList, setIsList] = useState(false);
   const [isActive, setIsActive] = useState(false);
@@ -196,10 +196,7 @@ const CommunityPage = () => {
                       <CommunityItem onClick={ListOpen}>
                         <CommunityMenuText>Category</CommunityMenuText>
                       </CommunityItem>
-                      <RotatedDown
-                        isRotated={isList}
-                        style={{ fill: "#fff" }}
-                      ></RotatedDown>
+                      <RotatedDown isRotated={isList}></RotatedDown>
                     </CommunityMenuButton>
                   </CommunityLink>
                 </CommunityMenuItem>

@@ -111,7 +111,7 @@ const CommunityAxiosApi = {
   },
 
   // 댓글 리스트 조회
-  getCommentList: async (
+  commentList: async (
     communityId,
     sortType = "최신순",
     page = 0,
@@ -119,7 +119,7 @@ const CommunityAxiosApi = {
   ) => {
     try {
       return await AxiosInstance.get(
-        Common.WEELV_DOMAIN + `/api/comment/list/${communityId}/page`,
+        Common.WEELV_DOMAIN + `/api/comment/list/${communityId}`,
         {
           params: {
             sortType,
@@ -137,9 +137,10 @@ const CommunityAxiosApi = {
 
   // 댓글 쓰기
   commentRegister: async (commentDto) => {
+    console.log("댓글저장진입" + commentDto);
     try {
       return await AxiosInstance.post(
-        Common.WEELV_DOMAIN + `/api/comment/new`,
+        Common.WEELV_DOMAIN + "/api/comment/new",
         commentDto
       );
     } catch (error) {
@@ -207,6 +208,7 @@ const CommunityAxiosApi = {
   },
   // 댓글 삭제
   commentDelete: async (commentId) => {
+    console.log("댓글삭제진입" + commentId);
     try {
       return await AxiosInstance.delete(
         Common.WEELV_DOMAIN + `/api/comment/delete/${commentId}`

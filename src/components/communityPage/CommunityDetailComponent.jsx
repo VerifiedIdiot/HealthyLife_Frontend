@@ -1,22 +1,20 @@
-//2/12
 import { Main } from "../../styles/Layouts";
 import styled from "styled-components";
 import Common from "../../utils/Common";
 import { useParams } from "react-router-dom";
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { FaHeart } from "react-icons/fa6";
+import { FaHeart } from "react-icons/fa";
 import { FaRegHeart } from "react-icons/fa";
-import { FaRegCommentDots } from "react-icons/fa";
 import CommunityAxiosApi from "../../api/CommunityAxios";
 import { SmallButton } from "../../styles/styledComponents/StyledComponents";
 import PostRoom from "./PostRoomComponent";
-import { ReactComponent as Down } from "../../assets/imgs/communityImges/Down.svg";
 import MemberApi from "../../api/MemberApi";
 import React from "react";
 const InputContainer = styled.div`
   display: flex;
   flex-direction: column;
+  width: 100%;
 `;
 const CategoryContent = styled.div`
   display: flex;
@@ -87,58 +85,49 @@ const CenterFormContainer = styled.div`
   align-items: center;
   width: 100%;
   min-height: 200px;
-  max-height: 350px;
+  max-height: 250px;
   border-bottom: 1px solid #c4c4c4;
   overflow-y: scroll;
   margin-bottom: 10px;
-`;
-const CommentButton = styled.div`
-  display: flex;
-  align-items: flex-end;
-`;
-const RotatedDown = styled(Down)`
-  transition: transform 0.3s ease-in-out;
-  transform: ${(props) =>
-    props.isRotated ? "rotate(180deg)" : "rotate(0deg)"};
 `;
 
 const CommunityDetailComponent = () => {
   const { id } = useParams();
   const [isLiked, setIsLiked] = useState(""); // 좋아요 상태를 저장하는 상태
   const [post, setPost] = useState("");
-  const [showPostRoom, setShowPostRoom] = useState(false); // PostRoom 표시 여부 상태
   const [nickName, setNickName] = useState("");
-  const [totalComment, setTotalComment] = useState(0);
   const navigate = useNavigate();
+
   useEffect(() => {
-    const fetchPostAndComments = async () => {
+    const PostDetail = async () => {
       try {
         const memberDetail = await MemberApi.getMemberDetail();
+        console.log(memberDetail.data);
         setNickName(memberDetail.data.nickName);
         // 게시물 정보 가져오기
         const postResponse = await CommunityAxiosApi.getCommunityDetail(id);
         setPost(postResponse.data);
         console.log(postResponse.data);
-
-        // 댓글 정보 가져오기
-        const totalCommentsResponse = await CommunityAxiosApi.getTotalComments(
-          id
-        );
-        setTotalComment(totalCommentsResponse.data);
-        // 좋아요 상태 확인하기
-        const likeResponse = await CommunityAxiosApi.checkLikeStatus(
-          id,
-          memberDetail.data.email
-        );
-        setIsLiked(likeResponse.data);
-        console.log(likeResponse.data);
+        like();
       } catch (error) {
         console.error("Error fetching post and comments:");
       }
     };
-    fetchPostAndComments();
-  }, [id, isLiked]);
+    PostDetail();
+  }, [id]);
 
+  const like = async () => {
+    try {
+      const response = await MemberApi.getMemberDetail();
+      const email = response.data.email;
+      // 좋아요 상태 확인하기
+      const likeResponse = await CommunityAxiosApi.checkLikeStatus(id, email);
+      setIsLiked(likeResponse.data);
+      console.log(likeResponse.data);
+    } catch (error) {
+      console.error("Error like ", error);
+    }
+  };
   const likeIt = async () => {
     try {
       const response = await MemberApi.getMemberDetail();
@@ -150,20 +139,20 @@ const CommunityDetailComponent = () => {
       } else {
         likeResponse = await CommunityAxiosApi.likeIt(id, false, email); // 좋아요 추가
       }
-
-      // 서버로부터 받은 데이터 처리
+      // 좋아요 상태에 따라 알림 표시
       console.log(likeResponse.data);
       setIsLiked(likeResponse.data);
-      // 좋아요 상태에 따라 알림 표시
       if (isLiked === true) {
         alert("좋아요가 취소되었습니다.");
       } else if (isLiked === false) {
         alert("좋아요가 완료되었습니다.");
       }
+      like();
     } catch (error) {
       console.error("Error likeIt ", error);
     }
   };
+
   // 수정 버튼 클릭 시 수정 모드로 전환
   const handleEdit = () => {
     navigate(`/communitypage/write/${post.communityId}`);
@@ -186,9 +175,6 @@ const CommunityDetailComponent = () => {
       // 여기에 오류 처리를 추가합니다.
     }
   };
-  const togglePostRoom = () => {
-    setShowPostRoom(!showPostRoom);
-  };
 
   return (
     <Main>
@@ -209,7 +195,7 @@ const CommunityDetailComponent = () => {
         <Line2 />
         <FormContainer>
           <DetailInfoContent>
-            작성자 {post.nickName}, 좋아요
+            글쓴이 {post.nickName}, 좋아요
             <p>
               &nbsp;
               {isLiked ? (
@@ -233,18 +219,8 @@ const CommunityDetailComponent = () => {
             </>
           )}
         </ButtonContainer>
-
-        <FormContainer>
-          <p>
-            <FaRegCommentDots /> {totalComment}
-          </p>
-          <CommentButton onClick={togglePostRoom}>
-            댓글 보기
-            <RotatedDown isRotated={showPostRoom}></RotatedDown>
-          </CommentButton>
-        </FormContainer>
+        <PostRoom id={id} />
       </InputContainer>
-      {showPostRoom && <PostRoom showPostRoom={showPostRoom} />}
     </Main>
   );
 };

@@ -100,6 +100,7 @@ const SearchComponent = () => {
       navigate(`/communitypage/search/${keyword}`, {
         state: { result: result.data },
       });
+      setKeyword("");
     } catch (error) {
       console.log(error);
     }

@@ -213,6 +213,7 @@ const CategoryDropdownItem = styled.div`
   align-items: center;
   margin-top: 10px;
   margin-bottom: 10px;
+  cursor: pointer;
 `;
 const RotatedDown = styled(Down)`
   transition: transform 0.3s ease-in-out;
@@ -361,7 +362,7 @@ const CommunityComponent = () => {
         <PostListTitle>
           <TitleContent onClick={toggleDropdown}>
             {categoryName}
-            <RotatedDown $isRotated={showDropdown} />
+            <RotatedDown isRotated={showDropdown} />
             <CategoryDropdown showDropdown={showDropdown}>
               <CategoryDropdownItem
                 onClick={() => {

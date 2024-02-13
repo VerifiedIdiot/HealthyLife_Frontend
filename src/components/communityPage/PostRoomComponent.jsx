@@ -1,17 +1,22 @@
 import React, { useEffect, useState } from "react";
 import styled, { css } from "styled-components";
 import CommunityAxiosApi from "../../api/CommunityAxios";
-import { useNavigate, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import { IoIosArrowBack } from "react-icons/io";
 import { IoIosArrowForward } from "react-icons/io";
+import { FaRegCommentDots } from "react-icons/fa";
+import { ReactComponent as Down } from "../../assets/imgs/communityImges/Down.svg";
+
 import {
   MiddleButton,
   SmallButton,
 } from "../../styles/styledComponents/StyledComponents";
 import MemberApi from "../../api/MemberApi";
 import Common from "../../utils/Common";
+import { set } from "lodash";
+import { comment } from "stylis";
+
 const CommentContainer = styled.div`
-  height: 30vh;
   overflow-y: scroll;
   position: relative;
 `;
@@ -32,10 +37,7 @@ const LargeInput = styled.textarea`
 const FormContainer = styled.div`
   display: flex;
   width: 100%;
-  color: #2446da;
-  flex-direction: column;
-  font-size: 0.8rem;
-  align-items: flex-end;
+  justify-content: space-between;
   margin-bottom: 5px;
 `;
 
@@ -73,16 +75,14 @@ const CommentContent = styled.div`
 const CommentItem = styled.div`
   display: flex;
   flex-direction: column;
+  height: 200px;
+  overflow-y: auto;
 `;
 const Day = styled.div`
   display: flex;
   font-size: 0.6rem;
 `;
-const Img = styled.img`
-  border-radius: 50px;
-  height: 50px;
-  width: 50px;
-`;
+
 const Box = styled.div`
   display: flex;
   align-items: center;
@@ -96,6 +96,10 @@ const Box2 = styled.div`
   justify-content: space-between;
   margin-right: 5px;
   margin-bottom: 5px;
+`;
+const Box3 = styled.div`
+  display: flex;
+  flex-direction: column;
 `;
 const Dropdown = styled.select`
   width: 10em;
@@ -113,33 +117,40 @@ const Dropdown = styled.select`
     border-color: #90caf9;
   }
 `;
-const PostRoom = ({ showPostRoom }) => {
+const CommentButton = styled.div`
+  display: flex;
+  align-items: flex-end;
+`;
+const RotatedDown = styled(Down)`
+  transition: transform 0.3s ease-in-out;
+  transform: ${(props) =>
+    props.isRotated ? "rotate(180deg)" : "rotate(0deg)"};
+`;
+
+const PostRoom = () => {
   const [content, setContent] = useState("");
   const [comments, setComments] = useState([]);
-  const { id } = useParams();
   const [currentCommentPage, setCurrentCommentPage] = useState(0);
-  const [totalCommentPages, setTotalCommentPages] = useState(0);
   const [totalComment, setTotalComment] = useState(0);
   const [sortType, setSortType] = useState("");
-  const [nickName, setNickName] = useState("");
-  const [photo, setPhoto] = useState("");
-  const [email, setEmail] = useState("");
+  const [nickName1, setNickName1] = useState("");
+  const [showPostRoom, setShowPostRoom] = useState(false); // PostRoom 표시 여부 상태
+  const [totalCommentPages, setTotalCommentPages] = useState(0);
+  const { id } = useParams();
+
   useEffect(() => {
-    const fetchPostAndComments = async () => {
+    const fetchComments = async () => {
       try {
-        const memberDetail = await MemberApi.getMemberDetail();
-        setNickName(memberDetail.data.nickName);
-        setEmail(memberDetail.data.email);
-        setPhoto(memberDetail.data.image);
         // 댓글 정보 가져오기
-        const commentResponse = await CommunityAxiosApi.getCommentList(
+        const commentResponse = await CommunityAxiosApi.commentList(
           id,
           sortType,
           currentCommentPage
         );
-        console.log(commentResponse.data);
-        setComments(commentResponse.data.content);
+        setComments(commentResponse.data);
         setTotalCommentPages(commentResponse.data.totalPages);
+        setSortType(sortType);
+        setCurrentCommentPage(currentCommentPage);
         const totalCommentsResponse = await CommunityAxiosApi.getTotalComments(
           id
         );
@@ -148,20 +159,23 @@ const PostRoom = ({ showPostRoom }) => {
         console.error("Error fetching post and comments:");
       }
     };
-    fetchPostAndComments();
-  }, [id, currentCommentPage, sortType]);
-  const loadComments = async () => {
-    try {
-      // 게시물의 ID를 사용하여 서버에서 댓글 목록을 가져옴
-      const response = await CommunityAxiosApi.getCommentList(id);
-      // 서버에서 받은 댓글 목록을 상태에 업데이트
-      setComments(response.data.content);
-      console.log("댓글 목록:", response.data);
-    } catch (error) {
-      console.error("댓글 목록 불러오기 오류:", error);
-    }
-  };
+    fetchComments();
+  }, [id, sortType, currentCommentPage]);
+  useEffect(() => {
+    // 현재 사용자의 닉네임을 가져와 nickName1 상태를 업데이트
+    const fetchMemberDetail = async () => {
+      try {
+        const memberDetail = await MemberApi.getMemberDetail();
+        setNickName1(memberDetail.data.nickName);
+      } catch (error) {
+        console.error("Error fetching member detail:", error);
+      }
+    };
+    fetchMemberDetail();
+  }, []); // 빈 배열로 전달하여 한 번만 실행되도록 설정
+
   const deleteComment = async (commentId) => {
+    console.log(commentId);
     try {
       const response = await CommunityAxiosApi.commentDelete(commentId);
       if (response.data === true) {
@@ -169,9 +183,9 @@ const PostRoom = ({ showPostRoom }) => {
         setComments((prevComments) =>
           prevComments.filter((comment) => comment.commentId !== commentId)
         );
+        setTotalComment(totalComment - 1);
       } else {
-        console.log("댓글 삭제 실패");
-        // 여기에 삭제 실패 시 수행할 작업을 추가합니다.
+        alert("댓글 삭제 실패");
       }
     } catch (error) {
       console.error("댓글 삭제 오류:", error);
@@ -183,91 +197,104 @@ const PostRoom = ({ showPostRoom }) => {
       const response = await MemberApi.getMemberDetail();
       console.log(response.data);
       const email = response.data.email;
-      // 댓글 등록 요청을 보내기 전에 필요한 데이터 준비
       const commentDto = {
         communityId: id,
-        content: content,
         email: email,
+        content: content,
       };
       // 댓글 등록 API 호출
       const commentResponse = await CommunityAxiosApi.commentRegister(
         commentDto
       );
+      console.log(commentResponse.data);
       if (commentResponse.status === 200) {
         alert("댓글이 등록되었습니다.");
-        // 입력 필드 초기화
-        setContent("");
-        loadComments();
+      } else {
+        alert("댓글 등록에 실패했습니다.");
       }
     } catch (error) {
       console.error("댓글 등록 오류:", error);
       alert("댓글이 등록되지 않았습니다.");
     }
   };
-
+  const togglePostRoom = () => {
+    setShowPostRoom(!showPostRoom);
+  };
   return (
     <>
-      <CommentContainer>
-        <Dropdown onChange={(selected) => setSortType(selected.target.value)}>
-          {["최신순", "등록순"].map((option, index) => (
-            <option key={index} value={option}>
-              {option}
-            </option>
-          ))}
-        </Dropdown>
-        <CommentItem>
-          {comments &&
-            comments.map((comment, communityId) => (
-              <CommentBox key={communityId}>
-                <Img src={photo} alt="Member Photo" />
-                <CommentContent>
-                  <Box1>
-                    <Box>
-                      <CommentNickname>{comment.nickName}</CommentNickname>
-                      &nbsp;
-                      <Day>{Common.timeFromNow(comment.regDate)}</Day>
-                    </Box>
-                    <Box2>
-                      <HeadText>{comment.content}</HeadText>
-                      {comment.nickName === nickName && (
-                        <SmallButton
-                          onClick={() => deleteComment(comment.commentId)}
-                        >
-                          삭제
-                        </SmallButton>
-                      )}
-                    </Box2>
-                  </Box1>
-                </CommentContent>
-              </CommentBox>
-            ))}
-        </CommentItem>
+      <FormContainer>
+        <p>
+          <FaRegCommentDots /> {totalComment}
+        </p>
+        <CommentButton onClick={togglePostRoom}>
+          댓글 보기
+          <RotatedDown isRotated={showPostRoom}></RotatedDown>
+        </CommentButton>
+      </FormContainer>
 
-        {currentCommentPage > 0 && (
-          <SmallButton
-            onClick={() => setCurrentCommentPage(currentCommentPage - 1)}
-          >
-            <IoIosArrowBack />
-          </SmallButton>
-        )}
-        {currentCommentPage + 1 < totalCommentPages && (
-          <SmallButton
-            onClick={() => setCurrentCommentPage(currentCommentPage + 1)}
-          >
-            <IoIosArrowForward />
-          </SmallButton>
-        )}
-      </CommentContainer>
-      <CommentForm>
-        <LargeInput
-          type="text"
-          value={content}
-          onChange={(e) => setContent(e.target.value)}
-        />
-        <FormContainer>
-          <MiddleButton onClick={CommentWrite}>댓글 작성</MiddleButton>
-        </FormContainer>
-      </CommentForm>
+      {showPostRoom && (
+        <Box3>
+          <CommentContainer>
+            <Dropdown
+              onChange={(selected) => setSortType(selected.target.value)}
+            >
+              {["최신순", "등록순"].map((option, index) => (
+                <option key={index} value={option}>
+                  {option}
+                </option>
+              ))}
+            </Dropdown>
+            <CommentItem>
+              {comments &&
+                comments.map((comment, communityId) => (
+                  <CommentBox key={communityId}>
+                    <CommentContent>
+                      <Box1>
+                        <Box>
+                          <CommentNickname>{comment.nickName}</CommentNickname>
+                          &nbsp;
+                          <Day>{Common.timeFromNow(comment.regDate)}</Day>
+                        </Box>
+                        <Box2>
+                          <HeadText>{comment.content}</HeadText>
+                          {comment.nickName === nickName1 && (
+                            <SmallButton
+                              onClick={() => deleteComment(comment.commentId)}
+                            >
+                              삭제
+                            </SmallButton>
+                          )}
+                        </Box2>
+                      </Box1>
+                    </CommentContent>
+                  </CommentBox>
+                ))}
+            </CommentItem>
+            {currentCommentPage > 0 && (
+              <SmallButton
+                onClick={() => setCurrentCommentPage(currentCommentPage - 1)}
+              >
+                <IoIosArrowBack />
+              </SmallButton>
+            )}
+            {currentCommentPage + 1 < totalCommentPages && (
+              <SmallButton
+                onClick={() => setCurrentCommentPage(currentCommentPage + 1)}
+              >
+                <IoIosArrowForward />
+              </SmallButton>
+            )}
+          </CommentContainer>
+
+          <CommentForm>
+            <LargeInput
+              value={content}
+              onChange={(e) => setContent(e.target.value)}
+            />
+            <MiddleButton onClick={CommentWrite}>댓글 작성</MiddleButton>
+          </CommentForm>
+        </Box3>
+      )}
     </>
   );
 };

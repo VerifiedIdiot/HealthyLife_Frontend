@@ -194,7 +194,7 @@ const CommunitySearchComponent = () => {
         // 전체 댓글 수 조회
         const totalCommentsResponses = await Promise.all(
           result.content.map((post) =>
-            CommunityAxiosApi.getTotalComments(post.communityId)
+            CommunityAxiosApi.getTotalComments(post.id)
           )
         );
         const totalComments = totalCommentsResponses.map(
@@ -223,7 +223,7 @@ const CommunitySearchComponent = () => {
                 <TableRow>
                   <TableRowDataIcon></TableRowDataIcon>
                   <TableRowDataTitle>제목</TableRowDataTitle>
-                  <TableRowDataWriter>글쓴이</TableRowDataWriter>
+                  <TableRowDataWriter>작성자</TableRowDataWriter>
                   <TableRowDataDate>작성일</TableRowDataDate>
                   <TableRowDataLikes>좋아요</TableRowDataLikes>
                   <TableRowDataViews>조회수</TableRowDataViews>

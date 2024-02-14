@@ -4,6 +4,29 @@ import AxiosInstance from "../utils/AxiosInstance";
 
 const BACKEND_DOMAIN = process.env.REACT_APP_BACKEND_DOMAIN;
 const CalendarApi = {
+
+
+  getMonthData: async (email, month) => {
+    console.log(email , month);
+    try {
+      const params = {
+        email: email,
+        month: month,
+      }
+      const reponse = await axios.get(
+        `${Common.WEELV_DOMAIN}/calendar/get-month-details`,
+        { params }
+      );
+      // console.log(reponse.data);
+      return reponse.data;
+    } catch (error) {
+      console.error("Error in getMonthlyData API call", error);
+      throw error;
+    }
+  },
+
+
+
   // 음식 조회
   getFoodList: async (params) => {
     try {

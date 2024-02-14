@@ -44,8 +44,8 @@ export const MealBox = () => {
               <MealInfoList>
                 {/* 배열을 받아오지 못했을때 에러가 나는걸 방지하기 위한 &&연산자 */}
                 {/* && 연산자는 A && B 일때 둘다 TRUE이면 B를 실행 */}
-                {Array.isArray(state.dateDetails) &&
-                  state.dateDetails
+                {Array.isArray(state.dateData) &&
+                  state.dateData
                     .filter((meal) => meal.meal_type === mealType)
                     .map((meal) => (
                       <MealInfo key={meal.id}>{meal.meal_name}</MealInfo>

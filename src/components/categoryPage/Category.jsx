@@ -3,14 +3,13 @@ import CateInsert from "./CateInsert";
 import TodoList from "./CateList";
 import CateTemplate from "./CateTemplate";
 import Modal from "./Modal";
-import CommunityAxiosApi from "../../api/CommunityAxiosApi";
-// import { jwtDecode } from "jwt-decode";
+import CommunityAxiosApi from "../../api/CommunityAxios";
 
 const Category = () => {
   const [cates, setCates] = useState([]);
-  const [email, setEmail] = useState("admin@admin.com");
   const [modalOpen, setModalOpen] = useState(false);
   const [modalMessage, setModalMessage] = useState("");
+  const [maxCategories, setMaxCategories] = useState(5);
   const closeModal = () => {
     setModalOpen(false);
   };
@@ -28,13 +27,17 @@ const Category = () => {
   }, []);
 
   const onInsert = async (text) => {
-    // console.log("onInsert : " + text + " " + decodedToken.sub);
+    if (cates.length >= maxCategories) {
+      setModalOpen(true);
+      setModalMessage("카테고리 개수는 최대 " + maxCategories + "개입니다.");
+      return;
+    }
     try {
-      const rsp = await CommunityAxiosApi.cateInsert(email, text);
-      if (rsp.data === true) {
+      const rsp = await CommunityAxiosApi.cateInsert(text);
+      if (rsp.status === 200) {
         const rsp = await CommunityAxiosApi.cateList();
-        if (rsp.status === 200) setCates(rsp.data);
-        console.log(rsp.data);
+        setCates(rsp.data);
+        console.log("등록 성공");
       } else {
         setModalOpen(true);
         setModalMessage("등록 실패");
@@ -50,6 +53,8 @@ const Category = () => {
         const rsp = await CommunityAxiosApi.cateList();
         if (rsp.status === 200) setCates(rsp.data);
         console.log(rsp.data);
+        setCates(rsp.data);
+        console.log("등록 성공");
       } else {
         setModalOpen(true);
         setModalMessage("삭제 실패");

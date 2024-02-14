@@ -32,11 +32,11 @@ const Button = styled.button`
   cursor: pointer;
   transition: 0.1s all ease-in;
   &:hover {
-    background: orangered;
+    background: #2446da;
   }
 `;
 
-const CateInsert = ({ onInsert }) => {
+const CateInsert = ({ onInsert, maxCategories }) => {
   const [value, setValue] = useState("");
 
   const onchange = useCallback((e) => {
@@ -45,6 +45,16 @@ const CateInsert = ({ onInsert }) => {
 
   const onSubmit = useCallback(
     (e) => {
+      e.preventDefault();
+      if (!value) {
+        alert("카테고리를 입력해주세요.");
+        return;
+      }
+      // 최대 입력 가능한 카테고리 수에 도달했는지 확인
+      if (maxCategories && onInsert && onInsert.length >= maxCategories) {
+        alert(`최대 ${maxCategories}개까지만 추가할 수 있습니다.`);
+        return;
+      }
       onInsert(value);
       setValue("");
       // submit 이벤트는 브라우저에서 새로고침을 발생시킵니다. 이를 방지하기 위한 처리

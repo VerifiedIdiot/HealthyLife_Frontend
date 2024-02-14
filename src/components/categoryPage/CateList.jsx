@@ -11,7 +11,7 @@ const CateList = ({ todos, onRemove }) => {
   return (
     <CateListItemContainer>
       {todos.map((todo) => (
-        <CateListItem cate={todo} key={todo.id} onRemove={onRemove} />
+        <CateListItem cate={todo} key={todo.categoryId} onRemove={onRemove} />
       ))}
     </CateListItemContainer>
   );

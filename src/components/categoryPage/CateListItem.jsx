@@ -44,17 +44,22 @@ const Remove = styled.div`
   }
 `;
 
-const CateListItem = ({ todo, onRemove }) => {
-  const { categoryId, categoryName } = todo;
-  return (
-    <CateListItemContainer>
-      <Checkbox>
-        <div className="text">{categoryName}</div>
-      </Checkbox>
-      <Remove onClick={() => onRemove(categoryId)}>
-        <MdRemoveCircleOutline />
-      </Remove>
-    </CateListItemContainer>
-  );
+const CateListItem = ({ cate, onRemove }) => {
+  try {
+    const { categoryId, categoryName } = cate;
+    return (
+      <CateListItemContainer>
+        <Checkbox>
+          <div className="text">{categoryName}</div>
+        </Checkbox>
+        <Remove onClick={() => onRemove(categoryId)}>
+          <MdRemoveCircleOutline />
+        </Remove>
+      </CateListItemContainer>
+    );
+  } catch (error) {
+    console.error(error);
+    return null;
+  }
 };
 export default CateListItem;

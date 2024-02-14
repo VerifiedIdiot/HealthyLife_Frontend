@@ -40,7 +40,7 @@ import AdminPage from "./pages/AdminPage";
 import AdminChartPage from "./pages/adminPage/AdminChart";
 import AdminMemberPage from "./pages/adminPage/Adminmemberpage";
 import AdminCommunity from "./pages/adminPage/AdminCommunityPage";
-
+import Category from "./components/categoryPage/Category";
 function App() {
   // 방문자 추적 커스텀 훅
   useTrackUserVisit();
@@ -64,6 +64,7 @@ function App() {
                 <Route path="/ad" element={<AdminChartPage />} />
                 <Route path="/ad/member" element={<AdminMemberPage />} />
                 <Route path="/ad/community" element={<AdminCommunity />} />
+                <Route path="/ad/category" element={<Category />} />
               </Route>
               {/*다이나믹한 헤더와 푸터가 포함된 라우트 그룹 */}
               <Route element={<DynamicHeaderFooter />}></Route>

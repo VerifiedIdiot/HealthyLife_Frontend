@@ -41,32 +41,34 @@ const PostListTitle = styled.div`
 `;
 const TitleContent = styled.div`
   display: flex;
-  position: relative;
   color: #2446da;
   font-size: 1.5rem;
   justify-content: center;
   align-items: center;
 `;
 const PostList = styled.div`
+  position: relative;
   display: flex;
-  width: 100%;
   flex-direction: column;
-  align-items: flex-start;
+  align-items: center;
+
+  @media (max-width: 1024px) {
+    font-size: 0.8rem;
+  }
 `;
 const PostTable = styled.div`
   display: flex;
+  width: 100%;
   padding: var(--, 1px) 0px 0.5px 0px;
-  flex-direction: column;
-  justify-content: center;
-  align-items: flex-start;
-  align-self: stretch;
+  height: 60vh;
+  @media (max-width: 1024px) {
+    height: 40vh;
+  }
 `;
 const TableBody = styled.div`
   display: flex;
   width: 100%;
   flex-direction: column;
-  justify-content: center;
-  align-items: flex-start;
 `;
 const TableRowData = styled.a`
   display: flex;
@@ -78,15 +80,20 @@ const TableRowData = styled.a`
   text-overflow: ellipsis;
 `;
 const TableNormalRow = styled.div`
-  border-bottom: 1px solid #2446da;
   width: 100%;
   height: 40px;
   opacity: 1;
   display: flex;
   flex-direction: row;
+  &:nth-child(even) {
+    background: rgba(36, 70, 218, 0.05);
+  }
+  & + & {
+    border-top: 1px solid #dee2e6;
+  }
   &:hover {
     color: #fff;
-    background: #2446da;
+    background: rgba(36, 70, 218, 0.6);
     cursor: pointer;
   }
 `;
@@ -140,7 +147,7 @@ const TableRow = styled.div`
   height: 38px;
   opacity: var(--, 1);
   display: flex;
-  background-color: #2446da;
+  background-color: rgba(36, 70, 218, 0.6);
   color: #fff;
   flex-direction: row;
   justify-content: space-between;

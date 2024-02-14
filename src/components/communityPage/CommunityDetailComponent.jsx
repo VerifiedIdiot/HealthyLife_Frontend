@@ -11,6 +11,7 @@ import { SmallButton } from "../../styles/styledComponents/StyledComponents";
 import PostRoom from "./PostRoomComponent";
 import MemberApi from "../../api/MemberApi";
 import React from "react";
+
 const InputContainer = styled.div`
   display: flex;
   flex-direction: column;
@@ -34,7 +35,7 @@ const TitleContent = styled.div`
 
   p {
     color: #333;
-    font-size: 1rem;
+    font-size: 0.8rem;
   }
 `;
 const DetailInfoContent = styled.div`

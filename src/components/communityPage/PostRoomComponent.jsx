@@ -13,8 +13,6 @@ import {
 } from "../../styles/styledComponents/StyledComponents";
 import MemberApi from "../../api/MemberApi";
 import Common from "../../utils/Common";
-import { set } from "lodash";
-import { comment } from "stylis";
 
 const CommentContainer = styled.div`
   overflow-y: scroll;
@@ -23,14 +21,14 @@ const CommentContainer = styled.div`
 
 const LargeInput = styled.textarea`
   width: 100%;
-  height: 100px;
+  height: 15vh;
   border-radius: 5px;
   background: rgba(255, 255, 255, 0.9);
   resize: none;
   border: 1px solid #c4c4c4;
 
   @media (max-width: 1024px) {
-    height: 100px;
+    height: 10vh;
   }
 `;
 
@@ -68,15 +66,13 @@ const CommentContent = styled.div`
   resize: none;
   border: 1px solid #c4c4c4;
   margin-bottom: 5px;
-  height: auto;
   width: 100%;
 `;
 
 const CommentItem = styled.div`
   display: flex;
   flex-direction: column;
-  height: 200px;
-  overflow-y: auto;
+  overflow-y: scroll;
 `;
 const Day = styled.div`
   display: flex;
@@ -100,6 +96,15 @@ const Box2 = styled.div`
 const Box3 = styled.div`
   display: flex;
   flex-direction: column;
+  height: 50vh;
+  @media (max-width: 1024px) {
+    height: 35vh;
+  }
+`;
+const Box4 = styled.div`
+  display: flex;
+  flex-direction: column;
+  width: 100%;
 `;
 const Dropdown = styled.select`
   width: 10em;
@@ -221,7 +226,7 @@ const PostRoom = () => {
     setShowPostRoom(!showPostRoom);
   };
   return (
-    <>
+    <Box4>
       <FormContainer>
         <p>
           <FaRegCommentDots /> {totalComment}
@@ -295,7 +300,7 @@ const PostRoom = () => {
           </CommentForm>
         </Box3>
       )}
-    </>
+    </Box4>
   );
 };
 

@@ -62,7 +62,7 @@ const CategorySelect = styled.select`
   width: 150px; // 드롭다운 너비 조정
 `;
 const StyledReactQuill = styled(ReactQuill)`
-  background-color: rgba(36, 70, 218, 0.6);
+  background-color: rgba(36, 70, 218, 0.3);
   margin-top: 10px;
   margin-bottom: 10px;
 
@@ -70,7 +70,7 @@ const StyledReactQuill = styled(ReactQuill)`
     opacity: 1;
     background: #fff;
     width: 980px;
-    height: 600px;
+    height: 790px;
     max-height: 500px;
     overflow-y: auto;
   }
@@ -98,6 +98,7 @@ const ButtonContainer = styled.div`
   justify-content: center;
   align-items: center;
   gap: 5px;
+  margin-bottom: 10px;
 `;
 const WriteComponent = () => {
   const [title, setTitle] = useState("");

@@ -20,17 +20,23 @@ const PostListTitle = styled.div`
 `;
 const TitleContent = styled.div`
   display: flex;
-  position: relative;
   color: #2446da;
-  font-size: 1.5rem;
-  justify-content: center;
+  font-size: 1.2rem;
+  font-weight: bold;
+  margin-bottom: 5px;
+  margin-left: 5px;
+  margin-right: 5px;
   align-items: center;
+
+  p {
+    color: #333;
+    font-size: 0.8rem;
+  }
 `;
 const PostList = styled.div`
   display: flex;
   width: 100%;
   flex-direction: column;
-  align-items: flex-start;
 `;
 const PostTable = styled.div`
   display: flex;
@@ -212,112 +218,106 @@ const CommunitySearchComponent = () => {
 
   return (
     <>
-      <Main>
-        <Container>
-          <PostListTitle>
-            <TitleContent>전체</TitleContent>
-          </PostListTitle>
-          <PostList>
-            <PostTable>
-              <TableBody>
-                <TableRow>
-                  <TableRowDataIcon></TableRowDataIcon>
-                  <TableRowDataTitle>제목</TableRowDataTitle>
-                  <TableRowDataWriter>작성자</TableRowDataWriter>
-                  <TableRowDataDate>작성일</TableRowDataDate>
-                  <TableRowDataLikes>좋아요</TableRowDataLikes>
-                  <TableRowDataViews>조회수</TableRowDataViews>
-                </TableRow>
-                {posts.length > 0 ? (
-                  posts.map((post) => {
-                    const hasMediaContent = checkMediaContent(post.content);
-                    const writerInfo = post.email
-                      ? post.nickName
-                      : `${Common.truncateText(post.nickName, 10)}`;
-                    return (
-                      <TableNormalRow
-                        key={post.communityId}
-                        onClick={() => {
-                          navigate(`/communitypage/detail/${post.communityId}`);
-                        }}
-                      >
-                        <TableRowDataIcon>
-                          {hasMediaContent.video ? (
-                            <Video />
-                          ) : hasMediaContent.img ? (
-                            <Image />
-                          ) : (
-                            <Text />
-                          )}
-                        </TableRowDataIcon>
-                        <TableRowDataTitle>
-                          {Common.truncateText(post.title, 20)}{" "}
-                          {totalComments[posts.indexOf(post)] > 0 &&
-                            `(${totalComments[posts.indexOf(post)]})`}
-                        </TableRowDataTitle>
-                        <TableRowDataWriter>{writerInfo}</TableRowDataWriter>
+      <Main $justify="center">
+        <PostListTitle>
+          <TitleContent>전체</TitleContent>
+        </PostListTitle>
+        <PostList>
+          <PostTable>
+            <TableBody>
+              <TableRow>
+                <TableRowDataIcon></TableRowDataIcon>
+                <TableRowDataTitle>제목</TableRowDataTitle>
+                <TableRowDataWriter>작성자</TableRowDataWriter>
+                <TableRowDataDate>작성일</TableRowDataDate>
+                <TableRowDataLikes>좋아요</TableRowDataLikes>
+                <TableRowDataViews>조회수</TableRowDataViews>
+              </TableRow>
+              {posts.length > 0 ? (
+                posts.map((post) => {
+                  const hasMediaContent = checkMediaContent(post.content);
+                  const writerInfo = post.email
+                    ? post.nickName
+                    : `${Common.truncateText(post.nickName, 10)}`;
+                  return (
+                    <TableNormalRow
+                      key={post.communityId}
+                      onClick={() => {
+                        navigate(`/communitypage/detail/${post.communityId}`);
+                      }}
+                    >
+                      <TableRowDataIcon>
+                        {hasMediaContent.video ? (
+                          <Video />
+                        ) : hasMediaContent.img ? (
+                          <Image />
+                        ) : (
+                          <Text />
+                        )}
+                      </TableRowDataIcon>
+                      <TableRowDataTitle>
+                        {Common.truncateText(post.title, 20)}{" "}
+                        {totalComments[posts.indexOf(post)] > 0 &&
+                          `(${totalComments[posts.indexOf(post)]})`}
+                      </TableRowDataTitle>
+                      <TableRowDataWriter>{writerInfo}</TableRowDataWriter>
 
-                        <TableRowDataDate>
-                          {Common.timeFromNow(post.regDate)}
-                        </TableRowDataDate>
-                        <TableRowDataLikes>{post.likeCount}</TableRowDataLikes>
+                      <TableRowDataDate>
+                        {Common.timeFromNow(post.regDate)}
+                      </TableRowDataDate>
+                      <TableRowDataLikes>{post.likeCount}</TableRowDataLikes>
 
-                        <TableRowDataViews>{post.viewCount}</TableRowDataViews>
-                      </TableNormalRow>
-                    );
-                  })
-                ) : (
-                  <TableNormalRow>
-                    <TableRowDataTitle>
-                      검색된 결과가 없습니다
-                    </TableRowDataTitle>
-                  </TableNormalRow>
-                )}
-              </TableBody>
-            </PostTable>
-            <SearchComponent />
-            <PostPage>
-              <Pagination>
-                <PageContant
-                  onClick={() =>
-                    setCurrentPage(currentPage > 1 ? currentPage - 1 : 0)
-                  }
-                  disabled={currentPage === 0}
-                >
-                  <IoIosArrowBack />
-                </PageContant>
-              </Pagination>
-              {/* for 문처럼 페이지를 생성하기 위해 Array 인스턴스 생성, _이건 아무의미없는값이고 서서히 늘어나는 현식 */}
-              {Array.from({ length: totalPages }, (_, i) => i + 1).map(
-                (pageNum) => (
-                  <MiddlePage
-                    key={pageNum}
-                    onClick={() => setCurrentPage(pageNum - 1)}
-                    active={currentPage === pageNum ? "true" : "false"}
-                  >
-                    <Page selected={currentPage === pageNum - 1} href="#">
-                      {pageNum}
-                    </Page>
-                  </MiddlePage>
-                )
+                      <TableRowDataViews>{post.viewCount}</TableRowDataViews>
+                    </TableNormalRow>
+                  );
+                })
+              ) : (
+                <TableNormalRow>
+                  <TableRowDataTitle>검색된 결과가 없습니다</TableRowDataTitle>
+                </TableNormalRow>
               )}
-              <Pagination>
-                <PageContant
-                  onClick={() =>
-                    setCurrentPage(
-                      currentPage < totalPages - 1
-                        ? currentPage + 1
-                        : currentPage
-                    )
-                  }
-                  disabled={currentPage === totalPages - 1}
+            </TableBody>
+          </PostTable>
+          <SearchComponent />
+          <PostPage>
+            <Pagination>
+              <PageContant
+                onClick={() =>
+                  setCurrentPage(currentPage > 1 ? currentPage - 1 : 0)
+                }
+                disabled={currentPage === 0}
+              >
+                <IoIosArrowBack />
+              </PageContant>
+            </Pagination>
+            {/* for 문처럼 페이지를 생성하기 위해 Array 인스턴스 생성, _이건 아무의미없는값이고 서서히 늘어나는 현식 */}
+            {Array.from({ length: totalPages }, (_, i) => i + 1).map(
+              (pageNum) => (
+                <MiddlePage
+                  key={pageNum}
+                  onClick={() => setCurrentPage(pageNum - 1)}
+                  active={currentPage === pageNum ? "true" : "false"}
                 >
-                  <IoIosArrowForward />
-                </PageContant>
-              </Pagination>
-            </PostPage>
-          </PostList>
-        </Container>
+                  <Page selected={currentPage === pageNum - 1} href="#">
+                    {pageNum}
+                  </Page>
+                </MiddlePage>
+              )
+            )}
+            <Pagination>
+              <PageContant
+                onClick={() =>
+                  setCurrentPage(
+                    currentPage < totalPages - 1 ? currentPage + 1 : currentPage
+                  )
+                }
+                disabled={currentPage === totalPages - 1}
+              >
+                <IoIosArrowForward />
+              </PageContant>
+            </Pagination>
+          </PostPage>
+        </PostList>
       </Main>
     </>
   );

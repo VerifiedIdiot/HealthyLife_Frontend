@@ -17,7 +17,8 @@ const CommunityList = styled.div`
   @media (max-width: 1024px) {
     flex-direction: column;
     align-items: center;
-    padding: 0 10px 0 10px;
+    justify-content: center;
+    width: 100%;
   }
 `;
 const Aside = styled.div`
@@ -31,6 +32,8 @@ const Aside = styled.div`
   @media (max-width: 1024px) {
     max-width: 100%;
     padding-bottom: 0;
+    align-items: center;
+    justify-content: center;
   }
 `;
 // 카테고리 전체

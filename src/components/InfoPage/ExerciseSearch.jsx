@@ -10,6 +10,7 @@ import {
 } from "../../styles/Layouts";
 import styled, { css } from "styled-components";
 import { MiddleButton } from "../../styles/styledComponents/StyledComponents";
+import { media } from "../../utils/MediaQuery";
 
 const Search1 = styled.input`
   width: 40%;
@@ -18,6 +19,10 @@ const Search1 = styled.input`
   border: none;
   background-color: #d9d9d9;
   box-sizing: border-box;
+
+  ${media.small`
+    width: 100%
+    `};
 `;
 
 const ExerciseSearch = ({ setdata }) => {
@@ -28,8 +33,14 @@ const ExerciseSearch = ({ setdata }) => {
   };
 
   return (
-    <Main $justify="center" $align="center" $width="90%">
-      <Container $justify="end" $align="center" $direction="row" $height="auto">
+    <Main $justify="center" $align="center" $width="90%" $shadow="none">
+      <Container
+        $justify="end"
+        $align="center"
+        $direction="row"
+        $height="auto"
+        $shadow="none"
+      >
         <Search1 value={keyword} onChange={keywordChange}></Search1>
         <MiddleButton
           style={{

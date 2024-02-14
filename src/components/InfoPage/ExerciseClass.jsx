@@ -9,11 +9,16 @@ import {
   Element,
 } from "../../styles/Layouts";
 import styled, { css } from "styled-components";
+import { media } from "../../utils/MediaQuery";
 
 const Class1 = styled.div`
   display: flex;
   width: 30%;
   justify-content: space-around;
+
+  ${media.large`
+    width: 45%
+    `};
 `;
 
 const Class2 = styled.div`
@@ -24,6 +29,13 @@ const Class2 = styled.div`
   font-size: 20px;
   font-weight: bold;
   text-align: center;
+
+  ${media.large`
+    width: 50%
+    `};
+  ${media.small`
+    font-size: 15px;
+    `};
 `;
 
 const Class3 = styled.select`
@@ -84,6 +96,7 @@ const ExerciseClass = ({ setdata1, setdata2 }) => {
     <Main
       $align="center"
       $width="90%"
+      $shadow="none"
       style={{ backgroundColor: "#D9D9D9", borderRadius: "8px" }}
     >
       <Container
@@ -92,6 +105,7 @@ const ExerciseClass = ({ setdata1, setdata2 }) => {
         $height="60px"
         $direction="row"
         $width="100%"
+        $shadow="none"
       >
         <Class1>
           <Class2>운동 부위</Class2>

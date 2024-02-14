@@ -89,6 +89,7 @@ const CalInput5 = styled.div`
 const CalInput6 = styled.img`
   width: 20%;
   min-width: 80px;
+  max-width: 120px;
 `;
 
 const CalInput7 = styled.div``;

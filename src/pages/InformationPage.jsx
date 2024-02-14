@@ -143,7 +143,7 @@ const InformationPage = () => {
     // isExInfo가 false일 때만 음식 정보를 불러옵니다.
     if (!isExInfo) {
       const FoodSearch = async () => {
-        const size = 9;
+        const size = 12;
         let resp;
         // 검색어가 존재하는 경우에만 새로운 데이터를 가져옵니다.
         if (getFoodKeyword || getFoodClass1 || getFoodClass2) {
@@ -175,7 +175,7 @@ const InformationPage = () => {
     // isExInfo가 true일 때만 운동 정보를 불러옵니다.
     if (isExInfo) {
       const ExerciseSearch = async () => {
-        const size = 9;
+        const size = 12;
         let resp;
         // 검색어가 존재하는 경우에만 새로운 데이터를 가져옵니다.
         if (getExerciseKeyword || getExerciseClass1 || getExerciseClass2) {
@@ -208,15 +208,10 @@ const InformationPage = () => {
     console.warn("비워라 운동!!!!!");
   }, [getExerciseKeyword, getExerciseClass1, getExerciseClass2, isExInfo]);
 
-  const Insert = () => {
-    FoodInsert();
-    ExerciseInsert();
-  };
-
   return (
     <>
-      <Main $height="auto">
-        <Container $align="center" $height="auto">
+      <Main $height="auto" $shadow="none">
+        <Container $align="center" $height="auto" $shadow="none">
           <Section
             $height="auto"
             style={{

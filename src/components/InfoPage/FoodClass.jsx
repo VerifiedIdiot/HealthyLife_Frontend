@@ -263,6 +263,7 @@ const InfoClass = ({ setdata1, setdata2 }) => {
     <Main
       $align="center"
       $width="90%"
+      $shadow="none"
       style={{ backgroundColor: "#D9D9D9", borderRadius: "8px" }}
     >
       <Container
@@ -271,6 +272,7 @@ const InfoClass = ({ setdata1, setdata2 }) => {
         $height="60px"
         $direction="row"
         $width="100%"
+        $shadow="none"
       >
         <Class1>
           <Class2>식품 대분류</Class2>

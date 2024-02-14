@@ -1,4 +1,4 @@
-import { useNavigate } from "react-router";
+import { Outlet, useNavigate } from "react-router";
 import {
   Main,
   Container,
@@ -11,6 +11,7 @@ import {
 import { useState } from "react";
 import logo from "../assets/icons/logo.svg";
 import styled from "styled-components";
+
 const Menus = styled.div`
   color: #2b2a2a;
   cursor: pointer;
@@ -41,7 +42,6 @@ const AdminPage = () => {
     <>
       <Main $width="100%" $position="relative">
         <Container
-          $border="1px solid black"
           $width="15vw"
           $height="100vh"
           $background="#fff"
@@ -86,7 +86,7 @@ const AdminPage = () => {
           />
           <Menus
             className={activeMenu === "" ? "active" : ""}
-            onClick={() => handleClick("")}
+            onClick={() => handleClick("member")}
           >
             <p>회원 관리</p>
           </Menus>
@@ -99,10 +99,11 @@ const AdminPage = () => {
           />
           <Menus
             className={activeMenu === "" ? "active" : ""}
-            onClick={() => handleClick("")}
+            onClick={() => handleClick("community")}
           >
             <p>게시글 관리</p>
           </Menus>
+
           <hr
             style={{
               borderBottom: "0.5px solid #999999",
@@ -112,6 +113,7 @@ const AdminPage = () => {
           />
         </Container>
       </Main>
+      <Outlet />
     </>
   );
 };

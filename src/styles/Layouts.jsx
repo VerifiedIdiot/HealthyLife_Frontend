@@ -18,6 +18,7 @@ export const Main = styled.main.attrs({
   width: ${(props) => props.$width || "95%"};
   height: ${(props) => props.$height || "100%"};
   border: ${(props) => props.$border || "none"};
+  margin-left: ${(props) => props.$marginLeft || "0"};
 `;
 
 // 컨테이너
@@ -62,6 +63,7 @@ export const Section = styled.section.attrs({
   margin: ${(props) => props.$margin || "0"};
   margin-top: ${(props) => props.$marginTop || "0"};
   margin-bottom: ${(props) => props.$marginBottom || "0"};
+  margin-left: ${(props) => props.$marginLeft || "0"};
   padding: ${(props) => props.$padding || "0"};
   padding-top: ${(props) => props.$paddingTop || "0"};
   padding-bottom: ${(props) => props.$paddingBottom || "0"};
@@ -147,7 +149,8 @@ export const Element = styled.div.attrs({
   width: ${(props) => props.$width || "100%"};
   height: ${(props) => props.$height || "100%"};
   border: ${(props) => props.$border || "none"};
-  box-shadow: ${(props) => props.$shadow || "0 2px 4px rgba(0, 0, 0, 0.1box-shadow)"};
+  box-shadow: ${(props) =>
+    props.$shadow || "0 2px 4px rgba(0, 0, 0, 0.1box-shadow)"};
 `;
 
 export const ScrollBox = styled.div`

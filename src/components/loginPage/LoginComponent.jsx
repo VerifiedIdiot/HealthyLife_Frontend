@@ -87,7 +87,11 @@ const LoginComp = () => {
         console.log("리프레시토큰나와 ! " + res.data.refreshToken);
         Common.setAccessToken(res.data.accessToken);
         Common.setRefreshToken(res.data.refreshToken);
-        loginNavigate("/");
+        if (inputEmail === "admin") {
+          navigate("/ad");
+        } else {
+          navigate("/");
+        }
       }
     } catch (err) {
       console.log("로그인 에러 : " + err);

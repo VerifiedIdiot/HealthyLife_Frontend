@@ -6,8 +6,11 @@ import useHalfView from "../../hooks/useHalfView";
 // import useMobileView from "../../hooks/useMobileView";
 // 라이브러리 영역
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faBars } from "@fortawesome/free-solid-svg-icons";
+import { faBars, faUser } from "@fortawesome/free-solid-svg-icons";
 import { useIsMobile } from "../../hooks/useMobileView";
+import ModalStyle from "../../styles/headerFooter/headerComponents/Navigation";
+
+
 
 
 const StyledHeader = styled.header.attrs({
@@ -63,6 +66,8 @@ const HamburgerIcon = styled.div`
   }
 `;
 
+
+
 const Header = ({ headerProps = {} }) => {
   const { $scrolledDown, $position, $dynamic } = headerProps;
   const isMobile = useIsMobile();
@@ -77,7 +82,7 @@ const Header = ({ headerProps = {} }) => {
     <StyledHeader
       $scrolledDown={$scrolledDown || false}
       $position={$position || "static"}
-      $dynamic={$dynamic || false}>
+      $dynamic={$dynamic || true}>
       <HeaderInner>
         <Logo />
         {isHalfView ? (
@@ -85,7 +90,7 @@ const Header = ({ headerProps = {} }) => {
             <FontAwesomeIcon icon={faBars} />
           </HamburgerIcon>
         ) : (
-          <Navigation $scrolledDown={$dynamic ? $scrolledDown : true} />
+            <Navigation $scrolledDown={$dynamic ? $scrolledDown : true} />
         )}
       </HeaderInner>
       {isHalfView && isNavOpen && <Navigation $scrolledDown={true} />}

@@ -58,9 +58,11 @@ export const CalendarSection = () => {
           formatMonthYear={(locale, value) =>
             value.toLocaleDateString("ko", { year: "numeric", month: "long" })
           }
-          // tileContent={tileContent} // 달력 내용 표시
           onClickDay={handleDayClick}
-        />
+        >
+          <div></div>
+
+        </Calendar>
           <MiddleModal $isOpen={modalOpen} $onClose={closeModal}>
             <InfoArea>
               <InfoItemBox $height="10%"></InfoItemBox>

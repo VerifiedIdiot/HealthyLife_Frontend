@@ -11,6 +11,7 @@ const CalendarApi = {
         `${Common.WEELV_DOMAIN}/meal/view/search`,
         { params }
       );
+      console.log(response.data);
       return response.data;
     } catch (error) {
       console.error("Error in getFoodListBySearch API call", error);
@@ -22,7 +23,7 @@ const CalendarApi = {
     console.log(mealType, selectedItem, email, selectedDate);
     // 모든 필드 값이 유효한지 확인
     if (!email || !mealType || !selectedDate || !selectedItem) {
-      console.error("파라미터의 값이 비었음 ㅋ");
+      console.error("파라미터의 값이 비었음");
       throw new Error("널 금지");
     }
   

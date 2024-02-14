@@ -15,10 +15,9 @@ export const CalendarContext = createContext();
 const initialState = {
   email: "",
   mealType: "",
-  // 날짜클릭 이벤트 실행시 해당 날짜 정보를 받을 객체 리터럴 ㅎㅎ!
-  selectedDate: "",
-  // 선택한 날짜에 맞는 데이터들을 담을 객체 .. 참고하셈 ㅎㅎ!
-  dateDetails: {},
+  monthDetails: {},
+  selectedDate: "", // 날짜클릭 이벤트 실행시 해당 날짜 정보를 받을 객체 리터럴 ㅎㅎ!
+  dateDetails: {}, // 선택한 날짜에 맞는 데이터들을 담을 객체 .. 참고하셈 ㅎㅎ!
   
   
 };
@@ -106,6 +105,20 @@ export const CalendarProvider = ({ children }) => {
       const day = `${d.getDate()}`.padStart(2, "0"); // 일도 두 자리수로 만듭니다.
       return `${year}-${month}-${day}`;
     };
+
+      // 최초에 컨텍스트내 영역에 진입시 랜더링 되기 실행되는 email 정보 받아오기 함수
+  // useLayoutEffect(() => {
+  //   const fetchMonthDetails = async () => {
+  //     try {
+  //       const response = await Common.TakenToken();
+  //       console.log(response.data);
+  //       actions.setEmail(response.data);
+  //     } catch (error) {
+  //       console.log("실패 ㅠㅠ");
+  //     }
+  //   };
+  //   fetchMonthDetails();
+  // }, []);
 
   return (
     <CalendarContext.Provider value={{ state, actions, formatDate }}>

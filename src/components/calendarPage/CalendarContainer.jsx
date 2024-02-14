@@ -152,3 +152,10 @@ export const MealInputBox = ({ closeModal}) => {
     </>
   );
 };
+
+
+export const DateDetails = () => {
+  const { state, actions } = useCalendar();
+
+
+}

@@ -54,7 +54,7 @@ const Navigation = ({ $scrolledDown = true }) => {
     const isLogin = async () => {
       try {
         const res = await Common.IsLogin();
-        console.log(res.data + "로그인 중입니다.");
+        // console.log(res.data + "로그인 중입니다.");
         localStorage.setItem("loginStatus", res.data);
         setLoginStatus(res.data);
       } catch (error) {

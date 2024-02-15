@@ -43,8 +43,8 @@ const Exercise = styled.div`
 
 const ExerciseImg = styled.img`
   width: 100%;
-  max-width: 180px;
-  height: 180px;
+  max-width: 160px;
+  height: 170px;
   border-radius: 8px 8px 0px 0px;
   display: block; /* 이미지를 블록 요소로 표시합니다. */
   margin: 0 auto; /* 가로 방향으로 가운데 정렬합니다. */
@@ -119,6 +119,8 @@ const ExerciseInfo = ({ exerciseData }) => {
       case "lower_back":
         return lower_back;
       case "middle_back":
+        return middle_back;
+      case "traps":
         return middle_back;
       case "neck":
         return neck;

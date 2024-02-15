@@ -30,6 +30,7 @@ const FoodImg = styled.img`
   border-radius: 8px 8px 0px 0px;
   display: block; /* 이미지를 블록 요소로 표시합니다. */
   margin: 0 auto; /* 가로 방향으로 가운데 정렬합니다. */
+  object-fit: cover;
   margin-bottom: 0.5rem;
 
   ${media.medium`

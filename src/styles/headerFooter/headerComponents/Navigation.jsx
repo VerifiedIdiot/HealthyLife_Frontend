@@ -32,7 +32,7 @@ const NavLink = styled.div.attrs({
   className: "nav-item",
 })`
   cursor: pointer;
-  width: ${(props) => props.$width || "80%"};
+  /* width: ${(props) => props.$width || "80%"}; */
   margin-left: ${(props) => props.$marginLeft || "0"};
 
   @media (max-width: 1200px) {
@@ -42,7 +42,7 @@ const NavLink = styled.div.attrs({
   p {
     font-size: 1.2rem;
     color: ${(props) => (props.$scrolledDown ? "black" : "white")};
-    padding : 3vw;
+    padding : 0 3vw;
     @media (max-width: 1200px) {
       margin-bottom: 10px;
     }
@@ -57,9 +57,9 @@ const NavLinkIcon = styled.div`
   flex-direction: row;
   justify-content: center;
   align-items: center;
-  /* img {
+  img {
     padding: 1vw;
-  } */
+  }
   @media (max-width: 1200px) {
     flex-direction: column;
   }

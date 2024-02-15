@@ -10,7 +10,7 @@ const DynamicHeader = () => {
       headerProps={{
         $scrolledDown: scrolledDown,
         $position: "fixed",
-        $dynamic: true,
+        $dynamic: false,
       }}
     />
   );

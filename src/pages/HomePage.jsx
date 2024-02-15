@@ -22,7 +22,7 @@ const Title = styled.div`
       font-size: 40px;
     `}
   ${media.small`
-      font-size: 25px;
+      font-size: 22px;
     `}
 `;
 

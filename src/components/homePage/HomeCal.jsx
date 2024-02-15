@@ -72,6 +72,10 @@ const CalInput3 = styled.input`
 
 const CalInput4 = styled.div`
   width: 70%;
+  display: flex;
+
+  .Unit {
+  }
 `;
 
 const CalInput5 = styled.div`
@@ -156,7 +160,16 @@ const HomeCal = () => {
                   value={height}
                   onChange={(e) => setHeight(e.target.value)}
                 />
-                cm
+                <div
+                  className="Unit"
+                  style={{
+                    display: "flex",
+                    alignItems: "center",
+                    marginLeft: "1rem",
+                  }}
+                >
+                  cm
+                </div>
               </CalInput4>
             </CalInput1>
             <CalInput1>
@@ -166,7 +179,16 @@ const HomeCal = () => {
                   value={weight}
                   onChange={(e) => setWeight(e.target.value)}
                 />
-                kg
+                <div
+                  className="Unit"
+                  style={{
+                    display: "flex",
+                    alignItems: "center",
+                    marginLeft: "1rem",
+                  }}
+                >
+                  kg
+                </div>
               </CalInput4>
             </CalInput1>
             <CalInput1>

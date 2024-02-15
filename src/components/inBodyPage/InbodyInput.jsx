@@ -12,9 +12,10 @@ import { MiddleButton } from "../../styles/styledComponents/StyledComponents";
 import runner from "../../assets/imgs/runner.png";
 import AxiosInstance from "../../api/AxiosInstance";
 import Common from "../../utils/Common";
-import { useState, useMemo } from "react";
+import { useState, useMemo, useEffect } from "react";
 import BodyApi from "../../api/BodyApi";
 import { media } from "../../utils/MediaQuery";
+import MemberApi from "../../api/MemberApi";
 
 const Input1 = styled.div`
   display: flex;
@@ -74,13 +75,17 @@ const calculateBMI = (height, weight) => {
 };
 
 // BMR 계산 함수
-const calculateBMR = (height, weight) => {
-  return 10 * weight + 6.25 * height - 100 + 5;
+const calculateBMR = (height, weight, gender, age) => {
+  if (gender === "남") {
+    return 10 * weight + 6.25 * height - 5 * age + 5;
+  } else {
+    return 10 * weight + 6.25 * height - 5 * age - 161;
+  }
 };
 
 // 체지방률 계산 함수
 const calculateFatPercent = (fat, weight) => {
-  return ((fat / weight) * 100).toFixed(2);
+  return ((fat * 100) / weight).toFixed(2);
 };
 
 const InbodyInput = (props) => {
@@ -88,6 +93,44 @@ const InbodyInput = (props) => {
   const [weight, setWeight] = useState("");
   const [muscle, setMuscle] = useState("");
   const [fat, setFat] = useState("");
+  const [gender, setGender] = useState("");
+  const [age, setAge] = useState("");
+
+  useEffect(() => {
+    const loadMemberInfo = async () => {
+      try {
+        const resp = await MemberApi.getMemberDetail();
+        console.warn(resp.data.gender);
+        console.log(resp.data.birth);
+        setGender(resp.data.gender);
+
+        // 생년월일을 Date 객체로 변환
+        const birthDate = new Date(resp.data.birth);
+
+        // 현재 날짜를 가져오기
+        const currentDate = new Date();
+
+        // 나이 계산
+        const calculatedAge =
+          currentDate.getFullYear() - birthDate.getFullYear();
+
+        // 생일이 지났는지 체크
+        if (
+          currentDate.getMonth() < birthDate.getMonth() ||
+          (currentDate.getMonth() === birthDate.getMonth() &&
+            currentDate.getDate() < birthDate.getDate())
+        ) {
+          setAge(calculatedAge - 1); // 아직 생일이 지나지 않았으면 1을 빼줌
+        } else {
+          setAge(calculatedAge);
+        }
+      } catch (error) {
+        // 여기에 오류 처리 로직을 추가할 수 있습니다.
+        console.error("MemberInfo 오류발생:", error);
+      }
+    };
+    loadMemberInfo();
+  }, []);
 
   const bmi = useMemo(() => {
     if (!height || !weight) {
@@ -97,11 +140,11 @@ const InbodyInput = (props) => {
   }, [height, weight]);
 
   const bmr = useMemo(() => {
-    if (!height || !weight) {
+    if (!height || !weight || !gender || !age) {
       return 0;
     }
-    return calculateBMR(height, weight);
-  }, [height, weight]);
+    return calculateBMR(height, weight, gender, age);
+  }, [height, weight, gender, age]);
 
   const fatPercent = useMemo(
     () => calculateFatPercent(fat, weight),

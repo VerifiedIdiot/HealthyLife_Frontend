@@ -75,7 +75,7 @@ const IntroElement2 = styled.div`
   font-weight: bold;
 
   ${media.large`
-    font-size: 13px;
+    font-size: 12px;
     `}
 `;
 

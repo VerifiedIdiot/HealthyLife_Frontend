@@ -1,21 +1,19 @@
 import { useNavigate } from "react-router";
 import { Area, Box, Container, Main, Section } from "../../styles/Layouts";
 import { MiddleButton } from "../../styles/styledComponents/StyledComponents";
-import { useContext, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { LabelComp } from "../joinPage/JoinStyle";
 import { Address, Input, InputButton } from "../joinPage/JoinInput";
 import basicProfile from "../../assets/imgs/basicUser.png";
 import MemberApi from "../../api/MemberApi";
 import { storage } from "../../api/firebase";
-import { UserContext } from "../../contexts/UserStore";
 import DaumPostPopup from "../../api/DaumPost";
 import AdminAxiosApi from "../../api/AdminApi";
+import Common from "../../utils/Common";
 
 const MypageEditComp = () => {
   const myPageNavigate = useNavigate();
   const navigate = useNavigate();
-  const context = useContext(UserContext);
-  const { setLoginStatus, kakaoId } = context;
 
   const [memberInfo, setMemberInfo] = useState(null);
 
@@ -265,15 +263,20 @@ const MypageEditComp = () => {
   };
 
   // 회원삭제
+  const [loginStatus, setLoginStatus] = useState(false);
+
   const HandleDeleteMember = async (email) => {
     const memberDel = async () => {
       try {
         const rsp = await AdminAxiosApi.memberDelete(email);
         console.log(email);
         if (rsp.status === 200) {
-          window.localStorage.clear();
+          localStorage.setItem("loginStatus", "false");
+          Common.setAccessToken("");
+          Common.setRefreshToken("");
           alert("회원 삭제가 완료되었습니다.");
           navigate("/");
+          setLoginStatus(false);
         }
       } catch (e) {
         console.log("에러");

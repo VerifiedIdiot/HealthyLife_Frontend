@@ -602,7 +602,7 @@ const JoinComp = ({ email, profile }) => {
                 changeEvt={onChangeName}
               />
             </Area>
-            {/* <Area $direction="column" $shadow="none" $marginTop="10px">
+            <Area $direction="column" $shadow="none" $marginTop="20px">
               <p
                 style={{
                   color: "rgba(0, 0, 0, 0.5)",
@@ -618,7 +618,7 @@ const JoinComp = ({ email, profile }) => {
                 msgType={isAge}
                 changeEvt={onChangeAge}
               />
-            </Area> */}
+            </Area>
 
             <Area $direction="column" $shadow="none" $marginTop="20px">
               <p

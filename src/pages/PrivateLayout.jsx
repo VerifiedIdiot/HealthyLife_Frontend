@@ -52,10 +52,12 @@ const PrivateLayout = () => {
             }
           } catch (e) {
             console.log(e);
+            alert("로그인을 해주세요");
             console.log("안됨;");
             navigate("/login");
           }
         } else {
+          alert("로그인을 해주세요");
           console.log("여기서안되?");
           navigate("/login");
         }

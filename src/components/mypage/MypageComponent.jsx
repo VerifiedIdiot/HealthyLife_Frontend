@@ -1,16 +1,58 @@
 import { useNavigate } from "react-router";
 import { Area, Container, Main, Section } from "../../styles/Layouts";
 import { MiddleButton } from "../../styles/styledComponents/StyledComponents";
+import styled from "styled-components";
+import { media } from "../../utils/MediaQuery";
+
+const MainStyle = styled(Main)`
+  ${media.small`
+    display: flex;
+    flex-direction:column;
+    width: 80%;
+    height: 100vh;
+    justify-content: center;
+    background-color: white;
+    align-items: center;
+`}
+`;
+
+const ContainerStyle = styled(Container)`
+  ${media.small`
+    width: 100%;
+    background-color: white;
+    box-shadow: none;
+    height: 20%;
+`}
+`;
+
+const Container2Style = styled(Container)`
+  ${media.small`
+    width: 100%;
+    box-shadow: none;
+    height: 50%;
+`}
+`;
 
 const MypageComp = ({ memberInfo }) => {
   const editNavigate = useNavigate();
   return (
     <>
-      <Main $direction="row" $background="#f3f3f3" $width="100%">
-        <Container $shadow="none" $align="center" $justify="center">
-          <Section $direction="column" $align="center" $justify="center">
+      <MainStyle $direction="row" $background="#f3f3f3" $width="100%">
+        <ContainerStyle
+          $shadow="none"
+          $align="center"
+          $justify="center"
+          $width="55%"
+        >
+          <Section
+            $direction="column"
+            $align="center"
+            $justify="center"
+            $height="auto"
+          >
             <Area
               $shadow="none"
+              $height="auto"
               $position="relative"
               $width="50%"
               $paddingBottom="50%"
@@ -21,22 +63,23 @@ const MypageComp = ({ memberInfo }) => {
             >
               <img
                 style={{
+                  position: "absolute",
                   width: "100%",
                   height: "100%",
-                  position: "absolute",
                 }}
                 src={memberInfo && memberInfo.image}
                 alt="프로필 이미지"
               />
             </Area>
           </Section>
-        </Container>
-        <Container
+        </ContainerStyle>
+        <Container2Style
           $shadow="none"
           $padding="0 15px"
           $dispaly="flex"
           $align="center"
           $justify="center"
+          $width="45%"
         >
           <Section $shadow="none" $direction="column">
             <Area $shadow="none" $direction="column">
@@ -123,7 +166,7 @@ const MypageComp = ({ memberInfo }) => {
                 {memberInfo.phone}
               </p>
             </Area>
-            <Area $shadow="none" $direction="column">
+            <Area $shadow="none" $direction="column" $marginBottom="30px">
               <p
                 style={{
                   color: "rgba(0, 0, 0, 0.5)",
@@ -150,8 +193,8 @@ const MypageComp = ({ memberInfo }) => {
               </MiddleButton>
             </Area>
           </Section>
-        </Container>
-      </Main>
+        </Container2Style>
+      </MainStyle>
     </>
   );
 };

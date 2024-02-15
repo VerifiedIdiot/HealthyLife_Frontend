@@ -10,6 +10,18 @@ import { storage } from "../../api/firebase";
 import DaumPostPopup from "../../api/DaumPost";
 import AdminAxiosApi from "../../api/AdminApi";
 import Common from "../../utils/Common";
+import styled from "styled-components";
+import { media } from "../../utils/MediaQuery";
+
+const MainStyle = styled(Main)`
+  ${media.small`
+    flex-direction:column;
+    width: 90%;
+    height: 100vh;
+    justify-content: center;
+    align-items: center;
+`}
+`;
 
 const MypageEditComp = () => {
   const myPageNavigate = useNavigate();
@@ -287,13 +299,19 @@ const MypageEditComp = () => {
 
   return (
     <>
-      <Main $direction="column" $width="100%" $height="auto">
+      <MainStyle
+        $direction="column"
+        $width="100%"
+        $shadow="none"
+        $height="auto"
+      >
         <Container
           $width="100%"
           $direction="column"
           $height="auto"
           $align="center"
           $justify="center"
+          $shadow="none"
           $padding="80px 0"
         >
           <Section
@@ -480,12 +498,7 @@ const MypageEditComp = () => {
                 changeEvt={onChangePhone}
               />
             </Area>
-            <Area
-              $direction="column"
-              $shadow="none"
-              $marginTop="20px"
-              $marginBottom="40px"
-            >
+            <Area $direction="column" $shadow="none" $marginBottom="40px">
               <p
                 style={{
                   color: "rgba(0, 0, 0, 0.5)",
@@ -518,7 +531,7 @@ const MypageEditComp = () => {
             </Area>
           </Section>
         </Container>
-      </Main>
+      </MainStyle>
     </>
   );
 };

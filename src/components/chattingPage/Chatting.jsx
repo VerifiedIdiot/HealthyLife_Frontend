@@ -17,6 +17,7 @@ import {
 } from "./ChattingStyle";
 import Common from "../../utils/Common";
 import ChatApi from "../../api/ChatAPi";
+import MemberApi from "../../api/MemberApi";
 
 // 채팅방Component
 const Chatting = (props) => {
@@ -189,10 +190,11 @@ const Chatting = (props) => {
 export default Chatting;
 
 const MessageInfo = (props) => {
-  const { isSender, message, messageTime,senderId, messageStatus,roomId } = props;
+  const { isSender, message, messageTime, senderId, messageStatus, roomId } =
+    props;
   // messageTime을 Date 객체로 변환
   const messageDate = new Date(messageTime);
-
+  const [userInfo, setUserInfo] = useState("");
   // 옵션 설정 (timeZone를 undefined로 변경)
   const options = {
     hour: "numeric",
@@ -208,7 +210,6 @@ const MessageInfo = (props) => {
   useEffect(() => {
     const updateMessageStatus = async () => {
       try {
-        // 서버에 메시지 읽음 상태 업데이트 요청 보내기
         await ChatApi.updateMessageStatus(roomId, senderId);
       } catch (error) {
         console.error("메시지 읽음 상태 업데이트 실패:", error);
@@ -216,20 +217,29 @@ const MessageInfo = (props) => {
       }
     };
     // 여기에서 필요한 로직 수행
-    if(isSender){
-    updateMessageStatus();}
+    if (isSender) {
+      updateMessageStatus();
+    };
   }, [isSender]);
 
+  useEffect(() => {
+    const getInfo = async () => {
+      try {
+        const res = await MemberApi.getMemberInfo(senderId);
+        console.log(res.data);
+        setUserInfo(res.data);
+      } catch (error) {
+        console.error("멤버 정보를 가져오는 동안 에러 발생:", error);
+        // 에러 처리 로직을 추가할 수 있습니다.
+      }
+    };
+    getInfo();
+  }, [senderId]);
   return (
     <>
       <MessegeContainer>
         <MemberImg $height="30px" $width="30px" isSender={isSender}>
-          <ChatImage
-            src={
-              "https://item.kakaocdn.net/do/1401e813472967e3b572fee1ee192eb89f17e489affba0627eb1eb39695f93dd"
-            }
-            alt="회원 이미지"
-          />
+          <ChatImage src={userInfo.image} alt="회원 이미지" />
         </MemberImg>
         <ChatBox1 isSender={isSender}>
           <ChatBox isSender={isSender}>
@@ -237,14 +247,22 @@ const MessageInfo = (props) => {
             <MassegeState>
               {isSender && (
                 <>
-                  <p style={{ color: "red" }}>{messageStatus}</p>
+                  <p
+                    style={{ color: messageStatus !== "읽음" ? "red" : "blue" }}
+                  >
+                    {messageStatus}
+                  </p>
                   {formattedTime}
                 </>
               )}
               {!isSender && (
                 <>
                   {formattedTime}
-                  <p style={{ color: "red" }}>{messageStatus}</p>
+                  <p
+                    style={{ color: messageStatus !== "읽음" ? "red" : "blue" }}
+                  >
+                    {messageStatus}
+                  </p>
                 </>
               )}
             </MassegeState>

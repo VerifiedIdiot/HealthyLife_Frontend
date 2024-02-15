@@ -16,6 +16,7 @@ import { useState, useMemo, useEffect } from "react";
 import BodyApi from "../../api/BodyApi";
 import { media } from "../../utils/MediaQuery";
 import MemberApi from "../../api/MemberApi";
+import InfoApi from "../../api/InfoApi";
 
 const Input1 = styled.div`
   display: flex;
@@ -23,6 +24,15 @@ const Input1 = styled.div`
   justify-content: space-between;
   align-items: center;
   margin-bottom: 1rem;
+`;
+
+const Input4 = styled.div`
+  display: flex;
+  width: 80%;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+  transition: all 0.5s ease; // 트랜지션 추가
 `;
 
 const Input2 = styled.div`
@@ -95,6 +105,7 @@ const InbodyInput = (props) => {
   const [fat, setFat] = useState("");
   const [gender, setGender] = useState("");
   const [age, setAge] = useState("");
+  const [mlPredictions, setMLPredictions] = useState(0);
 
   useEffect(() => {
     const loadMemberInfo = async () => {
@@ -205,6 +216,28 @@ const InbodyInput = (props) => {
       }
     }
   };
+  function extractYearFromDate(dateString) {
+    const dateObject = new Date(dateString);
+    const year = dateObject.getFullYear();
+    return year;
+  }
+
+  useEffect(() => {
+    const fetchMLPredictions = async () => {
+      try {
+        const res = await MemberApi.getMemberDetail();
+        const year = extractYearFromDate(res.data.birth);
+        const predictions = await InfoApi.getMLPredictions(bmi, year);
+        console.log(predictions);
+        const formattedNumber = parseInt(predictions.predictions[0]);
+        setMLPredictions(formattedNumber);
+      } catch (error) {
+        console.error("ML 예측 호출 중 오류 발생:", error);
+      }
+    };
+    // 컴포넌트가 마운트될 때 한 번 호출
+    fetchMLPredictions();
+  }, [bmi]); // BMI 또는 AdultMortality가 변경될 때마다 호출
 
   return (
     <>
@@ -265,6 +298,20 @@ const InbodyInput = (props) => {
             $align="center"
             style={{ borderRadius: "0px 0px 8px 0px" }}
           >
+    {bmi !== 0 ? (
+              <>
+              <Input4>
+                고객님의 남은 평균 수명은{" "}
+                <p style={{ color: "red" }}>{mlPredictions}</p> 살 입니다. BMI를{" "}
+                <p style={{ color: "blue" }}>{bmi - 2}</p>으로 낮출시 평균{" "}
+                <p style={{ color: "blue" }}>{mlPredictions + 2}</p>살 더 살 수
+                있습니다! 열심히 운동하세요!
+              </Input4>
+              <p style={{fontSize:"0.1em"}}>* 2015년 자료 기반 입니다</p>
+              </>
+            ) : (
+              <Input4></Input4>
+            )}
             <MiddleButton
               style={{ marginRight: "1.5%", marginBottom: "1.5%" }}
               onClick={bodyUpload}

@@ -10,11 +10,13 @@ import ChatApi from "../../api/ChatAPi";
 import { ButtonComp } from "../../styles/example/Button";
 import Common from "../../utils/Common";
 import { LastPage } from "@mui/icons-material";
+import MemberApi from "../../api/MemberApi";
 
 const ChatList = (props) => {
   const { setState } = props;
   const [chatRoomTitle, setChatRoomTitle] = useState("");
   const [chatRooms, setChatRooms] = useState([]);
+  const [senderId1, setSenderId1] = useState();
 
   const stateClick = (state) => {
     setState(state);
@@ -49,7 +51,6 @@ const ChatList = (props) => {
         console.log(e);
       }
     };
-
     getChatRoom();
   }, []);
 
@@ -88,20 +89,30 @@ export default ChatList;
 const ChatBox = (props) => {
   const { roomInfo } = props;
   const [latestMessage, setLatestMessage] = useState("");
+  const [userInfo, setUserInfo] = useState("");
 
   useEffect(() => {
     const fetchLatestMessage = async () => {
+      const userId = await Common.TakenId();
       try {
+        // 여기에 추가된 부분
         const latestMessageResponse = await ChatApi.getLatestMessage(
           roomInfo.roomId
         );
         // 응답 및 응답의 data 속성이 null 또는 정의되지 않은지 확인합니다.
-          setLatestMessage(latestMessageResponse);
+        setLatestMessage(latestMessageResponse);
+        let senderId;
+        if (roomInfo.senderId === userId.data) {
+          senderId = roomInfo.memberId;
+        } else {
+          senderId = roomInfo.senderId;
+        }
+        const res = await MemberApi.getMemberInfo(senderId);
+        setUserInfo(res.data);
       } catch (error) {
         console.error("최신 메시지 조회 중 에러 발생:", error);
       }
     };
-
     fetchLatestMessage();
   }, [roomInfo.roomId]);
 
@@ -109,20 +120,17 @@ const ChatBox = (props) => {
     <>
       <Box $align="center" $height="100px" onClick={props.onClick}>
         <MemberImg>
-          <ChatImage
-            src={
-              "https://item.kakaocdn.net/do/1401e813472967e3b572fee1ee192eb89f17e489affba0627eb1eb39695f93dd"
-            }
-            alt="회원 이미지"
-          />
+          <ChatImage src={userInfo.image} alt="회원 이미지" />
         </MemberImg>
         <MemberInfo>
-          <Item $shadow="none">{roomInfo.roomId}</Item>
+          <Item $shadow="none">{userInfo.nickName}의 채팅</Item>
           <Item $color="grey" $shadow="none">
             {/* Display the latest message here */}
-            {latestMessage || "대화를 시작해주세요"}
+            {latestMessage || "대화내용이 비어있습니다."}
           </Item>
-          <ChatIndexBox>{roomInfo.unreadMessageCount}</ChatIndexBox>
+          {roomInfo.unreadMessageCount !== 0 && (
+            <ChatIndexBox>{roomInfo.unreadMessageCount}</ChatIndexBox>
+          )}
         </MemberInfo>
       </Box>
     </>

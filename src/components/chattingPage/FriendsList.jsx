@@ -1,5 +1,5 @@
 import { Box, Item, ScrollBox } from "../../styles/Layouts";
-import { ChatImage, MemberImg, MemberInfo } from "./ChattingStyle";
+import { ChatImage, ChatInfoBox, MemberImg, MemberInfo } from "./ChattingStyle";
 import chatIcon from "../../assets/icons/chatIcon.svg";
 import ChatApi from "../../api/ChatAPi";
 import { West } from "@mui/icons-material";
@@ -73,12 +73,12 @@ const FriendBoxs = (props) => {
         console.error("회원정보를 불러오는 동안 에러 발생:", error);
         // 에러 처리 로직 추가
       }
-    
       try {
         const res1 = await ChatApi.statusInfo(friendId);
         console.log(friendId + "상태메세지 불러와");
         console.log(res1.data);
         setMessage(res1.data);
+        setInputValue(res1.data);
       } catch (error) {
         console.log(friendId + "의 상태메세지가없습니다.");
         // 에러 처리 로직 추가
@@ -100,6 +100,7 @@ const FriendBoxs = (props) => {
   };
 
   const handleInputChange = (e) => {
+    
     setInputValue(e.target.value); // 입력값을 상태에 업데이트
   };
 
@@ -112,27 +113,30 @@ const FriendBoxs = (props) => {
     <>
       <Box $height="100px" $align="center" onClick={props.onClick}>
         <MemberImg>
-          <ChatImage
-            src={
-              "https://item.kakaocdn.net/do/1401e813472967e3b572fee1ee192eb89f17e489affba0627eb1eb39695f93dd"
-            }
-            alt="회원 이미지"
-          />
+          <ChatImage src={userInfo.image} alt="회원 이미지" />
         </MemberImg>
         <MemberInfo>
           <Item $shadow="none">{userInfo.nickName}</Item>
           {myfam ? (
-            <>
-              <input value={inputValue} onChange={handleInputChange} />{" "}
-              <ButtonComp onClick={handleButtonClick} />
-            </>
+            <Item $shadow="none">
+              <ChatInfoBox value={inputValue} onChange={handleInputChange} />
+              <ButtonComp
+                $width="100px"
+                $height="40px"
+                onClick={handleButtonClick}
+              >
+                변경하기
+              </ButtonComp>
+            </Item>
           ) : (
             <Item $shadow="none">{message ? message.statusMessage : ""}</Item>
           )}
         </MemberInfo>
-        <Item $width="auto" $shadow="none">
-          <ChatImage src={chatIcon} alt="채팅 아이콘" />
-        </Item>
+        <Item
+          style={{ marginRight: "10px" }}
+          $width="auto"
+          $shadow="none"
+        ></Item>
       </Box>
     </>
   );

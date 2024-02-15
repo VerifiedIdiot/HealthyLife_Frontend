@@ -33,9 +33,7 @@ const Container2Style = styled(Container)`
     width: 100%;
     border: none;
     height: 50%;
-
     box-shadow: none;
-
 `}
 `;
 

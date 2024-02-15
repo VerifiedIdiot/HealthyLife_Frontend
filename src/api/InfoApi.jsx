@@ -54,5 +54,25 @@ const InfoApi = {
       throw error;
     }
   },
+
+  //수명 머신러닝
+  getMLPredictions: async (BMI,AdultMortality) => {
+    try {
+      console.log(BMI + AdultMortality)
+      const inputData = {
+        BMI: BMI,
+        AdultMortality: AdultMortality
+      };
+      const response = await AxiosInstance.post(
+        Common.WEELV_DOMAIN + "/ml/life",
+        inputData,
+      );
+      return response.data;
+    } catch (error) {
+      console.error("ML 예측 호출 중 오류 발생:", error);
+      throw error;
+    }
+  },
+
 };
 export default InfoApi;

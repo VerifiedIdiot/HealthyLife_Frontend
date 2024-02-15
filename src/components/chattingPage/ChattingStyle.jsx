@@ -1,10 +1,10 @@
 import styled from "styled-components";
 
 export const MemberImg = styled.div`
-  display:${(props) => (props.isSender ? "none" : "flex")};
+  display: ${(props) => (props.isSender ? "none" : "flex")};
   height: ${(props) => props.$height || "80px"};
   width: ${(props) => props.$width || "80px"};
-  margin:0 10px;
+  margin: 0 10px;
   align-items: center;
   justify-content: center;
   border-radius: 10px;
@@ -26,7 +26,7 @@ export const ChatIndexBox = styled.div`
   width: 40px;
   position: absolute;
   right: 0;
-  background-color: #FD6B6B;
+  background-color: #fd6b6b;
   color: white;
   font-weight: bold;
   top: 10%;
@@ -39,14 +39,24 @@ export const ChatIndexBox = styled.div`
   margin: 0 15px;
 `;
 
+export const ChatInfoBox = styled.input`
+  border: none;
+  width: 100%;
+  outline: none;
+  &:focus {
+    border: none;
+  }
+`;
+
 export const ChatImage = styled.img.attrs({
-  className: "chat-img"
+  className: "chat-img",
 })`
   cursor: pointer;
   object-fit: cover;
-  margin:5px;
-  width:100%;
-  height:100%;
+  border-radius: 8px;
+  margin: 5px;
+  width: 100%;
+  height: 100%;
 `;
 
 export const ChatContainer = styled.div`
@@ -138,28 +148,27 @@ export const CloseButton = styled.button`
   }
 `;
 
-export const ChatBox =styled.div`
+export const ChatBox = styled.div`
   display: flex;
   height: auto;
-  flex-direction:${(props) => (props.isSender ? "row-reverse" : "row")};
+  flex-direction: ${(props) => (props.isSender ? "row-reverse" : "row")};
 `;
 
-export const ChatBox1 =styled.div`
-  display:flex;
+export const ChatBox1 = styled.div`
+  display: flex;
   width: ${(props) => (props.isSender ? "97%" : "70%")};
   flex-direction: row;
   justify-content: ${(props) => (props.isSender ? "flex-end" : "flex-start")};
 `;
 
-export const MessegeContainer =styled.div`
+export const MessegeContainer = styled.div`
   display: flex;
   width: 100%;
-  &+&{
+  & + & {
     margin-bottom: 5px;
   }
 `;
 
-export const SenderBox =styled.div`
-  display:${(props) => (props.isSender ? "none" : "box")};
+export const SenderBox = styled.div`
+  display: ${(props) => (props.isSender ? "none" : "box")};
 `;
-

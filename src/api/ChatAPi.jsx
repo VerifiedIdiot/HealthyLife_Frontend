@@ -159,13 +159,14 @@ const ChatApi = {
   statusMessageChange: async (message) => {
     const res = await Common.TakenId();
     const memberId = res.data;
-    console.log(memberId);
+    console.log(memberId + "의 메세지가 " + message + "로 잘변경됬습니다.!!");
     return await AxiosInstance.put(
       Common.WEELV_DOMAIN + `/status/updateStatusMessage/${memberId}/${message}`
     );
   },
   // 상태 메세지 출력
   statusInfo: async (memberId) => {
+    
     return await AxiosInstance.get(
       Common.WEELV_DOMAIN + `/status/getMemberStatusInfo/${memberId}`
     );

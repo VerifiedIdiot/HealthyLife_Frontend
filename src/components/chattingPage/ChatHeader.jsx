@@ -17,8 +17,8 @@ const Containerstyle = styled(Container)`
   border-radius: 8px;
   overflow: visible;
   padding: 12px;
-  top: 100%;
-  right: 2%;
+  top: 60px;
+  right: 3%;
   &::before {
     content: "";
     position: absolute;
@@ -36,6 +36,8 @@ const Containerstyle = styled(Container)`
     width: 100%;
     height:96vh;
     padding: 0;
+    top: 60px;
+    right: 0;
     &::before{
       content:none;
     }

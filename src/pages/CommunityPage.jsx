@@ -13,7 +13,6 @@ import CommunityDetailComponent from "../components/communityPage/CommunityDetai
 const CommunityList = styled.div`
   display: flex;
   padding: 0 10px 0 0;
-
   @media (max-width: 1024px) {
     flex-direction: column;
     align-items: center;
@@ -24,7 +23,7 @@ const CommunityList = styled.div`
 const Aside = styled.div`
   display: flex;
   width: 100%;
-  max-width: 264px;
+  max-width: 268px;
   padding-bottom: 49.83px;
   flex-direction: column;
   align-items: flex-start;
@@ -33,7 +32,6 @@ const Aside = styled.div`
     max-width: 100%;
     padding-bottom: 0;
     align-items: center;
-    justify-content: center;
   }
 `;
 // 카테고리 전체
@@ -58,7 +56,6 @@ const CommunityLink = styled.div`
   display: flex;
   align-items: center;
   justify-content: flex-start;
-
   @media (max-width: 1024px) {
     width: 100%;
     padding: 10px;
@@ -79,9 +76,9 @@ const CommunitySVG = styled.div`
 `;
 const CommunityMenuText = styled.div`
   justify-content: center;
-  font-size: 1.2rem;
+  font-size: 1.4rem;
   text-decoration: none;
-  margin: 10px 10px 10px 0px; // 칸넓이
+  margin: 10px 20px 10px 10px; // 칸넓이
 
   @media (max-width: 1024px) {
     width: 100%;
@@ -90,26 +87,19 @@ const CommunityMenuText = styled.div`
 `;
 
 const CommunityMenuButton = styled.div`
-  background-color: #f3f3f3;
   display: flex;
-  align-items: center;
+  background-color: #f3f3f3;
+  justify-content: flex-start;
   background-color: ${(props) => (props.isActive ? "#2446da" : "#fff")};
   color: ${(props) => (props.isActive ? "#fff" : "#333")};
-
-  @media (max-width: 1024px) {
-    width: 100%;
-  }
+  width: 100%;
 `;
 // 사이드 목차
 const CommunityItem = styled.div`
   display: flex;
-  margin-left: 10px;
-  gap: 10px;
-  width: 200px;
-  align-items: flex-start;
-  align-self: stretch;
+  margin-left: 14px;
   cursor: pointer;
-
+  align-items: center;
   @media (max-width: 1024px) {
     width: 100%;
     justify-content: center;
@@ -133,16 +123,16 @@ const StyledLink = styled(Link)`
   color: #333;
   text-decoration: none;
 
-  &:hover,
-  &:focus {
+  &:hover {
     color: #2446da;
   }
 `;
 const RotatedDown = styled(Down)`
+  display: flex;
+
   transition: transform 0.3s ease-in-out;
   transform: ${(props) =>
     props.isRotated ? "rotate(180deg)" : "rotate(0deg)"};
-  display: block;
   @media (max-width: 1024px) {
     display: none;
   }
@@ -198,8 +188,8 @@ const CommunityPage = () => {
                     >
                       <CommunityItem onClick={ListOpen}>
                         <CommunityMenuText>Category</CommunityMenuText>
+                        <RotatedDown isRotated={isList}></RotatedDown>
                       </CommunityItem>
-                      <RotatedDown isRotated={isList}></RotatedDown>
                     </CommunityMenuButton>
                   </CommunityLink>
                 </CommunityMenuItem>

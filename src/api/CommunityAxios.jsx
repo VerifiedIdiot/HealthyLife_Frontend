@@ -137,8 +137,9 @@ const CommunityAxiosApi = {
 
   // 댓글 쓰기
   commentRegister: async (commentDto) => {
-    console.log("댓글저장진입" + commentDto);
     try {
+      console.log("댓글저장진입" + commentDto);
+
       return await AxiosInstance.post(
         Common.WEELV_DOMAIN + "/api/comment/new",
         commentDto
@@ -183,6 +184,8 @@ const CommunityAxiosApi = {
 
   // 전체 댓글 수 조회
   getTotalComments: async (communityId) => {
+    console.log("댓글수저장진입" + communityId);
+
     try {
       return await AxiosInstance.get(
         Common.WEELV_DOMAIN + `/api/comment/count/${communityId}`

@@ -86,10 +86,14 @@ const CenterFormContainer = styled.div`
   align-items: center;
   width: 100%;
   min-height: 200px;
-  max-height: 250px;
+  max-height: 230px;
   border-bottom: 1px solid #c4c4c4;
   overflow-y: scroll;
   margin-bottom: 10px;
+  @media (max-width: 1024px) {
+    min-height: 170px;
+    max-height: 200px;
+  }
 `;
 
 const CommunityDetailComponent = () => {
@@ -220,8 +224,8 @@ const CommunityDetailComponent = () => {
             </>
           )}
         </ButtonContainer>
-        <PostRoom id={id} />
       </InputContainer>
+      <PostRoom />
     </Main>
   );
 };

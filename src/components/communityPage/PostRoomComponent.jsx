@@ -165,7 +165,7 @@ const PostRoom = () => {
       }
     };
     fetchComments();
-  }, [id, sortType, currentCommentPage]);
+  }, [id, sortType, currentCommentPage, totalComment]);
   useEffect(() => {
     // 현재 사용자의 닉네임을 가져와 nickName1 상태를 업데이트
     const fetchMemberDetail = async () => {
@@ -188,7 +188,18 @@ const PostRoom = () => {
         setComments((prevComments) =>
           prevComments.filter((comment) => comment.commentId !== commentId)
         );
-        setTotalComment(totalComment - 1);
+        // 댓글이 삭제되었으므로 총 댓글 수를 다시 가져와서 업데이트합니다.
+        const totalCommentsResponse = await CommunityAxiosApi.getTotalComments(
+          id
+        );
+        setTotalComment(totalCommentsResponse.data);
+
+        // 페이지당 댓글 수 계산
+        const commentsPerPage = 10; // 페이지당 댓글 수
+        const totalPages = Math.ceil(
+          totalCommentsResponse.data / commentsPerPage
+        );
+        setTotalCommentPages(totalPages);
       } else {
         alert("댓글 삭제 실패");
       }
@@ -214,6 +225,18 @@ const PostRoom = () => {
       console.log(commentResponse.data);
       if (commentResponse.status === 200) {
         alert("댓글이 등록되었습니다.");
+        setContent("");
+        const totalCommentsResponse = await CommunityAxiosApi.getTotalComments(
+          id
+        );
+        setTotalComment(totalCommentsResponse.data);
+
+        // 페이지당 댓글 수 계산
+        const commentsPerPage = 10; // 페이지당 댓글 수
+        const totalPages = Math.ceil(
+          totalCommentsResponse.data / commentsPerPage
+        );
+        setTotalCommentPages(totalPages);
       } else {
         alert("댓글 등록에 실패했습니다.");
       }
@@ -221,6 +244,10 @@ const PostRoom = () => {
       console.error("댓글 등록 오류:", error);
       alert("댓글이 등록되지 않았습니다.");
     }
+  };
+  const handleCommentSubmit = (e) => {
+    e.preventDefault();
+    CommentWrite();
   };
   const togglePostRoom = () => {
     setShowPostRoom(!showPostRoom);
@@ -291,12 +318,12 @@ const PostRoom = () => {
             )}
           </CommentContainer>
 
-          <CommentForm>
+          <CommentForm onSubmit={handleCommentSubmit}>
             <LargeInput
               value={content}
               onChange={(e) => setContent(e.target.value)}
             />
-            <MiddleButton onClick={CommentWrite}>댓글 작성</MiddleButton>
+            <MiddleButton type="submit">댓글 작성</MiddleButton>
           </CommentForm>
         </Box3>
       )}

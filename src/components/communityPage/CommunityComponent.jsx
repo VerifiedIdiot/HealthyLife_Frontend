@@ -14,6 +14,7 @@ import axios from "axios";
 import SearchComponent from "./SearchComponent";
 import { ReactComponent as Down } from "../../assets/imgs/communityImges/Down.svg";
 import emptyFolder from "../../assets/imgs/communityImges/empty-folder.png";
+import { Main } from "../../styles/Layouts";
 
 const PostSection = styled.div`
   width: 100%;
@@ -200,15 +201,15 @@ const NotPost = styled.div`
 `;
 const CategoryDropdown = styled.div`
   position: absolute;
-  top: 30px;
+  top: 36px;
   color: #333;
-  background-color: #fff;
   width: 62px;
   font-size: 1rem;
   display: none;
   justify-content: center;
   border: 1px solid #2446da;
-
+  background: #fff;
+  z-index: 3;
   @media (max-width: 1024px) {
     display: ${(props) =>
       props.showDropdown ? "block" : "none"}; /* 항상 렌더링되도록 수정 */
@@ -221,6 +222,9 @@ const CategoryDropdownItem = styled.div`
   margin-top: 10px;
   margin-bottom: 10px;
   cursor: pointer;
+  &:hover {
+    color: #2446da;
+  }
 `;
 const RotatedDown = styled(Down)`
   transition: transform 0.3s ease-in-out;

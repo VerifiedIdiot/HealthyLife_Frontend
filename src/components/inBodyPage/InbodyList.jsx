@@ -95,14 +95,14 @@ const InbodyList = ({ bodyData }) => {
               .map((item, index) => (
                 <Input4 key={index}>
                   <Container
-                    $height="auto"
+                    $height="150px"
                     style={{
                       borderRadius: "8px",
                       backgroundColor: "#D9D9D9",
                     }}
                   >
                     <Section
-                      $height="40%"
+                      $height="20%"
                       style={{
                         alignItems: "center",
                         fontSize: "20px",
@@ -114,7 +114,7 @@ const InbodyList = ({ bodyData }) => {
                       {new Date(item.date).getMonth() + 1}월{" "}
                       {new Date(item.date).getDate()}일 신체정보
                     </Section>
-                    <Section $justify="center">
+                    <Section $justify="center" $height="80%">
                       <InputContainer>
                         <InputContainer1>
                           <Input1>
@@ -128,6 +128,10 @@ const InbodyList = ({ bodyData }) => {
                           <Input1>
                             <Input2>기초대사량</Input2>
                             <Input3>{item.bmr} kcal</Input3>
+                          </Input1>
+                          <Input1>
+                            <Input2></Input2>
+                            <Input3></Input3>
                           </Input1>
                         </InputContainer1>
                         <InputContainer1>

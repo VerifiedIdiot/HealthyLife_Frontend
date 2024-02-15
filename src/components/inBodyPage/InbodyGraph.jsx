@@ -32,6 +32,7 @@ const GraphContainer = styled.div`
   background-color: #d9d9d9;
   border-radius: 8px;
   padding-bottom: 1rem;
+  min-height: 600px;
 
   ${media.small`
     flex-wrap: nowrap;

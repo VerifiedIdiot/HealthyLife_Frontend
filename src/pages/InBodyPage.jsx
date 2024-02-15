@@ -30,8 +30,13 @@ const InbodyPage = () => {
 
   useEffect(() => {
     const loadBody = async () => {
-      const resp = await BodyApi.LoadBody();
-      setBodyData(resp);
+      try {
+        const resp = await BodyApi.LoadBody();
+        setBodyData(resp);
+      } catch (error) {
+        // 여기에 오류 처리 로직을 추가할 수 있습니다.
+        console.error("Body 오류발생:", error);
+      }
     };
     loadBody();
   }, [isClicked]);

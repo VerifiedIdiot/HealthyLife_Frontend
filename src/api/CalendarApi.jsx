@@ -1,18 +1,16 @@
 import axios from "axios";
 import Common from "../utils/Common";
-import AxiosInstance from "../utils/AxiosInstance";
+
 
 const BACKEND_DOMAIN = process.env.REACT_APP_BACKEND_DOMAIN;
 const CalendarApi = {
-
-
   getMonthData: async (email, month) => {
-    console.log(email , month);
+    console.log(email, month);
     try {
       const params = {
         email: email,
         month: month,
-      }
+      };
       const reponse = await axios.get(
         `${Common.WEELV_DOMAIN}/calendar/get-month-details`,
         { params }
@@ -24,8 +22,6 @@ const CalendarApi = {
       throw error;
     }
   },
-
-
 
   // 음식 조회
   getFoodList: async (params) => {
@@ -42,22 +38,25 @@ const CalendarApi = {
     }
   },
   // 새로운 음식 데이터 추가
-  addMeal : async (email, mealType, selectedDate, selectedItem) => {
+  addMeal: async (email, mealType, selectedDate, selectedItem) => {
     console.log(mealType, selectedItem, email, selectedDate);
     // 모든 필드 값이 유효한지 확인
     if (!email || !mealType || !selectedDate || !selectedItem) {
       console.error("파라미터의 값이 비었음");
       throw new Error("널 금지");
     }
-  
+
     try {
       const mealDto = {
-        email : email, 
+        email: email,
         meal_type: mealType,
-        meal_name: selectedItem, 
+        meal_name: selectedItem,
         reg_date: selectedDate,
       };
-      const response = await axios.post(`${Common.WEELV_DOMAIN}/meal/add`, mealDto);
+      const response = await axios.post(
+        `${Common.WEELV_DOMAIN}/meal/add`,
+        mealDto
+      );
       console.log("Meal successfully added", response.data);
       return response.data;
     } catch (error) {
@@ -66,16 +65,14 @@ const CalendarApi = {
     }
   },
 
-
-
-  
   // 날짜별 식사기록 출력
-  selectedDateMealInfo: async (email, selectedDate) => {
+  getDetailsByCalendarId: async (calendarId) => {
     try {
+      console.log(calendarId);
       const response = await axios.get(`${BACKEND_DOMAIN}/meal/detail`, {
-        params: { 
-        email : email, 
-        regDate : selectedDate }
+        params: {
+          calendarId: calendarId,
+        },
       });
       return response.data;
     } catch (error) {

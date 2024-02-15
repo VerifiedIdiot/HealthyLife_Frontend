@@ -6,9 +6,9 @@ import useHalfView from "../../hooks/useHalfView";
 // import useMobileView from "../../hooks/useMobileView";
 // 라이브러리 영역
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faBars, faUser } from "@fortawesome/free-solid-svg-icons";
+import { faBars } from "@fortawesome/free-solid-svg-icons";
 import { useIsMobile } from "../../hooks/useMobileView";
-import ModalStyle from "../../styles/headerFooter/headerComponents/Navigation";
+
 
 
 
@@ -82,7 +82,7 @@ const Header = ({ headerProps = {} }) => {
     <StyledHeader
       $scrolledDown={$scrolledDown || false}
       $position={$position || "static"}
-      $dynamic={$dynamic || true}>
+      $dynamic={$dynamic || false}>
       <HeaderInner>
         <Logo />
         {isHalfView ? (

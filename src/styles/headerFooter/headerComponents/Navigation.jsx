@@ -1,22 +1,12 @@
 // 리액트
-import React, { useContext, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import { useNavigate } from "react-router-dom";
-import useRequireAuth from "../../../hooks/useRequireAuth";
 import ChattingPage from "../../../pages/ChattingPage";
 import chatIcon from "../../../assets/icons/Header/chaticon.png";
 import userIcon from "../../../assets/icons/Header/usericon.png";
 import useHalfView from "../../../hooks/useHalfView";
 
-// 폰트어썸 아이콘 영역
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import {
-  faBars,
-  faComments,
-  faCircleUser,
-  faBell,
-} from "@fortawesome/free-regular-svg-icons";
-import { UserContext } from "../../../contexts/UserStore";
 import Common from "../../../utils/Common";
 
 const NavContainer = styled.nav.attrs({
@@ -110,7 +100,7 @@ const ProfileDropdown = styled.div`
 `;
 
 const Navigation = ({ $scrolledDown = true }) => {
-  const { isUnauthorized } = useRequireAuth("USER");
+  // const { isUnauthorized } = useRequireAuth("USER");
   const [modalOpen, setModalOpen] = useState(false);
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const [loginStatus, setLoginStatus] = useState(false);

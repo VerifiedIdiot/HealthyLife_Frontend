@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useLayoutEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { CalendarMainSection } from "./CalendarStyle";
 import { MealBox } from "./CalendarContainer";
 import {
@@ -12,6 +12,7 @@ import {
 import MiddleModal from "../../styles/modals/MiddleModal";
 
 // 캘린더 API 적용
+
 import Calendar from "react-calendar";
 import "react-calendar/dist/Calendar.css";
 import CalendarApi from "../../api/CalendarApi";
@@ -33,18 +34,23 @@ export const CalendarSection = () => {
   const handleDayClick = async (value) => {
     try {
       const selectedDate = formatDate(value);
-      // console.log("가공된 날짜", selectedDate);
-      actions.setSelectedDate(selectedDate);
-      const email = state.email;
-      const dateData = await CalendarApi.selectedDateMealInfo(
-        email,
-        selectedDate
+      // 선택된 날짜와 일치하는 데이터 객체 찾아옴
+      const dateData = state.monthData.find(
+        (data) => data.reg_date === selectedDate
       );
-      actions.setDateData(dateData);
 
-      openModal();
+      if (dateData) {
+        const calendarId = dateData.calendar_id;
+        // calendar_id를 사용하여 API 요청
+        const details = await CalendarApi.getDetailsByCalendarId(calendarId);
+
+        actions.setDateData(details); // API 응답으로 받은 데이터를 상태에 저장
+        openModal();
+      } else {
+        console.log("데이타 없음");
+      }
     } catch (error) {
-      console.error("Fail", error);
+      console.error("Error fetching details for selected date:", error);
     }
   };
 
@@ -89,17 +95,19 @@ export const CalendarSection = () => {
           calendarType="gregory"
           locale="en"
           formatMonthYear={(locale, value) =>
-            value.toLocaleDateString("ko", { year: "numeric", month: "long" })
+            value.toLocaleDateString("ko-KR", {
+              timeZone: "Asia/Seoul",
+              year: "numeric",
+              month: "long",
+            })
           }
           onClickDay={handleDayClick}
           onActiveStartDateChange={handleMonthClick}
           tileContent={({ date, view }) => {
             // 날짜를 YYYY-MM-DD 형식으로 변환
-            const dateString = date.toISOString().split("T")[0];
-            // 해당 날짜의 데이터 조회
-            const dayData = state.monthData.find(
-              (data) => data.reg_date === dateString.replace(/-/g, "")
-            );
+            const dateString = formatDate(date); // 이 함수는 date를 'YYYYMMDD' 형식으로 변환해야 합니다.
+
+            const dayData = state.monthData.find(data => data.reg_date === dateString);
             // 데이터가 있으면 내용을 렌더링, 없으면 null 반환
             return dayData ? (
               <div>

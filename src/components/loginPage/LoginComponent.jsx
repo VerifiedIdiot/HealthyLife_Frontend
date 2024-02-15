@@ -4,10 +4,11 @@ import { useNavigate } from "react-router";
 import logo from "../../assets/icons/logo.svg";
 import styled from "styled-components";
 import { media } from "../../utils/MediaQuery";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import MemberApi from "../../api/MemberApi";
 import Common from "../../utils/Common";
 import kakaoimg from "../../assets/imgs/KakaoTalk.png";
+import { UserContext } from "../../contexts/UserStore";
 const MainStyle = styled(Main)`
   ${media.small`
     flex-direction:column;
@@ -53,6 +54,8 @@ const LoginComp = () => {
   const navigate = useNavigate();
   const loginNavigate = useNavigate();
   const joinNavigate = useNavigate();
+  const context = useContext(UserContext);
+  const { setLoginStatus } = context;
 
   //키보드 입력
   const [inputEmail, setInputEmail] = useState("");
@@ -87,6 +90,7 @@ const LoginComp = () => {
         console.log("리프레시토큰나와 ! " + res.data.refreshToken);
         Common.setAccessToken(res.data.accessToken);
         Common.setRefreshToken(res.data.refreshToken);
+        setLoginStatus(true);
         if (inputEmail === "admin") {
           navigate("/ad");
         } else {
@@ -107,6 +111,12 @@ const LoginComp = () => {
     }
   };
 
+  // 엔터 키 입력 이벤트 처리
+  const handleKeyDown = (e) => {
+    if (e.key === "Enter") {
+      loginClick(); // 엔터 키가 눌리면 로그인 클릭 함수 호출
+    }
+  };
   // 카카오 로그인
   const CLIENT_ID = process.env.REACT_APP_KAKAO_API_KEY;
   const REDIRECT_URI = process.env.REACT_APP_KAKAO_REDIRECT_URI;
@@ -208,6 +218,7 @@ const LoginComp = () => {
                 type="password"
                 placeholder="비밀번호"
                 value={inputPw}
+                onKeyDown={handleKeyDown}
                 onChange={onChangePw}
                 style={{
                   border: "none",

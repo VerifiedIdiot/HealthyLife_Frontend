@@ -41,6 +41,8 @@ import AdminChartPage from "./pages/adminPage/AdminChart";
 import AdminMemberPage from "./pages/adminPage/Adminmemberpage";
 import AdminCommunity from "./pages/adminPage/AdminCommunityPage";
 import Category from "./components/categoryPage/Category";
+import PrivateLayoutAdmin from "./pages/PrivateLayoutAdmin";
+import PrivateLayout from "./pages/PrivateLayout";
 function App() {
   // 방문자 추적 커스텀 훅
   useTrackUserVisit();
@@ -60,30 +62,34 @@ function App() {
               <Route path="/join/payment" element={<PaymentPage />} />
               <Route path="/auth" element={<Kakao />} />
               <Route path="/test" element={<ChattingPage />} />
-              <Route element={<AdminPage />}>
-                <Route path="/ad" element={<AdminChartPage />} />
-                <Route path="/ad/member" element={<AdminMemberPage />} />
-                <Route path="/ad/community" element={<AdminCommunity />} />
-                <Route path="/ad/category" element={<Category />} />
+              {/* 어드민 접속 제한 구간  */}
+              <Route element={<PrivateLayoutAdmin />}>
+                <Route element={<AdminPage />}>
+                  <Route path="/ad" element={<AdminChartPage />} />
+                  <Route path="/ad/member" element={<AdminMemberPage />} />
+                  <Route path="/ad/community" element={<AdminCommunity />} />
+                  <Route path="/ad/category" element={<Category />} />
+                </Route>
               </Route>
               {/*다이나믹한 헤더와 푸터가 포함된 라우트 그룹 */}
               <Route element={<DynamicHeaderFooter />}></Route>
               {/*일반 헤더푸터만 포함된 라우트 그룹 */}
               <Route element={<HeaderFooter />}>
+                {/* 로그인 접속 제한 구간  */}
+                <Route element={<PrivateLayout />}>
+                  <Route path="/medicine" element={<MedicinePage />} />
+                  <Route path="/inbody" element={<InbodyPage />} />
+                  <Route path="/information" element={<InformationPage />} />
+                  <Route path="/mypage" element={<MyPage />} />
+                  <Route path="/mypage/edit" element={<MyPageEdit />} />
+                  <Route path="/communitypage/*" element={<CommunityPage />} />
+                  <Route
+                    path="/communitypage/write"
+                    element={<WriteComponent />}
+                  />
+                </Route>
                 <Route path="/" element={<HomePage />} />
-                <Route path="/medicine" element={<MedicinePage />} />
-                <Route path="/inbody" element={<InbodyPage />} />
-                <Route path="/information" element={<InformationPage />} />
 
-                <Route path="/mypage" element={<MyPage />} />
-                <Route path="/mypage/edit" element={<MyPageEdit />} />
-
-                <Route path="/communitypage/*" element={<CommunityPage />} />
-
-                <Route
-                  path="/communitypage/write"
-                  element={<WriteComponent />}
-                />
                 <Route path="/ranking" element={<RankingPage />} />
               </Route>
 

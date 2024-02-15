@@ -9,9 +9,11 @@ import MemberApi from "../../api/MemberApi";
 import { storage } from "../../api/firebase";
 import { UserContext } from "../../contexts/UserStore";
 import DaumPostPopup from "../../api/DaumPost";
+import AdminAxiosApi from "../../api/AdminApi";
 
 const MypageEditComp = () => {
   const myPageNavigate = useNavigate();
+  const navigate = useNavigate();
   const context = useContext(UserContext);
   const { setLoginStatus, kakaoId } = context;
 
@@ -56,6 +58,12 @@ const MypageEditComp = () => {
   const [isNickName, setIsNickName] = useState(true);
   const [isPhone, setIsPhone] = useState(true);
   const [isAddr, setIsAddr] = useState(true);
+  const [isTrue, setIsTrue] = useState(false);
+
+  // 리렌더링 용
+  const reRender = () => {
+    setIsTrue((prev) => !prev);
+  };
 
   // 모달
   const [isModalOpen, setIsModalOpen] = useState({
@@ -256,6 +264,24 @@ const MypageEditComp = () => {
     }
   };
 
+  // 회원삭제
+  const HandleDeleteMember = async (email) => {
+    const memberDel = async () => {
+      try {
+        const rsp = await AdminAxiosApi.memberDelete(email);
+        console.log(email);
+        if (rsp.status === 200) {
+          window.localStorage.clear();
+          alert("회원 삭제가 완료되었습니다.");
+          navigate("/");
+        }
+      } catch (e) {
+        console.log("에러");
+      }
+    };
+    memberDel();
+  };
+
   return (
     <>
       <Main $direction="column" $width="100%" $height="auto">
@@ -361,7 +387,6 @@ const MypageEditComp = () => {
                 $width="100%"
                 $direction="row"
                 $marginBottom="20px"
-                $dis
               >
                 <Box $shadow="none" $width="100%" $direction="column">
                   <p
@@ -476,8 +501,18 @@ const MypageEditComp = () => {
                 />
               )}
             </Area>
-
-            <MiddleButton onClick={() => onSubmit()}>수정하기</MiddleButton>
+            <Area $shadow="none">
+              <Box $shadow="none" $justify="end" $width="57%">
+                <MiddleButton onClick={() => onSubmit()}>수정하기</MiddleButton>
+              </Box>
+              <Box $shadow="none" $justify="end" $width="43%">
+                <MiddleButton
+                  onClick={() => HandleDeleteMember(memberInfo.email)}
+                >
+                  탈퇴하기
+                </MiddleButton>
+              </Box>
+            </Area>
           </Section>
         </Container>
       </Main>

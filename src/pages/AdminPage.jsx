@@ -111,6 +111,20 @@ const AdminPage = () => {
               margin: "10%",
             }}
           />
+          <Menus
+            className={activeMenu === "" ? "active" : ""}
+            onClick={() => handleClick("category")}
+          >
+            <p>카테고리 등록</p>
+          </Menus>
+
+          <hr
+            style={{
+              borderBottom: "0.5px solid #999999",
+              width: "100%",
+              margin: "10%",
+            }}
+          />
         </Container>
       </Main>
       <Outlet />

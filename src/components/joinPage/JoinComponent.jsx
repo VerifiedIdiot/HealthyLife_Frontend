@@ -61,6 +61,8 @@ const JoinComp = ({ email, profile }) => {
     setFile,
     url,
     setUrl,
+    setLoginStatus,
+    loginStatus,
   } = context;
 
   // 입력받은 이미지 파일 주소

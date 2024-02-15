@@ -13,8 +13,9 @@ const MainStyle = styled(Main)`
   ${media.small`
     flex-direction:column;
     width: 70%;
-    height: auto
-
+    height: 100vh;
+    justify-content: center;
+    align-items: center;
 `}
 `;
 
@@ -22,29 +23,41 @@ const ContainerStyle = styled(Container)`
   ${media.small`
     width: 100%;
     background-color: white;
-    border: none;
     box-shadow: none;
-    height: 50%;
+    height: 15%;
 `}
 `;
 
 const Container2Style = styled(Container)`
   ${media.small`
     width: 100%;
-    border: none;
-    height: 50%;
     box-shadow: none;
+    height: 30%;
+`}
+`;
+
+const Sectionjoin = styled(Section)`
+  ${media.small`
+    height: 100%;
+    width: 100%;
 `}
 `;
 
 const SectionStyle = styled(Section)`
   ${media.small`
+    height: 100%;
+    width: 100%;
 `}
 `;
 
 const AreaStyle = styled(Area)`
   ${media.small`
     font-size: 0.9em;
+    justify-content: end;
+    .memberYet {
+      display: none;
+    }
+
 `}
 `;
 
@@ -124,14 +137,14 @@ const LoginComp = () => {
   };
   return (
     <>
-      <MainStyle $direction="row" $width="100%">
+      <MainStyle $direction="row" $width="100%" $height="100vh">
         <ContainerStyle
           $width="50%"
           $display="flex"
           $direction="column"
           $background="#F3F3F3"
+          $height="100%"
           $padding="0 10px"
-          $height="100vh"
         >
           <Section
             $height="95%"
@@ -148,12 +161,23 @@ const LoginComp = () => {
               }}
             />
           </Section>
-          <SectionStyle $height="5%" $shadow="none" $width="36%">
-            <AreaStyle $shadow="none" $width="100%">
-              <p>Not a member yet?</p>
-            </AreaStyle>
-            <AreaStyle $shadow="none" $height="50%">
+          <Sectionjoin $height="5%" $shadow="none" $width="100%">
+            <AreaStyle
+              $shadow="none"
+              $width="100%"
+              $height="100%"
+              $align="center"
+            >
               <p
+                className="memberYet"
+                style={{
+                  marginRight: "10px",
+                }}
+              >
+                Not a member yet?
+              </p>
+              <p
+                className="register"
                 style={{
                   borderBottom: "2px solid black",
                   cursor: "pointer",
@@ -164,18 +188,30 @@ const LoginComp = () => {
                 Register now
               </p>
             </AreaStyle>
-          </SectionStyle>
+            {/* <AreaStyle $shadow="none" $width="25%" $height="50%"></AreaStyle> */}
+          </Sectionjoin>
         </ContainerStyle>
         <Container2Style
           $width="50%"
           $direction="column"
           $padding="0 15px"
-          $height="auto"
+          $height="100%"
+          $display="flex"
+          $justify="center"
+          $align="center"
         >
-          <Section $height="auto" $paddingTop="400px" $direction="column">
+          <SectionStyle
+            $height="30%"
+            $direction="column"
+            $display="flex"
+            $justify="center"
+            $align="center"
+          >
             <Area
               $direction="column"
               $shadow="none"
+              $height="25%"
+              $marginBottom="10px"
               $borderBottom="1px solid black"
             >
               <p
@@ -200,12 +236,13 @@ const LoginComp = () => {
             </Area>
             <Area
               $direction="column"
+              $height="25%"
               $shadow="none"
+              $marginBottom="20px"
               $borderBottom="1px solid black"
             >
               <p
                 style={{
-                  paddingTop: "20px",
                   color: "rgba(0, 0, 0, 0.5)",
                   fontWeight: "600",
                 }}
@@ -225,33 +262,27 @@ const LoginComp = () => {
                 }}
               />
             </Area>
-          </Section>
-          <Section
-            $display="flex"
-            $direction="column"
-            $marginTop="50px"
-            $align="center"
-            $height="auto"
-          >
-            <LargeButton onClick={() => loginClick("로그인, true")}>
-              로그인
-            </LargeButton>
-          </Section>
-          <Section
-            $display="flex"
-            $direction="column"
-            $align="center"
-            $marginTop="20px"
-          >
-            <LargeButton
-              style={{
-                backgroundImage: `url(${kakaoimg})`,
-                backgroundPosition: "center",
-                backgroundSize: "cover",
-              }}
-              onClick={() => handleLogin()}
-            ></LargeButton>
-          </Section>
+            <Area $justify="center" $align="center" $shadow="none">
+              <LargeButton onClick={() => loginClick("로그인, true")}>
+                로그인
+              </LargeButton>
+            </Area>
+            <Area
+              $display="flex"
+              $align="center"
+              $shadow="none"
+              $justify="center"
+            >
+              <LargeButton
+                style={{
+                  backgroundImage: `url(${kakaoimg})`,
+                  backgroundPosition: "center",
+                  backgroundSize: "cover",
+                }}
+                onClick={() => handleLogin()}
+              ></LargeButton>
+            </Area>
+          </SectionStyle>
         </Container2Style>
       </MainStyle>
     </>

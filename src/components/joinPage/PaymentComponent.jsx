@@ -9,6 +9,20 @@ import { LargeButton } from "../../styles/styledComponents/StyledComponents";
 import { UserContext } from "../../contexts/UserStore";
 import MemberApi from "../../api/MemberApi";
 import { storage } from "../../api/firebase";
+import styled from "styled-components";
+import { media } from "../../utils/MediaQuery";
+
+const ContainerStyle = styled(Container)`
+  ${media.small`
+  display: none;
+`}
+`;
+
+const ContainerStyle2 = styled(Container)`
+  ${media.small`
+  width: 100%;
+`}
+`;
 
 const PaymentComp = ({ profile }) => {
   const navigate = useNavigate();
@@ -139,7 +153,7 @@ const PaymentComp = ({ profile }) => {
   return (
     <>
       <Main $direction="row" $width="100%" $height="auto">
-        <Container
+        <ContainerStyle
           $width="50%"
           $display="flex"
           $direction="column"
@@ -184,8 +198,8 @@ const PaymentComp = ({ profile }) => {
               </p>
             </Area>
           </Section>
-        </Container>
-        <Container
+        </ContainerStyle>
+        <ContainerStyle2
           $width="50%"
           $padding="0 15px"
           $height="100vh"
@@ -212,7 +226,7 @@ const PaymentComp = ({ profile }) => {
               결제하기
             </LargeButton>
           </Section>
-        </Container>
+        </ContainerStyle2>
       </Main>
     </>
   );

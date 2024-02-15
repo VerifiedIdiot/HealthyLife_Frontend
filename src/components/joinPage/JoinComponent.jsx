@@ -13,7 +13,20 @@ import DaumPostPopup from "../../api/DaumPost";
 import { storage } from "../../api/firebase";
 import BodyInfoComp from "./BodyInfoComponent";
 import { UserContext } from "../../contexts/UserStore";
+import styled from "styled-components";
+import { media } from "../../utils/MediaQuery";
 
+const ContainerStyle = styled(Container)`
+  ${media.small`
+  display: none;
+`}
+`;
+
+const ContainerStyle2 = styled(Container)`
+  ${media.small`
+  width: 100%;
+`}
+`;
 const JoinComp = ({ email, profile }) => {
   const navigate = useNavigate();
   const loginGate = useNavigate();
@@ -356,7 +369,7 @@ const JoinComp = ({ email, profile }) => {
   return (
     <>
       <Main $direction="row" $width="100%" $height="auto">
-        <Container
+        <ContainerStyle
           $width="50%"
           $display="flex"
           $direction="column"
@@ -401,8 +414,8 @@ const JoinComp = ({ email, profile }) => {
               </p>
             </Area>
           </Section>
-        </Container>
-        <Container
+        </ContainerStyle>
+        <ContainerStyle2
           $width="50%"
           $direction="column"
           $padding="50px 15px"
@@ -707,7 +720,7 @@ const JoinComp = ({ email, profile }) => {
           >
             <p>{modalMsg}</p>
           </SmallModal>
-        </Container>
+        </ContainerStyle2>
       </Main>
     </>
   );

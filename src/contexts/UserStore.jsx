@@ -20,6 +20,8 @@ const UserStore = (props, profile) => {
   const [inputPhone, setInputPhone] = useState("");
   const [isKakao, setIsKakao] = useState(false);
   const [inputAddr, setInputAddr] = useState("");
+  const [inputExercise, setInputExercise] = useState("");
+
   // 프로필 관련
   const [imgSrc, setImgSrc] = useState(
     profile && profile ? profile : basicUser
@@ -68,6 +70,8 @@ const UserStore = (props, profile) => {
         setFile,
         url,
         setUrl,
+        inputExercise,
+        setInputExercise,
       }}
     >
       {props.children}

@@ -45,6 +45,7 @@ const PaymentComp = ({ profile }) => {
     imgSrc,
     file,
     setUrl,
+    inputExercise,
   } = context;
   // 회원가입 /////////////////////////////////////////////////////
   const onSubmit = () => {
@@ -82,7 +83,8 @@ const PaymentComp = ({ profile }) => {
         inputAddr,
         url,
         isKakao,
-        inputAge
+        inputAge,
+        inputExercise
       );
       if (res.data !== null) {
         alert("결제 성공");

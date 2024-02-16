@@ -76,6 +76,8 @@ const JoinComp = ({ email, profile }) => {
     setUrl,
     setLoginStatus,
     loginStatus,
+    inputExercise,
+    setInputExercise,
   } = context;
 
   // 입력받은 이미지 파일 주소
@@ -107,6 +109,7 @@ const JoinComp = ({ email, profile }) => {
   const [isPw, setIsPw] = useState(false);
   const [isPw2, setIsPw2] = useState(false);
   const [isGender, setIsGender] = useState("");
+  const [isExerciser, setIsExercise] = useState("");
   const [isName, setIsName] = useState(false);
   const [isAge, setIsAge] = useState(false);
   const [isNickName, setIsNickName] = useState(false);
@@ -249,6 +252,16 @@ const JoinComp = ({ email, profile }) => {
   const handleTextClick = (value) => {
     // inputGender 상태 업데이트 또는 다른 필요한 로직 수행
     setInputGender(value);
+  };
+
+  const handleExerciseChange = (e) => {
+    setInputExercise(e.target.value);
+    setIsExercise(e.target.value !== "" && e.target.value !== undefined);
+  };
+
+  const handleExerciseClick = (value) => {
+    // inputGender 상태 업데이트 또는 다른 필요한 로직 수행
+    setInputExercise(value);
   };
 
   // 이름
@@ -595,6 +608,69 @@ const JoinComp = ({ email, profile }) => {
                     className="radio"
                   />
                   여자
+                </label>
+              </Box>
+            </Area>
+            <Area $direction="column" $shadow="none" $marginTop="20px">
+              <Box $shadow="none">
+                {" "}
+                <p
+                  style={{
+                    color: "rgba(0, 0, 0, 0.5)",
+                    fontWeight: "600",
+                  }}
+                >
+                  EXERCISE INTENSITY (*)
+                </p>
+              </Box>
+              <Box $shadow="none">
+                <label
+                  style={{
+                    padding: "10px",
+                  }}
+                  htmlFor="btn1"
+                >
+                  <input
+                    type="radio"
+                    name="exercise"
+                    value="적음"
+                    checked={inputExercise === "적음"}
+                    onChange={handleExerciseChange}
+                    className="radio"
+                  />
+                  적음
+                </label>
+                <label
+                  htmlFor="btn2"
+                  style={{
+                    padding: "10px",
+                  }}
+                >
+                  <input
+                    type="radio"
+                    name="exercise"
+                    value="보통"
+                    checked={inputExercise === "보통"}
+                    onChange={handleExerciseChange}
+                    className="radio"
+                  />
+                  보통
+                </label>
+                <label
+                  htmlFor="btn3"
+                  style={{
+                    padding: "10px",
+                  }}
+                >
+                  <input
+                    type="radio"
+                    name="exercise"
+                    value="많이"
+                    checked={inputExercise === "많이"}
+                    onChange={handleExerciseChange}
+                    className="radio"
+                  />
+                  많이
                 </label>
               </Box>
             </Area>

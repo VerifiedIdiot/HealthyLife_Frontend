@@ -49,7 +49,7 @@ const CommentBox = styled.div`
 
 const CommentNickname = styled.p`
   color: #2446da;
-  font-weight: bold;
+  font-weight: 600;
   margin-left: 5px;
   margin-top: 5px;
 `;
@@ -233,7 +233,7 @@ const PostRoom = () => {
         setTotalComment(totalCommentsResponse.data);
 
         // 페이지당 댓글 수 계산
-        const commentsPerPage = 10; // 페이지당 댓글 수
+        const commentsPerPage = 5; // 페이지당 댓글 수
         const totalPages = Math.ceil(
           totalCommentsResponse.data / commentsPerPage
         );

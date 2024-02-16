@@ -11,11 +11,25 @@ import { MiddleButton } from "../../styles/styledComponents/StyledComponents";
 import MemberApi from "../../api/MemberApi";
 
 const Container = styled.div`
-  justify-content: center;
   display: flex;
+  width: 1000px;
+  padding: 0px 21.6px 0px 36px;
+  flex-direction: column;
+  align-items: center;
+  flex: 1 0 0;
+  opacity: var(--, 1);
+  @media (max-width: 1024px) {
+    width: 100%;
+  }
 `;
 const WriteSection = styled.div`
-  justify-content: flex-start;
+  height: 1494.03px;
+  align-self: stretch;
+  opacity: var(--, 1);
+  @media (max-width: 1024px) {
+    width: 100%;
+    height: 100%;
+  }
 `;
 
 const WriteHeading = styled.div`
@@ -55,12 +69,13 @@ const StyledReactQuill = styled(ReactQuill)`
   margin-bottom: 20px;
 
   .ql-container {
-    opacity: 1;
+    display: flex;
     background: #fff;
-    width: 980px;
-    height: 790px;
+    flex-wrap: wrap;
+    height: 600px;
+    width: 100%;
     max-height: 500px;
-    overflow-y: auto;
+    opacity: 1;
   }
 
   .ql-toolbar {
@@ -78,15 +93,14 @@ const StyledReactQuill = styled(ReactQuill)`
     .ql-toolbar {
     }
   }
-  .ql-fill {
-  }
 `;
 const ButtonContainer = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
   gap: 10px;
-  margin-bottom: 20px;
+  margin-bottom: 10px;
+  position: relative;
 `;
 const WriteComponent = () => {
   const [title, setTitle] = useState("");
@@ -212,7 +226,7 @@ const WriteComponent = () => {
     ],
   };
   return (
-    <Main>
+    <Main $height="auto" $justify="center" $align="center">
       <Container>
         <WriteSection>
           <WriteHeading>

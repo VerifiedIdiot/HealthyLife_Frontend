@@ -163,7 +163,18 @@ const CommunityAxiosApi = {
       throw error;
     }
   },
-
+  // 조회수
+  communityCount: async (communityId) => {
+    try {
+      return await AxiosInstance.put(
+        Common.WEELV_DOMAIN + `/api/community/detail/counter}`,
+        communityId
+      );
+    } catch (error) {
+      console.error("Error in communityCount API call", error);
+      throw error;
+    }
+  },
   // 상태조회
   checkLikeStatus: async (communityId, email) => {
     try {

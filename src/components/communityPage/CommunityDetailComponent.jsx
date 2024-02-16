@@ -11,13 +11,15 @@ import { SmallButton } from "../../styles/styledComponents/StyledComponents";
 import PostRoom from "./PostRoomComponent";
 import MemberApi from "../../api/MemberApi";
 import React from "react";
+import { Container } from "@mui/material";
 
 const InputContainer = styled.div`
+  position: relative;
   display: flex;
   flex-direction: column;
+  margin-top: 3em;
+  margin-bottom: 3em;
   width: 100%;
-  padding-top: 80px;
-  padding-bottom: 20px;
 `;
 const CategoryContent = styled.div`
   display: flex;
@@ -83,16 +85,15 @@ const FormContainer = styled.div`
   padding: 5px 0 5px 0;
 `;
 const CenterFormContainer = styled.div`
-  justify-content: flex-start;
-  align-items: center;
-  width: 100%;
-  min-height: 200px;
+  flex-wrap: wrap;
   border-bottom: 1px solid #c4c4c4;
   margin-bottom: 30px;
   padding-bottom: 40px;
+
   @media (max-width: 1024px) {
     min-height: 170px;
-    max-height: 200px;
+    max-width: 100%;
+    overflow-x: hidden;
   }
 `;
 
@@ -182,7 +183,7 @@ const CommunityDetailComponent = () => {
   };
 
   return (
-    <Main>
+    <Main $align="center" $height="auto">
       <InputContainer>
         <PostListTitle>
           <CategoryContent>{post.categoryName}</CategoryContent>
@@ -200,7 +201,7 @@ const CommunityDetailComponent = () => {
         <Line2 />
         <FormContainer>
           <DetailInfoContent>
-            글쓴이 {post.nickName}, 좋아요
+            By {post.nickName}, 좋아요
             <p>
               &nbsp;
               {isLiked ? (

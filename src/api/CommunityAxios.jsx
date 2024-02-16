@@ -164,11 +164,10 @@ const CommunityAxiosApi = {
     }
   },
   // 조회수
-  communityCount: async (communityId) => {
+  increaseViewCount: async (communityId) => {
     try {
       return await AxiosInstance.put(
-        Common.WEELV_DOMAIN + `/api/community/detail/counter}`,
-        communityId
+        Common.WEELV_DOMAIN + `/api/community/${communityId}/view`
       );
     } catch (error) {
       console.error("Error in communityCount API call", error);

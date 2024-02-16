@@ -11,7 +11,6 @@ import { SmallButton } from "../../styles/styledComponents/StyledComponents";
 import PostRoom from "./PostRoomComponent";
 import MemberApi from "../../api/MemberApi";
 import React from "react";
-import { Container } from "@mui/material";
 
 const InputContainer = styled.div`
   position: relative;
@@ -114,6 +113,18 @@ const CommunityDetailComponent = () => {
         const postResponse = await CommunityAxiosApi.getCommunityDetail(id);
         setPost(postResponse.data);
         console.log(postResponse.data);
+        // 중복 조회 방지
+        const visitedCommunityIds = localStorage.getItem("visitedCommunityIds");
+        const parsedVisitedIds = visitedCommunityIds
+          ? visitedCommunityIds.split(",")
+          : [];
+        if (!parsedVisitedIds.includes(id.toString())) {
+          const updatedVisitedIds = [...parsedVisitedIds, id];
+          localStorage.setItem(
+            "visitedCommunityIds",
+            updatedVisitedIds.join(",")
+          );
+        }
         like();
       } catch (error) {
         console.error("Error fetching post and comments:");

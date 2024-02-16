@@ -14,7 +14,6 @@ import axios from "axios";
 import SearchComponent from "./SearchComponent";
 import { ReactComponent as Down } from "../../assets/imgs/communityImges/Down.svg";
 import emptyFolder from "../../assets/imgs/communityImges/empty-folder.png";
-import { Main } from "../../styles/Layouts";
 
 const PostSection = styled.div`
   width: 100%;
@@ -251,7 +250,7 @@ const CommunityComponent = () => {
   const [categoryName, setCategoryName] = useState("전체");
   const [categories, setCategories] = useState([]);
   const [showDropdown, setShowDropdown] = useState(false);
-
+  const [viewCount, setViewCount] = useState("");
   const PAGE_SIZE = 10;
 
   useEffect(() => {
@@ -308,6 +307,18 @@ const CommunityComponent = () => {
       image: imgTag !== null,
       video: videoTag !== null || iframeTag !== null, // iframe 태그 추가
     }; // 이미지 태그와 동영상 태그가 각각 있으면 true, 없으면 false를 반환
+  };
+  const increaseViewCount = async (id) => {
+    console.log(id);
+
+    try {
+      // 서버에 요청을 보내어 해당 게시물의 viewCount를 증가시킵니다.
+      const res = await CommunityAxiosApi.increaseViewCount(id);
+      console.log(res.data);
+      setViewCount(res.data);
+    } catch (error) {
+      console.error("Error increasing view count:", error);
+    }
   };
   useEffect(() => {
     // 서버에서 데이터를 가져오는 함수
@@ -426,6 +437,7 @@ const CommunityComponent = () => {
                   <TableNormalRow
                     key={post.communityId}
                     onClick={() => {
+                      increaseViewCount(post.communityId);
                       navigate(`/communitypage/detail/${post.communityId}`);
                     }}
                   >

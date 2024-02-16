@@ -38,14 +38,18 @@ export const CalendarSection = () => {
       const dateData = state.monthData.find(
         (data) => data.reg_date === selectedDate
       );
-
+      actions.setSelectedDate(selectedDate);
+      openModal();
       if (dateData) {
         const calendarId = dateData.calendar_id;
         // calendar_id를 사용하여 API 요청
         const details = await CalendarApi.getDetailsByCalendarId(calendarId);
 
-        actions.setDateData(details); // API 응답으로 받은 데이터를 상태에 저장
-        openModal();
+        actions.setDateData({
+          meal: details.meal,
+          workout: details.workout
+        });
+        
       } else {
         console.log("데이타 없음");
       }
@@ -83,10 +87,6 @@ export const CalendarSection = () => {
     }
   }, [state.email]);
 
-  // 캘린더의 특정 날짜에 속하는 정보가 갱신되면 재랜더링
-  useEffect(() => {}, [state.dateDetails]);
-
-  useEffect(() => {}, [state.monthData]);
 
   return (
     <>
@@ -107,7 +107,9 @@ export const CalendarSection = () => {
             // 날짜를 YYYY-MM-DD 형식으로 변환
             const dateString = formatDate(date); // 이 함수는 date를 'YYYYMMDD' 형식으로 변환해야 합니다.
 
-            const dayData = state.monthData.find(data => data.reg_date === dateString);
+            const dayData = state.monthData.find(
+              (data) => data.reg_date === dateString
+            );
             // 데이터가 있으면 내용을 렌더링, 없으면 null 반환
             return dayData ? (
               <div>
@@ -119,6 +121,8 @@ export const CalendarSection = () => {
                 점심: {dayData.lunch_meal_achieved ? "✅" : "❌"}
                 <br />
                 저녁: {dayData.dinner_meal_achieved ? "✅" : "❌"}
+                <br />
+                운동: {dayData.workout_achieved ? "✅" : "❌"}
               </div>
             ) : null;
           }}

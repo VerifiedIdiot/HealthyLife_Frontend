@@ -18,7 +18,10 @@ const initialState = {
   selectedMonth: "",
   monthData: [],
   selectedDate: "", // 날짜클릭 이벤트 실행시 해당 날짜 정보를 받을 객체 리터럴 ㅎㅎ!
-  dateData: {}, // 선택한 날짜에 맞는 데이터들을 담을 객체 .. 참고하셈 ㅎㅎ!
+  dateData: {
+    meal: [],
+    workout: []
+  }, // 선택한 날짜에 맞는 데이터들을 담을 객체 .. 참고하셈 ㅎㅎ!
 };
 
 const calendarReducer = (state, action) => {
@@ -80,18 +83,8 @@ export const CalendarProvider = ({ children }) => {
       dispatch({ type: "SET_SELECTED_DATE", payload: selectedDate }),
     setDateData: (setDateData) =>
       dispatch({ type: "SET_DATE_DATA", payload: setDateData }),
-    addMealAndUpdate: async (email, mealType, selectedDate, selectedItem) => {
-      // POST 요청을 통해 식사 정보 추가
-      await CalendarApi.addMeal(email, mealType, selectedDate, selectedItem);
+      // 애는 음식이나 운동을정보를 선택하고 추가할때 실행시킬 액션함수 내 위치할 내부 액션함수 , 그러니 단독사용 x
 
-      // 성공적으로 추가된 후, 해당 날짜에 대한 새로운 식사 정보를 다시 가져옴
-      const updatedDateDetails = await CalendarApi.selectedDateMealInfo(
-        email,
-        selectedDate
-      );
-      // 상태 업데이트
-      dispatch({ type: "SET_DATE_DETAILS", payload: updatedDateDetails });
-    },
   };
 
   // 최초에 컨텍스트내 영역에 진입시 랜더링 되기 실행되는 email 정보 받아오기 함수
@@ -108,7 +101,13 @@ export const CalendarProvider = ({ children }) => {
     fetchEmail();
   }, []);
 
-  // 최초에 캘린더 페이지 혹은 , 다른 월을 선택했을때 해당유저의 월별 정보를 불러오는 layoutEffect 훅
+  useEffect(() => {
+    // monthData 또는 dateData 상태가 변경되었을 때 실행할 로직
+    // 예: 데이터 로딩 인디케이터 숨기기, 추가적인 UI 업데이트 처리 등
+  }, [state.monthData, state.dateData]);
+  
+
+
   
 
   // 날짜를 'YYYYMMDD' 형식으로 변환하는 함수

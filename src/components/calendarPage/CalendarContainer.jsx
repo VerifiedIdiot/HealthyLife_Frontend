@@ -44,8 +44,8 @@ export const MealBox = () => {
               <MealInfoList>
                 {/* 배열을 받아오지 못했을때 에러가 나는걸 방지하기 위한 &&연산자 */}
                 {/* && 연산자는 A && B 일때 둘다 TRUE이면 B를 실행 */}
-                {Array.isArray(state.dateData) &&
-                  state.dateData
+                {Array.isArray(state.dateData.meal) &&
+                  state.dateData.meal
                     .filter((meal) => meal.meal_type === mealType)
                     .map((meal) => (
                       <MealInfo key={meal.id}>{meal.meal_name}</MealInfo>
@@ -54,6 +54,18 @@ export const MealBox = () => {
               <AddButton onClick={() => openModal(mealType)}> + </AddButton>
             </ComboBox>
           ))}
+          <div>운동</div>
+          <MealInfoList>
+          {
+          
+          Array.isArray(state.dateData.workout) &&
+                  state.dateData.workout
+                    .map((workout) => (
+                      <MealInfo key={workout.id}>{workout.workout_name}</MealInfo>
+                    ))}
+
+          </MealInfoList>
+          <AddButton onClick={() => openModal()}> + </AddButton>
         </ComboSelectBox>
       </ComboBoxContainer>
       <MiddleModal $isOpen={modalOpen} $onClose={closeModal}>
@@ -67,10 +79,7 @@ const MealInfoList = styled.ul``;
 
 const MealInfo = styled.li``;
 
-
-
-
-export const MealInputBox = ({ closeModal}) => {
+export const MealInputBox = () => {
   const { state, actions } = useCalendar();
   const [searchQuery, setSearchQuery] = useState("");
   const [searchResults, setSearchResults] = useState([]);
@@ -91,11 +100,20 @@ export const MealInputBox = ({ closeModal}) => {
   const handleAddClick = async () => {
     if (Object.keys(selectedItem).length > 0) {
       try {
-        console.log(state.mealType, selectedItem, state.email, state.selectedDate);
-        
+        console.log(
+          state.mealType,
+          selectedItem,
+          state.email,
+          state.selectedDate
+        );
+
         // addMealAndFetchUpdatedInfo 액션 호출
-        await actions.addMealAndUpdate(state.email, state.mealType, state.selectedDate, selectedItem);
-        closeModal();
+        await actions.addMealAndUpdate(
+          state.email,
+          state.mealType,
+          state.selectedDate,
+          selectedItem
+        );
       } catch (e) {
         console.error("데이터 가져오는 중 오류 발생", e);
       }
@@ -136,26 +154,19 @@ export const MealInputBox = ({ closeModal}) => {
         {searchQuery && (
           <SearchResultContainer>
             {searchResults.map((item, index) => (
-              <div
-                key={index}
-                onClick={() => handleSearchResultClick(item)}>
+              <div key={index} onClick={() => handleSearchResultClick(item)}>
                 <p>{item.name}</p>
               </div>
             ))}
           </SearchResultContainer>
         )}
 
-        <InputAddBtn onClick={() => handleAddClick()}>
-          추가하기
-        </InputAddBtn>
+        <InputAddBtn onClick={() => handleAddClick()}>추가하기</InputAddBtn>
       </ComboBoxContainer>
     </>
   );
 };
 
-
 export const DateDetails = () => {
   const { state, actions } = useCalendar();
-
-
-}
+};

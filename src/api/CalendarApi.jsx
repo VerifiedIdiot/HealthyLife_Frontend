@@ -1,8 +1,8 @@
 import axios from "axios";
 import Common from "../utils/Common";
 
-
 const BACKEND_DOMAIN = process.env.REACT_APP_BACKEND_DOMAIN;
+
 const CalendarApi = {
   getMonthData: async (email, month) => {
     console.log(email, month);
@@ -65,26 +65,55 @@ const CalendarApi = {
     }
   },
 
-  // 날짜별 식사기록 출력
-  getDetailsByCalendarId: async (calendarId) => {
-    try {
-      console.log(calendarId);
-      const response = await axios.get(`${BACKEND_DOMAIN}/meal/detail`, {
-        params: {
-          calendarId: calendarId,
-        },
-      });
-      return response.data;
-    } catch (error) {
-      console.error("데이터 가져오는 중 오류 발생", error);
-      return null; // 오류 시 null 반환 또는 적절한 에러 처리
-    }
-  },
+
 
   // 식사기록 삭제
   MealDelete: async (id) => {
     return await axios.delete(`${BACKEND_DOMAIN}/delete/${id}`);
   },
+
+  // 운동 조회
+  getExerciseList: async (params) => {
+    try {
+      const response = await axios.get(
+        `${Common.WEELV_DOMAIN}/exercise/view/search`,
+        { params }
+      );
+      console.log(response.data);
+      return response.data;
+    } catch (error) {
+      console.error("Error in getFoodListBySearch API call", error);
+      throw error;
+    }
+  },
+
+    // 날짜별 식사&운동기록 출력
+    getDetailsByCalendarId: async (calendarId) => {
+      try {
+        console.log(calendarId);
+        // meal과 workout에 대한 요청 URL이 동일합니다. 실제로는 다를 수 있으니 확인이 필요합니다.
+        // 예를 들어 workout 요청의 URL이 `${BACKEND_DOMAIN}/workout/detail` 이라고 가정합니다.
+        const mealRequest = axios.get(`${BACKEND_DOMAIN}/meal/detail`, {
+          params: { calendarId: calendarId }
+        });
+        const workoutRequest = axios.get(`${BACKEND_DOMAIN}/workout/detail`, {
+          params: { calendarId: calendarId }
+        });
+    
+        // Promise.all을 사용하여 두 요청을 동시에 실행
+        const [responseMeal, responseWorkout] = await Promise.all([mealRequest, workoutRequest]);
+        console.log(responseMeal);
+        console.log(responseWorkout);
+        // 두 응답을 객체로 묶어 반환
+        return {
+          meal: responseMeal.data,
+          workout: responseWorkout.data
+        };
+      } catch (error) {
+        console.error("데이터 가져오는 중 오류 발생", error);
+        return null; // 오류 시 null 반환
+      }
+    },
 };
 
 export default CalendarApi;

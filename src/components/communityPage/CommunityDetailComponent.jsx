@@ -16,21 +16,21 @@ const InputContainer = styled.div`
   display: flex;
   flex-direction: column;
   width: 100%;
+  padding-top: 80px;
+  padding-bottom: 20px;
 `;
 const CategoryContent = styled.div`
   display: flex;
   color: #2446da;
   font-size: 1.5rem;
-  font-weight: bold;
+  font-weight: 600;
 `;
 const TitleContent = styled.div`
   display: flex;
   color: #2446da;
   font-size: 1.2rem;
-  font-weight: bold;
+  font-weight: 600;
   margin-bottom: 5px;
-  margin-left: 5px;
-  margin-right: 5px;
   align-items: center;
 
   p {
@@ -43,35 +43,36 @@ const DetailInfoContent = styled.div`
   color: #333;
   font-size: 0.8rem;
   justify-content: flex-end;
-  margin-bottom: 5px;
+  margin-bottom: 20px;
   width: 100%;
   p {
     color: #2446da;
+    cursor: pointer;
   }
 `;
 const PostListTitle = styled.div`
   display: flex;
   align-items: center;
   width: 100%;
-  padding: 10px;
+  padding-bottom: 20px;
 `;
 const Line = styled.div`
   width: 100%;
   height: 2px;
   margin-bottom: 10px;
-  border-top: 1px solid #2446da;
+  border-top: 2px solid #2446da;
 `;
 const Line2 = styled.div`
   width: 100%;
   height: 2px;
   margin-bottom: 10px;
-  border-top: 2px solid #2446da;
+  border-top: 1px solid #2446da;
 `;
 const ButtonContainer = styled.div`
   display: flex;
   justify-content: flex-end;
   align-items: center;
-  gap: 5px;
+  gap: 10px;
   margin-bottom: 5px;
 `;
 
@@ -79,17 +80,16 @@ const FormContainer = styled.div`
   display: flex;
   color: #333;
   justify-content: space-between;
-  padding: 5px;
+  padding: 5px 0 5px 0;
 `;
 const CenterFormContainer = styled.div`
   justify-content: flex-start;
   align-items: center;
   width: 100%;
   min-height: 200px;
-  max-height: 230px;
   border-bottom: 1px solid #c4c4c4;
-  overflow-y: scroll;
-  margin-bottom: 10px;
+  margin-bottom: 30px;
+  padding-bottom: 40px;
   @media (max-width: 1024px) {
     min-height: 170px;
     max-height: 200px;

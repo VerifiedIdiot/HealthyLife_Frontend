@@ -17,12 +17,13 @@ const PostListTitle = styled.div`
   justify-content: space-between;
   align-items: center;
   width: 100%;
+  padding-top: 80px;
 `;
 const TitleContent = styled.div`
   display: flex;
   color: #2446da;
   font-size: 1.2rem;
-  font-weight: bold;
+  font-weight: 600;
   margin-bottom: 5px;
   margin-left: 5px;
   margin-right: 5px;

@@ -18,13 +18,16 @@ import { Main } from "../../styles/Layouts";
 
 const PostSection = styled.div`
   width: 100%;
+  display: flex;
+  flex-direction: column;
 `;
 const InputContainer = styled.div`
   position: relative;
   display: flex;
-  justify-content: center;
+  justify-content: flex-start;
   align-items: center;
   width: 100%;
+  padding-top: 80px;
 `;
 const SendButton = styled.div`
   display: flex;
@@ -37,8 +40,9 @@ const PostListTitle = styled.div`
   justify-content: space-between;
   align-items: center;
   width: 100%;
-  padding: 10px;
-  font-weight: bold;
+  padding: 10px 0;
+  font-weight: 600;
+  /* outline: 1px solid red; */
 `;
 const TitleContent = styled.div`
   display: flex;
@@ -46,6 +50,7 @@ const TitleContent = styled.div`
   font-size: 1.5rem;
   justify-content: center;
   align-items: center;
+  /* outline: 1px solid green; */
 `;
 const PostList = styled.div`
   position: relative;
@@ -201,7 +206,7 @@ const NotPost = styled.div`
 `;
 const CategoryDropdown = styled.div`
   position: absolute;
-  top: 36px;
+  top: 120px;
   color: #333;
   width: 62px;
   font-size: 1rem;
@@ -403,7 +408,7 @@ const CommunityComponent = () => {
             <TableRow>
               <TableRowDataIcon></TableRowDataIcon>
               <TableRowDataTitle>제목</TableRowDataTitle>
-              <TableRowDataWriter>글쓴이</TableRowDataWriter>
+              <TableRowDataWriter>작성자</TableRowDataWriter>
               <TableRowDataDate>작성일</TableRowDataDate>
               <TableRowDataLikes>좋아요</TableRowDataLikes>
               <TableRowDataViews>조회수</TableRowDataViews>

@@ -11,18 +11,11 @@ import { MiddleButton } from "../../styles/styledComponents/StyledComponents";
 import MemberApi from "../../api/MemberApi";
 
 const Container = styled.div`
-  display: flex;
-  width: 100%;
   justify-content: center;
+  display: flex;
 `;
 const WriteSection = styled.div`
-  display: flex;
-  flex-direction: column;
-  height: 100%;
-
-  @media (max-width: 1024px) {
-    width: 100%;
-  }
+  justify-content: flex-start;
 `;
 
 const WriteHeading = styled.div`
@@ -32,39 +25,34 @@ const WriteHeading = styled.div`
 const WriteHeadingText = styled.p`
   color: #2446da;
   font-size: 1.5rem;
-  font-weight: bold;
-  margin-top: 10px;
-  margin-bottom: 10px;
+  font-weight: 600;
+  padding-top: 80px;
+  margin-bottom: 20px;
 `;
 
 const Line = styled.div`
   width: 100%;
   height: 2px;
-  flex-shrink: 0;
-  margin-bottom: 10px;
+  margin-bottom: 20px;
   border-top: 2px solid #2446da;
 `;
 const WriteBorder = styled.input`
   display: flex;
   font-size: 1.2rem;
-  font-family: "noto sans";
-  width: ${(props) => props.width || "100%"};
   align-items: center;
   border: none;
 `;
 
 const CategorySelect = styled.select`
   // 카테고리 선택 드롭다운에 대한 스타일 정의
-  padding: 5px;
-  font-size: 1.2rem;
+  padding: 10px 0 10px 0;
   border-radius: 4px;
-  margin-bottom: 10px;
-  width: 150px; // 드롭다운 너비 조정
+  margin-bottom: 20px;
 `;
 const StyledReactQuill = styled(ReactQuill)`
   background-color: rgba(36, 70, 218, 0.3);
-  margin-top: 10px;
-  margin-bottom: 10px;
+  margin-top: 20px;
+  margin-bottom: 20px;
 
   .ql-container {
     opacity: 1;
@@ -97,8 +85,8 @@ const ButtonContainer = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  gap: 5px;
-  margin-bottom: 10px;
+  gap: 10px;
+  margin-bottom: 20px;
 `;
 const WriteComponent = () => {
   const [title, setTitle] = useState("");

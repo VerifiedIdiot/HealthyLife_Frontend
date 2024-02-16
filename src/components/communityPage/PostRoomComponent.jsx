@@ -26,7 +26,7 @@ const LargeInput = styled.textarea`
   background: rgba(255, 255, 255, 0.9);
   resize: none;
   border: 1px solid #c4c4c4;
-
+  margin-bottom: 20px;
   @media (max-width: 1024px) {
     height: 10vh;
   }
@@ -36,7 +36,7 @@ const FormContainer = styled.div`
   display: flex;
   width: 100%;
   justify-content: space-between;
-  margin-bottom: 5px;
+  margin-bottom: 20px;
 `;
 
 const CommentForm = styled.form`
@@ -44,6 +44,7 @@ const CommentForm = styled.form`
 `;
 const CommentBox = styled.div`
   display: flex;
+  margin-bottom: 10px;
 `;
 
 const CommentNickname = styled.p`
@@ -109,10 +110,9 @@ const Box4 = styled.div`
 const Dropdown = styled.select`
   width: 10em;
   height: 2em;
-  margin: 10px;
   padding: 5px;
   border: 1px solid #ccc;
-
+  margin-bottom: 10px;
   border-radius: 4px;
   font-size: 16px;
   position: sticky;
@@ -125,6 +125,7 @@ const Dropdown = styled.select`
 const CommentButton = styled.div`
   display: flex;
   align-items: flex-end;
+  cursor: pointer;
 `;
 const RotatedDown = styled(Down)`
   transition: transform 0.3s ease-in-out;

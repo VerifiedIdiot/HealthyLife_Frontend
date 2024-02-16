@@ -31,15 +31,13 @@ const Aside = styled.div`
   @media (max-width: 1024px) {
     max-width: 100%;
     padding-bottom: 0;
-    align-items: center;
+    display: none;
   }
 `;
 // 카테고리 전체
 const CommunityMenuList = styled.div`
   flex-direction: row;
-  margin-top: 10px;
-  @media (max-width: 1024px) {
-  }
+  padding-top: 80px;
 `;
 //카테고리 이름만
 const CommunityMenuItem = styled.div`
@@ -55,7 +53,7 @@ const CommunityMenuItem = styled.div`
 const CommunityLink = styled.div`
   display: flex;
   align-items: center;
-  justify-content: flex-start;
+  justify-content: center;
   @media (max-width: 1024px) {
     width: 100%;
     padding: 10px;
@@ -90,14 +88,15 @@ const CommunityMenuButton = styled.div`
   display: flex;
   background-color: #f3f3f3;
   justify-content: flex-start;
-  background-color: ${(props) => (props.isActive ? "#2446da" : "#fff")};
+  align-items: center;
+  background-color: ${(props) =>
+    props.isActive ? "rgba(36, 70, 218, 0.6)" : "#fff"};
   color: ${(props) => (props.isActive ? "#fff" : "#333")};
   width: 100%;
 `;
 // 사이드 목차
 const CommunityItem = styled.div`
   display: flex;
-  margin-left: 14px;
   cursor: pointer;
   align-items: center;
   @media (max-width: 1024px) {
@@ -114,7 +113,6 @@ const CommunityItemList = styled.div`
   border: 1px solid #2446da;
 
   @media (max-width: 1024px) {
-    flex-direction: row;
     display: none;
   }
 `;
@@ -129,7 +127,7 @@ const StyledLink = styled(Link)`
 `;
 const RotatedDown = styled(Down)`
   display: flex;
-
+  scale: 1.5;
   transition: transform 0.3s ease-in-out;
   transform: ${(props) =>
     props.isRotated ? "rotate(180deg)" : "rotate(0deg)"};
@@ -166,8 +164,8 @@ const CommunityPage = () => {
   }, []);
   return (
     <>
-      <Main $justify="center" $align="center">
-        <Container>
+      <Main $justify="center" $align="center" $height="auto">
+        <Container $shadow="none" $height="auto" $padding="0 0 80px 0">
           <CommunityList>
             <Aside>
               <CommunityMenuList>

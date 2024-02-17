@@ -94,6 +94,7 @@ export const InputAddBtn = styled(MiddleButton)`
 
 export const SearchResultContainer = styled.div`
   height: auto;
+  width: 96%;
   overflow-y: auto; // 높이 초과할 경우 스크롤바 생성
   p {
     margin: 0;
@@ -103,6 +104,26 @@ export const SearchResultContainer = styled.div`
     height: auto;
   }
 `;
+
+export const SearchResultItem = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  .food-name {
+    width: 33.9%;
+
+  }
+  .food-size {
+    
+    width: 33.9%;
+    
+  }
+  .food-kcal {
+    width: 33.9%;
+    vertical-align: center;
+  }
+`;
+
 
 //////////////////////////////////////////////////
 

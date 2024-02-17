@@ -14,6 +14,7 @@ import {
   InputField,
   InputAddBtn,
   SearchResultContainer,
+  SearchResultItem,
 } from "./CalendarStyle";
 import { useCalendar } from "../../contexts/CalendarContext";
 
@@ -56,14 +57,10 @@ export const MealBox = () => {
           ))}
           <div>운동</div>
           <MealInfoList>
-          {
-          
-          Array.isArray(state.dateData.workout) &&
-                  state.dateData.workout
-                    .map((workout) => (
-                      <MealInfo key={workout.id}>{workout.workout_name}</MealInfo>
-                    ))}
-
+            {Array.isArray(state.dateData.workout) &&
+              state.dateData.workout.map((workout) => (
+                <MealInfo key={workout.id}>{workout.workout_name}</MealInfo>
+              ))}
           </MealInfoList>
           <AddButton onClick={() => openModal()}> + </AddButton>
         </ComboSelectBox>
@@ -154,9 +151,13 @@ export const MealInputBox = () => {
         {searchQuery && (
           <SearchResultContainer>
             {searchResults.map((item, index) => (
-              <div key={index} onClick={() => handleSearchResultClick(item)}>
-                <p>{item.name}</p>
-              </div>
+              <SearchResultItem
+                key={index}
+                onClick={() => handleSearchResultClick(item)}>
+                <p className="food-name">{item.name}</p>
+                <p className="food-size">{item.servingSize}g</p>
+                <p className="food-kcal">{item.kcal}kcal</p>
+              </SearchResultItem>
             ))}
           </SearchResultContainer>
         )}

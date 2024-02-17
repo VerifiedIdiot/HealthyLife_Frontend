@@ -13,7 +13,7 @@ import MemberApi from "../../api/MemberApi";
 const Container = styled.div`
   display: flex;
   width: 1000px;
-  padding: 0px 21.6px 0px 36px;
+  padding: 0px 20px;
   flex-direction: column;
   align-items: center;
   flex: 1 0 0;
@@ -85,6 +85,9 @@ const StyledReactQuill = styled(ReactQuill)`
   }
   .ql-toolbar .ql-formats {
     margin-right: 2px !important; // 버튼들 사이의 간격을 2px로
+  }
+  .selector-class {
+    cursor: pointer;
   }
   @media (max-width: 1024px) {
     .ql-container {
@@ -251,7 +254,7 @@ const WriteComponent = () => {
           />
           <StyledReactQuill
             ref={quillRef}
-            placeholder="내용을 입력해주세요."
+            placeholder="내용을 입력해주세요"
             value={content !== undefined ? content : ""}
             onChange={(value) => setContent(value)}
             modules={modules}

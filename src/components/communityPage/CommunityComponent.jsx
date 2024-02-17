@@ -49,6 +49,7 @@ const TitleContent = styled.div`
   font-size: 1.5rem;
   justify-content: center;
   align-items: center;
+  cursor: pointer;
   /* outline: 1px solid green; */
 `;
 const PostList = styled.div`
@@ -66,6 +67,7 @@ const PostTable = styled.div`
   width: 100%;
   padding: var(--, 1px) 0px 0.5px 0px;
   height: 60vh;
+  margin-bottom: 30px;
   @media (max-width: 1024px) {
     height: 40vh;
   }

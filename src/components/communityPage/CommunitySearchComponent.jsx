@@ -72,6 +72,7 @@ const TableNormalRow = styled.div`
   opacity: 1;
   display: flex;
   flex-direction: row;
+  cursor: pointer;
 `;
 const TableRowData = styled.a`
   display: flex;
@@ -136,12 +137,11 @@ const PageContant = styled.div`
   flex-direction: row;
   align-items: flex-start;
   color: #2446da;
-
-  font-family: Inter;
   font-size: 11.7px;
   font-style: normal;
   font-weight: 500;
   line-height: 17.55px;
+  cursor: pointer;
 `;
 const MiddlePage = styled.div`
   display: flex;
@@ -195,7 +195,7 @@ const CommunitySearchComponent = () => {
   useEffect(() => {
     const postList = async () => {
       try {
-        console.log(result);
+        console.log(result.content);
         setPosts(result.content);
         setTotalPages(result.totalPages);
         // 전체 댓글 수 조회
@@ -299,9 +299,7 @@ const CommunitySearchComponent = () => {
                   onClick={() => setCurrentPage(pageNum - 1)}
                   active={currentPage === pageNum ? "true" : "false"}
                 >
-                  <Page selected={currentPage === pageNum - 1} href="#">
-                    {pageNum}
-                  </Page>
+                  <Page selected={currentPage === pageNum - 1}>{pageNum}</Page>
                 </MiddlePage>
               )
             )}

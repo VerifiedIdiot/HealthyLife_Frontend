@@ -111,7 +111,7 @@ const SearchComponent = () => {
         <Select onChange={(event) => setSearchType(event.target.value)}>
           <option value="titleAndContent">제목+내용</option>
           <option value="title">제목</option>
-          <option value="nickName">글쓴이</option>
+          <option value="nickName">작성자</option>
           <option value="comment">댓글</option>
         </Select>
         <SearchBox>

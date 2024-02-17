@@ -43,10 +43,10 @@ export const MealBox = () => {
           {MealTypes.map((mealType) => (
             <ComboBox key={mealType}>
               <MealTitle>
-              <MealInput>
-                <h2>{mealType}</h2>
-              </MealInput>
-              <AddButton onClick={() => openModal(mealType)}> + </AddButton>
+                <MealInput>
+                  <h2>{mealType}</h2>
+                </MealInput>
+                <AddButton onClick={() => openModal(mealType)}> + </AddButton>
               </MealTitle>
               <MealInfoList>
                 {/* 배열을 받아오지 못했을때 에러가 나는걸 방지하기 위한 &&연산자 */}
@@ -67,7 +67,7 @@ export const MealBox = () => {
                 <MealInfo key={workout.id}>{workout.workout_name}</MealInfo>
               ))}
           </MealInfoList>
-          <AddButton onClick={() => openModal()}> + </AddButton>
+          <AddButton onClick={() => openModal("운동")}> + </AddButton>
         </ComboSelectBox>
       </ComboBoxContainer>
       <MiddleModal $isOpen={modalOpen} $onClose={closeModal}>
@@ -76,8 +76,6 @@ export const MealBox = () => {
     </>
   );
 };
-
-
 
 export const MealInputBox = () => {
   const { state, actions } = useCalendar();
@@ -124,10 +122,17 @@ export const MealInputBox = () => {
     if (searchQuery) {
       const fetchSearchResults = async () => {
         try {
-          const result = await CalendarApi.getFoodList({
-            keyword: searchQuery,
-          });
-          setSearchResults(result);
+          if (state.mealType === "운동") {
+            const result = await CalendarApi.getExerciseList({
+              keyword: searchQuery,
+            });
+            setSearchResults(result);
+          } else {
+            const result = await CalendarApi.getFoodList({
+              keyword: searchQuery,
+            });
+            setSearchResults(result);
+          }
         } catch (e) {
           console.log(e);
         }
@@ -150,18 +155,29 @@ export const MealInputBox = () => {
           </ComboSelectBox>
         </ComboBoxSection>
 
-        {/* 검색 결과 표시 */}
         {searchQuery && (
           <SearchResultContainer>
-            {searchResults.map((item, index) => (
-              <SearchResultItem
-                key={index}
-                onClick={() => handleSearchResultClick(item)}>
-                <p className="food-name">{item.name}</p>
-                <p className="food-size">{item.servingSize}g</p>
-                <p className="food-kcal">{item.kcal}kcal</p>
-              </SearchResultItem>
-            ))}
+            {state.mealType === "운동"
+              ? searchResults.map((item, index) => (
+                  // 운동 검색 결과 렌더링
+                  <SearchResultItem
+                    key={index}
+                    onClick={() => handleSearchResultClick(item)}>
+                    <p className="workout-name">{item.name}</p>
+                    <p className="workout-duration">{item.muscle}</p>
+                    <p className="workout-intensity">{item.equipment}</p>
+                  </SearchResultItem>
+                ))
+              : searchResults.map((item, index) => (
+                  // 음식 검색 결과 렌더링
+                  <SearchResultItem
+                    key={index}
+                    onClick={() => handleSearchResultClick(item)}>
+                    <p className="food-name">{item.name}</p>
+                    <p className="food-size">{item.servingSize}g</p>
+                    <p className="food-kcal">{item.kcal}kcal</p>
+                  </SearchResultItem>
+                ))}
           </SearchResultContainer>
         )}
 

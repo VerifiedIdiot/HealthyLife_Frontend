@@ -130,16 +130,16 @@ export const SearchResultItem = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-around;
-  .food-name {
+  .food-name, .workout-name {
     width: 33.9%;
 
   }
-  .food-size {
+  .food-size, .workout-part {
     
     width: 33.9%;
     
   }
-  .food-kcal {
+  .food-kcal, .workout-equipment {
     width: 33.9%;
     vertical-align: center;
   }

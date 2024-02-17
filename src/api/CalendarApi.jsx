@@ -75,14 +75,16 @@ const CalendarApi = {
   // 운동 조회
   getExerciseList: async (params) => {
     try {
+      console.log(params);
       const response = await axios.get(
-        `${Common.WEELV_DOMAIN}/exercise/view/search`,
+        `${Common.WEELV_DOMAIN}/workout/view/search`,
         { params }
       );
+      console.log(response);
       console.log(response.data);
       return response.data;
     } catch (error) {
-      console.error("Error in getFoodListBySearch API call", error);
+      console.error("Error in getExerciseList API call", error);
       throw error;
     }
   },

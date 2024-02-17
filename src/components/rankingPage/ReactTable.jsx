@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import {
   TableArea,
   TableHeader,
@@ -7,8 +7,11 @@ import {
   TableHeaderCell,
   TableDataCell,
 } from "./RankingStyle";
+import RankingApi from "../../api/RankingApi";
+import { useTable } from "react-table";
 
 export const MyReactTable = () => {
+  
   return (
     <TableArea $justify="center">
       <TableHeader>
@@ -24,6 +27,27 @@ export const MyReactTable = () => {
 };
 
 export const TotalReactTable = () => {
+  // useTable 훅을 사용하여 테이블 관련 프로퍼티들을 가져옵니다.
+  const {
+    getTableProps,
+    getTableBodyProps,
+    headerGroups,
+    rows,
+    prepareRow,
+  } = useTable({
+    columns,
+    data: Array.isArray(searchResults) ? searchResults : [],
+  });
+
+  useEffect(() => {
+    const fetchSeasonData = async () => {
+      const result = await RankingApi.getListBySeason({
+
+      });
+      console.log("이게맞나",result);
+    };
+    fetchSeasonData();
+  });
   return (
     <>
     <TableArea $justify="center">
@@ -38,6 +62,7 @@ export const TotalReactTable = () => {
       <TableBody>
         <TableRow>
         <TableDataCell>내용</TableDataCell>
+
         </TableRow>
       </TableBody>
     </TableArea>

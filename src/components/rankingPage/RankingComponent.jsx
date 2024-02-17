@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import {
   SortedImgBoxSection,
   SortedBoxArea,
@@ -22,6 +22,7 @@ import maleRanking from "../../assets/icons/ranking/maleRanking.png";
 import femaleRanking from "../../assets/icons/ranking/femaleRanking.png";
 import totalRanking from "../../assets/icons/ranking/totalRanking.png";
 
+
 const rankingTypes = [
   { src: seasonRanking, alt: "Season Ranking" },
   { src: maleRanking, alt: "Male Ranking" },
@@ -30,6 +31,7 @@ const rankingTypes = [
 ];
 
 export const SortedSection = () => {
+
   return (
     <>
       <SortedImgBoxSection>
@@ -70,6 +72,9 @@ export const ViewSection = () => {
 };
 
 export const BoardSection = () => {
+
+  
+
   return (
     <>
       <p> 토탈 랭킹 출력 </p>

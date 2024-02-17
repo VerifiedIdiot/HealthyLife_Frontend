@@ -39,11 +39,26 @@ export const ComboSelectBox = styled.div.attrs({
   }
 `;
 
-export const ComboBox = styled.div`
+export const ComboBox = styled.div.attrs({
+  className:"comboBox"
+})`
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
+
+  div {
+    flex-direction: row;
+  }
+`;
+
+
+export const MealTitle = styled.div.attrs({
+  className:"mealtitle"
+})`
+display:flex;
+flex-direction:column;
+justify-content: space-between;
 `;
 
 export const MealInput = styled.div`
@@ -51,10 +66,16 @@ export const MealInput = styled.div`
   border: none;
   background-color: transparent;
   font-size: 18px;
+
   h2 {
     font-size: 2rem;
   }
 `;
+
+
+export const MealInfoList = styled.ul``;
+
+export const MealInfo = styled.li``;
 
 export const MealLabel = styled.span`
   font-size: 18px;
@@ -179,7 +200,7 @@ export const CalendarMainSection = styled(Container)`
   }
 
   .react-calendar__navigation button {
-    color: #666;
+    color: #333;
     width: auto;
     height: auto;
     background: none;
@@ -233,7 +254,7 @@ export const CalendarMainSection = styled(Container)`
   .react-calendar__tile:enabled:focus {
     background: #e3e3e3;
     border-radius: 6px;
-    color: #fff;
+    color: #333;
   }
 
   .react-calendar__tile--now {
@@ -262,13 +283,13 @@ export const CalendarMainSection = styled(Container)`
   }
 
   .react-calendar__tile--range {
-    background: #6a6a6a;
-    color: #fff;
+    background: #eee;
+    color: #333;
     border-radius: 6px;
   }
 
   .react-calendar__month-view__days__day--weekend {
-    color: red;
+    /* color: red; */
   }
 
   .react-calendar__month-view__days__day--weekend:nth-child(7n) {

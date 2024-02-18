@@ -42,6 +42,7 @@ const HomePage = () => {
         <Container
           $height="auto"
           $shadow="none"
+          $width="100%"
           style={{ marginBottom: "5rem" }}
         >
           <HomeSlide />

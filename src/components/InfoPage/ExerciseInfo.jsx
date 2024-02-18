@@ -97,38 +97,54 @@ const ExerciseInfo = ({ exerciseData }) => {
   const selectMuscleImage = (muscle) => {
     switch (muscle) {
       case "abdominals":
+      case "복근":
         return abdominals;
       case "abductors":
+      case "외전근":
         return abductors;
       case "adductors":
+      case "내전근":
         return adductors;
       case "biceps":
+      case "이두근":
         return biceps;
       case "calves":
+      case "종아리":
         return calves;
       case "chest":
+      case "가슴":
         return chest;
       case "forearms":
+      case "팔뚝":
         return forearms;
       case "glutes":
+      case "엉덩이":
         return glutes;
       case "hamstrings":
+      case "햄스트링":
         return hamstrings;
       case "lats":
+      case "광배근":
         return lats;
       case "lower_back":
+      case "허리":
         return lower_back;
       case "middle_back":
-        return middle_back;
       case "traps":
+      case "등":
+      case "승모근":
         return middle_back;
       case "neck":
+      case "목":
         return neck;
       case "quadriceps":
+      case "대퇴사두근":
         return quadriceps;
       case "shoulders":
+      case "어깨":
         return shoulders;
       case "triceps":
+      case "삼두근":
         return triceps;
       default:
         return null;

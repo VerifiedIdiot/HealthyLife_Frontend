@@ -83,7 +83,7 @@ const ResultContainer = styled.div`
   justify-content: center;
   align-items: center;
   margin-top: 20px;
-  width: 95%;
+  width: 100%;
 `;
 
 const Image = styled.img`
@@ -91,7 +91,8 @@ const Image = styled.img`
   height: 500px;
   object-fit: cover;
   position: relative;
-  opacity: 0.5;
+  opacity: 0.9;
+  border-radius: 8px;
 `;
 
 const TextContainer = styled.div`

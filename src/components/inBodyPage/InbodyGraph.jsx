@@ -1,111 +1,136 @@
-// import styled from "styled-components";
-// import Chart from "./Chart";
-// import { media } from "../../utils/MediaQuery";
-// import { useState, useEffect } from "react";
+import styled from "styled-components";
+import Chart from "./Chart";
+import { media } from "../../utils/MediaQuery";
+import { useState, useEffect } from "react";
 
-// const Graph = styled.div`
-//   width: 45%;
-//   height: 50%;
+const Graph = styled.div`
+  width: 90%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+`;
 
-//   ${media.small`
-//     width: 100%;
-//     height: 100%;
-//     `}
-// `;
+const MainContainer = styled.div`
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  border: 1px solid black;
+`;
 
-// const Title = styled.div`
-//   height: 25%;
-//   display: flex;
-//   align-items: center;
-//   justify-content: center;
-//   border-radius: 8px 8px 0px 0px;
-//   font-size: 100%;
-//   font-weight: bold;
-//   margin-bottom: 0.5rem;
-// `;
+const Title = styled.div`
+  height: 12%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 25px;
+  font-weight: bold;
+  margin-bottom: 2rem;
+  border: 1px solid black;
+  color: blue;
+`;
 
-// const GraphContainer = styled.div`
-//   width: 95%;
-//   height: 70vh;
-//   display: flex;
-//   flex-wrap: wrap; /* 줄 바꿈 적용 */
-//   justify-content: center;
-//   background-color: #d9d9d9;
-//   border-radius: 8px;
-//   padding-bottom: 1rem;
-//   min-height: 600px;
+const GraphContainer = styled.div`
+  width: 95%;
+  height: 30vh;
+  display: flex;
+  flex-wrap: wrap; /* 줄 바꿈 적용 */
+  justify-content: center;
+  border-radius: 8px;
+  padding-bottom: 1rem;
+  min-height: 200px;
+  border: 1px solid black;
+  align-items: center;
 
-//   ${media.small`
-//     flex-wrap: nowrap;
-//     flex-direction: column;
-//     `}
-// `;
+  ${media.small`
+    flex-wrap: nowrap;
+    `}
+`;
 
-// const ButtonContainer = styled.div`
-//   display: flex;
-//   justify-content: center;
-//   margin-bottom: 1rem;
-// `;
+const ButtonContainer = styled.div`
+  display: flex;
+  justify-content: center;
+  margin-bottom: 1rem;
+  border: 1px solid black;
+`;
 
-// const Button = styled.button`
-//   margin: 0 1rem;
-//   padding: 0.5rem 1rem;
-//   border: none;
-//   background-color: #ccc;
-//   border-radius: 4px;
-//   cursor: pointer;
-// `;
+const Button = styled.button`
+  margin: 0 1rem;
+  padding: 0.5rem 1rem;
+  width: 95px;
+  height: 95px;
+  border-radius: 4px;
+  cursor: pointer;
+  color: blue;
+  border: 3px solid blue;
+  font-weight: bold;
+`;
 
-// const InbodyGraph = ({ bodyData }) => {
-//   const [selectedData, setSelectedData] = useState(); // 초기 선택: 체중
-//   const [title, setTitle] = useState("체중");
+const InbodyGraph = ({ bodyData }) => {
+  const [selectedData, setSelectedData] = useState([]);
+  const [title, setTitle] = useState("체중");
 
-//   useEffect(() => {
-//     const weightData =
-//       bodyData &&
-//       bodyData.map((item) => ({
-//         date: item.date,
-//         weight: item.weight,
-//       }));
-//     const bmiData =
-//       bodyData && bodyData.map((item) => ({ date: item.date, BMI: item.bmi }));
-//     const muscleData =
-//       bodyData &&
-//       bodyData.map((item) => ({
-//         date: item.date,
-//         muscle: item.muscle,
-//       }));
-//     const fatData =
-//       bodyData && bodyData.map((item) => ({ date: item.date, fat: item.fat }));
+  useEffect(() => {
+    if (bodyData && bodyData.length > 0) {
+      // 페이지 로드 시 초기 데이터 설정 (체중 데이터)
+      mapDataToSelectedData({ key: "weight", title: "체중" });
+    }
+  }, [bodyData]);
 
-//     setSelectedData(weightData); // 초기 선택은 체중으로 설정
-//   }, [bodyData]); // bodyData가 변경될 때마다 실행
+  const mapDataToSelectedData = (data) => {
+    const mappedData = bodyData.map((item) => ({
+      date: item.date,
+      [data.key]: item[data.key], // 이 부분 수정됨
+    }));
+    setSelectedData(mappedData);
+    setTitle(data.title);
 
-//   const handleButtonClick = (data, title) => {
-//     setSelectedData(data);
-//     setTitle(title);
-//   };
+    // BMI 데이터 출력
+    console.log(
+      "BMI 데이터:",
+      mappedData.map((item) => item.bmi)
+    );
+  };
 
-//   return (
-//     <>
-//       <ButtonContainer>
-//         <Button onClick={() => handleButtonClick(weightData, "체중")}>
-//           체중
-//         </Button>
-//         <Button onClick={() => handleButtonClick(bmiData, "BMI")}>BMI</Button>
-//         <Button onClick={() => handleButtonClick(muscleData, "골격근량")}>
-//           골격근량
-//         </Button>
-//         <Button onClick={() => handleButtonClick(fatData, "체지방량")}>
-//           체지방량
-//         </Button>
-//       </ButtonContainer>
-//       <GraphContainer>
-//         <Title>{title}</Title>
-//         {selectedData && <Chart data={selectedData} />}
-//       </GraphContainer>
-//     </>
-//   );
-// };
+  const handleButtonClick = (data) => {
+    mapDataToSelectedData(data);
+  };
 
-// export default InbodyGraph;
+  return (
+    <>
+      <MainContainer>
+        <ButtonContainer>
+          <Button
+            onClick={() => handleButtonClick({ key: "weight", title: "체중" })}
+          >
+            체중
+          </Button>
+          <Button
+            onClick={() => handleButtonClick({ key: "bmi", title: "BMI" })}
+          >
+            BMI
+          </Button>
+          <Button
+            onClick={() =>
+              handleButtonClick({ key: "muscle", title: "골격근량" })
+            }
+          >
+            골격근량
+          </Button>
+          <Button
+            onClick={() => handleButtonClick({ key: "fat", title: "체지방량" })}
+          >
+            체지방량
+          </Button>
+        </ButtonContainer>
+        <GraphContainer>
+          <Title>{title}</Title>
+          <Graph>{selectedData && <Chart data={selectedData} />}</Graph>
+        </GraphContainer>
+      </MainContainer>
+    </>
+  );
+};
+
+export default InbodyGraph;

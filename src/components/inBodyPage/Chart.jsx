@@ -17,7 +17,7 @@ export default class Chart extends PureComponent {
     return (
       <ResponsiveContainer width="90%" height="80%">
         <LineChart width={600} height={140} data={data}>
-          <CartesianGrid stroke="#e5e5e5" strokeDasharray="3 3" />
+          <CartesianGrid stroke="#a8a8a8" strokeDasharray="3 3" />
           <XAxis dataKey="date" fontSize="12px" />
           <YAxis
             interval={1}
@@ -30,7 +30,7 @@ export default class Chart extends PureComponent {
             stroke="#4942E4"
             dot={{ r: 2 }}
           />
-          <Line type="monotone" dataKey="BMI" stroke="#4942E4" dot={{ r: 2 }} />
+          <Line type="monotone" dataKey="bmi" stroke="#4942E4" dot={{ r: 2 }} />
           <Line
             type="monotone"
             dataKey="muscle"

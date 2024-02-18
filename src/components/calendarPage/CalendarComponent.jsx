@@ -5,18 +5,15 @@ import {
   InfoArea,
   InfoItemBox,
   InfoItem,
-  ButtonItem,
-  ButtonStyle,
 } from "./CalendarStyle";
-
 import MiddleModal from "../../styles/modals/MiddleModal";
 
 // 캘린더 API 적용
-
 import Calendar from "react-calendar";
 import "react-calendar/dist/Calendar.css";
 import CalendarApi from "../../api/CalendarApi";
 import { useCalendar } from "../../contexts/CalendarContext";
+import moment from "moment";
 
 export const CalendarSection = () => {
   const { state, actions, formatDate, formatMonth } = useCalendar();
@@ -29,6 +26,8 @@ export const CalendarSection = () => {
   const closeModal = () => {
     setModalOpen(false);
   };
+
+
 
   // 날짜 클릭 시 모달 창 열기
   const handleDayClick = async (value) => {
@@ -139,16 +138,6 @@ export const CalendarSection = () => {
               <InfoItem>
                 <MealBox />
               </InfoItem>
-            </InfoItemBox>
-            <InfoItemBox $height="10%">
-              <ButtonItem>
-                <ButtonStyle type="button" $width="30%">
-                  그래프
-                </ButtonStyle>
-                <ButtonStyle type="button" $width="60%">
-                  기록하기
-                </ButtonStyle>
-              </ButtonItem>
             </InfoItemBox>
           </InfoArea>
         </MiddleModal>

@@ -15,13 +15,23 @@ import {
   InputAddBtn,
   SearchResultContainer,
   SearchResultItem,
+  ToggleButton,
+  WorkoutInfoList,
 } from "./CalendarStyle";
 import { useCalendar } from "../../contexts/CalendarContext";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faCaretUp, faCaretDown } from "@fortawesome/free-solid-svg-icons";
 
 export const MealBox = () => {
   const { state, actions } = useCalendar();
   const MealTypes = ["아침", "점심", "저녁"];
   const [modalOpen, setModalOpen] = useState(false);
+  const [dropdownWorkout, setDropdownWorkout] = useState(false);
+  const [dropdownMeal, setDropdownMeal] = useState({
+    아침: false,
+    점심: false,
+    저녁: false,
+  });
 
   const openModal = (mealType) => {
     setModalOpen(true);
@@ -32,6 +42,7 @@ export const MealBox = () => {
     setModalOpen(false);
     actions.setMealType("");
   };
+
 
 
   // 추가하기 클릭시 addState의 값은 false -> true , true -> 식으로 반전
@@ -59,6 +70,18 @@ export const MealBox = () => {
     }
   }, [state.addState, state.calendarId]);
 
+  // 드롭다운 상태를 토글하는 함수
+  const workoutDropdown = () => {
+    setDropdownWorkout(!dropdownWorkout);
+  };
+  const toggleDropdown = (mealType) => {
+    setDropdownMeal((prevStates) => ({
+      ...prevStates,
+      [mealType]: !prevStates[mealType],
+    }));
+  };
+
+
   return (
     <>
       <ComboBoxContainer>
@@ -71,6 +94,7 @@ export const MealBox = () => {
                 </MealInput>
                 <AddButton onClick={() => openModal(mealType)}> + </AddButton>
               </MealTitle>
+<<<<<<< Updated upstream
               <MealInfoList>
                 {/* 배열을 받아오지 못했을때 에러가 나는걸 방지하기 위한 &&연산자 */}
                 {/* && 연산자는 A && B 일때 둘다 TRUE이면 B를 실행 */}
@@ -84,11 +108,49 @@ export const MealBox = () => {
                       </MealInfo>
                     ))}
               </MealInfoList>
+=======
+
+              {dropdownMeal[mealType] && (
+                <MealInfoList>
+                  {/* 배열을 받아오지 못했을때 에러가 나는걸 방지하기 위한 &&연산자 */}
+                  {/* && 연산자는 A && B 일때 둘다 TRUE이면 B를 실행 */}
+                  {Array.isArray(state.dateData.meal) &&
+                    state.dateData.meal.filter(
+                      (meal) => meal.meal_type === mealType
+                    ).length > 0 &&
+                    state.dateData.meal
+                      .filter((meal) => meal.meal_type === mealType)
+                      .map((meal) => (
+                        <MealInfo key={meal.id}>{meal.meal_name}</MealInfo>
+                      ))}
+                </MealInfoList>
+              )}
+              {Array.isArray(state.dateData.meal) &&
+                state.dateData.meal.filter(
+                  (meal) => meal.meal_type === mealType
+                ).length > 0 && (
+                  <ToggleButton onClick={() => toggleDropdown(mealType)}>
+                    <br />
+                    <hr />
+                    {dropdownMeal[mealType] ? (
+                      <FontAwesomeIcon icon={faCaretUp} />
+                    ) : (
+                      <FontAwesomeIcon icon={faCaretDown} />
+                    )}
+                  </ToggleButton>
+                )}
+>>>>>>> Stashed changes
             </ComboBox>
           ))}
-          <div>운동</div>
-          <MealInfoList>
+          <ComboBox>
+            <MealTitle>
+              <MealInput>
+                <h2>운동</h2>
+              </MealInput>
+              <AddButton onClick={() => openModal("운동")}> + </AddButton>
+            </MealTitle>
             {Array.isArray(state.dateData.workout) &&
+<<<<<<< Updated upstream
               state.dateData.workout.map((workout) => (
                 <MealInfo key={workout.id}>
                   {workout.workout_name}&{workout.muscle}&{workout.equipment}
@@ -96,6 +158,33 @@ export const MealBox = () => {
               ))}
           </MealInfoList>
           <AddButton onClick={() => openModal("운동")}> + </AddButton>
+=======
+              state.dateData.workout.length > 0 && (
+                <>
+                  {dropdownWorkout && (
+                    <WorkoutInfoList>
+                      {state.dateData.workout.map((workout) => (
+                        <MealInfo key={workout.id}>
+                          {workout.workout_name}
+                        </MealInfo>
+                      ))}
+                    </WorkoutInfoList>
+                  )}
+                  <ToggleButton
+                    onClick={() => setDropdownWorkout(!dropdownWorkout)}
+                  >
+                    <br />
+                    <hr />
+                    {dropdownWorkout ? (
+                      <FontAwesomeIcon icon={faCaretUp} />
+                    ) : (
+                      <FontAwesomeIcon icon={faCaretDown} />
+                    )}
+                  </ToggleButton>
+                </>
+              )}
+          </ComboBox>
+>>>>>>> Stashed changes
         </ComboSelectBox>
       </ComboBoxContainer>
       <MiddleModal $isOpen={modalOpen} $onClose={closeModal}>
@@ -228,7 +317,8 @@ export const MealInputBox = ({ modalOpen, closeModal }) => {
                   // 운동 검색 결과 렌더링
                   <SearchResultItem
                     key={index}
-                    onClick={() => handleSearchResultClick(item)}>
+                    onClick={() => handleSearchResultClick(item)}
+                  >
                     <p className="workout-name">{item.name}</p>
                     <p className="workout-duration">{item.muscle}</p>
                     <p className="workout-intensity">{item.equipment}</p>
@@ -238,7 +328,8 @@ export const MealInputBox = ({ modalOpen, closeModal }) => {
                   // 음식 검색 결과 렌더링
                   <SearchResultItem
                     key={index}
-                    onClick={() => handleSearchResultClick(item)}>
+                    onClick={() => handleSearchResultClick(item)}
+                  >
                     <p className="food-name">{item.name}</p>
                     <p className="food-size">{item.servingSize}g</p>
                     <p className="food-kcal">{item.kcal}kcal</p>

@@ -11,6 +11,7 @@ export const ComboBoxContainer = styled.div.attrs({
   flex-direction: column;
   align-items: center;
   height: ${(props) => props.$width || "100%"};
+  width: 100%;
 
   @media (max-width: 768px) {
     width: 100%;
@@ -33,6 +34,7 @@ export const ComboSelectBox = styled.div.attrs({
   width: 100%;
   height: ${(props) => props.$height || "100%"};
   border-radius: 4px;
+  
 
   @media (max-width: 768px) {
     width: 100%;
@@ -44,9 +46,11 @@ export const ComboBox = styled.div.attrs({
 })`
   display: flex;
   flex-direction: column;
-  justify-content: center;
-  align-items: center;
-
+  justify-content: space-between;
+  width: 100%;
+  border-radius: 8px;
+  margin: 1vh;
+  box-shadow: ${(props) => props.$shadow || "0 2px 4px rgba(0, 0, 0, 0.1)"};
   div {
     flex-direction: row;
   }
@@ -58,36 +62,52 @@ export const MealTitle = styled.div.attrs({
 })`
 display:flex;
 flex-direction:column;
-justify-content: space-between;
+justify-content: space-around;
+
 `;
 
 export const MealInput = styled.div`
   padding: 10px 0;
   border: none;
   background-color: transparent;
-  font-size: 18px;
+  
 
   h2 {
-    font-size: 2rem;
+    font-size: 1.2rem;
   }
 `;
 
+export const ToggleButton = styled.div`
+  width: 100%;
 
-export const MealInfoList = styled.ul``;
+  hr {
+  border: none; /* 기본 테두리를 제거 */
+  height: 1px; /* 선의 두께 */
+  background-color: rgba(0, 0, 0, 0.1); /* 선의 색상과 투명도 */
+}
 
-export const MealInfo = styled.li``;
-
-export const MealLabel = styled.span`
-  font-size: 18px;
 `;
 
+export const MealInfoList = styled.ul`
+
+`;
+
+export const MealInfo = styled.li`
+`;
+
+export const WorkoutInfoList = styled.ul`
+`;
+
+
+
 export const AddButton = styled.button`
-  background: #fff;
-  color: #4942e4;
+  background-color: #4942e4;
+  color: #eee;
   border: none;
-  border-radius: 4px;
-  padding: 10px 20px;
+  border-radius: 8px;
+  padding: 3px 12px;
   font-size: 18px;
+  /* transparent */
   cursor: pointer;
 
   &:hover {
@@ -153,12 +173,14 @@ export const InfoArea = styled(Area).attrs({
   className: "InfoArea",
 })`
   flex-direction: column;
+  box-shadow:none;
 `;
 
 export const InfoItemBox = styled(Box)`
   height: ${(props) => props.$height || "50%"};
   justify-content: center;
   align-items: center;
+  box-shadow:none;
 `;
 
 export const InfoItem = styled(Item)`

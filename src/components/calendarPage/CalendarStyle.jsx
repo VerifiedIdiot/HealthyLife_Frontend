@@ -150,6 +150,13 @@ export const SearchResultItem = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-around;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+
+  &:hover {
+    background-color: #ccc;
+  }
+
   .food-name, .workout-name {
     width: 33.9%;
 

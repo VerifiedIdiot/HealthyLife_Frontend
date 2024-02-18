@@ -18,6 +18,7 @@ const initialState = {
   selectedMonth: "",
   monthData: [],
   selectedDate: "", // 날짜클릭 이벤트 실행시 해당 날짜 정보를 받을 객체 리터럴 ㅎㅎ!
+  calendarId: 0,
   dateData: {
     meal: [],
     workout: []
@@ -51,6 +52,11 @@ const calendarReducer = (state, action) => {
         return state;
       }
       return { ...state, selectedDate: action.payload };
+      case "SET_CALENDAR_ID":
+        if (state.calendarId === action.payload) {
+          return state;
+        }
+        return { ...state, calendarId: action.payload };
     case "SET_DATE_DATA":
       if (state.dateData === action.payload) {
         return state;
@@ -81,13 +87,15 @@ export const CalendarProvider = ({ children }) => {
       dispatch({ type: "SET_MONTH_DATA", payload: monthData }),
     setSelectedDate: (selectedDate) =>
       dispatch({ type: "SET_SELECTED_DATE", payload: selectedDate }),
+    setCalendarId: (calendarId) =>
+      dispatch({ type: "SET_CALENDAR_ID", payload: calendarId }),
     setDateData: (setDateData) =>
       dispatch({ type: "SET_DATE_DATA", payload: setDateData }),
       // 애는 음식이나 운동을정보를 선택하고 추가할때 실행시킬 액션함수 내 위치할 내부 액션함수 , 그러니 단독사용 x
-    updateData : async (email, selectedDate, selectedMonth) => {
+    updateData : async (email, selectedMonth) => {
       try {
         // 선택된 날짜에 대한 상세 정보 업데이트
-        const updatedDateData = await CalendarApi.selectedDateMealInfo(email, selectedDate);
+        const updatedDateData = await CalendarApi.getDetailsByCalendarId(state.calendarId);
         dispatch({ type: "SET_DATE_DATA", payload: updatedDateData });
     
         // 해당 월의 데이터 업데이트
@@ -105,17 +113,17 @@ export const CalendarProvider = ({ children }) => {
         await CalendarApi.addMeal(email, mealType, selectedDate, selectedItem);
     
         // 성공적으로 추가된 후, updateData 액션을 호출하여 날짜 및 월 데이터 업데이트
-        await actions.updateData(email, selectedDate, state.selectedMonth);
+        await actions.updateData(email, state.selectedMonth);
       } catch (error) {
         console.error("addMealAndUpdate 처리 중 오류 발생", error);
         // 오류 처리 로직 (필요한 경우)
       }
     },
 
-    addWorkoutAndUpdate: async (email, mealType, selectedDate, selectedItem) => {
+    addWorkoutAndUpdate: async (email, selectedDate, selectedItem) => {
       try {
-        await CalendarApi.addWorkout(email, mealType, selectedDate, selectedItem);
-        await actions.updateData(email, selectedDate, state.selectedMonth);
+        await CalendarApi.addWorkout(email,selectedDate, selectedItem);
+        await actions.updateData(email,  state.selectedMonth);
       } catch (error) {
         console.error("addMealAndUpdate 처리 중 오류 발생", error);
       }

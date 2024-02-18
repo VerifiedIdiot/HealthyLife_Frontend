@@ -42,7 +42,7 @@ export const CalendarSection = () => {
       openModal();
       if (dateData) {
         const calendarId = dateData.calendar_id;
-        // calendar_id를 사용하여 API 요청
+        actions.setCalendarId(calendarId);
         const details = await CalendarApi.getDetailsByCalendarId(calendarId);
 
         actions.setDateData({

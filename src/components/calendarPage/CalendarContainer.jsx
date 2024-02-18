@@ -55,7 +55,7 @@ export const MealBox = () => {
                   state.dateData.meal
                     .filter((meal) => meal.meal_type === mealType)
                     .map((meal) => (
-                      <MealInfo key={meal.id}>{meal.meal_name}</MealInfo>
+                      <MealInfo key={meal.id}>{meal.meal_name}&{meal.carbohydrate}&{meal.protein}&{meal.fat}&{meal.kcal}</MealInfo>
                     ))}
               </MealInfoList>
             </ComboBox>
@@ -64,20 +64,20 @@ export const MealBox = () => {
           <MealInfoList>
             {Array.isArray(state.dateData.workout) &&
               state.dateData.workout.map((workout) => (
-                <MealInfo key={workout.id}>{workout.workout_name}</MealInfo>
+                <MealInfo key={workout.id}>{workout.workout_name}&{workout.muscle}&{workout.equipment}</MealInfo>
               ))}
           </MealInfoList>
           <AddButton onClick={() => openModal("운동")}> + </AddButton>
         </ComboSelectBox>
       </ComboBoxContainer>
       <MiddleModal $isOpen={modalOpen} $onClose={closeModal}>
-        <MealInputBox closeModal={closeModal} />
+        <MealInputBox modalOpen={modalOpen} closeModal={closeModal} />
       </MiddleModal>
     </>
   );
 };
 
-export const MealInputBox = () => {
+export const MealInputBox = ({modalOpen, closeModal}) => {
   const { state, actions } = useCalendar();
   const [searchQuery, setSearchQuery] = useState("");
   const [searchResults, setSearchResults] = useState([]);
@@ -95,51 +95,75 @@ export const MealInputBox = () => {
     console.log(state.mealType);
   };
 
-  const handleAddClick = async () => {
-    if (Object.keys(selectedItem).length > 0) {
-      try {
-        console.log(
-          state.mealType,
-          selectedItem,
-          state.email,
-          state.selectedDate
-        );
+  const handleCloseModal = () => {
+    setSearchQuery("");
+    setSearchResults([]);
+    setSelectedItem("");
+    closeModal(); // 부모 컴포넌트로부터 전달받은 closeModal 호출
+  };
 
-        // addMealAndFetchUpdatedInfo 액션 호출
-        await actions.addMealAndUpdate(
-          state.email,
-          state.mealType,
-          state.selectedDate,
-          selectedItem
-        );
+  const handleAddClick = async () => {
+    if (selectedItem && Object.keys(selectedItem).length > 0) {
+      try {
+        if (state.mealType === "운동") {
+          // 운동에 대한 API 호출
+          await actions.addWorkoutAndUpdate(
+            state.email,
+            state.selectedDate,
+            selectedItem
+          );
+        } else {
+          // 식사에 대한 API 호출
+          await actions.addMealAndUpdate(
+            state.email,
+            state.mealType,
+            state.selectedDate,
+            selectedItem
+          );
+        }
+        handleCloseModal();
       } catch (e) {
-        console.error("데이터 가져오는 중 오류 발생", e);
+        console.error("데이터 처리 중 오류 발생", e);
       }
     }
   };
+  
 
   useEffect(() => {
-    if (searchQuery) {
-      const fetchSearchResults = async () => {
-        try {
-          if (state.mealType === "운동") {
-            const result = await CalendarApi.getExerciseList({
-              keyword: searchQuery,
-            });
+    const timerId = setTimeout(() => { // setTimeout으로 검색쿼리 업데이트 이후 .1초뒤 api요청하게끔 조정
+      if (searchQuery) {
+        const fetchSearchResults = async () => {
+          try {
+            let result;
+            if (state.mealType === "운동") {
+              result = await CalendarApi.getExerciseList({
+                keyword: searchQuery,
+              });
+            } else {
+              result = await CalendarApi.getFoodList({
+                keyword: searchQuery,
+              });
+            }
             setSearchResults(result);
-          } else {
-            const result = await CalendarApi.getFoodList({
-              keyword: searchQuery,
-            });
-            setSearchResults(result);
+          } catch (e) {
+            console.log(e);
           }
-        } catch (e) {
-          console.log(e);
-        }
-      };
-      fetchSearchResults();
-    }
+        };
+        fetchSearchResults();
+      }
+    }, 100); 
+  
+    return () => clearTimeout(timerId); 
   }, [searchQuery]);
+
+    // 모달이 열릴 때마다 searchQuery를 초기화
+    useEffect(() => {
+      if (modalOpen) {
+        setSearchQuery("");
+        setSearchResults([]);
+        setSelectedItem("");
+      }
+    }, [modalOpen]);
 
   return (
     <>

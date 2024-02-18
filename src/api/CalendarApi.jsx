@@ -89,12 +89,40 @@ const CalendarApi = {
     }
   },
 
+
+    // 새로운 음식 데이터 추가
+    addWorkout: async (email, selectedDate, selectedItem) => {
+      console.log( selectedItem, email, selectedDate);
+      // 모든 필드 값이 유효한지 확인
+      if (!email || !selectedDate || !selectedItem) {
+        console.error("파라미터의 값이 비었음");
+        throw new Error("널 금지");
+      }
+  
+      try {
+        const workoutDto = {
+          email: email,
+          workout_name: selectedItem,
+          reg_date: selectedDate,
+        };
+        const response = await axios.post(
+          `${Common.WEELV_DOMAIN}/workout/add`,
+          workoutDto
+        );
+        console.log("Workout successfully added", response.data);
+        return response.data;
+      } catch (error) {
+        console.error("Error in addWorkout API call", error);
+        throw error;
+      }
+    },
+
     // 날짜별 식사&운동기록 출력
     getDetailsByCalendarId: async (calendarId) => {
       try {
         console.log(calendarId);
-        // meal과 workout에 대한 요청 URL이 동일합니다. 실제로는 다를 수 있으니 확인이 필요합니다.
-        // 예를 들어 workout 요청의 URL이 `${BACKEND_DOMAIN}/workout/detail` 이라고 가정합니다.
+        
+        
         const mealRequest = axios.get(`${BACKEND_DOMAIN}/meal/detail`, {
           params: { calendarId: calendarId }
         });

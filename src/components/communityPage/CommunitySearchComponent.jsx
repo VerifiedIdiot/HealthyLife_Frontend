@@ -18,21 +18,17 @@ const PostListTitle = styled.div`
   align-items: center;
   width: 100%;
   padding-top: 80px;
+  font-weight: 600;
 `;
 const TitleContent = styled.div`
   display: flex;
   color: #2446da;
-  font-size: 1.2rem;
-  font-weight: 600;
-  margin-bottom: 5px;
-  margin-left: 5px;
-  margin-right: 5px;
+  font-size: 1.5rem;
+  justify-content: center;
   align-items: center;
-
-  p {
-    color: #333;
-    font-size: 0.8rem;
-  }
+  cursor: pointer;
+  margin-top: 10px;
+  margin-bottom: 10px;
 `;
 const PostList = styled.div`
   display: flex;
@@ -51,29 +47,37 @@ const TableBody = styled.div`
   display: flex;
   width: 100%;
   flex-direction: column;
-  justify-content: center;
   align-items: flex-start;
+  min-height: 50vh;
 `;
 const TableRow = styled.div`
   width: 100%;
   height: 38px;
   display: flex;
-  border-top: 2px solid #2446da;
-  border-bottom: 2px solid #2446da;
+  background-color: rgba(36, 70, 218, 0.6);
+  color: #fff;
   flex-direction: row;
   justify-content: space-between;
 `;
 const TableNormalRow = styled.div`
   width: 100%;
-  height: 4em;
-  border-bottom: 1px solid #dadada;
-  border-left: 1px solid #dadada;
-  border-right: 1px solid #dadada;
+  height: 40px;
   opacity: 1;
   display: flex;
   flex-direction: row;
-  cursor: pointer;
+  &:nth-child(even) {
+    background: rgba(36, 70, 218, 0.05);
+  }
+  & + & {
+    border-top: 1px solid #dee2e6;
+  }
+  &:hover {
+    color: #fff;
+    background: rgba(36, 70, 218, 0.6);
+    cursor: pointer;
+  }
 `;
+
 const TableRowData = styled.a`
   display: flex;
   justify-content: center;
@@ -124,6 +128,7 @@ const PostPage = styled.div`
   gap: 9px;
   align-self: stretch;
   opacity: var(--, 1);
+  margin-bottom: 30px;
 `;
 const Pagination = styled.div`
   display: flex;
@@ -219,7 +224,7 @@ const CommunitySearchComponent = () => {
 
   return (
     <>
-      <Main $justify="center">
+      <Main $justify="center" $hight="auto">
         <PostListTitle>
           <TitleContent>전체</TitleContent>
         </PostListTitle>

@@ -2,12 +2,11 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import CommunityAxiosApi from "../../api/CommunityAxios";
-import { SmallButton } from "../../styles/styledComponents/StyledComponents";
 import { FaSearch } from "react-icons/fa";
+
 const Select = styled.select`
   flex: 1;
   width: 100%;
-  /* height: 100%; */
   padding: 5px;
   margin: 10px;
   border: 1px solid #ccc;

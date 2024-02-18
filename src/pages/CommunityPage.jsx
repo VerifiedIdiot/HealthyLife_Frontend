@@ -74,10 +74,10 @@ const CommunitySVG = styled.div`
 `;
 const CommunityMenuText = styled.div`
   justify-content: center;
-  font-size: 1.4rem;
+  font-size: 1.2rem;
   text-decoration: none;
   margin: 10px 20px 10px 10px; // 칸넓이
-
+  font-weight: 600;
   @media (max-width: 1024px) {
     width: 100%;
     text-align: center;

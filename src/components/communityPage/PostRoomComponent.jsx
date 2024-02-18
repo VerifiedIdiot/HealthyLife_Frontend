@@ -122,16 +122,16 @@ const Dropdown = styled.select`
     border-color: #90caf9;
   }
 `;
-const CommentButton = styled.div`
-  display: flex;
-  align-items: flex-end;
-  cursor: pointer;
-`;
-const RotatedDown = styled(Down)`
-  transition: transform 0.3s ease-in-out;
-  transform: ${(props) =>
-    props.isRotated ? "rotate(180deg)" : "rotate(0deg)"};
-`;
+// const CommentButton = styled.div`
+//   display: flex;
+//   align-items: flex-end;
+//   cursor: pointer;
+// `;
+// const RotatedDown = styled(Down)`
+//   transition: transform 0.3s ease-in-out;
+//   transform: ${(props) =>
+//     props.isRotated ? "rotate(180deg)" : "rotate(0deg)"};
+// `;
 
 const PostRoom = () => {
   const [content, setContent] = useState("");
@@ -140,7 +140,7 @@ const PostRoom = () => {
   const [totalComment, setTotalComment] = useState(0);
   const [sortType, setSortType] = useState("");
   const [nickName1, setNickName1] = useState("");
-  const [showPostRoom, setShowPostRoom] = useState(false); // PostRoom 표시 여부 상태
+  // const [showPostRoom, setShowPostRoom] = useState(false); // PostRoom 표시 여부 상태
   const [totalCommentPages, setTotalCommentPages] = useState(0);
   const { id } = useParams();
 
@@ -250,84 +250,80 @@ const PostRoom = () => {
     e.preventDefault();
     CommentWrite();
   };
-  const togglePostRoom = () => {
-    setShowPostRoom(!showPostRoom);
-  };
+  // const togglePostRoom = () => {
+  //   setShowPostRoom(!showPostRoom);
+  // };
   return (
     <Box4>
       <FormContainer>
         <p>
           <FaRegCommentDots /> {totalComment}
         </p>
-        <CommentButton onClick={togglePostRoom}>
+        {/* <CommentButton onClick={togglePostRoom}>
           댓글 보기
           <RotatedDown isRotated={showPostRoom}></RotatedDown>
-        </CommentButton>
+        </CommentButton> */}
       </FormContainer>
-
-      {showPostRoom && (
-        <Box3>
-          <CommentContainer>
-            <Dropdown
-              onChange={(selected) => setSortType(selected.target.value)}
-            >
-              {["최신순", "등록순"].map((option, index) => (
-                <option key={index} value={option}>
-                  {option}
-                </option>
+      {/* {showPostRoom && ( */}
+      <Box3>
+        <CommentContainer>
+          <Dropdown onChange={(selected) => setSortType(selected.target.value)}>
+            {["최신순", "등록순"].map((option, index) => (
+              <option key={index} value={option}>
+                {option}
+              </option>
+            ))}
+          </Dropdown>
+          <CommentItem>
+            {comments &&
+              comments.map((comment, communityId) => (
+                <CommentBox key={communityId}>
+                  <CommentContent>
+                    <Box1>
+                      <Box>
+                        <CommentNickname>{comment.nickName}</CommentNickname>
+                        &nbsp;
+                        <Day>{Common.timeFromNow(comment.regDate)}</Day>
+                      </Box>
+                      <Box2>
+                        <HeadText>{comment.content}</HeadText>
+                        {comment.nickName === nickName1 && (
+                          <SmallButton
+                            onClick={() => deleteComment(comment.commentId)}
+                          >
+                            삭제
+                          </SmallButton>
+                        )}
+                      </Box2>
+                    </Box1>
+                  </CommentContent>
+                </CommentBox>
               ))}
-            </Dropdown>
-            <CommentItem>
-              {comments &&
-                comments.map((comment, communityId) => (
-                  <CommentBox key={communityId}>
-                    <CommentContent>
-                      <Box1>
-                        <Box>
-                          <CommentNickname>{comment.nickName}</CommentNickname>
-                          &nbsp;
-                          <Day>{Common.timeFromNow(comment.regDate)}</Day>
-                        </Box>
-                        <Box2>
-                          <HeadText>{comment.content}</HeadText>
-                          {comment.nickName === nickName1 && (
-                            <SmallButton
-                              onClick={() => deleteComment(comment.commentId)}
-                            >
-                              삭제
-                            </SmallButton>
-                          )}
-                        </Box2>
-                      </Box1>
-                    </CommentContent>
-                  </CommentBox>
-                ))}
-            </CommentItem>
-            {currentCommentPage > 0 && (
-              <SmallButton
-                onClick={() => setCurrentCommentPage(currentCommentPage - 1)}
-              >
-                <IoIosArrowBack />
-              </SmallButton>
-            )}
-            {currentCommentPage + 1 < totalCommentPages && (
-              <SmallButton
-                onClick={() => setCurrentCommentPage(currentCommentPage + 1)}
-              >
-                <IoIosArrowForward />
-              </SmallButton>
-            )}
-          </CommentContainer>
+          </CommentItem>
+          {currentCommentPage > 0 && (
+            <SmallButton
+              onClick={() => setCurrentCommentPage(currentCommentPage - 1)}
+            >
+              <IoIosArrowBack />
+            </SmallButton>
+          )}
+          {currentCommentPage + 1 < totalCommentPages && (
+            <SmallButton
+              onClick={() => setCurrentCommentPage(currentCommentPage + 1)}
+            >
+              <IoIosArrowForward />
+            </SmallButton>
+          )}
+        </CommentContainer>
 
-          <CommentForm onSubmit={handleCommentSubmit}>
-            <LargeInput
-              value={content}
-              onChange={(e) => setContent(e.target.value)}
-            />
-            <MiddleButton type="submit">댓글 작성</MiddleButton>
-          </CommentForm>
-        </Box3>
-      )}
+        <CommentForm onSubmit={handleCommentSubmit}>
+          <LargeInput
+            value={content}
+            onChange={(e) => setContent(e.target.value)}
+          />
+          <MiddleButton type="submit">댓글 작성</MiddleButton>
+        </CommentForm>
+      </Box3>
     </Box4>
   );
 };

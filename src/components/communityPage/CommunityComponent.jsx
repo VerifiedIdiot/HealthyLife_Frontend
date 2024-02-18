@@ -41,7 +41,6 @@ const PostListTitle = styled.div`
   width: 100%;
   padding: 10px 0;
   font-weight: 600;
-  /* outline: 1px solid red; */
 `;
 const TitleContent = styled.div`
   display: flex;
@@ -50,7 +49,6 @@ const TitleContent = styled.div`
   justify-content: center;
   align-items: center;
   cursor: pointer;
-  /* outline: 1px solid green; */
 `;
 const PostList = styled.div`
   position: relative;

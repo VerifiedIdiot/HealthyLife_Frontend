@@ -43,15 +43,15 @@ export const MealBox = () => {
     actions.setMealType("");
   };
 
-
-
   // 추가하기 클릭시 addState의 값은 false -> true , true -> 식으로 반전
   // 해당 값을 의존성배열에 넣고, 추가하기 버튼이 클릭 되었을때 재 랜더링한다
   useEffect(() => {
     const updateAfterInsert = async () => {
       try {
         // 데이터 추가 후 상태 업데이트를 위한 API 호출
-        const response = await CalendarApi.getDetailsByCalendarId(state.calendarId);
+        const response = await CalendarApi.getDetailsByCalendarId(
+          state.calendarId
+        );
         // 상태 업데이트
         actions.setDateData({
           meal: response.meal,
@@ -66,7 +66,7 @@ export const MealBox = () => {
     if (state.addState) {
       updateAfterInsert();
       // addState를 다시 반전시켜 초기화 ㅎ
-      actions.setAddState(prev => !prev);
+      actions.setAddState((prev) => !prev);
     }
   }, [state.addState, state.calendarId]);
 
@@ -81,7 +81,6 @@ export const MealBox = () => {
     }));
   };
 
-
   return (
     <>
       <ComboBoxContainer>
@@ -94,21 +93,6 @@ export const MealBox = () => {
                 </MealInput>
                 <AddButton onClick={() => openModal(mealType)}> + </AddButton>
               </MealTitle>
-<<<<<<< Updated upstream
-              <MealInfoList>
-                {/* 배열을 받아오지 못했을때 에러가 나는걸 방지하기 위한 &&연산자 */}
-                {/* && 연산자는 A && B 일때 둘다 TRUE이면 B를 실행 */}
-                {Array.isArray(state.dateData.meal) &&
-                  state.dateData.meal
-                    .filter((meal) => meal.meal_type === mealType)
-                    .map((meal) => (
-                      <MealInfo key={meal.id}>
-                        {meal.meal_name}&{meal.carbohydrate}&{meal.protein}&
-                        {meal.fat}&{meal.kcal}
-                      </MealInfo>
-                    ))}
-              </MealInfoList>
-=======
 
               {dropdownMeal[mealType] && (
                 <MealInfoList>
@@ -139,7 +123,6 @@ export const MealBox = () => {
                     )}
                   </ToggleButton>
                 )}
->>>>>>> Stashed changes
             </ComboBox>
           ))}
           <ComboBox>
@@ -150,15 +133,6 @@ export const MealBox = () => {
               <AddButton onClick={() => openModal("운동")}> + </AddButton>
             </MealTitle>
             {Array.isArray(state.dateData.workout) &&
-<<<<<<< Updated upstream
-              state.dateData.workout.map((workout) => (
-                <MealInfo key={workout.id}>
-                  {workout.workout_name}&{workout.muscle}&{workout.equipment}
-                </MealInfo>
-              ))}
-          </MealInfoList>
-          <AddButton onClick={() => openModal("운동")}> + </AddButton>
-=======
               state.dateData.workout.length > 0 && (
                 <>
                   {dropdownWorkout && (
@@ -171,8 +145,7 @@ export const MealBox = () => {
                     </WorkoutInfoList>
                   )}
                   <ToggleButton
-                    onClick={() => setDropdownWorkout(!dropdownWorkout)}
-                  >
+                    onClick={() => setDropdownWorkout(!dropdownWorkout)}>
                     <br />
                     <hr />
                     {dropdownWorkout ? (
@@ -184,7 +157,6 @@ export const MealBox = () => {
                 </>
               )}
           </ComboBox>
->>>>>>> Stashed changes
         </ComboSelectBox>
       </ComboBoxContainer>
       <MiddleModal $isOpen={modalOpen} $onClose={closeModal}>
@@ -249,10 +221,9 @@ export const MealInputBox = ({ modalOpen, closeModal }) => {
           });
         }
         if (state.dateData) {
-        actions.setAddState((prev) => !prev);
-        handleCloseModal();  
-      }
-        
+          actions.setAddState((prev) => !prev);
+          handleCloseModal();
+        }
       } catch (e) {
         console.error("데이터 처리 중 오류 발생", e);
       }
@@ -317,8 +288,7 @@ export const MealInputBox = ({ modalOpen, closeModal }) => {
                   // 운동 검색 결과 렌더링
                   <SearchResultItem
                     key={index}
-                    onClick={() => handleSearchResultClick(item)}
-                  >
+                    onClick={() => handleSearchResultClick(item)}>
                     <p className="workout-name">{item.name}</p>
                     <p className="workout-duration">{item.muscle}</p>
                     <p className="workout-intensity">{item.equipment}</p>
@@ -328,8 +298,7 @@ export const MealInputBox = ({ modalOpen, closeModal }) => {
                   // 음식 검색 결과 렌더링
                   <SearchResultItem
                     key={index}
-                    onClick={() => handleSearchResultClick(item)}
-                  >
+                    onClick={() => handleSearchResultClick(item)}>
                     <p className="food-name">{item.name}</p>
                     <p className="food-size">{item.servingSize}g</p>
                     <p className="food-kcal">{item.kcal}kcal</p>

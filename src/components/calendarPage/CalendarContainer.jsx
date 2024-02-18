@@ -1,7 +1,5 @@
-import styled from "styled-components";
 import React, { useEffect, useState } from "react";
 import MiddleModal from "../../styles/modals/MiddleModal";
-import { MiddleButton } from "../../styles/styledComponents/StyledComponents";
 import CalendarApi from "../../api/CalendarApi";
 import {
   ComboBoxContainer,
@@ -9,7 +7,6 @@ import {
   ComboSelectBox,
   ComboBox,
   MealInput,
-  MealLabel,
   MealTitle,
   MealInfoList,
   MealInfo,
@@ -36,6 +33,32 @@ export const MealBox = () => {
     actions.setMealType("");
   };
 
+
+  // 추가하기 클릭시 addState의 값은 false -> true , true -> 식으로 반전
+  // 해당 값을 의존성배열에 넣고, 추가하기 버튼이 클릭 되었을때 재 랜더링한다
+  useEffect(() => {
+    const updateAfterInsert = async () => {
+      try {
+        // 데이터 추가 후 상태 업데이트를 위한 API 호출
+        const response = await CalendarApi.getDetailsByCalendarId(state.calendarId);
+        // 상태 업데이트
+        actions.setDateData({
+          meal: response.meal,
+          workout: response.workout,
+        });
+      } catch (error) {
+        console.error("상세 정보 조회 실패:", error);
+      }
+    };
+
+    // 데이터 추가 플래그가 true일 경우에만 업데이트 함수 호출
+    if (state.addState) {
+      updateAfterInsert();
+      // addState를 다시 반전시켜 초기화 ㅎ
+      actions.setAddState(prev => !prev);
+    }
+  }, [state.addState, state.calendarId]);
+
   return (
     <>
       <ComboBoxContainer>
@@ -55,7 +78,10 @@ export const MealBox = () => {
                   state.dateData.meal
                     .filter((meal) => meal.meal_type === mealType)
                     .map((meal) => (
-                      <MealInfo key={meal.id}>{meal.meal_name}&{meal.carbohydrate}&{meal.protein}&{meal.fat}&{meal.kcal}</MealInfo>
+                      <MealInfo key={meal.id}>
+                        {meal.meal_name}&{meal.carbohydrate}&{meal.protein}&
+                        {meal.fat}&{meal.kcal}
+                      </MealInfo>
                     ))}
               </MealInfoList>
             </ComboBox>
@@ -64,7 +90,9 @@ export const MealBox = () => {
           <MealInfoList>
             {Array.isArray(state.dateData.workout) &&
               state.dateData.workout.map((workout) => (
-                <MealInfo key={workout.id}>{workout.workout_name}&{workout.muscle}&{workout.equipment}</MealInfo>
+                <MealInfo key={workout.id}>
+                  {workout.workout_name}&{workout.muscle}&{workout.equipment}
+                </MealInfo>
               ))}
           </MealInfoList>
           <AddButton onClick={() => openModal("운동")}> + </AddButton>
@@ -77,7 +105,7 @@ export const MealBox = () => {
   );
 };
 
-export const MealInputBox = ({modalOpen, closeModal}) => {
+export const MealInputBox = ({ modalOpen, closeModal }) => {
   const { state, actions } = useCalendar();
   const [searchQuery, setSearchQuery] = useState("");
   const [searchResults, setSearchResults] = useState([]);
@@ -107,30 +135,44 @@ export const MealInputBox = ({modalOpen, closeModal}) => {
       try {
         if (state.mealType === "운동") {
           // 운동에 대한 API 호출
-          await actions.addWorkoutAndUpdate(
+          const addedWorkout = await actions.addWorkoutAndUpdate(
             state.email,
             state.selectedDate,
             selectedItem
           );
+          // 운동 데이터 상태 업데이트
+          actions.setDateData({
+            ...state.dateData,
+            workout: addedWorkout,
+          });
         } else {
           // 식사에 대한 API 호출
-          await actions.addMealAndUpdate(
+          const addedMeal = await actions.addMealAndUpdate(
             state.email,
             state.mealType,
             state.selectedDate,
             selectedItem
           );
+          // 식사 데이터 상태 업데이트
+          actions.setDateData({
+            ...state.dateData,
+            meal: addedMeal,
+          });
         }
-        handleCloseModal();
+        if (state.dateData) {
+        actions.setAddState((prev) => !prev);
+        handleCloseModal();  
+      }
+        
       } catch (e) {
         console.error("데이터 처리 중 오류 발생", e);
       }
     }
   };
-  
 
   useEffect(() => {
-    const timerId = setTimeout(() => { // setTimeout으로 검색쿼리 업데이트 이후 .1초뒤 api요청하게끔 조정
+    const timerId = setTimeout(() => {
+      // setTimeout으로 검색쿼리 업데이트 이후 .1초뒤 api요청하게끔 조정
       if (searchQuery) {
         const fetchSearchResults = async () => {
           try {
@@ -151,19 +193,19 @@ export const MealInputBox = ({modalOpen, closeModal}) => {
         };
         fetchSearchResults();
       }
-    }, 100); 
-  
-    return () => clearTimeout(timerId); 
+    }, 100);
+
+    return () => clearTimeout(timerId);
   }, [searchQuery]);
 
-    // 모달이 열릴 때마다 searchQuery를 초기화
-    useEffect(() => {
-      if (modalOpen) {
-        setSearchQuery("");
-        setSearchResults([]);
-        setSelectedItem("");
-      }
-    }, [modalOpen]);
+  // 모달이 열릴 때마다 searchQuery를 초기화
+  useEffect(() => {
+    if (modalOpen) {
+      setSearchQuery("");
+      setSearchResults([]);
+      setSelectedItem("");
+    }
+  }, [modalOpen]);
 
   return (
     <>
@@ -209,8 +251,4 @@ export const MealInputBox = ({modalOpen, closeModal}) => {
       </ComboBoxContainer>
     </>
   );
-};
-
-export const DateDetails = () => {
-  const { state, actions } = useCalendar();
 };

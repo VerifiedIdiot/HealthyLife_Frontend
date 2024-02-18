@@ -44,14 +44,19 @@ export const CalendarSection = () => {
         const calendarId = dateData.calendar_id;
         actions.setCalendarId(calendarId);
         const details = await CalendarApi.getDetailsByCalendarId(calendarId);
-
+        console.log(details);
         actions.setDateData({
           meal: details.meal,
           workout: details.workout
         });
         
       } else {
-        console.log("데이타 없음");
+        actions.setCalendarId(0); // 선택된 캘린더 ID 초기화
+        actions.setDateData({
+          meal: [], // 식사 정보 초기화
+          workout: [] // 운동 정보 초기화
+        });
+        console.log("데이터 없음");
       }
     } catch (error) {
       console.error("Error fetching details for selected date:", error);

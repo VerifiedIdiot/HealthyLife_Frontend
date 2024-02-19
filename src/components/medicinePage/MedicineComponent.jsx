@@ -32,10 +32,7 @@ const LogoItem = styled(Item)`
     margin-left: 10px;
   }
   @media (max-width: 768px) {
-    width: 50%;
-    h1 {
-      margin-left: 0;
-    }
+
   }
 `;
 
@@ -43,7 +40,7 @@ const ResponsiveSearchSection = styled(Section)`
   height: 200px;
   justify-content: center;
   align-items: center;
-
+  min-width: 1050px;
   @media (max-width: 768px) {
   }
 `;
@@ -71,7 +68,7 @@ const ResponsiveItem = styled(Item)`
   justify-content: flex-start;
 
   @media (max-width: 768px) {
-    padding-left: 0;
+
   }
 `;
 
@@ -89,11 +86,7 @@ const SearchItemLeft = styled(Item)`
   }
 
   @media (max-width: 768px) {
-    width: 19.5%;
-    min-width: 110px;
-    p {
-      font-size: smaller;
-    }
+
   }
 `;
 
@@ -121,7 +114,7 @@ const StyledButton = styled(LargeButton)`
   width: 200px;
   height: 45px;
   @media (max-width: 768px) {
-    width: 100%;
+
   }
 `;
 
@@ -195,7 +188,7 @@ const ResponsiveBoardSection = styled(Section)`
   /* border: 1px solid black; */
   height: auto;
   min-height: 30vw;
-
+  min-width: 1050px;
   align-items: center;
   flex-direction: column;
 `;

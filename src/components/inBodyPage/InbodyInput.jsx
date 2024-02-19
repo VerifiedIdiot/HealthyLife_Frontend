@@ -106,6 +106,7 @@ const InbodyInput = (props) => {
   const [gender, setGender] = useState("");
   const [age, setAge] = useState("");
   const [mlPredictions, setMLPredictions] = useState(0);
+  const [exerciseInfo, setExerciseInfo] = useState("");
 
   useEffect(() => {
     const loadMemberInfo = async () => {
@@ -113,6 +114,8 @@ const InbodyInput = (props) => {
         const resp = await MemberApi.getMemberDetail();
         console.warn(resp.data.gender);
         console.log(resp.data.birth);
+        console.log("운동량" + resp.data.exerciseInfo);
+        setExerciseInfo(resp.data.exerciseInfo);
         setGender(resp.data.gender);
 
         // 생년월일을 Date 객체로 변환
@@ -298,16 +301,16 @@ const InbodyInput = (props) => {
             $align="center"
             style={{ borderRadius: "0px 0px 8px 0px" }}
           >
-    {bmi !== 0 ? (
+            {bmi !== 0 ? (
               <>
-              <Input4>
-                고객님의 남은 평균 수명은{" "}
-                <p style={{ color: "red" }}>{mlPredictions}</p> 살 입니다. BMI를{" "}
-                <p style={{ color: "blue" }}>{bmi - 2}</p>으로 낮출시 평균{" "}
-                <p style={{ color: "blue" }}>{mlPredictions + 2}</p>살 더 살 수
-                있습니다! 열심히 운동하세요!
-              </Input4>
-              <p style={{fontSize:"0.1em"}}>* 2015년 자료 기반 입니다</p>
+                <Input4>
+                  고객님의 남은 평균 수명은{" "}
+                  <p style={{ color: "red" }}>{mlPredictions}</p> 살 입니다.
+                  BMI를 <p style={{ color: "blue" }}>{bmi - 2}</p>으로 낮출시
+                  평균 <p style={{ color: "blue" }}>{mlPredictions + 2}</p>살 더
+                  살 수 있습니다! 열심히 운동하세요!
+                </Input4>
+                <p style={{ fontSize: "0.1em" }}>* 2015년 자료 기반 입니다</p>
               </>
             ) : (
               <Input4></Input4>

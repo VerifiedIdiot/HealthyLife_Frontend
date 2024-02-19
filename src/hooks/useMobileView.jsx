@@ -2,7 +2,28 @@ import { useState, useEffect } from 'react';
 
 
 // 뷰포트 기준 768 이하로 축소될시 , 함수나 컴포넌트, css 등의 실행여부를 결정하는 커스텀 훅
-const useMobileView = (maxWidth = 768) => {
+export const useTabletView = (maxWidth = 768) => {
+  const [isTabletView, setIsTabletView] = useState(window.innerWidth <= maxWidth);
+
+  useEffect(() => {
+    function handleResize() {
+      setIsTabletView(window.innerWidth <= maxWidth);
+    }
+
+    window.addEventListener('resize', handleResize);
+
+    // 컴포넌트가 언마운트될 때 이벤트 리스너를 정리합니다.
+    return () => {
+      window.removeEventListener('resize', handleResize);
+    };
+  }, [maxWidth]); // maxWidth가 변경될 때만 이펙트를 다시 실행합니다.
+
+  return isTabletView;
+};
+
+
+
+export const useMobileView = (maxWidth = 480) => {
   const [isMobileView, setIsMobileView] = useState(window.innerWidth <= maxWidth);
 
   useEffect(() => {
@@ -21,7 +42,7 @@ const useMobileView = (maxWidth = 768) => {
   return isMobileView;
 };
 
-export default useMobileView;
+
 
 
 

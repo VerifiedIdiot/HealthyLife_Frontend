@@ -13,13 +13,12 @@ const TableArea = styled.table`
   overflow-x: auto;
   table-layout: fixed;
   @media (max-width: 1024px) {
-    min-width: 600px; 
+    
   }
 
   @media (max-width: 480px) {
-    min-width: 400px; 
+    min-width: 400px;
   }
-
 `;
 const TableHeader = styled.thead`
   vertical-align: middle;
@@ -28,11 +27,11 @@ const TableHeader = styled.thead`
   color: #ffffff;
 
   @media (max-width: 1024px) {
-    height: 40px; 
+    height: 30px;
   }
 
   @media (max-width: 480px) {
-    height: 35px; 
+    height: 35px;
   }
 `;
 const TableRow = styled.tr`
@@ -45,11 +44,11 @@ const TableRow = styled.tr`
   }
 
   @media (max-width: 1024px) {
-    min-height: 50px; 
+    
   }
 
   @media (max-width: 480px) {
-    min-height: 40px; 
+    min-height: 40px;
   }
 `;
 
@@ -66,11 +65,11 @@ const TableHeaderCell = styled.th`
   font-weight: bold;
 
   @media (max-width: 1024px) {
-    padding: 8px; // 태블릿 화면에서 셀의 패딩 조정
+    
   }
 
   @media (max-width: 480px) {
-    padding: 5px; // 모바일 화면에서 셀의 패딩을 더 줄임
+    
     font-size: 14px; // 모바일 화면에서 폰트 크기 조정
   }
 `;
@@ -86,12 +85,12 @@ const TableDataCell = styled.td`
   text-align: left;
 
   @media (max-width: 1024px) {
-    padding: 8px; 
+    
   }
 
   @media (max-width: 480px) {
-    padding: 5px; 
-    font-size: 14px; 
+    
+    font-size: 14px;
   }
 `;
 
@@ -100,36 +99,40 @@ const ReactTable = () => {
   const { searchResults, searchExecuted } = state;
   const isMobileView = useMobileView();
   // columns의 선언 및 초기화를 useTable 호출 이전으로 이동
-  const columns = React.useMemo(() => {
-    const baseColumns = [
+  const columns = React.useMemo(
+    () => [
+      {
+        Header: "신고번호",
+        accessor: "reportNo",
+        width: 200,
+        show: !isMobileView,
+      },
       {
         Header: "제품명",
         accessor: "name",
-        width: isMobileView ? 150 : 300, // 모바일 화면에서 너비 조정
+        width: isMobileView ? 150 : 300,
       },
+      {
+        Header: "제품 구분",
+        accessor: "originType",
+        width: 80,
+        show: !isMobileView,
+      },
+
       {
         Header: "기능성",
         accessor: "functionalities",
-        Cell: ({ cell: { value } }) => value.join(", "),
-        width: isMobileView ? 200 : 1000, // 모바일 화면에서 너비 조정
+        Cell: ({ cell: { value } }) => value.join(", "), // 배열을 문자열로 변환
+        width: isMobileView ? 200 : 1000,
       },
       {
         Header: "제조사명",
         accessor: "company",
-        width: isMobileView ? 150 : 300, // 모바일 화면에서 너비 조정
+        width: isMobileView ? 150 : 300,
       },
-    ];
-
-    // 모바일 화면이 아닐 때만 추가할 컬럼들
-    if (!isMobileView) {
-      baseColumns.unshift(
-        { Header: "신고번호", accessor: "reportNo", width: 200 },
-        { Header: "제품 구분", accessor: "originType", width: 80 }
-      );
-    }
-
-    return baseColumns;
-  }, [isMobileView]);
+    ],
+    [isMobileView]
+  );
 
   const { getTableProps, getTableBodyProps, headerGroups, rows, prepareRow } =
     useTable({
@@ -142,13 +145,16 @@ const ReactTable = () => {
       <TableHeader>
         {headerGroups.map((headerGroup) => (
           <TableRow {...headerGroup.getHeaderGroupProps()}>
-            {headerGroup.headers.map((column) => (
-              <TableHeaderCell
-                {...column.getHeaderProps()}
-                width={column.width}>
-                {column.render("Header")}
-              </TableHeaderCell>
-            ))}
+            {headerGroup.headers.map(
+              (column) =>
+                column.show !== false && ( // show 속성이 false가 아닐 때만 컬럼 렌더링
+                  <TableHeaderCell
+                    {...column.getHeaderProps()}
+                    width={column.width}>
+                    {column.render("Header")}
+                  </TableHeaderCell>
+                )
+            )}
           </TableRow>
         ))}
       </TableHeader>

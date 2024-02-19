@@ -58,15 +58,18 @@ export const MealBox = () => {
           workout: response.workout,
         });
         
-        actions.setAddState(false); // 작업 완료 후 false로 재설정
+        
       } catch (error) {
         console.error("상세 정보 조회 실패:", error);
       }
     };
 
     // 데이터 추가 플래그가 true일 경우에만 업데이트 함수 호출
-    if (state.addState === true) {
-      updateAfterInsert();
+    if (state.addState=== true) {
+      updateAfterInsert().then(() => {
+        // 성공적인 업데이트 후 addState를 false로 재설정
+        actions.setAddState(false);
+      });
     }
   }, [state.addState, state.calendarId]);
 

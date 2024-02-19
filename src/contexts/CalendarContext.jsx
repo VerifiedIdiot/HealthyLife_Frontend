@@ -98,12 +98,6 @@ export const CalendarProvider = ({ children }) => {
     // 애는 음식이나 운동을정보를 선택하고 추가할때 실행시킬 액션함수 내 위치할 내부 액션함수 , 그러니 단독사용 x
     updateData: async (email, selectedMonth) => {
       try {
-        // 선택된 날짜에 대한 상세 정보 업데이트
-        const updatedDateData = await CalendarApi.getDetailsByCalendarId(
-          state.calendarId
-        );
-        dispatch({ type: "SET_DATE_DATA", payload: updatedDateData });
-
         // 해당 월의 데이터 업데이트
         const updatedMonthData = await CalendarApi.getMonthData(
           email,
@@ -119,10 +113,12 @@ export const CalendarProvider = ({ children }) => {
     addMealAndUpdate: async (email, mealType, selectedDate, selectedItem) => {
       try {
         // POST 요청을 통해 식사 정보 추가
-        await CalendarApi.addMeal(email, mealType, selectedDate, selectedItem);
-
+       const calendarId = await CalendarApi.addMeal(email, mealType, selectedDate, selectedItem);
+        actions.setCalendarId(calendarId);
         // 성공적으로 추가된 후, updateData 액션을 호출하여 날짜 및 월 데이터 업데이트
         await actions.updateData(email, state.selectedMonth);
+
+        dispatch({ type: "SET_ADD_STATE", payload: false });
       } catch (error) {
         console.error("addMealAndUpdate 처리 중 오류 발생", error);
         // 오류 처리 로직 (필요한 경우)
@@ -131,8 +127,10 @@ export const CalendarProvider = ({ children }) => {
 
     addWorkoutAndUpdate: async (email, selectedDate, selectedItem) => {
       try {
-        await CalendarApi.addWorkout(email, selectedDate, selectedItem);
+        const calendarId = await CalendarApi.addWorkout(email, selectedDate, selectedItem);
+        actions.setCalendarId(calendarId);
         await actions.updateData(email, state.selectedMonth);
+        dispatch({ type: "SET_ADD_STATE", payload: false });
       } catch (error) {
         console.error("addMealAndUpdate 처리 중 오류 발생", error);
       }

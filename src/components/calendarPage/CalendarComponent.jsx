@@ -41,9 +41,10 @@ export const CalendarSection = () => {
       openModal();
       if (dateData) {
         const calendarId = dateData.calendar_id;
+        console.log(calendarId)
         actions.setCalendarId(calendarId);
         const details = await CalendarApi.getDetailsByCalendarId(calendarId);
-        console.log(details);
+        // console.log(details);
         actions.setDateData({
           meal: details.meal,
           workout: details.workout

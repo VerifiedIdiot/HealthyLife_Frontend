@@ -226,7 +226,7 @@ const Navigation = ({ $scrolledDown = true }) => {
       ) : (
         // 로그아웃 상태일 때
         <>
-          <NavContainer $justify="center">
+          <NavContainer $justify="end">
             <NavLink
               $marginLeft="0.3vw"
               $scrolledDown={$scrolledDown}

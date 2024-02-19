@@ -12,6 +12,8 @@ export const Wrapper = styled.div.attrs({
   align-items: center;
   width: 100%;
   min-height: 100vh;
+
+  
 `;
 
 const GlobalStyle = createGlobalStyle`

@@ -23,7 +23,7 @@ export const useTabletView = (maxWidth = 768) => {
 
 
 
-export const useMobileView = (maxWidth = 480) => {
+export const useMobileView = (maxWidth = 500) => {
   const [isMobileView, setIsMobileView] = useState(window.innerWidth <= maxWidth);
 
   useEffect(() => {

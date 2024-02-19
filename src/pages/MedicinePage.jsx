@@ -12,8 +12,8 @@ const MedicinePage = () => {
 
   return (
     <SearchProvider>
-    <Main $height="auto">
-      <Container $height="auto">
+    <Main $height="auto" $width="100%">
+      <Container $height="auto" $width="100%">
         <SearchSection/>
         <BoardSection />
         <PaginationSection />

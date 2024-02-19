@@ -26,13 +26,20 @@ const LogoItem = styled(Item)`
   margin-left: 1vw;
   h1 {
     margin-left: 10px;
+    white-space: nowrap;
   }
 
   h2 {
     margin-left: 10px;
+    white-space: nowrap;
   }
   @media (max-width: 768px) {
+    width: 35%;
 
+  }
+
+  @media (max-width: 500px) {
+    
   }
 `;
 
@@ -42,6 +49,13 @@ const ResponsiveSearchSection = styled(Section)`
   align-items: center;
   min-width: 1050px;
   @media (max-width: 768px) {
+    width: 100%;
+    min-width: auto;
+    overflow-x: hidden;
+  }
+
+  @media (max-width: 500px) {
+    
   }
 `;
 
@@ -53,12 +67,20 @@ const ResponsiveSearchArea = styled(Area)`
 
   @media (max-width: 768px) {
   }
+
+  @media (max-width: 500px) {
+    
+  }
 `;
 
 const ResponsiveItemBox = styled(Box)`
   height: 60px;
 
   @media (max-width: 768px) {
+  }
+
+  @media (max-width: 500px) {
+    
   }
 `;
 
@@ -67,8 +89,12 @@ const ResponsiveItem = styled(Item)`
   align-items: center;
   justify-content: flex-start;
 
-  @media (max-width: 768px) {
+  @media (max-width:  768px) {
+    padding-left: 0;
+  }
 
+  @media (max-width: 500px) {
+    
   }
 `;
 
@@ -86,7 +112,11 @@ const SearchItemLeft = styled(Item)`
   }
 
   @media (max-width: 768px) {
+    display: none;
+  }
 
+  @media (max-width: 500px) {
+    display: none;
   }
 `;
 
@@ -97,16 +127,27 @@ const SearchItemRight = styled(Item)`
   width: ${(props) => props.$width || "100%"};
   padding-right: ${(props) => props.$paddingRight || ""};
   @media (max-width: 768px) {
+    
+  }
+
+  @media (max-width: 500px) {
+    
   }
 `;
 
 const ButtonItem = styled(Item)`
   display: flex;
-  justify-content: center;
+  justify-content: flex-end;
   align-items: center;
-  width: 20%;
+  width: 15%;
   box-shadow: none;
   @media (max-width: 768px) {
+    
+    
+  }
+
+  @media (max-width: 500px) {
+    
   }
 `;
 
@@ -114,7 +155,12 @@ const StyledButton = styled(LargeButton)`
   width: 200px;
   height: 45px;
   @media (max-width: 768px) {
+    width: 17vw;
 
+  }
+
+  @media (max-width: 500px) {
+    
   }
 `;
 
@@ -191,6 +237,16 @@ const ResponsiveBoardSection = styled(Section)`
   min-width: 1050px;
   align-items: center;
   flex-direction: column;
+
+  @media (max-width: 768px) {
+    width: 100%;
+    min-width: auto;
+    overflow-x: hidden;
+  }
+
+  @media (max-width: 500px) {
+    
+  }
 `;
 
 const ResponsiveFilterItem = styled(Item)`
@@ -199,7 +255,16 @@ const ResponsiveFilterItem = styled(Item)`
   align-items: center;
   width: 70%;
 
-  padding-right: 10px;
+  
+
+  @media (max-width: 768px) {
+    padding-right: 0;
+
+  }
+
+  @media (max-width: 500px) {
+    
+  }
 `;
 
 const ResponsiveBoardArea = styled(Area)`
@@ -207,10 +272,26 @@ const ResponsiveBoardArea = styled(Area)`
   height: 95%;
   width: 95%;
   height: auto;
+
+  @media (max-width: 768px) {
+    
+  }
+
+  @media (max-width: 500px) {
+    
+  }
 `;
 
 const ResponsiveBoardBox = styled(Box)`
   height: auto;
+
+  @media (max-width: 768px) {
+    
+  }
+
+  @media (max-width: 500px) {
+    
+  }
 `;
 
 export const BoardSection = () => {
@@ -249,6 +330,16 @@ const ResponsivePaginationSection = styled(Section)`
   justify-content: center;
   align-items: center;
   min-height: 80px;
+
+  @media (max-width: 768px) {
+    width: 100%;
+    min-width: auto;
+    overflow-x: hidden;
+  }
+
+  @media (max-width: 500px) {
+    
+  }
 `;
 
 const ResponsivePaginationArea = styled(Area)`
@@ -257,6 +348,13 @@ const ResponsivePaginationArea = styled(Area)`
 
   height: 90%;
   width: 95%;
+
+  @media (max-width: 768px) {
+  }
+
+  @media (max-width: 500px) {
+    
+  }
 `;
 
 const PaginationButton = styled.button`
@@ -275,6 +373,13 @@ const PaginationButton = styled.button`
   /* 현재 선택된 페이지 버튼 스타일 */
   background-color: ${(props) => (props.$isActive ? "#007bff" : "white")};
   color: ${(props) => (props.$isActive ? "white" : "black")};
+
+  @media (max-width: 768px) {
+  }
+
+  @media (max-width: 500px) {
+    
+  }
 `;
 
 export const PaginationSection = () => {

@@ -11,7 +11,10 @@ const ComboSearchContainer = styled.div`
   width: 100%;
 
   @media (max-width: 768px) {
-    
+    width: 78vw;
+  }
+
+  @media (max-width: 500px) {
   }
 `;
 
@@ -22,7 +25,10 @@ const ComboSelectBox = styled.select`
   width: 21%;
 
   @media (max-width: 768px) {
-    
+    width: 30%;
+  }
+
+  @media (max-width: 500px) {
   }
 `;
 
@@ -35,7 +41,9 @@ const ComboInputField = styled.input`
   border-radius: 4px;
 
   @media (max-width: 768px) {
+  }
 
+  @media (max-width: 500px) {
   }
 `;
 
@@ -43,17 +51,19 @@ export const ComboSearchBox = () => {
   const { state, actions } = useSearch();
   const searchTypes = ["통합", "제품명", "제조사", "신고번호"];
   const navigate = useNavigate();
-  
-  
-  // 검색 유형과 쿼리 변경 핸들러
-  const handleSearchTypeChange = useCallback((e) => {
-    const newSearchType = e.target.value;
-    actions.setSearchType(newSearchType);
 
-    const searchParams = new URLSearchParams(window.location.search);
-    searchParams.set('searchType', newSearchType);
-    navigate(`?${searchParams.toString()}`, { replace: true });
-  }, [actions, navigate]);
+  // 검색 유형과 쿼리 변경 핸들러
+  const handleSearchTypeChange = useCallback(
+    (e) => {
+      const newSearchType = e.target.value;
+      actions.setSearchType(newSearchType);
+
+      const searchParams = new URLSearchParams(window.location.search);
+      searchParams.set("searchType", newSearchType);
+      navigate(`?${searchParams.toString()}`, { replace: true });
+    },
+    [actions, navigate]
+  );
 
   const handleSearchQueryChange = (e) => {
     actions.setSearchQuery(e.target.value);
@@ -91,7 +101,9 @@ const SelectBox = styled.div`
   padding: 5px;
 
   @media (max-width: 768px) {
+  }
 
+  @media (max-width: 500px) {
   }
 `;
 
@@ -100,24 +112,33 @@ const DropdownItem = styled.div`
   cursor: pointer;
   display: flex;
   justify-content: flex-end;
+  align-items: center; 
   &:hover {
     background-color: #f0f0f0;
   }
   h3 {
     display: flex;
-
+    margin-right: 5px;
     white-space: nowrap;
   }
-`;
 
-const DropdownItemName = styled.div`
-  position: absolute;
-  right: 40%;
-  white-space: nowrap;
-  h3 {
-    font-size: 1rem;
+  @media (max-width: 768px) {
+    h3 {
+      font-size: .9rem;
+      
+      white-space: normal;
+    }
+    h4 {
+      font-size: .9rem;
+      white-space: nowrap;
+      
+    }
+  }
+
+  @media (max-width: 500px) {
   }
 `;
+
 
 const DropdownContent = styled.div`
   display: ${({ $isOpen }) => ($isOpen ? "flex" : "none")};
@@ -145,6 +166,12 @@ const DropdownContent = styled.div`
     left: 50%;
     transform: translateX(-50%);
   `}
+
+@media (max-width: 768px) {
+  }
+
+  @media (max-width: 500px) {
+  }
 `;
 
 const CheckboxLabel = styled.label`
@@ -153,6 +180,12 @@ const CheckboxLabel = styled.label`
   display: flex;
   align-items: center; // 체크박스와 레이블을 세로 중앙 정렬
   white-space: nowrap; // 줄바꿈 방지
+
+  @media (max-width: 768px) {
+  }
+
+  @media (max-width: 500px) {
+  }
 `;
 
 const ResetButton = styled.button`
@@ -169,6 +202,12 @@ const ResetButton = styled.button`
   &:hover {
     background-color: #11009e;
   }
+
+  @media (max-width: 768px) {
+  }
+
+  @media (max-width: 500px) {
+  }
 `;
 
 export const ComboBox = ({ comboBoxId, $position }) => {
@@ -178,26 +217,29 @@ export const ComboBox = ({ comboBoxId, $position }) => {
   const $isOpen = state.openComboBox === comboBoxId;
 
   // 체크박스 변경 핸들러
-  const handleChange = useCallback((functionality) => {
-    const isChecked = !!checkBoxStates[comboBoxId]?.[functionality];
-    actions.handleCheckboxChange(comboBoxId, functionality, !isChecked);
-  }, [checkBoxStates, comboBoxId, actions.handleCheckboxChange]);
+  const handleChange = useCallback(
+    (functionality) => {
+      const isChecked = !!checkBoxStates[comboBoxId]?.[functionality];
+      actions.handleCheckboxChange(comboBoxId, functionality, !isChecked);
+    },
+    [checkBoxStates, comboBoxId, actions.handleCheckboxChange]
+  );
 
   const handleReset = useCallback(() => {
     actions.resetComboBox(comboBoxId);
   }, [actions, comboBoxId]);
 
   const checkedItemsCount = useMemo(() => {
-    return Object.keys(checkBoxStates[comboBoxId] || {}).filter(key => checkBoxStates[comboBoxId][key]).length;
-  }, [checkBoxStates, comboBoxId])
-  
+    return Object.keys(checkBoxStates[comboBoxId] || {}).filter(
+      (key) => checkBoxStates[comboBoxId][key]
+    ).length;
+  }, [checkBoxStates, comboBoxId]);
+
   return (
     <SelectBox>
       <DropdownItem onClick={() => toggleComboBox(comboBoxId)}>
-        <DropdownItemName>
-          <h3>{comboBoxId}</h3>
-        </DropdownItemName>
-        {checkedItemsCount}개 <span>▼</span>
+        <h3>{comboBoxId}</h3>
+        <h4> {checkedItemsCount}개 ▼</h4>
       </DropdownItem>
 
       <DropdownContent $isOpen={$isOpen} $position={$position}>
@@ -217,28 +259,39 @@ export const ComboBox = ({ comboBoxId, $position }) => {
   );
 };
 
+const Option = styled.option`
+  /* padding: 5px; */
+  width: 300px;
+  background-color: white; // 선택되지 않은 옵션의 배경색
+  &:checked {
+    background-color: lightgray; // 선택된 옵션의 배경색, 일부 브라우저에서는 작동하지 않을 수 있음
+  }
+`;
+
 export const FilterDropdown = () => {
   const { state, actions } = useSearch();
   const navigate = useNavigate(); // useNavigate 훅 추가
-  
-  const searchTypes = ["10", "30", "50", "100"];
-  
 
-  const handleSize = useCallback((e) => {
-    const newSize = e.target.value;
-    actions.setSize(newSize);
-  
-    const searchParams = new URLSearchParams(window.location.search);
-    searchParams.set('size', newSize);
-    navigate(`?${searchParams.toString()}`, { replace: true });
-  }, [actions, navigate]);
+  const searchTypes = ["10", "30", "50", "100"];
+
+  const handleSize = useCallback(
+    (e) => {
+      const newSize = e.target.value;
+      actions.setSize(newSize);
+
+      const searchParams = new URLSearchParams(window.location.search);
+      searchParams.set("size", newSize);
+      navigate(`?${searchParams.toString()}`, { replace: true });
+    },
+    [actions, navigate]
+  );
 
   return (
     <ComboSelectBox value={state.size} onChange={handleSize}>
       {searchTypes.map((type) => (
-        <option key={type} value={type}>
+        <Option key={type} value={type}>
           {type}개씩
-        </option>
+        </Option>
       ))}
     </ComboSelectBox>
   );

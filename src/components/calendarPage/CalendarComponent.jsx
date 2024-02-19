@@ -13,7 +13,6 @@ import Calendar from "react-calendar";
 import "react-calendar/dist/Calendar.css";
 import CalendarApi from "../../api/CalendarApi";
 import { useCalendar } from "../../contexts/CalendarContext";
-import moment from "moment";
 
 export const CalendarSection = () => {
   const { state, actions, formatDate, formatMonth } = useCalendar();
@@ -76,7 +75,7 @@ export const CalendarSection = () => {
       console.error("Failed to fetch month data:", error);
       throw error;
     }
-  };
+  }; 
 
   useEffect(() => {
     if (state.email) {
@@ -134,8 +133,8 @@ export const CalendarSection = () => {
         />
         <MiddleModal $isOpen={modalOpen} $onClose={closeModal}>
           <InfoArea>
-            <InfoItemBox $height="10%"></InfoItemBox>
-            <InfoItemBox $height="80%">
+            <InfoItemBox $height="5%"></InfoItemBox>
+            <InfoItemBox $height="90%" >
               <InfoItem>
                 <MealBox />
               </InfoItem>

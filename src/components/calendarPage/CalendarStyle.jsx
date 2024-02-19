@@ -31,10 +31,10 @@ export const ComboSelectBox = styled.div.attrs({
   flex-direction: column;
   justify-content: ${(props) => props.$justify || "flex-start"};
   align-items: center;
+
   width: 100%;
   height: ${(props) => props.$height || "100%"};
   border-radius: 4px;
-  
 
   @media (max-width: 768px) {
     width: 100%;
@@ -42,13 +42,15 @@ export const ComboSelectBox = styled.div.attrs({
 `;
 
 export const ComboBox = styled.div.attrs({
-  className:"comboBox"
+  className: "comboBox",
 })`
   display: flex;
   flex-direction: column;
   justify-content: space-between;
   width: 100%;
   border-radius: 8px;
+  background: white;
+  padding: 10px 0;
   margin: 1vh;
   box-shadow: ${(props) => props.$shadow || "0 2px 4px rgba(0, 0, 0, 0.1)"};
   div {
@@ -56,21 +58,20 @@ export const ComboBox = styled.div.attrs({
   }
 `;
 
-
 export const MealTitle = styled.div.attrs({
-  className:"mealtitle"
+  className: "mealtitle",
 })`
-display:flex;
-flex-direction:column;
-justify-content: space-around;
-
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 3vw;
 `;
 
 export const MealInput = styled.div`
   padding: 10px 0;
   border: none;
   background-color: transparent;
-  
 
   h2 {
     font-size: 1.2rem;
@@ -81,38 +82,66 @@ export const ToggleButton = styled.div`
   width: 100%;
 
   hr {
-  border: none; /* 기본 테두리를 제거 */
-  height: 1px; /* 선의 두께 */
-  background-color: rgba(0, 0, 0, 0.1); /* 선의 색상과 투명도 */
-}
-
+    border: none;
+    height: 1px;
+    background-color: rgba(0, 0, 0, 0.1);
+  }
 `;
 
-export const MealInfoList = styled.ul`
-
+export const MealInfoBox = styled.div`
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  padding: 0 3vw;
 `;
+
+export const WorkoutInfoBox = styled.div`
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  padding: 0 3vw;
+`;
+export const MealDel = styled.button`
+margin: 0 3px;
+color: #666;
+border: 1px solid #eee;
+border-radius: 3px;
+width: 20px;
+`;
+export const MealInfoArea = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+`;
+
+export const MealInfoList = styled.ul``;
 
 export const MealInfo = styled.li`
+padding: 8px;
 `;
 
-export const WorkoutInfoList = styled.ul`
-`;
+export const WorkoutInfoList = styled.ul``;
 
-
+export const MealButtonBox = styled.div``;
 
 export const AddButton = styled.button`
   background-color: #4942e4;
   color: #eee;
   border: none;
   border-radius: 8px;
-  padding: 3px 12px;
-  font-size: 18px;
-  /* transparent */
+  align-items: center;
+  height: 25px;
+  width: 25px;
+
   cursor: pointer;
 
   &:hover {
-    background: #eee;
+    background: #333;
   }
+`;
+
+export const MealButton = styled.div`
+  display: flex;
 `;
 
 // 검색 레이아웃
@@ -157,21 +186,20 @@ export const SearchResultItem = styled.div`
     background-color: #ccc;
   }
 
-  .food-name, .workout-name {
+  .food-name,
+  .workout-name {
     width: 33.9%;
-
   }
-  .food-size, .workout-part {
-    
+  .food-size,
+  .workout-part {
     width: 33.9%;
-    
   }
-  .food-kcal, .workout-equipment {
+  .food-kcal,
+  .workout-equipment {
     width: 33.9%;
     vertical-align: center;
   }
 `;
-
 
 //////////////////////////////////////////////////
 
@@ -180,14 +208,15 @@ export const InfoArea = styled(Area).attrs({
   className: "InfoArea",
 })`
   flex-direction: column;
-  box-shadow:none;
+  box-shadow: none;
 `;
 
 export const InfoItemBox = styled(Box)`
   height: ${(props) => props.$height || "50%"};
   justify-content: center;
   align-items: center;
-  box-shadow:none;
+  box-shadow: none;
+  overflow-y: auto;
 `;
 
 export const InfoItem = styled(Item)`
@@ -270,7 +299,7 @@ export const CalendarMainSection = styled(Container)`
 
   .react-calendar__tile {
     text-align: center;
-    height: ${(props) => (props.isMobile ? "85px" : "110px")};
+    height: auto;
     display: flex;
     flex-direction: column;
     justify-content: flex-start;
@@ -299,7 +328,7 @@ export const CalendarMainSection = styled(Container)`
     background: ${({ theme }) => theme.seldayColor};
     border-radius: 6px;
     font-weight: bold;
-    color: #fff;
+    color: #666;
   }
 
   .react-calendar__tile--hasActive:enabled:hover,
@@ -318,11 +347,11 @@ export const CalendarMainSection = styled(Container)`
   }
 
   .react-calendar__month-view__days__day--weekend {
-    /* color: red; */
+    color: black;
   }
 
   .react-calendar__month-view__days__day--weekend:nth-child(7n) {
-    color: blue;
+    color: black;
   }
 
   .react-calendar__month-view__weekdays {

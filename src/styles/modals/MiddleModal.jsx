@@ -17,7 +17,7 @@ const ModalOverlay = styled.div`
 
 const ModalContent = styled.div`
   position: relative;
-  background: white;
+  background: ${(props) => props.$background || "#eee"};
   padding: 20px;
   border-radius: 8px;
   display: flex;

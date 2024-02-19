@@ -5,6 +5,7 @@ import AxiosInstance from "../utils/AxiosInstance";
 const BACKEND_DOMAIN = process.env.REACT_APP_BACKEND_DOMAIN;
 
 const RankingApi = {
+    
     getListBySeason: async () => {
         try {
             const response = await axios.get(
@@ -16,7 +17,20 @@ const RankingApi = {
             console.error("Error", error);
             throw error;
         }
-    }
+    },
+
+    getListByTotal: async () => {
+        try {
+            const response = await axios.get(
+                `${BACKEND_DOMAIN}/totalRanking/detail`
+            )
+            console.log(response.data);
+            return response.data;
+        } catch (error) {
+            console.error("Error",error);
+            throw error;
+        }
+    },
 }
 
 export default RankingApi;

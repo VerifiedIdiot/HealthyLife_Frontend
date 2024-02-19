@@ -17,6 +17,12 @@ import {
   SearchResultItem,
   ToggleButton,
   WorkoutInfoList,
+  MealInfoBox,
+  WorkoutInfoBox,
+  MealButtonBox,
+  MealButton,
+  MealDel,
+  MealInfoArea,
 } from "./CalendarStyle";
 import { useCalendar } from "../../contexts/CalendarContext";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -94,23 +100,33 @@ export const MealBox = () => {
                 <MealInput>
                   <h2>{mealType}</h2>
                 </MealInput>
-                <AddButton onClick={() => openModal(mealType)}> + </AddButton>
+                <MealButton>
+                  <AddButton onClick={() => openModal(mealType)}> + </AddButton>
+                </MealButton>
               </MealTitle>
 
               {dropdownMeal[mealType] && (
-                <MealInfoList>
-                  {/* 배열을 받아오지 못했을때 에러가 나는걸 방지하기 위한 &&연산자 */}
-                  {/* && 연산자는 A && B 일때 둘다 TRUE이면 B를 실행 */}
-                  {Array.isArray(state.dateData.meal) &&
-                    state.dateData.meal.filter(
-                      (meal) => meal.meal_type === mealType
-                    ).length > 0 &&
-                    state.dateData.meal
-                      .filter((meal) => meal.meal_type === mealType)
-                      .map((meal) => (
-                        <MealInfo key={meal.id}>{meal.meal_name}</MealInfo>
-                      ))}
-                </MealInfoList>
+                <MealInfoBox>
+                  <MealInfoArea>
+                    <MealInfoList>
+                      {/* 배열을 받아오지 못했을때 에러가 나는걸 방지하기 위한 &&연산자 */}
+                      {/* && 연산자는 A && B 일때 둘다 TRUE이면 B를 실행 */}
+                      {Array.isArray(state.dateData.meal) &&
+                        state.dateData.meal.filter(
+                          (meal) => meal.meal_type === mealType
+                        ).length > 0 &&
+                        state.dateData.meal
+                          .filter((meal) => meal.meal_type === mealType)
+                          .map((meal) => (
+                            <MealInfo key={meal.id}>{meal.meal_name}
+                            <MealDel>X</MealDel>
+                            </MealInfo>
+                          ))}
+                          
+                    </MealInfoList>
+                    
+                  </MealInfoArea>
+                </MealInfoBox>
               )}
               {Array.isArray(state.dateData.meal) &&
                 state.dateData.meal.filter(
@@ -133,22 +149,27 @@ export const MealBox = () => {
               <MealInput>
                 <h2>운동</h2>
               </MealInput>
-              <AddButton onClick={() => openModal("운동")}> + </AddButton>
+              <MealButtonBox>
+                <AddButton onClick={() => openModal("운동")}> + </AddButton>
+              </MealButtonBox>
             </MealTitle>
             {Array.isArray(state.dateData.workout) &&
               state.dateData.workout.length > 0 && (
                 <>
                   {dropdownWorkout && (
-                    <WorkoutInfoList>
-                      {state.dateData.workout.map((workout) => (
-                        <MealInfo key={workout.id}>
-                          {workout.workout_name}
-                        </MealInfo>
-                      ))}
-                    </WorkoutInfoList>
+                    <WorkoutInfoBox>
+                      <WorkoutInfoList>
+                        {state.dateData.workout.map((workout) => (
+                          <MealInfo key={workout.id}>
+                            {workout.workout_name}
+                          </MealInfo>
+                        ))}
+                      </WorkoutInfoList>
+                    </WorkoutInfoBox>
                   )}
                   <ToggleButton
-                    onClick={() => setDropdownWorkout(!dropdownWorkout)}>
+                    onClick={() => setDropdownWorkout(!dropdownWorkout)}
+                  >
                     <br />
                     <hr />
                     {dropdownWorkout ? (
@@ -291,7 +312,8 @@ export const MealInputBox = ({ modalOpen, closeModal }) => {
                   // 운동 검색 결과 렌더링
                   <SearchResultItem
                     key={index}
-                    onClick={() => handleSearchResultClick(item)}>
+                    onClick={() => handleSearchResultClick(item)}
+                  >
                     <p className="workout-name">{item.name}</p>
                     <p className="workout-duration">{item.muscle}</p>
                     <p className="workout-intensity">{item.equipment}</p>
@@ -301,7 +323,8 @@ export const MealInputBox = ({ modalOpen, closeModal }) => {
                   // 음식 검색 결과 렌더링
                   <SearchResultItem
                     key={index}
-                    onClick={() => handleSearchResultClick(item)}>
+                    onClick={() => handleSearchResultClick(item)}
+                  >
                     <p className="food-name">{item.name}</p>
                     <p className="food-size">{item.servingSize}g</p>
                     <p className="food-kcal">{item.kcal}kcal</p>

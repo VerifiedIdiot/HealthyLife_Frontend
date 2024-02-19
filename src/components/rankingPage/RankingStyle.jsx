@@ -18,7 +18,7 @@ export const SortedImgBoxSection = styled(Section)`
 export const SortedBoxArea = styled(Area)`
   box-shadow: none;
   margin: 0 1vw;
-  border: 1px solid #333;
+  /* border: 1px solid #333; */
 `;
 
 export const ItemType = styled(Item)`

@@ -91,8 +91,7 @@ const Image = styled.img`
   height: 500px;
   object-fit: cover;
   position: relative;
-  opacity: 0.9;
-  border-radius: 8px;
+  opacity: 0.8;
 `;
 
 const TextContainer = styled.div`

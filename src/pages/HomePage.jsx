@@ -16,7 +16,7 @@ import { media } from "../utils/MediaQuery";
 const Title = styled.div`
   font-size: 60px;
   font-weight: bold;
-  margin-top: 1rem;
+  margin-top: 2rem;
 
   ${media.large`
       font-size: 40px;
@@ -29,7 +29,7 @@ const Title = styled.div`
 const HomePage = () => {
   return (
     <>
-      <Main>
+      <Main $width="100%">
         <Container
           className="MainTitle"
           $height="auto"
@@ -42,7 +42,6 @@ const HomePage = () => {
         <Container
           $height="auto"
           $shadow="none"
-          $width="100%"
           style={{ marginBottom: "5rem" }}
         >
           <HomeSlide />

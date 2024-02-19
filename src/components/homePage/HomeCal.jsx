@@ -7,13 +7,18 @@ import { media } from "../../utils/MediaQuery";
 const CalContainer = styled.div`
   width: 95%;
   border-radius: 8px;
-  background-color: lightgray;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 1);
 `;
 
 const CalContainer1 = styled.div`
   display: flex;
   height: 200px;
   font-size: 20px;
+
+  ${media.medium`
+      flex-direction: column;
+      height: 400px
+    `}
 `;
 
 const CalContainer2 = styled.div`
@@ -22,6 +27,10 @@ const CalContainer2 = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: space-around;
+
+  ${media.medium`
+      width: 100%
+    `}
 `;
 
 const CalContainer3 = styled.div`
@@ -29,6 +38,10 @@ const CalContainer3 = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-around;
+
+  ${media.medium`
+      width: 100%
+    `}
 `;
 
 const CalTitle = styled.div`
@@ -38,6 +51,7 @@ const CalTitle = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
+  margin-top: 1rem;
 
   ${media.small`
       font-size: 20px;
@@ -58,24 +72,19 @@ const CalInput2 = styled.div`
   ${media.large`
       font-size: 18px
     `}
-  ${media.small`
-      font-size: 13px
-    `}
 `;
 
 const CalInput3 = styled.input`
   width: 70%;
   height: 30px;
   border-radius: 8px;
-  border: none;
+  border: 1px solid gray;
+  min-width: 120px;
 `;
 
 const CalInput4 = styled.div`
   width: 70%;
   display: flex;
-
-  .Unit {
-  }
 `;
 
 const CalInput5 = styled.div`
@@ -94,28 +103,48 @@ const CalInput6 = styled.img`
   width: 20%;
   min-width: 80px;
   max-width: 120px;
+  margin-left: 1rem;
 `;
 
 const CalInput7 = styled.div``;
 
 const Balloon = styled.div`
+  position: relative;
   background-color: white;
+  border: 2px solid lightgray;
   width: 500px;
-  height: 150px;
-  border-radius: 8px;
+  height: 110px;
+  border-radius: 20px;
   display: flex;
   justify-content: center;
   align-items: center;
-  padding: 20px; /* 글 간격 조절 */
+  padding: 20px;
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
 
   ${media.large`
-      width: 350px;
-    `}
+    width: 350px;
+    margin-bottom: 1rem;
+  `}
+
   ${media.small`
       width: 180px;
-      height: 80px;
       font-size: 15px;
     `}
+
+  /* 삼각형 추가 */
+  &:before {
+    content: "";
+    position: absolute;
+    top: 50%;
+    left: -20px; /* 말풍선 삼각형을 왼쪽으로 이동시킵니다. */
+    transform: translateY(-50%);
+    border-style: solid;
+    border-width: 10px 20px 10px 0; /* 삼각형 모양을 만듭니다. */
+    border-color: transparent lightgray transparent transparent; /* 삼각형 색상을 설정합니다. */
+    display: block;
+    width: 0;
+    z-index: 1;
+  }
 `;
 
 const HomeCal = () => {
@@ -157,6 +186,7 @@ const HomeCal = () => {
               <CalInput2>키</CalInput2>
               <CalInput4>
                 <CalInput3
+                  placeholder="키를 입력하세요."
                   value={height}
                   onChange={(e) => setHeight(e.target.value)}
                 />
@@ -173,9 +203,10 @@ const HomeCal = () => {
               </CalInput4>
             </CalInput1>
             <CalInput1>
-              <CalInput2>몸무게</CalInput2>
+              <CalInput2>체중</CalInput2>
               <CalInput4>
                 <CalInput3
+                  placeholder="체중을 입력하세요."
                   value={weight}
                   onChange={(e) => setWeight(e.target.value)}
                 />
@@ -197,12 +228,20 @@ const HomeCal = () => {
                 <CalInput5>{bmi}</CalInput5>
               </CalInput4>
             </CalInput1>
-            <MiddleButton
-              style={{ width: "100%", height: "35px" }}
-              onClick={calculateBMI}
+            <div
+              style={{
+                justifyContent: "center",
+                display: "flex",
+                width: "100%",
+              }}
             >
-              계산하기
-            </MiddleButton>
+              <MiddleButton
+                style={{ width: "80%", height: "35px" }}
+                onClick={calculateBMI}
+              >
+                계산하기
+              </MiddleButton>
+            </div>
           </CalContainer2>
           <CalContainer3>
             <CalInput6 src={Trainer}></CalInput6>

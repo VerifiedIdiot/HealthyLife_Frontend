@@ -37,16 +37,26 @@ const BlueText = styled.span`
 const IntroContent = styled.div`
   display: flex;
   justify-content: space-around;
+
+  ${media.large`
+    flex-direction: column;
+    align-items: center;
+    `}
 `;
 
 const IntroElement = styled.div`
   display: flex;
   flex-direction: column;
-  width: 16%;
+  width: 18%;
   justify-content: space-between;
-  background-color: lightgray;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 1);
   border-radius: 8px;
   align-items: center;
+
+  ${media.large`
+    width: 80%;
+    margin-bottom: 1rem;
+    `}
 `;
 
 const IntroElement1 = styled.div`
@@ -80,8 +90,8 @@ const IntroElement2 = styled.div`
 `;
 
 const IntroElement3 = styled.img`
-  width: 130px;
-  height: 130px;
+  width: 100px;
+  height: 100px;
 
   ${media.large`
     width: 80px;

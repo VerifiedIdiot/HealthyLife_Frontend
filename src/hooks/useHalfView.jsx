@@ -3,7 +3,7 @@
 
 import { useState, useEffect } from 'react';
 
-const useHalfView = (maxWidth = 1200) => {
+const useHalfView = (maxWidth = 768) => {
   const [isHalfView, setIsHalfView] = useState(window.innerWidth <= maxWidth);
 
   useEffect(() => {

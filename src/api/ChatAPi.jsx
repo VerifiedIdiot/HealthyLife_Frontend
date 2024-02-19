@@ -73,10 +73,25 @@ const ChatApi = {
   },
   //채팅방 메세지 가져오기
   takenMessage: async (roomId) => {
-    console.log("메세지 가져오기" + roomId);
-    return await AxiosInstance.post(
-      Common.WEELV_DOMAIN + `/chat/messages/${roomId}`
-    );
+    try {
+      const res = await Common.TakenId();
+      const memberId = res.data;
+      console.log(
+        "메세지 가져오기 " +
+          roomId +
+          "아이디" +
+          memberId +
+          `chat/messages/${roomId}?memberId=${memberId}`
+      );
+      const response = await AxiosInstance.post(
+        Common.WEELV_DOMAIN+`/chat/messages/${roomId}?memberId=${memberId}`
+      );
+      console.log("서버 응답", response);
+      return response;
+    } catch (error) {
+      console.error("에러 발생", error);
+      throw error; // 에러를 다시 던져서 상위 레벨에서 처리할 수 있도록 함
+    }
   },
 
   updateMessageStatus: async (roomId, userId) => {
@@ -166,7 +181,6 @@ const ChatApi = {
   },
   // 상태 메세지 출력
   statusInfo: async (memberId) => {
-    
     return await AxiosInstance.get(
       Common.WEELV_DOMAIN + `/status/getMemberStatusInfo/${memberId}`
     );

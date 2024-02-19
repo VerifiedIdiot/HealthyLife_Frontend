@@ -27,7 +27,6 @@ const ChatList = (props) => {
       try {
         const userId = await Common.TakenId();
         const rsp = await ChatApi.chatList();
-
         // 서버로부터 받아온 채팅방 목록에 대해 각각 읽지 않은 메시지 수를 가져옴
         const chatRoomsWithUnreadCount = await Promise.all(
           rsp.data.map(async (chatRoom) => {
@@ -44,14 +43,22 @@ const ChatList = (props) => {
             return { ...chatRoom, unreadMessageCount };
           })
         );
-
+  
         console.log(chatRoomsWithUnreadCount);
         setChatRooms(chatRoomsWithUnreadCount);
       } catch (e) {
         console.log(e);
       }
     };
+  
+    // 초기 업데이트
     getChatRoom();
+  
+    // 0.5초마다 업데이트 
+    const intervalId = setInterval(getChatRoom, 50 * 60);
+  
+    // 컴포넌트 언마운트 시 인터벌 클리어
+    return () => clearInterval(intervalId);
   }, []);
 
   const chatClick = async (a) => {
@@ -95,11 +102,9 @@ const ChatBox = (props) => {
     const fetchLatestMessage = async () => {
       const userId = await Common.TakenId();
       try {
-        // 여기에 추가된 부분
         const latestMessageResponse = await ChatApi.getLatestMessage(
           roomInfo.roomId
         );
-        // 응답 및 응답의 data 속성이 null 또는 정의되지 않은지 확인합니다.
         setLatestMessage(latestMessageResponse);
         let senderId;
         if (roomInfo.senderId === userId.data) {
@@ -113,7 +118,15 @@ const ChatBox = (props) => {
         console.error("최신 메시지 조회 중 에러 발생:", error);
       }
     };
+  
+    // 초기 업데이트
     fetchLatestMessage();
+  
+    // 0.5초마다 업데이트 
+    const intervalId = setInterval(fetchLatestMessage, 50 * 60);
+  
+    // 컴포넌트 언마운트 시 인터벌 클리어
+    return () => clearInterval(intervalId);
   }, [roomInfo.roomId]);
 
   return (

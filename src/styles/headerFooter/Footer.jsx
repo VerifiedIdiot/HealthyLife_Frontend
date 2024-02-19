@@ -4,7 +4,7 @@ import styled from "styled-components";
 import InstagramIcon from "@mui/icons-material/Instagram";
 import FacebookIcon from "@mui/icons-material/Facebook";
 import TwitterIcon from "@mui/icons-material/Twitter";
-
+import AgreementModal from "../../utils/Agreement/AgreementModal";
 const StyledFooter = styled.footer.attrs({
   className: "footer",
 })`
@@ -28,11 +28,7 @@ const StyledFooter = styled.footer.attrs({
     align-items: center;
     justify-content: start;
   }
-  .linkBox:nth-child(2) {
-    @media (max-width: 768px) {
-      display: none;
-    }
-  }
+
   h1 {
     display: flex;
     font-size: 0.7em;
@@ -59,6 +55,9 @@ const StyledFooter = styled.footer.attrs({
       }
     }
   }
+  @media (max-width: 768px) {
+      display: none;
+    }
 `;
 
 const Footer = () => {
@@ -114,6 +113,11 @@ const Footer = () => {
           <h2>ⓒ Wellv</h2>
         </div>
       </StyledFooter>
+      <AgreementModal
+          open={modalOpen}
+          close={closeModal}
+          header={modalInfo}
+        />
     </>
   );
 };

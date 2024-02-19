@@ -56,7 +56,6 @@ const Chatting = (props) => {
     // WebSocket 연결
     if (!ws.current || ws.current.readyState === WebSocket.CLOSED) {
       connectWebSocket();
-
       // 연결 후 이전 메시지 가져오기
       const fetchPreviousMessages = async () => {
         try {
@@ -102,11 +101,17 @@ const Chatting = (props) => {
       roomId: roomId,
       sender: userId,
       message: inputMsg,
-      messageState: "안읽음",
     };
     ws.current.send(JSON.stringify(message));
     //db저장
-    ChatApi.saveMessage(message);
+    const message1 = {
+      type: "TALK",
+      roomId: roomId,
+      sender: userId,
+      message: inputMsg,
+      messageState: "안읽음",
+    };
+    ChatApi.saveMessage(message1);
     setInputMsg("");
   };
 

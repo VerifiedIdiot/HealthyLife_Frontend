@@ -40,6 +40,7 @@ const HeaderInner = styled.div.attrs({
 })`
   display: flex;
   justify-content: space-between;
+  flex-direction:row;
   width: 100%;
   height: 100%;
   align-items: center;
@@ -49,7 +50,7 @@ const HamburgerIcon = styled.div`
   display: none;
   cursor: pointer;
 
-  @media (max-width: 1200px) {
+  @media (max-width: 768px) {
     display: block;
     font-size: 28px; 
     margin-right: 10px;

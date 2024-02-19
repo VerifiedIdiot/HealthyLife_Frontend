@@ -53,7 +53,6 @@ export const ChatHeader = (props) => {
     setIsDisabled(Boolean);
     setState(state);
   };
-
   return (
     <Containerstyle $modal={modal}>
       <Section

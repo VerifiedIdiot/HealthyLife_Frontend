@@ -19,8 +19,7 @@ const NavContainer = styled.nav.attrs({
   background-color: white;
   width: ${(props) => props.$width || "60%"};
   /* border: 1px solid black; */
-
-  @media (max-width: 1200px) {
+  @media (max-width: 768px) {
     flex-direction: column;
     justify-content: space-between;
     width: 100%;
@@ -35,16 +34,15 @@ const NavLink = styled.div.attrs({
   /* width: ${(props) => props.$width || "80%"}; */
   margin-left: ${(props) => props.$marginLeft || "0"};
 
-  @media (max-width: 1200px) {
-      
-    }
-
   p {
     font-size: 1.2rem;
     color: ${(props) => (props.$scrolledDown ? "black" : "white")};
-    padding : 0 3vw;
-    @media (max-width: 1200px) {
+    padding: 0 3vw;
+    @media (max-width: 768px) {
       margin-bottom: 10px;
+    }
+    @media (max-width: 1200px) {
+      font-size: 1.1em;
     }
   }
   &.hover {
@@ -60,7 +58,7 @@ const NavLinkIcon = styled.div`
   img {
     padding: 1vw;
   }
-  @media (max-width: 1200px) {
+  @media (max-width: 768px) {
     flex-direction: column;
   }
 `;
@@ -71,11 +69,10 @@ const ProfileDropdown = styled.div`
   top: 60px;
   right: 0;
   background-color: #f9f9f9;
-  min-width: 160px;
   box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.3);
   z-index: 1;
 
-  @media (max-width: 1200px) {
+  @media (max-width: 768px) {
     top: 38%;
     right: auto;
   }
@@ -96,6 +93,15 @@ const ProfileDropdown = styled.div`
   overflow-auto {
     max-height: 200px;
     overflow-y: auto;
+  }
+  @media (max-width: 768px) {
+    top: 38%;
+    right: auto;
+  }
+  p {
+    @media (max-width: 1200px) {
+      font-size: 10px;
+    }
   }
 `;
 
@@ -140,31 +146,31 @@ const Navigation = ({ $scrolledDown = true }) => {
   return (
     <>
       <NavContainer $width="60%">
-      <NavLinkIcon>
-        <NavLink
-          $scrolledDown={$scrolledDown}
-          onClick={() => navigate("/inbody")}
-        >
-          <NavLinkText>Inbody</NavLinkText>
-        </NavLink>
-        <NavLink
-          $scrolledDown={$scrolledDown}
-          onClick={() => navigate("/information")}
-        >
-          <p>Information</p>
-        </NavLink>
-        <NavLink
-          $scrolledDown={$scrolledDown}
-          onClick={() => navigate("/medicine")}
-        >
-          <p>Medicine</p>
-        </NavLink>
-        <NavLink
-          $scrolledDown={$scrolledDown}
-          onClick={() => navigate("/communitypage")}
-        >
-          <p>Community</p>
-        </NavLink>
+        <NavLinkIcon>
+          <NavLink
+            $scrolledDown={$scrolledDown}
+            onClick={() => navigate("/inbody")}
+          >
+            <NavLinkText>Inbody</NavLinkText>
+          </NavLink>
+          <NavLink
+            $scrolledDown={$scrolledDown}
+            onClick={() => navigate("/information")}
+          >
+            <p>Information</p>
+          </NavLink>
+          <NavLink
+            $scrolledDown={$scrolledDown}
+            onClick={() => navigate("/medicine")}
+          >
+            <p>Medicine</p>
+          </NavLink>
+          <NavLink
+            $scrolledDown={$scrolledDown}
+            onClick={() => navigate("/communitypage")}
+          >
+            <p>Community</p>
+          </NavLink>
         </NavLinkIcon>
       </NavContainer>
 
@@ -173,23 +179,21 @@ const Navigation = ({ $scrolledDown = true }) => {
         <>
           <NavContainer $width="50%">
             <NavLinkIcon>
-            <NavLink
-              $scrolledDown={$scrolledDown}
-              onClick={() => navigate("/calendar")}
-            >
-              <p>Calendar</p>
-            </NavLink>
-            <NavLink
-              $scrolledDown={$scrolledDown}
-              onClick={() => navigate("/ranking")}
-            >
-              <p>Ranking</p>
-            </NavLink>
+              <NavLink
+                $scrolledDown={$scrolledDown}
+                onClick={() => navigate("/calendar")}
+              >
+                <p>Calendar</p>
+              </NavLink>
+              <NavLink
+                $scrolledDown={$scrolledDown}
+                onClick={() => navigate("/ranking")}
+              >
+                <p>Ranking</p>
+              </NavLink>
             </NavLinkIcon>
             <NavLinkIcon>
-              <NavLink 
-              $scrolledDown={$scrolledDown} 
-              onClick={modalClick}>
+              <NavLink $scrolledDown={$scrolledDown} onClick={modalClick}>
                 {isHalfView ? (
                   <p>Chatting</p>
                 ) : (
@@ -222,14 +226,14 @@ const Navigation = ({ $scrolledDown = true }) => {
       ) : (
         // 로그아웃 상태일 때
         <>
-        <NavContainer $justify="center">
-          <NavLink $marginLeft="0.3vw"
-            $scrolledDown={$scrolledDown}
-            onClick={() => navigate("/login")}
-          >
-            <p>Login/SignUp</p>
-            
-          </NavLink>
+          <NavContainer $justify="center">
+            <NavLink
+              $marginLeft="0.3vw"
+              $scrolledDown={$scrolledDown}
+              onClick={() => navigate("/login")}
+            >
+              <p>Login/SignUp</p>
+            </NavLink>
           </NavContainer>
         </>
       )}

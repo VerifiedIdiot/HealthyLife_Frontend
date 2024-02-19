@@ -57,16 +57,16 @@ export const MealBox = () => {
           meal: response.meal,
           workout: response.workout,
         });
+        
+        actions.setAddState(false); // 작업 완료 후 false로 재설정
       } catch (error) {
         console.error("상세 정보 조회 실패:", error);
       }
     };
 
     // 데이터 추가 플래그가 true일 경우에만 업데이트 함수 호출
-    if (state.addState) {
+    if (state.addState === true) {
       updateAfterInsert();
-      // addState를 다시 반전시켜 초기화 ㅎ
-      actions.setAddState((prev) => !prev);
     }
   }, [state.addState, state.calendarId]);
 
@@ -221,7 +221,7 @@ export const MealInputBox = ({ modalOpen, closeModal }) => {
           });
         }
         if (state.dateData) {
-          actions.setAddState((prev) => !prev);
+          actions.setAddState(true);
           handleCloseModal();
         }
       } catch (e) {

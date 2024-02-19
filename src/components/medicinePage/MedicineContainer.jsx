@@ -11,7 +11,7 @@ const ComboSearchContainer = styled.div`
   width: 100%;
 
   @media (max-width: 768px) {
-    width: 100%;
+    
   }
 `;
 
@@ -22,7 +22,7 @@ const ComboSelectBox = styled.select`
   width: 21%;
 
   @media (max-width: 768px) {
-    width: 110px;
+    
   }
 `;
 
@@ -35,8 +35,7 @@ const ComboInputField = styled.input`
   border-radius: 4px;
 
   @media (max-width: 768px) {
-    width: 60vw;
-    margin-left: 5px;
+
   }
 `;
 
@@ -92,8 +91,7 @@ const SelectBox = styled.div`
   padding: 5px;
 
   @media (max-width: 768px) {
-    width: 19.5vw;
-    margin-left: 0.5vw;
+
   }
 `;
 

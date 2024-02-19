@@ -6,12 +6,14 @@ import React, {
   useLayoutEffect,
 } from "react";
 import MedicineApi from "../api/MedicineApi";
+import Common from "../utils/Common";
 import { useApiRequest } from "../hooks/useApiRequest";
 import { useNavigate, useLocation } from "react-router-dom";
 
 const SearchContext = createContext();
 
 const initialState = {
+  email: "",
   typeList: {},
   checkBoxStates: {},
   comboBoxId: "",
@@ -27,6 +29,11 @@ const initialState = {
 
 const searchReducer = (state, action) => {
   switch (action.type) {
+    case "SET_EMAIL":
+      if (state.email === action.payload) {
+        return state;
+      }
+      return { ...state, email: action.payload};
     case "SET_TYPE_LIST":
       if (state.typeList === action.payload) {
         return state;
@@ -101,9 +108,12 @@ export const SearchProvider = ({ children }) => {
   const { data: listByTypeData } = useApiRequest(MedicineApi.getListByType); // API 요청을 위한 커스텀 훅 사용
 
   useLayoutEffect(() => {
-    // API로부터 타입 리스트 데이터를 받아오면 상태를 업데이트합니다.
-    if (listByTypeData) {
-      dispatch({ type: "SET_TYPE_LIST", payload: listByTypeData });
+    try {
+      if (listByTypeData) {
+        dispatch({ type: "SET_TYPE_LIST", payload: listByTypeData });
+      }
+    } catch (error) {
+      console.error("An error occurred while setting type list:", error);
     }
   }, [listByTypeData]);
 
@@ -137,10 +147,25 @@ export const SearchProvider = ({ children }) => {
     actions.setSize(size);
   }, []);
 
+    // 최초에 컨텍스트내 영역에 진입시 랜더링 되기 실행되는 email 정보 받아오기 함수
+    useEffect(() => {
+      const fetchEmail = async () => {
+        try {
+          const response = await Common.TakenToken();
+          // console.log(response.data);
+          actions.setEmail(response.data);
+        } catch (error) {
+          console.log("이메일 조회 실패 : " + error);
+        }
+      };
+      fetchEmail();
+    }, []);
+
 
 
 
   const actions = {
+    setEmail: (email) => dispatch({ type: "SET_EMAIL", payload: email}),
     // 검색 필터 영역
     toggleComboBox: (comboBoxId) =>
       dispatch({ type: "TOGGLE_COMBOBOX", payload: comboBoxId }),
@@ -159,18 +184,23 @@ export const SearchProvider = ({ children }) => {
       dispatch({ type: "SET_SEARCH_QUERY", payload: query }),
     // 최초의 페이지 랜더링시 엘라스틱서치 서버의 총 문서수를 가져오는 액션
     fetchTotalCount: async () => {
-      const totalCount = await MedicineApi.getTotalCount();
-      dispatch({
-        type: "SET_TOTAL_COUNT",
-        payload: totalCount,
-      });
-      console.log(totalCount);
+      try {
+        const totalCount = await MedicineApi.getTotalCount();
+        dispatch({
+          type: "SET_TOTAL_COUNT",
+          payload: totalCount,
+        });
+      } catch (error) {
+        console.error("Failed to fetch total count:", error);
+        // Handle error as needed, e.g., set an error state or show an error message
+      }
     },
     setSize: (size) => dispatch({ type: "SET_SIZE", payload: size }),
     setPage: (page) => dispatch({ type: "SET_PAGE", payload: page}),
 
     // 다수의 필터를 통해 "검색" 클릭시 실행되는 액션
     performSearch: async (overrideParams = {}) => {
+      try {
       // 검색 파라미터가 함수 인자로 전달되었다면, 이를 사용합니다.
       // 전달되지 않았다면, 현재 상태(state)에서 파라미터를 구성합니다.
       const {
@@ -231,6 +261,9 @@ export const SearchProvider = ({ children }) => {
         const query = currentSearchParams.toString();
         navigate(`?${query}`); // 현재 검색 조건으로 URL을 업데이트합니다.
       }
+    } catch (error) {
+      console.error("An error occurred during search:", error);
+    }
     },
   };
 

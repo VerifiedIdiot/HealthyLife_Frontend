@@ -16,7 +16,7 @@ const InputContainer = styled.div`
   position: relative;
   display: flex;
   flex-direction: column;
-  margin-top: 3em;
+  margin-top: 80px;
   margin-bottom: 3em;
   width: 100%;
   @media (max-width: 1024px) {
@@ -91,6 +91,7 @@ const CenterFormContainer = styled.div`
   border-bottom: 1px solid #c4c4c4;
   margin-bottom: 30px;
   padding-bottom: 40px;
+  min-height: 300px;
 
   @media (max-width: 1024px) {
     min-height: 170px;

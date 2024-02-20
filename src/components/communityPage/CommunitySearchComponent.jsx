@@ -48,7 +48,7 @@ const TableBody = styled.div`
   width: 100%;
   flex-direction: column;
   align-items: flex-start;
-  min-height: 50vh;
+  min-height: 60vh;
 `;
 const TableRow = styled.div`
   width: 100%;

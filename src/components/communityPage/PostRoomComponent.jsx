@@ -99,6 +99,7 @@ const Box4 = styled.div`
   display: flex;
   flex-direction: column;
   width: 100%;
+  min-height: 40vh;
 `;
 const Box5 = styled.div`
   display: flex;

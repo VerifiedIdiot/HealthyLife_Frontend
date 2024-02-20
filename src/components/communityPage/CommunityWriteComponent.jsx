@@ -230,7 +230,7 @@ const WriteComponent = () => {
   };
   return (
     <Main $height="auto" $justify="center" $align="center">
-      <Container>
+      <Container $justify="center">
         <WriteSection>
           <WriteHeading>
             <WriteHeadingText>Community</WriteHeadingText>

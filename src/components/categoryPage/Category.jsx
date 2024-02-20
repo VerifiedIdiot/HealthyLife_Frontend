@@ -35,12 +35,14 @@ const Category = () => {
     try {
       const rsp = await CommunityAxiosApi.cateInsert(text);
       if (rsp.status === 200) {
+        setModalOpen(true);
+        setModalMessage("카테고리가 등록 되었습니다.");
+
         const rsp = await CommunityAxiosApi.cateList();
         setCates(rsp.data);
-        console.log("등록 성공");
       } else {
         setModalOpen(true);
-        setModalMessage("등록 실패");
+        setModalMessage("카테고리 등록이 실패하셨습니다.");
       }
     } catch (error) {
       console.log(error);
@@ -52,12 +54,11 @@ const Category = () => {
       if (rsp.data === true) {
         const rsp = await CommunityAxiosApi.cateList();
         if (rsp.status === 200) setCates(rsp.data);
-        console.log(rsp.data);
-        setCates(rsp.data);
-        console.log("등록 성공");
+        setModalOpen(true);
+        setModalMessage("카테고리가 삭제 되었습니다.");
       } else {
         setModalOpen(true);
-        setModalMessage("삭제 실패");
+        setModalMessage("카테고리 삭제가 실패하셨습니다.");
       }
     } catch (error) {
       console.log(error);

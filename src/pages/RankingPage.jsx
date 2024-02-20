@@ -20,9 +20,9 @@ const RankingPage = () => {
         <Container>
           <SortedSection onRankingSelect={setSelectedRankingType}/>
           <SearchSection rankingType={selectedRankingType}/>
-          <ViewSection />
+          
           <BoardSection rankingType={selectedRankingType}/>
-          <PaginationSection />
+          
         </Container>
       </Main>
     </>

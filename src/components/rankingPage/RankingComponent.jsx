@@ -8,14 +8,11 @@ import {
   ItemArea,
   ItemBox,
   ItemBoardSection,
-  ItemViewSection,
-  ItemPaginationSection,
-  ItemPaginationArea,
-  ItemPaginationButton,
+
 } from "./RankingStyle";
 
 import { SearchBox } from "./RankingContainer";
-import { MyReactTable, SeasonReactTable, TotalReactTable } from "./ReactTable";
+import { SeasonReactTable, TotalReactTable } from "./ReactTable";
 
 import seasonRanking from "../../assets/icons/ranking/seasonRanking.png";
 import maleRanking from "../../assets/icons/ranking/maleRanking.png";
@@ -59,23 +56,13 @@ export const SearchSection = ({ rankingType }) => {
   );
 };
 
-// 
-export const ViewSection = () => {
-  return (
-  <>
-  <p> 내 랭킹 출력 </p>
-  <ItemViewSection>
-  <MyReactTable></MyReactTable>
-  </ItemViewSection>
-  </>
-  );
-};
+
 
 export const BoardSection = ({ rankingType }) => {
   return (
     <>
     <br/>
-      <p>{rankingType} 출력</p>
+      
       <ItemBoardSection>
         <ItemArea>
           <ItemBox>
@@ -89,16 +76,4 @@ export const BoardSection = ({ rankingType }) => {
   );
 };
 
-export const PaginationSection = () => {
-  return (
-  <>
-  <ItemPaginationSection>
-    <ItemPaginationArea>
-      <ItemPaginationButton>
 
-      </ItemPaginationButton>
-    </ItemPaginationArea>
-  </ItemPaginationSection>
-  </>
-  );
-};

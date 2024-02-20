@@ -37,6 +37,7 @@ const ChattingPage = (props) => {
             setState={selected}
             userId={userId}
             setChatNum={chatNumed}
+            state={state}
           />
         )}
         {state === "FRIENDS" && (

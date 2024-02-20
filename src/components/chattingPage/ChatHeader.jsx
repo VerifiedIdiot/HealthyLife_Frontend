@@ -79,7 +79,7 @@ export const ChatHeader = (props) => {
             $height="70px"
             $fontSize="1.5em"
             $borderRadius="0px 8px 0px 0px"
-          >
+            >
             CHAT
           </ButtonComp>
         </Area>

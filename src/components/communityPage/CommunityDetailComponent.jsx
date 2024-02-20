@@ -11,6 +11,7 @@ import { SmallButton } from "../../styles/styledComponents/StyledComponents";
 import PostRoom from "./PostRoomComponent";
 import MemberApi from "../../api/MemberApi";
 import React from "react";
+import FriendBox from "../../styles/modals/FriendBox";
 
 const InputContainer = styled.div`
   position: relative;
@@ -85,6 +86,7 @@ const FormContainer = styled.div`
   color: #333;
   justify-content: space-between;
   padding: 5px 0 5px 0;
+  position: relative;
 `;
 const CenterFormContainer = styled.div`
   flex-wrap: wrap;
@@ -197,8 +199,24 @@ const CommunityDetailComponent = () => {
     }
   };
 
+  const [isFriendBoxVisible, setIsFriendBoxVisible] = useState(false);
+  const [friendBoxPosition, setFriendBoxPosition] = useState({ x: 0, y: 0 });
+
+  // 클릭 이벤트 핸들러
+  const handleFriendBoxClick = (event) => {
+    const { clientX, clientY } = event;
+    setFriendBoxPosition({ x: clientX, y: clientY });
+    setIsFriendBoxVisible(true);
+  };
+
+  // 포커스가 벗어날 때 실행되는 함수
+  const handleFriendBoxBlur = () => {
+    setIsFriendBoxVisible(false);
+    setFriendBoxPosition({ x: 0, y: 0 });
+  };
+
   return (
-    <Main $align="center" $height="auto">
+    <Main $align="center" $height="auto" $position="relative">
       <InputContainer>
         <PostListTitle>
           <CategoryContent>{post.categoryName}</CategoryContent>
@@ -216,8 +234,18 @@ const CommunityDetailComponent = () => {
         <Line2 />
         <FormContainer>
           <DetailInfoContent>
-            By {post.nickName}, 좋아요
-            <p>
+            <p1 onClick={handleFriendBoxClick} onBlur={handleFriendBoxBlur}>
+              By {post.nickName}, 좋아요
+            </p1>
+            {isFriendBoxVisible && (
+              <FriendBox
+                nickName={post.nickName}
+                userId={post.memberId}
+                x={friendBoxPosition.x}
+                y={friendBoxPosition.y}
+              />
+            )}
+            <p>``
               &nbsp;
               {isLiked ? (
                 <FaHeart onClick={likeIt} />

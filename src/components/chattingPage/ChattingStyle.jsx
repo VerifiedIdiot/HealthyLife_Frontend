@@ -7,8 +7,7 @@ export const MemberImg = styled.div`
   margin: 0 10px;
   align-items: center;
   justify-content: center;
-  border-radius: 10px;
-  border: 1px solid black;
+  border: 1px solid grey;
 `;
 
 export const MemberInfo = styled.div`
@@ -53,7 +52,7 @@ export const ChatImage = styled.img.attrs({
 })`
   cursor: pointer;
   object-fit: cover;
-  border-radius: 8px;
+  border-radius: 10px;
   margin: 5px;
   width: 100%;
   height: 100%;

@@ -13,7 +13,7 @@ import { LastPage } from "@mui/icons-material";
 import MemberApi from "../../api/MemberApi";
 
 const ChatList = (props) => {
-  const { setState } = props;
+  const { setState, state } = props;
   const [chatRoomTitle, setChatRoomTitle] = useState("");
   const [chatRooms, setChatRooms] = useState([]);
   const [senderId1, setSenderId1] = useState();
@@ -43,20 +43,20 @@ const ChatList = (props) => {
             return { ...chatRoom, unreadMessageCount };
           })
         );
-  
+
         console.log(chatRoomsWithUnreadCount);
         setChatRooms(chatRoomsWithUnreadCount);
       } catch (e) {
         console.log(e);
       }
     };
-  
+
     // 초기 업데이트
     getChatRoom();
-  
-    // 0.5초마다 업데이트 
+
+    // 0.5초마다 업데이트
     const intervalId = setInterval(getChatRoom, 50 * 60);
-  
+
     // 컴포넌트 언마운트 시 인터벌 클리어
     return () => clearInterval(intervalId);
   }, []);
@@ -118,13 +118,13 @@ const ChatBox = (props) => {
         console.error("최신 메시지 조회 중 에러 발생:", error);
       }
     };
-  
+
     // 초기 업데이트
     fetchLatestMessage();
-  
-    // 0.5초마다 업데이트 
+
+    // 0.5초마다 업데이트
     const intervalId = setInterval(fetchLatestMessage, 50 * 60);
-  
+
     // 컴포넌트 언마운트 시 인터벌 클리어
     return () => clearInterval(intervalId);
   }, [roomInfo.roomId]);

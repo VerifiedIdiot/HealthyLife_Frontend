@@ -50,7 +50,7 @@ export const ComboBox = styled.div.attrs({
   border-radius: 8px;
   background: white;
   padding: 10px 0;
-  margin: 1vh;
+  margin: 1vh 0;
   box-shadow: ${(props) => props.$shadow || "0 2px 4px rgba(0, 0, 0, 0.1)"};
   div {
     flex-direction: row;
@@ -252,7 +252,7 @@ export const CalendarMainSection = styled(Container)`
 
   // react-calendar.css
   .react-calendar {
-    
+
     width: 100%;
     height: 100%;
     margin: 0 auto;
@@ -302,7 +302,7 @@ export const CalendarMainSection = styled(Container)`
 
   .react-calendar__tile {
     text-align: center;
-    height: 125px;
+    height: 135px;
     display: flex;
     flex-direction: column;
     justify-content: flex-start;

@@ -30,7 +30,6 @@ export const ComboSelectBox = styled.div.attrs({
   display: flex;
   flex-direction: column;
   justify-content: ${(props) => props.$justify || "flex-start"};
-  align-items: center;
 
   width: 60%;
   height: ${(props) => props.$height || "100%"};
@@ -64,7 +63,6 @@ export const MealTitle = styled.div.attrs({
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  align-items: center;
   padding: 0 3vw;
 `;
 
@@ -72,9 +70,11 @@ export const MealInput = styled.div`
   padding: 10px 0;
   border: none;
   background-color: transparent;
+  
 
   h2 {
     font-size: 1.2rem;
+    align-items: baseline;
   }
 `;
 
@@ -115,7 +115,7 @@ export const MealInfoArea = styled.div`
 `;
 
 export const MealInfoList = styled.ul`
-
+text-align: left;
 `;
 
 export const MealInfo = styled.li`
@@ -151,7 +151,7 @@ export const MealButton = styled.div`
 export const InputField = styled.input`
   width: 30vw;
   height: 40px;
-
+  
   margin: 10px;
   border: 1px solid #ccc;
   border-radius: 4px;

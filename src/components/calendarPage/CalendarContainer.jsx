@@ -63,15 +63,13 @@ export const MealBox = () => {
           meal: response.meal,
           workout: response.workout,
         });
-        
-        
       } catch (error) {
         console.error("상세 정보 조회 실패:", error);
       }
     };
 
     // 데이터 추가 플래그가 true일 경우에만 업데이트 함수 호출
-    if (state.addState=== true) {
+    if (state.addState === true) {
       updateAfterInsert().then(() => {
         // 성공적인 업데이트 후 addState를 false로 재설정
         actions.setAddState(false);
@@ -117,13 +115,12 @@ export const MealBox = () => {
                         state.dateData.meal
                           .filter((meal) => meal.meal_type === mealType)
                           .map((meal) => (
-                            <MealInfo key={meal.id}>{meal.meal_name}
-                            <MealDel>X</MealDel>
+                            <MealInfo key={meal.id}>
+                              {meal.meal_name}
+                              <MealDel>X</MealDel>
                             </MealInfo>
                           ))}
-                          
                     </MealInfoList>
-                    
                   </MealInfoArea>
                 </MealInfoBox>
               )}
@@ -294,7 +291,7 @@ export const MealInputBox = ({ modalOpen, closeModal }) => {
     <>
       <ComboBoxContainer>
         <ComboBoxSection>
-          <ComboSelectBox>
+          <ComboSelectBox >
             <InputField
               type="text"
               placeholder="메뉴를 입력하세요."

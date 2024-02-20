@@ -1,6 +1,4 @@
 import { styled } from "styled-components";
-import UseTerm from "./UseTerm";
-import PrivacyTerm from "./PrivacyTerm";
 
 const ModalStyle = styled.div`
   .modal {
@@ -10,8 +8,8 @@ const ModalStyle = styled.div`
     right: 0;
     bottom: 0;
     left: 0;
+    z-index: 999;
     background-color: rgba(0, 0, 0, 0.6);
-    z-index: 1000;
   }
 
   .openModal {
@@ -33,8 +31,10 @@ const ModalStyle = styled.div`
     header {
       position: relative;
       padding: 16px 64px 16px 16px;
-      background-color: var(--VIOLET);
+      color: white;
+      background-color: #4942e4;
       font-weight: 600;
+      text-align: left;
       button {
         position: absolute;
         top: 15px;
@@ -42,18 +42,18 @@ const ModalStyle = styled.div`
         width: 30px;
         font-size: 21px;
         font-weight: 700;
-        /* text-align: center; */
+        text-align: center;
         color: #999;
         background-color: transparent;
       }
     }
-    .agreeBox {
+    div {
       padding: 16px;
-      height: 50vh;
       border-bottom: 2px solid #dee2e6;
-      /* text-align: center; */
+      text-align: center;
       color: #333;
-      /* overflow-y: scroll; */
+      white-space: pre-line;
+      line-height: 1.4;
     }
     footer {
       padding: 12px 16px;
@@ -61,7 +61,7 @@ const ModalStyle = styled.div`
       button {
         padding: 6px 12px;
         color: #fff;
-        background-color: var(--VIOLET);
+        background-color: #4942e4;
         border-radius: 5px;
         font-size: 13px;
       }
@@ -96,22 +96,42 @@ const Button = styled.button`
   width: 60px;
 `;
 
-const AgreementModal = (props) => {
-  const { open, close, type } = props;
+const Modal = (props) => {
+  const {
+    open,
+    confirm,
+    close,
+    type,
+    header,
+    children,
+    closeEvt = () => {},
+  } = props;
 
   return (
     <ModalStyle>
       <div className={open ? "openModal modal" : "modal"}>
         {open && (
           <section>
-            <header>
-              {type && type === "use" ? "이용약관" : "개인정보 취급방침"}
-            </header>
-            <div className="agreeBox">
-              {type && type === "use" ? <UseTerm /> : <PrivacyTerm />}
-            </div>
+            <header>{header}</header>
+            <div>{children}</div>
             <footer>
-              <Button onClick={close}>확인</Button>
+              {type && (
+                <Button
+                  onClick={() => {
+                    confirm();
+                  }}
+                >
+                  확인
+                </Button>
+              )}
+              <Button
+                onClick={() => {
+                  close();
+                  closeEvt();
+                }}
+              >
+                {type ? "취소" : "확인"}
+              </Button>
             </footer>
           </section>
         )}
@@ -119,4 +139,4 @@ const AgreementModal = (props) => {
     </ModalStyle>
   );
 };
-export default AgreementModal;
+export default Modal;

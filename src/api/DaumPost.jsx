@@ -17,8 +17,10 @@ const PostStyle = styled.div`
     position: relative;
     top: 15%;
     .close {
-      padding: 10px;
-      background-color: var(--LIGHTVIO);
+      padding: 5px;
+      border-top-left-radius: 10px;
+      border-top-right-radius: 10px;
+      background-color: #4942e4;
       display: flex;
       justify-content: end;
       button {

@@ -10,6 +10,7 @@ const AdminAxiosApi = {
     );
   },
   memberDelete: async (email) => {
+    console.log("delete email : " + email);
     return await AxiosInstance.delete(
       Common.WEELV_DOMAIN + `/admin/member/members/${email}`,
       {

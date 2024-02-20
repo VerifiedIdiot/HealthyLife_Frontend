@@ -2,7 +2,7 @@ import { useNavigate } from "react-router";
 import { Area, Container, Main, Section } from "../../styles/Layouts";
 
 import logo from "../../assets/icons/logo.svg";
-import { useContext, useEffect } from "react";
+import { useContext, useEffect, useState } from "react";
 import basicUser from "../../assets/imgs/basicUser.png";
 
 import { LargeButton } from "../../styles/styledComponents/StyledComponents";
@@ -28,6 +28,16 @@ const PaymentComp = ({ profile }) => {
   const navigate = useNavigate();
   const loginGate = useNavigate();
   const paymentNavigate = useNavigate();
+
+  //모달/////////////////////////////////////////////////////////
+  const [openModal, setModalOpen] = useState(false);
+  const closeModal = (num) => {
+    setModalOpen(false);
+  };
+  const [modalMsg, setModalMsg] = useState("");
+  const [modalHeader, setModalHeader] = useState("");
+  const [modalConfirm, setModalConfirm] = useState("");
+  /////////////////////////////////////////////////////////////
 
   // 카카오 아이디, 비밀번호
   const context = useContext(UserContext);
@@ -89,11 +99,11 @@ const PaymentComp = ({ profile }) => {
       if (res.data !== null) {
         alert("결제 성공");
         console.log("회원가입 성공!");
+        setModalOpen(true);
+        setModalHeader("회원가입");
+        setModalMsg("회원가입에 성공했습니다!");
+        setModalConfirm("회원가입");
         paymentNavigate("/login");
-        // setModalOpen(true);
-        // setModalHeader("회원가입");
-        // setModalMsg("회원가입에 성공했습니다!");
-        // setModalType("회원가입");
       }
     } catch (err) {
       console.log(url);

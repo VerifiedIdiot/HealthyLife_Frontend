@@ -13,10 +13,10 @@ export const ButtonComp = styled.button`
   transition: 0.2s ease-in;
   cursor: pointer;
   &.false {
-    background-color: #4942e4;
+    background-color: grey;
     cursor: default;
     &:hover {
-      background-color: #11009e;
+      background-color: grey;
     }
   }
   &:hover {
@@ -41,12 +41,12 @@ const Button = (props) => {
   return (
     <>
       <ButtonComp
-        color={color}
+        $color={color}
         $front={front}
         $back={back}
-        width={width}
-        height={height}
-        fontSize={fontSize}
+        $width={width}
+        $height={height}
+        $fontSize={fontSize}
         className={active ? "" : "false"}
         onClick={() => {
           if (active) clickEvt();

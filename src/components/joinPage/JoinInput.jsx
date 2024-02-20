@@ -59,8 +59,8 @@ export const InputButton = (props) => {
           children={btnChild}
           active={active}
           clickEvt={clickEvt}
-          width="30%"
-          height="48px"
+          width="8%"
+          height="30px"
           fontSize="14px"
         />
       </div>

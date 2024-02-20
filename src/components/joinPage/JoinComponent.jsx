@@ -1,20 +1,18 @@
 import { useNavigate } from "react-router";
 import { Area, Box, Container, Main, Section } from "../../styles/Layouts";
 import logo from "../../assets/icons/logo.svg";
-import basicUser from "../../assets/imgs/basicUser.png";
 import { useContext, useEffect, useMemo, useState } from "react";
 import { LabelComp } from "./JoinStyle";
 import { Address, Input, InputButton } from "./JoinInput";
 import MemberApi from "../../api/MemberApi";
 import AgreeCheck from "./AgreeCheck";
 import { MiddleButton } from "../../styles/styledComponents/StyledComponents";
-import SmallModal from "../../styles/modals/SmallModal";
 import DaumPostPopup from "../../api/DaumPost";
-import { storage } from "../../api/firebase";
-import BodyInfoComp from "./BodyInfoComponent";
 import { UserContext } from "../../contexts/UserStore";
 import styled from "styled-components";
 import { media } from "../../utils/MediaQuery";
+import Modal from "../../styles/modals/UserModal";
+import Button from "../../styles/example/Button";
 
 const ContainerStyle = styled(Container)`
   ${media.small`
@@ -27,9 +25,19 @@ const ContainerStyle2 = styled(Container)`
   width: 100%;
 `}
 `;
+
+const AreaStyle = styled(Area)`
+  ${media.small`
+    font-size: 0.9em;
+    justify-content: end;
+    .memberYet {
+      display: none;
+    }
+
+`}
+`;
 const JoinComp = ({ email, profile }) => {
   const navigate = useNavigate();
-  const loginGate = useNavigate();
   const paymentNavigate = useNavigate();
 
   // // 프로필 관련
@@ -119,21 +127,15 @@ const JoinComp = ({ email, profile }) => {
   // 카카오 회원가입 시, 아이디, 비밀번호 input 비활성화
   const [readOnly, setReadOnly] = useState(false);
 
-  // 모달
-  const [isModalOpen, setIsModalOpen] = useState({
-    Large: false,
-    Middle: false,
-    Small: false,
-  });
+  //모달/////////////////////////////////////////////////////////
+  const [openModal, setModalOpen] = useState(false);
+  const closeModal = (num) => {
+    setModalOpen(false);
+  };
   const [modalMsg, setModalMsg] = useState("");
-
-  const openModal = (size) => {
-    setIsModalOpen({ ...isModalOpen, [size]: true });
-  };
-
-  const closeModal = (size) => {
-    setIsModalOpen({ ...isModalOpen, [size]: false });
-  };
+  const [modalHeader, setModalHeader] = useState("");
+  const [modalConfirm, setModalConfirm] = useState("");
+  /////////////////////////////////////////////////////////////
 
   // 정규식
   const regexList = [
@@ -196,9 +198,11 @@ const JoinComp = ({ email, profile }) => {
       const res = await MemberApi.sendEmailCode(inputEmail);
       console.log("이메일전송 결과 : " + res.data);
       if (res.data !== null) {
+        // alert("인증번호" + res.data);
         setSendCode(res.data);
-        alert("인증번호 : " + res.data);
-        // setIsModalOpen(true);
+        setModalOpen(true);
+        setModalMsg("인증번호가 발송되었습니다.");
+        setModalHeader("확인");
       }
     } catch (e) {
       console.log("이메일 err : " + e);
@@ -357,7 +361,7 @@ const JoinComp = ({ email, profile }) => {
       setCheckedAll(false);
     }
   }, [checked1, checked2]);
-
+  /////////////////////////////////////////////////////////////////
   useEffect(() => {
     if (kakaoId !== "" && kakaoPw !== "") {
       setInputEmail(kakaoId);
@@ -405,27 +409,32 @@ const JoinComp = ({ email, profile }) => {
             />
           </Section>
           <Section $height="5%" $shadow="none" $padding="0 10px">
-            <Area $shadow="none" $width="22%">
+            <AreaStyle
+              $shadow="none"
+              $width="100%"
+              $height="100%"
+              $align="center"
+            >
               <p
+                className="memberYet"
                 style={{
-                  paddingRight: "5px",
+                  marginRight: "10px",
                 }}
               >
                 Are you a member?
               </p>
-            </Area>
-            <Area $shadow="none" $height="50%">
               <p
+                className="register"
                 style={{
                   borderBottom: "2px solid black",
                   cursor: "pointer",
                   fontWeight: "600",
                 }}
-                onClick={() => loginGate("/login")}
+                onClick={() => navigate("/login")}
               >
                 Log in now
               </p>
-            </Area>
+            </AreaStyle>
           </Section>
         </ContainerStyle>
         <ContainerStyle2
@@ -763,7 +772,12 @@ const JoinComp = ({ email, profile }) => {
               )}
             </Area>
 
-            <Area $direction="column" $shadow="none" $marginTop="10px">
+            <Area
+              $direction="column"
+              $shadow="none"
+              $marginTop="20px"
+              $marginBottom="20px"
+            >
               <AgreeCheck
                 className="all"
                 agreeAll={true}
@@ -785,17 +799,39 @@ const JoinComp = ({ email, profile }) => {
               />
             </Area>
             <Area $display="flex" $justify="center" $shadow="none">
-              <MiddleButton onClick={() => paymentNavigate("/join/payment")}>
+              <Button
+                width="100px"
+                height="40px"
+                children={"회원가입"}
+                active={
+                  isCode &&
+                  isPw2 &&
+                  isName &&
+                  isNickName &&
+                  isPhone &&
+                  isAddr &&
+                  checkedAll
+                }
+                onClick={() => paymentNavigate("/join/payment")}
+              >
                 다음
-              </MiddleButton>
+              </Button>
             </Area>
           </Section>
-          <SmallModal
-            $isOpen={isModalOpen.Small}
-            $onClose={() => closeModal("Small")}
-          >
-            <p>{modalMsg}</p>
-          </SmallModal>
+          <Modal
+            open={openModal}
+            close={closeModal}
+            header={modalHeader}
+            children={modalMsg}
+            type={false}
+            closeEvt={() => {
+              if (email) {
+                // kakaoId();
+              } else if (modalConfirm === "회원가입") {
+                navigate("/login");
+              }
+            }}
+          />
         </ContainerStyle2>
       </Main>
     </>

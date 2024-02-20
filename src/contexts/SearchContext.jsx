@@ -24,7 +24,8 @@ const initialState = {
   page: 1,
   size: 10,
   searchResults: [],
-  totalCount: null,
+  totalCount:  104736,
+  
 };
 
 const searchReducer = (state, action) => {

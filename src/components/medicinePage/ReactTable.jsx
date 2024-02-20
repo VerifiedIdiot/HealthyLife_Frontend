@@ -50,7 +50,7 @@ const TableRow = styled.tr`
 
 const TableBodyRow = styled(TableRow)`
   &:hover {
-    background-color: #ccc9c9;
+    background-color: #eae6e6;
   }
 `;
 const TableHeaderCell = styled.th`
@@ -68,7 +68,6 @@ const TableHeaderCell = styled.th`
 `;
 const TableBody = styled.tbody`
   vertical-align: middle;
-  
 `;
 const TableDataCell = styled.td`
   height: 8vh;
@@ -110,9 +109,9 @@ const ReactTable = () => {
     // 모바일 또는 태블릿 환경에서만 토글 동작 수행
     if (isMobileView || isTabletView) {
       const key = `${rowId}-${columnId}`;
-      setExpandedCells(prev => ({
+      setExpandedCells((prev) => ({
         ...prev,
-        [key]: !prev[key] // 현재 상태를 반전
+        [key]: !prev[key], // 현재 상태를 반전
       }));
     }
   };
@@ -202,25 +201,25 @@ const ReactTable = () => {
         ))}
       </TableHeader>
       <TableBody {...getTableBodyProps()}>
-  {rows.map((row) => {
-    prepareRow(row);
-    return (
-      <TableBodyRow {...row.getRowProps()}>
-        {row.cells.map((cell) => {
-          // 컬럼이 숨겨져 있지 않은 경우에만 셀 렌더링
-          if (cell.column.show !== false) {
-            return (
-              <TableDataCell {...cell.getCellProps()}>
-                {cell.render("Cell")}
-              </TableDataCell>
-            );
-          }
-          return null; // 컬럼이 숨겨진 경우 셀을 렌더링하지 않음
+        {rows.map((row) => {
+          prepareRow(row);
+          return (
+            <TableBodyRow {...row.getRowProps()}>
+              {row.cells.map((cell) => {
+                // 컬럼이 숨겨져 있지 않은 경우에만 셀 렌더링
+                if (cell.column.show !== false) {
+                  return (
+                    <TableDataCell {...cell.getCellProps()}>
+                      {cell.render("Cell")}
+                    </TableDataCell>
+                  );
+                }
+                return null; // 컬럼이 숨겨진 경우 셀을 렌더링하지 않음
+              })}
+            </TableBodyRow>
+          );
         })}
-      </TableBodyRow>
-    );
-  })}
-</TableBody>
+      </TableBody>
     </TableArea>
   );
 };

@@ -51,7 +51,7 @@ const ResponsiveSearchSection = styled(Section)`
   @media (max-width: 768px) {
     width: 100%;
     min-width: auto;
-    overflow-x: hidden;
+    /* overflow-x: hidden; */
   }
 
   @media (max-width: 500px) {
@@ -404,10 +404,11 @@ export const PaginationSection = () => {
     (pageNumber) => {
       actions.setPage(pageNumber);
       actions.performSearch({ page: pageNumber });
-
+    
       const searchParams = new URLSearchParams(window.location.search);
       searchParams.set("page", pageNumber.toString());
       navigate(`?${searchParams.toString()}`, { replace: true });
+
     },
     [actions, navigate]
   );

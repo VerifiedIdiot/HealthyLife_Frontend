@@ -39,11 +39,12 @@ const BodyApi = {
       fat: fat,
       fatPercent: fatPercent,
       height: height,
-      memberEmail: email,
+      email: email,
       muscle: muscle,
       weight: weight,
       DCI: dci,
     };
+    console.log("이메일" + email);
     return await axios.post(BACKEND_DOMAIN + "/Body/new", userBody);
   },
 

@@ -165,6 +165,13 @@ const InbodyInput = (props) => {
     [fat, weight]
   );
 
+  const dci = useMemo(() => {
+    if (!exerciseInfo || !weight) {
+      return 0;
+    }
+    return exerciseInfo * weight;
+  }, [exerciseInfo, weight]);
+
   const heightChange = (e) => {
     setHeight(e.target.value);
   };
@@ -192,9 +199,10 @@ const InbodyInput = (props) => {
           fatPercent,
           height,
           muscle,
-          weight
+          weight,
+          dci
         );
-        console.log(rsp.data);
+        console.log("문디문디" + rsp.data);
         const confirmationMessage = `키 : ${height}, 몸무게 : ${weight}, 골격근량 : ${muscle}, 체지방량 : ${fat} 이 맞습니까?`;
         if (window.confirm(confirmationMessage)) {
           if (rsp.data === true) {
@@ -207,7 +215,14 @@ const InbodyInput = (props) => {
             props.handleClick();
           } else {
             alert("등록 실패");
-            console.log(rsp);
+            console.log(height);
+            console.log(weight);
+            console.log(bmi);
+            console.log(currentDate);
+            console.log(fat);
+            console.log(fatPercent);
+            console.log(muscle);
+            console.log(dci);
           }
         }
       } catch (error) {

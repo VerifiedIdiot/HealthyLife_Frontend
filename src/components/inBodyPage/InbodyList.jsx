@@ -98,7 +98,7 @@ const InbodyList = ({ bodyData }) => {
                     $height="150px"
                     style={{
                       borderRadius: "8px",
-                      backgroundColor: "#D9D9D9",
+                      boxShadow: "0 2px 4px rgba(0, 0, 0, 1)",
                     }}
                   >
                     <Section

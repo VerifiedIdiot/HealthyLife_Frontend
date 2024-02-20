@@ -38,7 +38,7 @@ const GraphContainer = styled.div`
   border-radius: 8px;
   padding-bottom: 1rem;
   min-height: 320px;
-  border: 2px solid #d9d9d9;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 1);
 
   align-items: center;
 

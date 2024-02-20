@@ -43,7 +43,6 @@ const Class3 = styled.select`
   width: 60%;
   height: 35px;
   border-radius: 8px;
-  border: none;
 `;
 
 const Class4 = styled.option``;
@@ -97,7 +96,7 @@ const ExerciseClass = ({ setdata1, setdata2 }) => {
       $align="center"
       $width="90%"
       $shadow="none"
-      style={{ backgroundColor: "#D9D9D9", borderRadius: "8px" }}
+      style={{ boxShadow: "0 2px 4px rgba(0, 0, 0, 1)", borderRadius: "8px" }}
     >
       <Container
         $justify="center"

@@ -16,8 +16,6 @@ const Search1 = styled.input`
   width: 40%;
   height: 35px;
   border-radius: 8px 0px 0px 8px;
-  border: none;
-  background-color: #d9d9d9;
   box-sizing: border-box;
 
   ${media.small`

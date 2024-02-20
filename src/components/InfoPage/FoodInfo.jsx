@@ -17,7 +17,7 @@ const Food = styled.div`
   width: 25%;
   height: 440px;
   align-items: center;
-  background-color: #d9d9d9;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 1);
   border-radius: 8px;
   margin: 1rem;
   max-width: 300px;

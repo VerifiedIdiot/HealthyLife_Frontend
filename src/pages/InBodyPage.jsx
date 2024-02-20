@@ -50,9 +50,6 @@ const InbodyPage = () => {
     <>
       <Main $height="auto" $shadow="none">
         <Container $align="center" $height="auto" $shadow="none">
-          <Section>
-            <InbodyTitle>My Records</InbodyTitle>
-          </Section>
           <Section
             $justify="center"
             style={{

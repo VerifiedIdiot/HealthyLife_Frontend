@@ -47,7 +47,6 @@ const Input3 = styled.input`
   width: 40%;
   height: 30px;
   border-radius: 8px;
-  border: none;
 `;
 
 const ImgContainer = styled.div`
@@ -263,7 +262,11 @@ const InbodyInput = (props) => {
         $direction="row"
         $justify="center"
         $height="100%"
-        style={{ backgroundColor: "#D9D9D9", borderRadius: "8px" }}
+        $s
+        style={{
+          borderRadius: "8px",
+          boxShadow: "0 2px 4px rgba(0, 0, 0, 1)",
+        }}
       >
         <ImgContainer>
           <Runner src={runner} />

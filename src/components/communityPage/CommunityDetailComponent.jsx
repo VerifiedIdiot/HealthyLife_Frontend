@@ -19,6 +19,9 @@ const InputContainer = styled.div`
   margin-top: 3em;
   margin-bottom: 3em;
   width: 100%;
+  @media (max-width: 1024px) {
+    margin-bottom: 2em;
+  }
 `;
 const CategoryContent = styled.div`
   display: flex;
@@ -236,8 +239,8 @@ const CommunityDetailComponent = () => {
             </>
           )}
         </ButtonContainer>
+        <PostRoom />
       </InputContainer>
-      <PostRoom />
     </Main>
   );
 };

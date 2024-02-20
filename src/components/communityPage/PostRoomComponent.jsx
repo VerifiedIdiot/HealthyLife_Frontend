@@ -15,7 +15,6 @@ import MemberApi from "../../api/MemberApi";
 import Common from "../../utils/Common";
 
 const CommentContainer = styled.div`
-  overflow-y: scroll;
   position: relative;
 `;
 
@@ -50,16 +49,14 @@ const CommentBox = styled.div`
 const CommentNickname = styled.p`
   color: #2446da;
   font-weight: 600;
-  margin-left: 5px;
-  margin-top: 5px;
 `;
 const HeadText = styled.div`
   justify-content: flex-start;
   align-items: center;
   display: flex;
-  margin: 5px;
   font-size: 0.8rem;
   word-break: break-word;
+  margin-left: 8px;
 `;
 const CommentContent = styled.div`
   border-radius: 5px;
@@ -73,7 +70,6 @@ const CommentContent = styled.div`
 const CommentItem = styled.div`
   display: flex;
   flex-direction: column;
-  overflow-y: scroll;
 `;
 const Day = styled.div`
   display: flex;
@@ -83,6 +79,7 @@ const Day = styled.div`
 const Box = styled.div`
   display: flex;
   align-items: center;
+  padding: 8px;
 `;
 const Box1 = styled.div`
   display: flex;
@@ -97,15 +94,17 @@ const Box2 = styled.div`
 const Box3 = styled.div`
   display: flex;
   flex-direction: column;
-  height: 50vh;
-  @media (max-width: 1024px) {
-    height: 35vh;
-  }
 `;
 const Box4 = styled.div`
   display: flex;
   flex-direction: column;
   width: 100%;
+`;
+const Box5 = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
 `;
 const Dropdown = styled.select`
   width: 10em;
@@ -144,6 +143,9 @@ const PostRoom = () => {
   const [totalCommentPages, setTotalCommentPages] = useState(0);
   const { id } = useParams();
 
+  // 댓글 페이지당 보여질 댓글 수
+  const commentsPerPage = 5;
+
   useEffect(() => {
     const fetchComments = async () => {
       try {
@@ -151,22 +153,26 @@ const PostRoom = () => {
         const commentResponse = await CommunityAxiosApi.commentList(
           id,
           sortType,
-          currentCommentPage
+          currentCommentPage,
+          commentsPerPage
         );
         setComments(commentResponse.data);
-        setTotalCommentPages(commentResponse.data.totalPages);
-        setSortType(sortType);
+        // setSortType(sortType);
         setCurrentCommentPage(currentCommentPage);
+
         const totalCommentsResponse = await CommunityAxiosApi.getTotalComments(
           id
         );
-        setTotalComment(totalCommentsResponse.data);
+        const totalComments = totalCommentsResponse.data;
+        setTotalComment(totalComments);
+        setTotalCommentPages(Math.ceil(totalComments / commentsPerPage));
       } catch (error) {
         console.error("Error fetching post and comments:");
       }
     };
     fetchComments();
   }, [id, sortType, currentCommentPage, totalComment]);
+
   useEffect(() => {
     // 현재 사용자의 닉네임을 가져와 nickName1 상태를 업데이트
     const fetchMemberDetail = async () => {
@@ -185,7 +191,7 @@ const PostRoom = () => {
     try {
       const response = await CommunityAxiosApi.commentDelete(commentId);
       if (response.data === true) {
-        console.log("댓글 삭제 성공");
+        alert("댓글이 삭제되었습니다.");
         setComments((prevComments) =>
           prevComments.filter((comment) => comment.commentId !== commentId)
         );
@@ -194,15 +200,8 @@ const PostRoom = () => {
           id
         );
         setTotalComment(totalCommentsResponse.data);
-
-        // 페이지당 댓글 수 계산
-        const commentsPerPage = 10; // 페이지당 댓글 수
-        const totalPages = Math.ceil(
-          totalCommentsResponse.data / commentsPerPage
-        );
-        setTotalCommentPages(totalPages);
       } else {
-        alert("댓글 삭제 실패");
+        alert("댓글 삭제 실패하였습니다.");
       }
     } catch (error) {
       console.error("댓글 삭제 오류:", error);
@@ -231,13 +230,6 @@ const PostRoom = () => {
           id
         );
         setTotalComment(totalCommentsResponse.data);
-
-        // 페이지당 댓글 수 계산
-        const commentsPerPage = 5; // 페이지당 댓글 수
-        const totalPages = Math.ceil(
-          totalCommentsResponse.data / commentsPerPage
-        );
-        setTotalCommentPages(totalPages);
       } else {
         alert("댓글 등록에 실패했습니다.");
       }
@@ -250,21 +242,14 @@ const PostRoom = () => {
     e.preventDefault();
     CommentWrite();
   };
-  // const togglePostRoom = () => {
-  //   setShowPostRoom(!showPostRoom);
-  // };
+
   return (
     <Box4>
       <FormContainer>
         <p>
           <FaRegCommentDots /> {totalComment}
         </p>
-        {/* <CommentButton onClick={togglePostRoom}>
-          댓글 보기
-          <RotatedDown isRotated={showPostRoom}></RotatedDown>
-        </CommentButton> */}
       </FormContainer>
-      {/* {showPostRoom && ( */}
       <Box3>
         <CommentContainer>
           <Dropdown onChange={(selected) => setSortType(selected.target.value)}>
@@ -300,20 +285,22 @@ const PostRoom = () => {
                 </CommentBox>
               ))}
           </CommentItem>
-          {currentCommentPage > 0 && (
-            <SmallButton
-              onClick={() => setCurrentCommentPage(currentCommentPage - 1)}
-            >
-              <IoIosArrowBack />
-            </SmallButton>
-          )}
-          {currentCommentPage + 1 < totalCommentPages && (
-            <SmallButton
-              onClick={() => setCurrentCommentPage(currentCommentPage + 1)}
-            >
-              <IoIosArrowForward />
-            </SmallButton>
-          )}
+          <Box5>
+            {currentCommentPage > 0 && (
+              <SmallButton
+                onClick={() => setCurrentCommentPage(currentCommentPage - 1)}
+              >
+                <IoIosArrowBack />
+              </SmallButton>
+            )}
+            {currentCommentPage + 1 < totalCommentPages && (
+              <SmallButton
+                onClick={() => setCurrentCommentPage(currentCommentPage + 1)}
+              >
+                <IoIosArrowForward />
+              </SmallButton>
+            )}
+          </Box5>
         </CommentContainer>
 
         <CommentForm onSubmit={handleCommentSubmit}>

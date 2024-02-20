@@ -224,7 +224,7 @@ const CommunitySearchComponent = () => {
 
   return (
     <>
-      <Main $justify="center" $hight="auto">
+      <Main $justify="center" $height="auto">
         <PostListTitle>
           <TitleContent>전체</TitleContent>
         </PostListTitle>

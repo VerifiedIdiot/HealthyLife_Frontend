@@ -54,20 +54,20 @@ export const MyReactTable = () => {
     <TableArea $justify="center">
       <TableHeader>
         <TableRow>
-          <TableHeaderCell>순위</TableHeaderCell>
-          <TableHeaderCell>닉네임</TableHeaderCell>
-          <TableHeaderCell>성별</TableHeaderCell>
-          <TableHeaderCell>포인트</TableHeaderCell>
+          <TableHeaderCell>1</TableHeaderCell>
+          <TableHeaderCell>test1</TableHeaderCell>
+          <TableHeaderCell>여</TableHeaderCell>
+          <TableHeaderCell>125</TableHeaderCell>
         </TableRow>
       </TableHeader>
-      <TableBody>
+      {/* <TableBody>
         <TableRow>
           <TableDataCell>{userEmail.ranks}</TableDataCell>
           <TableDataCell>{userEmail.nickname}</TableDataCell>
           <TableDataCell>{userEmail.gender}</TableDataCell>
           <TableDataCell>{userEmail.points}</TableDataCell>
         </TableRow>
-      </TableBody>
+      </TableBody> */}
     </TableArea>
   );
 };

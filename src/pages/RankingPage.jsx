@@ -22,7 +22,6 @@ const RankingPage = () => {
           <SearchSection rankingType={selectedRankingType}/>
           
           <BoardSection rankingType={selectedRankingType}/>
-          
         </Container>
       </Main>
     </>

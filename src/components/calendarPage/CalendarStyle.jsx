@@ -32,7 +32,7 @@ export const ComboSelectBox = styled.div.attrs({
   justify-content: ${(props) => props.$justify || "flex-start"};
   align-items: center;
 
-  width: 100%;
+  width: 60%;
   height: ${(props) => props.$height || "100%"};
   border-radius: 4px;
 
@@ -111,13 +111,16 @@ width: 20px;
 export const MealInfoArea = styled.div`
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
+  justify-content: space-evenly;
 `;
 
-export const MealInfoList = styled.ul``;
+export const MealInfoList = styled.ul`
+
+`;
 
 export const MealInfo = styled.li`
 padding: 8px;
+
 `;
 
 export const WorkoutInfoList = styled.ul``;
@@ -249,7 +252,7 @@ export const CalendarMainSection = styled(Container)`
 
   // react-calendar.css
   .react-calendar {
-    margin: 10px;
+    
     width: 100%;
     height: 100%;
     margin: 0 auto;
@@ -276,11 +279,11 @@ export const CalendarMainSection = styled(Container)`
 
   .react-calendar__navigation__label__labelText {
     color: ${({ theme }) => theme.menuColor};
-    font-size: 17px;
+    font-size: 16px;
   }
 
   .react-calendar__viewContainer {
-    margin-bottom: 15px;
+    margin-bottom: 10px;
   }
 
   .react-calendar__navigation button:enabled:hover,
@@ -299,7 +302,7 @@ export const CalendarMainSection = styled(Container)`
 
   .react-calendar__tile {
     text-align: center;
-    height: auto;
+    height: 125px;
     display: flex;
     flex-direction: column;
     justify-content: flex-start;

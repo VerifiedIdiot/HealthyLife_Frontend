@@ -79,7 +79,6 @@ export const MealBox = () => {
     }
   }, [state.addState, state.calendarId]);
 
-  // 드롭다운 상태를 토글하는 함수
   const workoutDropdown = () => {
     setDropdownWorkout(!dropdownWorkout);
   };

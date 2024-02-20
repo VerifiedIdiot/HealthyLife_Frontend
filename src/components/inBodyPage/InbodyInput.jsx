@@ -265,7 +265,7 @@ const InbodyInput = (props) => {
         $s
         style={{
           borderRadius: "8px",
-          boxShadow: "0 2px 4px rgba(0, 0, 0, 1)",
+          boxShadow: "0 2px 4px rgba(0, 0, 0, 0.5)",
         }}
       >
         <ImgContainer>
@@ -281,6 +281,7 @@ const InbodyInput = (props) => {
               fontWeight: "bold",
               marginBottom: "1rem",
               marginTop: "1rem",
+              marginLeft: "1rem",
             }}
           >
             {formattedDate} 신체정보 입력

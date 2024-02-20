@@ -38,7 +38,7 @@ const GraphContainer = styled.div`
   border-radius: 8px;
   padding-bottom: 1rem;
   min-height: 320px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 1);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
 
   align-items: center;
 
@@ -72,8 +72,17 @@ const Button = styled.button`
   font-size: 12px;
   white-space: nowrap;
 
+  ${media.small`
+    width: 75px;
+    height: 75px;
+    `};
+
   .late {
     font-size: 23px;
+
+    ${media.small`
+    font-size: 20px
+    `};
   }
 `;
 
@@ -123,6 +132,7 @@ const InbodyGraph = ({ bodyData }) => {
   const handleButtonClick = (data) => {
     mapDataToSelectedData(data);
     setSelectedButton(data.key); // 선택한 버튼 업데이트
+    console.log(latestData.muscle, previousData.mucle);
   };
 
   return (
@@ -173,7 +183,7 @@ const InbodyGraph = ({ bodyData }) => {
               }}
             >
               {latestData.muscle}
-              {getArrowIcon(latestData.muscle, previousData.mucle)}
+              {getArrowIcon(latestData.muscle, previousData.muscle)}
             </div>
           </Button>
           <Button

@@ -53,12 +53,12 @@ const InbodyPage = () => {
           <Section
             $justify="center"
             style={{
-              marginBottom: "1rem",
+              marginBottom: "3rem",
             }}
           >
             <InbodyGraph bodyData={bodyData} />
           </Section>
-          <Section $justify="center" style={{ marginBottom: "1rem" }}>
+          <Section $justify="center" style={{ marginBottom: "3rem" }}>
             <InbodyInput handleClick={handleClick} />
           </Section>
           <Section $justify="center" $height="85vh">

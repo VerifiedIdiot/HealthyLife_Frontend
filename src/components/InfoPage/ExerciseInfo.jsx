@@ -26,6 +26,7 @@ import neck from "../../assets/icons/info/neck.png";
 import quadriceps from "../../assets/icons/info/quadriceps.png";
 import shoulders from "../../assets/icons/info/shoulders.png";
 import triceps from "../../assets/icons/info/triceps.png";
+import ExerciseModal from "../../styles/modals/ExerciseModal";
 
 const Exercise = styled.div`
   display: flex;
@@ -33,7 +34,7 @@ const Exercise = styled.div`
   width: 25%;
   height: 380px;
   align-items: center;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 1);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
   justify-content: space-between;
   border-radius: 8px;
   margin: 1rem;
@@ -94,6 +95,9 @@ const ExerciseDetail3 = styled.div`
 `;
 
 const ExerciseInfo = ({ exerciseData }) => {
+  const [modalOpen, setModalOpen] = useState(false);
+  const [selectedExercise, setSelectedExercise] = useState(null);
+
   const selectMuscleImage = (muscle) => {
     switch (muscle) {
       case "abdominals":
@@ -151,6 +155,12 @@ const ExerciseInfo = ({ exerciseData }) => {
     }
   };
 
+  const handleExerciseClick = useCallback((exercise) => {
+    setSelectedExercise(exercise); // 선택된 운동 정보 설정
+    setModalOpen(true); // 모달 열기
+    console.log(exercise);
+  }, []);
+
   return (
     <Main
       $justify="center"
@@ -167,7 +177,7 @@ const ExerciseInfo = ({ exerciseData }) => {
         style={{ flexWrap: "wrap" }}
       >
         {exerciseData.map((item, index) => (
-          <Exercise key={index}>
+          <Exercise key={index} onClick={() => handleExerciseClick(item)}>
             <ExerciseImg src={selectMuscleImage(item.muscle)}></ExerciseImg>
             <ExerciseName>{item.name}</ExerciseName>
             <ExerciseDetail1>
@@ -181,6 +191,11 @@ const ExerciseInfo = ({ exerciseData }) => {
           </Exercise>
         ))}
       </Container>
+      <ExerciseModal
+        open={modalOpen}
+        close={() => setModalOpen(false)}
+        detail={selectedExercise}
+      ></ExerciseModal>
     </Main>
   );
 };

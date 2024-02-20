@@ -96,7 +96,7 @@ const ExerciseClass = ({ setdata1, setdata2 }) => {
       $align="center"
       $width="90%"
       $shadow="none"
-      style={{ boxShadow: "0 2px 4px rgba(0, 0, 0, 1)", borderRadius: "8px" }}
+      style={{ boxShadow: "0 2px 4px rgba(0, 0, 0, 0.5)", borderRadius: "8px" }}
     >
       <Container
         $justify="center"

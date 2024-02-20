@@ -49,7 +49,7 @@ const IntroElement = styled.div`
   flex-direction: column;
   width: 18%;
   justify-content: space-between;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 1);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
   border-radius: 8px;
   align-items: center;
 

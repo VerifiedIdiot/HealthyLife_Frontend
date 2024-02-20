@@ -213,19 +213,9 @@ const InformationPage = () => {
       <Main $height="auto" $shadow="none">
         <Container $align="center" $height="auto" $shadow="none">
           <Section
-            $height="auto"
-            style={{
-              fontSize: "50px",
-              fontWeight: "bold",
-              marginBottom: "1rem",
-            }}
-          >
-            Information
-          </Section>
-          <Section
             $justify="center"
             $height="auto"
-            style={{ marginBottom: "1rem" }}
+            style={{ marginBottom: "2rem", marginTop: "2rem" }}
           >
             <InfoCategory setdata={handleDataFromChild} />
           </Section>
@@ -249,7 +239,7 @@ const InformationPage = () => {
           <Section
             $justify="center"
             $height="auto"
-            style={{ marginBottom: "1rem" }}
+            style={{ marginBottom: "1.5rem" }}
           >
             {isExInfo ? (
               <ExerciseSearch setdata={handleDataFromChild4} />

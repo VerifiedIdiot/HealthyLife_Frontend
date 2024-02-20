@@ -52,7 +52,7 @@ const InfoClass = ({ setdata1, setdata2 }) => {
   const [selectedClass2, setSelectedClass2] = useState("");
 
   const class1Options = [
-    { value: "", label: "선택안함" },
+    { value: "", label: "전체" },
     { value: "곡류 및 서류", label: "곡류 및 서류" },
     { value: "과자류", label: "과자류" },
     { value: "구이류", label: "구이류" },
@@ -263,7 +263,7 @@ const InfoClass = ({ setdata1, setdata2 }) => {
       $align="center"
       $width="90%"
       $shadow="none"
-      style={{ boxShadow: "0 2px 4px rgba(0, 0, 0, 1)", borderRadius: "8px" }}
+      style={{ boxShadow: "0 2px 4px rgba(0, 0, 0, 0.5)", borderRadius: "8px" }}
     >
       <Container
         $justify="center"

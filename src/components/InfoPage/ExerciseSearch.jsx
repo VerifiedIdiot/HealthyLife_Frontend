@@ -48,7 +48,7 @@ const ExerciseSearch = ({ setdata }) => {
           }}
           onClick={() => setdata(keyword)}
         >
-          운동검색
+          검색
         </MiddleButton>
       </Container>
     </Main>

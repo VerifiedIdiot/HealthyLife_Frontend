@@ -7,7 +7,7 @@ import { media } from "../../utils/MediaQuery";
 const CalContainer = styled.div`
   width: 95%;
   border-radius: 8px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 1);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
 `;
 
 const CalContainer1 = styled.div`
@@ -119,7 +119,7 @@ const Balloon = styled.div`
   justify-content: center;
   align-items: center;
   padding: 20px;
-  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 
   ${media.large`
     width: 350px;

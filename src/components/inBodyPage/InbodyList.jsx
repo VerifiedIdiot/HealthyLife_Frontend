@@ -79,6 +79,16 @@ const InputContainer1 = styled.div`
   flex-wrap: wrap;
 `;
 
+const Containerstyle = styled(Container)`
+  border-radius: 8px;
+  height: 150px;
+
+  ${media.small`
+    /* 미디어 쿼리 small에 해당하는 스타일 */
+    height: 300px
+  `}
+`;
+
 const InbodyList = ({ bodyData }) => {
   return (
     <>
@@ -94,11 +104,11 @@ const InbodyList = ({ bodyData }) => {
               .reverse() // 역순으로 배열을 정렬합니다.
               .map((item, index) => (
                 <Input4 key={index}>
-                  <Container
-                    $height="150px"
+                  <Containerstyle
+                    $height="auto"
                     style={{
                       borderRadius: "8px",
-                      boxShadow: "0 2px 4px rgba(0, 0, 0, 1)",
+                      boxShadow: "0 2px 4px rgba(0, 0, 0, 0.5)",
                     }}
                   >
                     <Section
@@ -107,7 +117,7 @@ const InbodyList = ({ bodyData }) => {
                         alignItems: "center",
                         fontSize: "20px",
                         fontWeight: "bold",
-                        margin: "0.5rem",
+                        margin: "1rem",
                       }}
                     >
                       {new Date(item.date).getFullYear()}년{" "}
@@ -154,7 +164,7 @@ const InbodyList = ({ bodyData }) => {
                         </InputContainer1>
                       </InputContainer>
                     </Section>
-                  </Container>
+                  </Containerstyle>
                 </Input4>
               ))}
         </Input5>

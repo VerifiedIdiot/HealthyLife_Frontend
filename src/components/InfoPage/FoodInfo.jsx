@@ -10,6 +10,7 @@ import {
 } from "../../styles/Layouts";
 import styled, { css } from "styled-components";
 import { media } from "../../utils/MediaQuery";
+import FoodModal from "../../styles/modals/FoodModal";
 
 const Food = styled.div`
   display: flex;
@@ -17,7 +18,7 @@ const Food = styled.div`
   width: 25%;
   height: 440px;
   align-items: center;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 1);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
   border-radius: 8px;
   margin: 1rem;
   max-width: 300px;
@@ -80,6 +81,15 @@ const FoodDetail3 = styled.div`
 `;
 
 const FoodInfo = ({ foodData }) => {
+  const [modalOpen, setModalOpen] = useState(false);
+  const [selectedFood, setSelectedFood] = useState(null);
+
+  const handleExerciseClick = useCallback((Food) => {
+    setSelectedFood(Food); // 선택된 운동 정보 설정
+    setModalOpen(true); // 모달 열기
+    console.log(Food);
+  }, []);
+
   return (
     <Main
       $justify="center"
@@ -96,7 +106,7 @@ const FoodInfo = ({ foodData }) => {
         style={{ flexWrap: "wrap" }}
       >
         {foodData.map((item, index) => (
-          <Food key={index}>
+          <Food key={index} onClick={() => handleExerciseClick(item)}>
             <FoodImg src={`${item.image}`}></FoodImg>
             <FoodName>{item.name}</FoodName>
             <FoodSize>(1회 제공량 {item.servingSize}g)</FoodSize>
@@ -118,6 +128,11 @@ const FoodInfo = ({ foodData }) => {
           </Food>
         ))}
       </Container>
+      <FoodModal
+        open={modalOpen}
+        close={() => setModalOpen(false)}
+        detail={selectedFood}
+      ></FoodModal>
     </Main>
   );
 };

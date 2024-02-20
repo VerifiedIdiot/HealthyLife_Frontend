@@ -48,7 +48,7 @@ const InfoSearch = ({ setdata }) => {
           }}
           onClick={() => setdata(keyword)}
         >
-          음식검색
+          검색
         </MiddleButton>
       </Container>
     </Main>

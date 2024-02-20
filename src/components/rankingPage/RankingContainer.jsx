@@ -1,22 +1,15 @@
 import React from "react";
-import {
-    SearchSection,
-    SelectBox,
-    InputField
-} from "./RankingStyle";
+import { SearchSection, SelectBox, InputField } from "./RankingStyle";
 
-export const SearchBox = () => {
+export const SearchBox = ({ rankingType }) => {
   return (
-  <>
-  <SearchSection>
-    <SelectBox>
-        (시즌/남/여/토탈) 랭킹
-    </SelectBox>
-    <InputField
-    type="text"
-    placeholder="닉네임을 입력하세요." 
-    />
-  </SearchSection>
-  </>
+    <>
+      <SearchSection>
+        <SelectBox>
+          <p>{rankingType} 랭킹</p>
+        </SelectBox>
+        <InputField type="text" placeholder="닉네임을 입력하세요." />
+      </SearchSection>
+    </>
   );
 };

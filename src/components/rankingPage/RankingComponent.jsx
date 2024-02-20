@@ -15,7 +15,7 @@ import {
 } from "./RankingStyle";
 
 import { SearchBox } from "./RankingContainer";
-import { MyReactTable, TotalReactTable } from "./ReactTable";
+import { MyReactTable, SeasonReactTable, TotalReactTable } from "./ReactTable";
 
 import seasonRanking from "../../assets/icons/ranking/seasonRanking.png";
 import maleRanking from "../../assets/icons/ranking/maleRanking.png";
@@ -30,13 +30,13 @@ const rankingTypes = [
   { src: totalRanking, alt: "Total Ranking" },
 ];
 
-export const SortedSection = () => {
+export const SortedSection = ({ onRankingSelect }) => {
 
   return (
     <>
       <SortedImgBoxSection>
         {rankingTypes.map((ranking, index) => (
-          <SortedBoxArea key={index}>
+          <SortedBoxArea key={index} onClick={() => onRankingSelect(ranking.alt)}>
             <ItemType>
               <StyledIcon src={ranking.src} alt={ranking.alt} />
             </ItemType>
@@ -47,12 +47,12 @@ export const SortedSection = () => {
   );
 };
 
-export const SearchSection = () => {
+export const SearchSection = ({ rankingType }) => {
   return (
     <>
       <ItemSearchSection>
         <ItemArea>
-          <SearchBox />
+          <SearchBox rankingType={rankingType}/>
         </ItemArea>
       </ItemSearchSection>
     </>
@@ -71,20 +71,20 @@ export const ViewSection = () => {
   );
 };
 
-export const BoardSection = () => {
-
-  
-
+export const BoardSection = ({ rankingType }) => {
   return (
     <>
-      <p> 토탈 랭킹 출력 </p>
+    <br/>
+      <p>{rankingType} 출력</p>
       <ItemBoardSection>
         <ItemArea>
           <ItemBox>
-            <TotalReactTable></TotalReactTable>
+          {rankingType === 'Total Ranking' && <TotalReactTable />}
+          {rankingType === 'Season Ranking' && <SeasonReactTable />}
           </ItemBox>
         </ItemArea>
       </ItemBoardSection>
+      
     </>
   );
 };

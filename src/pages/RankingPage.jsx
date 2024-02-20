@@ -1,11 +1,7 @@
+import React, { useState } from "react";
 import {
   Main,
   Container,
-  Section,
-  Area,
-  Box,
-  Item,
-  Element,
 } from "../styles/Layouts";
 import { 
   SortedSection,
@@ -16,14 +12,16 @@ import {
  } from "../components/rankingPage/RankingComponent";
 
 const RankingPage = () => {
+  const [selectedRankingType, setSelectedRankingType] = useState('Total Ranking');
+
   return (
     <>
       <Main >
         <Container>
-          <SortedSection />
-          <SearchSection />
+          <SortedSection onRankingSelect={setSelectedRankingType}/>
+          <SearchSection rankingType={selectedRankingType}/>
           <ViewSection />
-          <BoardSection />
+          <BoardSection rankingType={selectedRankingType}/>
           <PaginationSection />
         </Container>
       </Main>

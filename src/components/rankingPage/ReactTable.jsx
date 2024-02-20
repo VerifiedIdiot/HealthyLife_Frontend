@@ -13,6 +13,7 @@ import Common from "../../utils/Common";
 
 export const MyReactTable = () => {
   const [userEmail, setEmail] = useState(null);
+  const [userData, setUserData] = useState(null);
   
   useEffect(() => {
     const fetchUserEmail = async () => {
@@ -28,6 +29,22 @@ export const MyReactTable = () => {
     };
     fetchUserEmail();
   }, []);
+
+  useEffect(() => {
+    if (userEmail) {
+      const fetchUserData = async () => {
+        try {
+          const response = await RankingApi.get(`/myRanking/by-email?email=${userEmail}`);
+          setUserData(response.data);
+        } catch (error) {
+          console.error("사용자 정보 조회 실패: ", error);
+        }
+      };
+      fetchUserData();
+    }
+  }, [userEmail]);
+
+
 
   if (!userEmail) {
     return <div>Loading...</div>;
@@ -45,7 +62,7 @@ export const MyReactTable = () => {
       </TableHeader>
       <TableBody>
         <TableRow>
-          <TableDataCell>{userEmail.rank}</TableDataCell>
+          <TableDataCell>{userEmail.ranks}</TableDataCell>
           <TableDataCell>{userEmail.nickname}</TableDataCell>
           <TableDataCell>{userEmail.gender}</TableDataCell>
           <TableDataCell>{userEmail.points}</TableDataCell>
@@ -62,7 +79,7 @@ export const TotalReactTable = () => {
     () => [
       {
         Header: "순위",
-        accessor: "rank",
+        accessor: "ranks",
         width: 200,
       },
       {
@@ -98,6 +115,7 @@ export const TotalReactTable = () => {
     const fetchSeasonData = async () => {
       try {
         const result = await RankingApi.getListByTotal({});
+        console.log("토탈:", result)
         result.sort((a, b) => b.points - a.points);
         const rankedData = result.map((item, index) => ({
           ...item,
@@ -151,3 +169,102 @@ export const TotalReactTable = () => {
     </>
   );
 };
+
+export const SeasonReactTable = () => {
+  const [data, setData] = useState([]);
+
+  const columns = React.useMemo(
+    () => [
+      {
+        Header: "순위",
+        accessor: "ranks",
+        width: 200,
+      },
+      {
+        Header: "닉네임",
+        accessor: "nickname",
+        width: 200,
+      },
+      {
+        Header: "성별",
+        accessor: "gender",
+        width: 200,
+      },
+      {
+        Header: "포인트",
+        accessor: "points",
+        width: 200,
+      },
+    ],
+    []
+  );
+
+  // useTable 훅을 사용하여 테이블 관련 프로퍼티들을 가져옵니다.
+  const { getTableProps, getTableBodyProps, headerGroups, rows, prepareRow } =
+    useTable(
+      {
+        columns,
+        data,
+      },
+      useSortBy
+    );
+
+  useEffect(() => {
+    const fetchSeasonData = async () => {
+      try {
+        const result = await RankingApi.getListByTotal({});
+        console.log("토탈:", result)
+        result.sort((a, b) => b.points - a.points);
+        const rankedData = result.map((item, index) => ({
+          ...item,
+          rank: index + 1,
+        }));
+        setData(rankedData);
+      } catch (error) {
+        console.error(error);
+      }
+    };
+    fetchSeasonData();
+  }, []);
+
+  return (
+    <>
+      <TableArea $justify="center" {...getTableProps()}>
+        <TableHeader>
+          {headerGroups.map((headerGroup) => (
+            <TableRow {...headerGroup.getHeaderGroupProps()}>
+              {headerGroup.headers.map((column) => (
+                <TableHeaderCell
+                  {...column.getHeaderProps(column.getSortByToggleProps())}
+                  width={column.width}
+                >
+                  {column.render("Header")}
+                </TableHeaderCell>
+              ))}
+            </TableRow>
+          ))}
+        </TableHeader>
+        <TableBody {...getTableBodyProps()}>
+          {rows.map((row) => {
+            prepareRow(row);
+            return (
+              <TableRow {...row.getRowProps()}>
+                {row.cells.map((cell) => {
+                  return (
+                    <TableDataCell
+                      {...cell.getCellProps()}
+                      width={cell.column.width}
+                    >
+                      {cell.render("Cell")}
+                    </TableDataCell>
+                  );
+                })}
+              </TableRow>
+            );
+          })}
+        </TableBody>
+      </TableArea>
+    </>
+  );
+};
+

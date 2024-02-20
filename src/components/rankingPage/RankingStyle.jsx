@@ -18,7 +18,6 @@ export const SortedImgBoxSection = styled(Section)`
 export const SortedBoxArea = styled(Area)`
   box-shadow: none;
   margin: 0 1vw;
-  /* border: 1px solid #333; */
 `;
 
 export const ItemType = styled(Item)`
@@ -82,19 +81,16 @@ export const InputField = styled.input`
     margin-left: 5px;
   }
 `;
-// MyRanking 레이아웃
+
 export const ItemViewSection = styled(Section)`
-  border: 1px solid green;
   height: 15%;
 `;
 
-// TotalRanking 레이아웃
 export const ItemBoardSection = styled(Section)`
   display: flex;
   flex-direction: column;
   align-items: center;
   width: 100%;
-  border: 1px solid blue;
 
   @media (max-width: 768px) {
     width: 100%;

@@ -10,8 +10,8 @@ const ModalStyle = styled.div`
     right: 0;
     bottom: 0;
     left: 0;
+    z-index: 500;
     background-color: rgba(0, 0, 0, 0.6);
-    z-index: 1000;
   }
 
   .openModal {
@@ -33,7 +33,8 @@ const ModalStyle = styled.div`
     header {
       position: relative;
       padding: 16px 64px 16px 16px;
-      background-color: var(--VIOLET);
+      background-color: #333;
+      color: #fff;
       font-weight: 600;
       button {
         position: absolute;
@@ -61,7 +62,7 @@ const ModalStyle = styled.div`
       button {
         padding: 6px 12px;
         color: #fff;
-        background-color: var(--VIOLET);
+        background-color: #333;
         border-radius: 5px;
         font-size: 13px;
       }
@@ -92,21 +93,20 @@ const Button = styled.button`
   outline: none;
   cursor: pointer;
   margin-right: 10px;
+  background-color: black;
   border: 0;
   width: 60px;
 `;
 
 const AgreementModal = (props) => {
-  const { open, close, type } = props;
+  const { open, close, type, header } = props;
 
   return (
     <ModalStyle>
       <div className={open ? "openModal modal" : "modal"}>
         {open && (
           <section>
-            <header>
-              {type && type === "use" ? "이용약관" : "개인정보 취급방침"}
-            </header>
+            <header>{header}</header>
             <div className="agreeBox">
               {type && type === "use" ? <UseTerm /> : <PrivacyTerm />}
             </div>

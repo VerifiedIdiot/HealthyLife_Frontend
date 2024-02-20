@@ -11,6 +11,7 @@ import MemberApi from "../../api/MemberApi";
 import { storage } from "../../api/firebase";
 import styled from "styled-components";
 import { media } from "../../utils/MediaQuery";
+import Modal from "../../styles/modals/UserModal";
 
 const ContainerStyle = styled(Container)`
   ${media.small`
@@ -24,7 +25,7 @@ const ContainerStyle2 = styled(Container)`
 `}
 `;
 
-const PaymentComp = ({ profile }) => {
+const PaymentComp = ({ email, profile }) => {
   const navigate = useNavigate();
   const loginGate = useNavigate();
   const paymentNavigate = useNavigate();
@@ -97,13 +98,11 @@ const PaymentComp = ({ profile }) => {
         inputExercise
       );
       if (res.data !== null) {
-        alert("결제 성공");
         console.log("회원가입 성공!");
         setModalOpen(true);
         setModalHeader("회원가입");
         setModalMsg("회원가입에 성공했습니다!");
         setModalConfirm("회원가입");
-        paymentNavigate("/login");
       }
     } catch (err) {
       console.log(url);
@@ -240,6 +239,18 @@ const PaymentComp = ({ profile }) => {
           </Section>
         </ContainerStyle2>
       </Main>
+      <Modal
+        open={openModal}
+        close={closeModal}
+        header={modalHeader}
+        children={modalMsg}
+        type={false}
+        closeEvt={() => {
+          if (modalConfirm === "회원가입") {
+            navigate("/login");
+          }
+        }}
+      />
     </>
   );
 };

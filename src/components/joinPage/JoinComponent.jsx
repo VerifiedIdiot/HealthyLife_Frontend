@@ -799,41 +799,27 @@ const JoinComp = ({ email, profile }) => {
               />
             </Area>
             <Area $display="flex" $justify="center" $shadow="none">
-              <Button
-                width="100px"
-                height="40px"
-                children={"회원가입"}
-                active={
-                  isCode &&
-                  isPw2 &&
-                  isName &&
-                  isNickName &&
-                  isPhone &&
-                  isAddr &&
-                  checkedAll
-                }
-                onClick={() => paymentNavigate("/join/payment")}
-              >
+              <MiddleButton onClick={() => paymentNavigate("/join/payment")}>
                 다음
-              </Button>
+              </MiddleButton>
             </Area>
           </Section>
-          <Modal
-            open={openModal}
-            close={closeModal}
-            header={modalHeader}
-            children={modalMsg}
-            type={false}
-            closeEvt={() => {
-              if (email) {
-                // kakaoId();
-              } else if (modalConfirm === "회원가입") {
-                navigate("/login");
-              }
-            }}
-          />
         </ContainerStyle2>
       </Main>
+      <Modal
+        open={openModal}
+        close={closeModal}
+        header={modalHeader}
+        children={modalMsg}
+        type={false}
+        closeEvt={() => {
+          if (email) {
+            // kakaoId();
+          } else if (modalConfirm === "회원가입") {
+            navigate("/login");
+          }
+        }}
+      />
     </>
   );
 };

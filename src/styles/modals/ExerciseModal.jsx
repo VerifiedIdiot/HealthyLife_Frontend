@@ -23,6 +23,7 @@ const ModalStyle = styled.div`
     cursor: pointer;
     margin-right: 10px;
     border: 0;
+    margin-bottom: 1rem;
   }
   section {
     width: 90%;
@@ -75,6 +76,13 @@ const ModalStyle = styled.div`
 const ExerciseModal = (props) => {
   const { open, close, detail } = props;
 
+  const GoToLink = () => {
+    window.open(
+      `https://www.youtube.com/results?search_query=${detail.name}`,
+      "_blank"
+    );
+  };
+
   return (
     <ModalStyle>
       <div className={open ? "openModal modal" : "modal"}>
@@ -87,9 +95,14 @@ const ExerciseModal = (props) => {
               <p>운동 부위 : {detail.muscle}</p>
               <p>종류 : {detail.type}</p>
               <p>설명 : {detail.instructions}</p>
-              <button style={{ backgroundColor: "blue" }} onClick={close}>
-                닫기
-              </button>
+              <div>
+                <button style={{ backgroundColor: "blue" }} onClick={GoToLink}>
+                  운동 설명 보러가기
+                </button>
+                <button style={{ backgroundColor: "blue" }} onClick={close}>
+                  닫기
+                </button>
+              </div>
             </main>
           </section>
         )}

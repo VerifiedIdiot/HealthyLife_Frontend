@@ -43,6 +43,42 @@ const ModalStyle = styled.div`
     display: flex;
     flex-direction: column;
     justify-content: space-around;
+
+    .image {
+      width: 80%;
+      height: 200px;
+      border-radius: 8px;
+      object-fit: cover;
+    }
+
+    .imageBox {
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-around;
+      align-items: center;
+      height: 250px;
+    }
+
+    .servingSize {
+      font-size: 13px;
+    }
+
+    .name {
+      font-size: 20px;
+    }
+
+    .detail {
+      display: flex;
+      justify-content: space-around;
+    }
+
+    .detail1 {
+      height: 200px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-around;
+    }
   }
   section > main button {
     padding: 6px 12px;
@@ -81,14 +117,34 @@ const FoodModal = (props) => {
         {open && (
           <section>
             <main>
-              <img src={detail.image} />
-              <p>음식명 : {detail.name}</p>
-              <p>1회 제공량 : {detail.servingSize} g</p>
-              <p>칼로리 : {detail.kcal} kcal</p>
-              <p>장비 : {detail.equipment}</p>
-              <p>운동 부위 : {detail.muscle}</p>
-              <p>종류 : {detail.type}</p>
-              <p>설명 : {detail.instructions}</p>
+              <div className="imageBox">
+                <img className="image" src={detail.image} />
+                <p className="name">{detail.name}</p>
+                <p className="servingSize">1회 제공량 {detail.servingSize} g</p>
+              </div>
+              <div className="detail">
+                <div className="detail1">
+                  <p>칼로리 : {detail.kcal} kcal</p>
+                  <p>당류 : {detail.sugar} g</p>
+                  <p>지방 : {detail.fat} g</p>
+                  <p>트랜스지방 : {detail.transFat} g</p>
+                  <p>포화지방 : {detail.saturatedFat} g</p>
+                  <p>나트륨 : {detail.salt} g</p>
+                  <p>탄수화물 : {detail.carbohydrate} g</p>
+                  <p>단백질 : {detail.protein} g</p>
+                  <p>콜레스테롤 : {detail.cholesterol} g</p>
+                </div>
+                <div className="detail1">
+                  <p>칼슘 : {detail.calcium} g</p>
+                  <p>식이섬유 : {detail.dietaryFiber} g</p>
+                  <p>철분 : {detail.iron} g</p>
+                  <p>비타민 B1 : {detail.vitaB1} g</p>
+                  <p>비타민 B12 : {detail.vitaB12} g</p>
+                  <p>비타민 B2 : {detail.vitaB2} g</p>
+                  <p>비타민 C : {detail.vitaC} g</p>
+                  <p>아연 : {detail.zinc} g</p>
+                </div>
+              </div>
               <button style={{ backgroundColor: "blue" }} onClick={close}>
                 닫기
               </button>

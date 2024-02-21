@@ -53,7 +53,7 @@ const ExerciseClass = ({ setdata1, setdata2 }) => {
 
   const class1Options = [
     { value: "", label: "선택안함" },
-    { value: "복근", label: "복근" },
+    { value: "복근, abdominals", label: "복근" },
     { value: "외전근", label: "외전근" },
     { value: "내전근", label: "내전근" },
     { value: "이두근", label: "이두근" },

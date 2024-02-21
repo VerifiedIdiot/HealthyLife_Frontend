@@ -44,6 +44,25 @@ const ModalStyle = styled.div`
     display: flex;
     flex-direction: column;
     justify-content: space-around;
+
+    .detail {
+      overflow: auto;
+      height: 200px;
+
+      &::-webkit-scrollbar {
+        width: 12px;
+      }
+
+      &::-webkit-scrollbar-thumb {
+        background-color: #4942e4;
+        border-radius: 6px;
+      }
+
+      &::-webkit-scrollbar-track {
+        background-color: #4a42e46a;
+        border-radius: 6px;
+      }
+    }
   }
   section > main button {
     padding: 6px 12px;
@@ -94,7 +113,10 @@ const ExerciseModal = (props) => {
               <p>장비 : {detail.equipment}</p>
               <p>운동 부위 : {detail.muscle}</p>
               <p>종류 : {detail.type}</p>
-              <p>설명 : {detail.instructions}</p>
+              <div>
+                설명
+                <p className="detail">{detail.instructions}</p>
+              </div>
               <div>
                 <button style={{ backgroundColor: "blue" }} onClick={GoToLink}>
                   운동 설명 보러가기

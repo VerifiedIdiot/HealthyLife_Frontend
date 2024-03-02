@@ -118,7 +118,7 @@ const FoodModal = (props) => {
           <section>
             <main>
               <div className="imageBox">
-                <img className="image" src={detail.image} />
+                <img className="image" src={detail.image} alt="이미지"/>
                 <p className="name">{detail.name}</p>
                 <p className="servingSize">1회 제공량 {detail.servingSize} g</p>
               </div>

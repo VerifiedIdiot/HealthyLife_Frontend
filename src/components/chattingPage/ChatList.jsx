@@ -44,7 +44,7 @@ const ChatList = (props) => {
           })
         );
 
-        console.log(chatRoomsWithUnreadCount);
+        // console.log(chatRoomsWithUnreadCount);
         setChatRooms(chatRoomsWithUnreadCount);
       } catch (e) {
         console.log(e);

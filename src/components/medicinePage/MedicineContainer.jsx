@@ -69,6 +69,8 @@ export const ComboSearchBox = () => {
     actions.setSearchQuery(e.target.value);
   };
 
+
+
   return (
     <ComboSearchContainer>
       <ComboSelectBox

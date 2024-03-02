@@ -1,4 +1,4 @@
-import { useCallback, useMemo } from "react";
+import { useCallback, useMemo, useEffect, useRef } from "react";
 import { useSearch } from "../../contexts/SearchContext";
 import { useNavigate } from "react-router-dom";
 
@@ -48,6 +48,10 @@ const ResponsiveSearchSection = styled(Section)`
   justify-content: center;
   align-items: center;
   min-width: 1050px;
+
+  &:focus {
+    outline: none;
+  }
   @media (max-width: 768px) {
     width: 100%;
     min-width: auto;
@@ -169,6 +173,8 @@ export const SearchSection = () => {
   const { state, actions } = useSearch();
   const { typeList } = state;
   const { toggleComboBox } = actions;
+  // SearchSection에 포커스가 가있는지 판별하기 위한 useRef
+  const searchSectionRef = useRef(null);
 
   // 콤보박스 토글 핸들러: 콤보박스의 열림/닫힘 상태를 관리합니다.
   const handleToggleComboBox = (comboBoxId) => toggleComboBox(comboBoxId);
@@ -177,6 +183,7 @@ export const SearchSection = () => {
   const handleSearch = () => {
     actions.performSearch();
   };
+
   // typeList의 키를 정렬하여 UI에 순서대로 표시합니다.
   const orderedKeys = Object.keys(typeList).sort((a, b) => a.localeCompare(b));
 
@@ -186,10 +193,30 @@ export const SearchSection = () => {
     if (index === 2) return "right"; // 배열의 마지막 요소
     return "middle"; // 그 외 중간 위치
   };
+  // SearchSection에 포커스가 가있을때 Enter키로 검색을 진행할 수 있도록 하는 이벤트함수
+  const handleKeyDown = useCallback((event) => {
+    // event.currentTarget을 사용하여 현재 이벤트 핸들러가 부착된 요소가 이벤트를 발생시켰는지 확인
+    if (event.key === 'Enter' && event.currentTarget === searchSectionRef.current) {
+      handleSearch();
+    }
+  }, [handleSearch]);
+
+  useEffect(() => {
+    const element = searchSectionRef.current;
+    if (element) {
+      element.addEventListener('keydown', handleKeyDown);
+    }
+
+    return () => {
+      if (element) {
+        element.removeEventListener('keydown', handleKeyDown);
+      }
+    };
+  }, [handleKeyDown]);
 
   return (
     <>
-      <ResponsiveSearchSection>
+      <ResponsiveSearchSection ref={searchSectionRef} tabIndex={-1}>
         <ResponsiveSearchArea>
           <ResponsiveItemBox>
             <LogoItem>
@@ -363,16 +390,18 @@ const PaginationButton = styled.button`
   margin-right: 2px;
   padding: 10px;
   border: 1px solid #ccc;
-  background-color: white;
+  
   cursor: pointer;
 
+    /* 현재 선택된 페이지 버튼 스타일 */
+    background-color: ${(props) => (props.$isActive ? "#007bff" : "white")};
+  color: ${(props) => (props.$isActive ? "white" : "black")};
+
   &:hover {
-    background-color: #f0f0f0;
+    /* background-color: #f0f0f0; */
   }
 
-  /* 현재 선택된 페이지 버튼 스타일 */
-  background-color: ${(props) => (props.$isActive ? "#007bff" : "white")};
-  color: ${(props) => (props.$isActive ? "white" : "black")};
+
 
   @media (max-width: 768px) {
   }

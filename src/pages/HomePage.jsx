@@ -1,11 +1,6 @@
 import {
   Main,
   Container,
-  Section,
-  Area,
-  Box,
-  Item,
-  Element,
 } from "../styles/Layouts";
 import HomeSlide from "../components/homePage/HomeSlide";
 import HomeCal from "../components/homePage/HomeCal";

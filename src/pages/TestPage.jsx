@@ -1,11 +1,6 @@
 import {
   Main,
   Container,
-  Section,
-  Area,
-  Box,
-  Item,
-  Element,
 } from "../styles/Layouts";
 import LargeModal from "../styles/modals/LargeModal";
 import MiddleModal from "../styles/modals/MiddleModal";

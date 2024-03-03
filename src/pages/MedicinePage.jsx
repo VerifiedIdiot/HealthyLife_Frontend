@@ -1,5 +1,3 @@
-import { useEffect } from 'react';
-import { useLocation, useNavigate } from 'react-router-dom';
 import { SearchProvider } from "../contexts/SearchContext";
 import { Main, Container } from "../styles/Layouts";
 import {

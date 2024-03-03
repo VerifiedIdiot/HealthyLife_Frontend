@@ -1,5 +1,5 @@
 import { ReactComponent as Down } from "../assets/imgs/communityImges/Down.svg";
-import { Routes, Route, Link, useNavigate } from "react-router-dom";
+import { Routes, Route, Link } from "react-router-dom";
 import { useEffect, useState } from "react";
 import styled from "styled-components";
 import { Main, Container } from "../styles/Layouts";

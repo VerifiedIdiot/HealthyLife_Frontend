@@ -1,4 +1,4 @@
-import { useContext, useEffect, useState } from "react";
+import { useContext, useEffect, } from "react";
 import MemberApi from "../api/MemberApi";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import styled from "styled-components";

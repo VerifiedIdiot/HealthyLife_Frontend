@@ -1,4 +1,5 @@
 import styled from "styled-components";
+import Select from "react-select";
 import { useSearch } from "../../contexts/SearchContext";
 import { useNavigate } from "react-router-dom";
 import { useCallback, useMemo } from "react";
@@ -24,6 +25,10 @@ const ComboSelectBox = styled.select`
   border-radius: 4px;
   width: 21%;
 
+    &:focus {
+    outline: none; /* 포커스 시 아웃라인 제거 */
+  }
+
   @media (max-width: 768px) {
     width: 30%;
   }
@@ -32,13 +37,57 @@ const ComboSelectBox = styled.select`
   }
 `;
 
+const customSelectStyles = {
+  control: (styles) => ({
+    ...styles,
+    height: '40px',
+    borderRadius: '0 0 4px 4px',
+    width: '120px', // 모든 화면 크기에서 너비를 100%로 유지
+    border: '1px solid #ccc',
+    boxShadow: 'none',
+    '&:hover': {
+      border: '1px solid #aaa',
+    },
+  }),
+  valueContainer: (styles) => ({
+    ...styles,
+    height: '40px',
+    padding: '0 8px', // 적절한 패딩을 설정
+  }),
+  singleValue: (styles) => ({
+    ...styles,
+    margin: 0,
+    lineHeight: '40px', // singleValue의 높이에 맞춰 line-height 조정
+  }),
+  option: (styles) => ({
+    ...styles,
+    whiteSpace: 'pre-wrap', // 옵션 텍스트가 잘리지 않도록 설정
+    '&:first-child': {
+      borderTopRightRadius: '0',
+      borderTopLeftRadius: '0',
+    },
+    '&:last-child': {
+      borderBottomRightRadius: '4px',
+      borderBottomLeftRadius: '4px',
+    },
+  }),
+  menu: (styles) => ({
+    ...styles,
+    width: '100%', // 드롭다운 메뉴의 너비를 컨트롤과 동일하게 설정
+  }),
+};
+
+
 const ComboInputField = styled.input`
   width: 100%;
   height: 40px;
-
   margin: 10px 0;
   border: 1px solid #ccc;
   border-radius: 4px;
+
+  &:focus {
+    outline: none;
+  }
 
   @media (max-width: 768px) {
   }
@@ -49,43 +98,43 @@ const ComboInputField = styled.input`
 
 export const ComboSearchBox = () => {
   const { state, actions } = useSearch();
-  const searchTypes = ["통합", "제품명", "제조사", "신고번호"];
   const navigate = useNavigate();
+  const searchTypes = ["통합", "제품명", "제조사", "신고번호"].map(type => ({ value: type, label: type }));
 
-  // 검색 유형과 쿼리 변경 핸들러
-  const handleSearchTypeChange = useCallback(
-    (e) => {
-      const newSearchType = e.target.value;
-      actions.setSearchType(newSearchType);
+  const handleSearchTypeChange = (selectedOption) => {
+    const newSearchType = selectedOption.value;
+    actions.setSearchType(newSearchType);
 
-      const searchParams = new URLSearchParams(window.location.search);
-      searchParams.set("searchType", newSearchType);
-      navigate(`?${searchParams.toString()}`, { replace: true });
-    },
-    [actions, navigate]
-  );
+    const searchParams = new URLSearchParams(window.location.search);
+    searchParams.set("searchType", newSearchType);
+    navigate(`?${searchParams.toString()}`, { replace: true });
+  };
 
   const handleSearchQueryChange = (e) => {
     actions.setSearchQuery(e.target.value);
   };
 
-
-
   return (
     <ComboSearchContainer>
-      <ComboSelectBox
-        value={state.searchType}
-        onChange={handleSearchTypeChange}>
-        {searchTypes.map((type) => (
-          <option key={type} value={type}>
-            {type}
-          </option>
-        ))}
-      </ComboSelectBox>
+      <Select
+        styles={customSelectStyles}
+        options={searchTypes}
+        value={searchTypes.find(option => option.value === state.searchType)}
+        onChange={handleSearchTypeChange}
+        theme={(theme) => ({
+          ...theme,
+          borderRadius: 0,
+          colors: {
+            ...theme.colors,
+            primary25: '',
+            primary: '#4942e4', // 옵션 선택 배경색
+          },
+        })}
+      />
       <ComboInputField
         type="text"
         placeholder="검색어를 입력하세요."
-        // value={state.searchQuery}
+        value={state.searchQuery || ''}
         onChange={handleSearchQueryChange}
       />
     </ComboSearchContainer>
@@ -224,7 +273,7 @@ export const ComboBox = ({ comboBoxId, $position }) => {
       const isChecked = !!checkBoxStates[comboBoxId]?.[functionality];
       actions.handleCheckboxChange(comboBoxId, functionality, !isChecked);
     },
-    [checkBoxStates, comboBoxId, actions.handleCheckboxChange]
+    [checkBoxStates, comboBoxId, actions]
   );
 
   const handleReset = useCallback(() => {
@@ -267,6 +316,10 @@ const Option = styled.option`
   background-color: white; // 선택되지 않은 옵션의 배경색
   &:checked {
     background-color: lightgray; // 선택된 옵션의 배경색, 일부 브라우저에서는 작동하지 않을 수 있음
+  }
+
+  &:focus {
+    outline: none; /* 포커스 시 아웃라인 제거 */
   }
 `;
 

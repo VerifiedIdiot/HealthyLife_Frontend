@@ -1,4 +1,4 @@
-import { useCallback, useMemo, useEffect, useRef } from "react";
+import { useCallback, useMemo, useEffect, useRef, useState } from "react";
 import { useSearch } from "../../contexts/SearchContext";
 import { useNavigate } from "react-router-dom";
 
@@ -7,7 +7,6 @@ import styled from "styled-components";
 import { Section, Area, Box, Item } from "../../styles/Layouts";
 import { LargeButton } from "../../styles/styledComponents/StyledComponents";
 import {
-  SearchBox,
   ComboBox,
   ComboSearchBox,
   FilterDropdown,
@@ -35,11 +34,9 @@ const LogoItem = styled(Item)`
   }
   @media (max-width: 768px) {
     width: 35%;
-
   }
 
   @media (max-width: 500px) {
-    
   }
 `;
 
@@ -59,7 +56,6 @@ const ResponsiveSearchSection = styled(Section)`
   }
 
   @media (max-width: 500px) {
-    
   }
 `;
 
@@ -73,7 +69,6 @@ const ResponsiveSearchArea = styled(Area)`
   }
 
   @media (max-width: 500px) {
-    
   }
 `;
 
@@ -84,7 +79,6 @@ const ResponsiveItemBox = styled(Box)`
   }
 
   @media (max-width: 500px) {
-    
   }
 `;
 
@@ -93,12 +87,11 @@ const ResponsiveItem = styled(Item)`
   align-items: center;
   justify-content: flex-start;
 
-  @media (max-width:  768px) {
+  @media (max-width: 768px) {
     padding-left: 0;
   }
 
   @media (max-width: 500px) {
-    
   }
 `;
 
@@ -131,11 +124,9 @@ const SearchItemRight = styled(Item)`
   width: ${(props) => props.$width || "100%"};
   padding-right: ${(props) => props.$paddingRight || ""};
   @media (max-width: 768px) {
-    
   }
 
   @media (max-width: 500px) {
-    
   }
 `;
 
@@ -146,12 +137,9 @@ const ButtonItem = styled(Item)`
   width: 15%;
   box-shadow: none;
   @media (max-width: 768px) {
-    
-    
   }
 
   @media (max-width: 500px) {
-    
   }
 `;
 
@@ -160,11 +148,9 @@ const StyledButton = styled(LargeButton)`
   height: 45px;
   @media (max-width: 768px) {
     width: 17vw;
-
   }
 
   @media (max-width: 500px) {
-    
   }
 `;
 
@@ -194,22 +180,28 @@ export const SearchSection = () => {
     return "middle"; // 그 외 중간 위치
   };
   // SearchSection에 포커스가 가있을때 Enter키로 검색을 진행할 수 있도록 하는 이벤트함수
-  const handleKeyDown = useCallback((event) => {
-    // event.currentTarget을 사용하여 현재 이벤트 핸들러가 부착된 요소가 이벤트를 발생시켰는지 확인
-    if (event.key === 'Enter' && event.currentTarget === searchSectionRef.current) {
-      handleSearch();
-    }
-  }, [handleSearch]);
+  const handleKeyDown = useCallback(
+    (event) => {
+      // event.currentTarget을 사용하여 현재 이벤트 핸들러가 부착된 요소가 이벤트를 발생시켰는지 확인
+      if (
+        event.key === "Enter" &&
+        event.currentTarget === searchSectionRef.current
+      ) {
+        handleSearch();
+      }
+    },
+    [handleSearch]
+  );
 
   useEffect(() => {
     const element = searchSectionRef.current;
     if (element) {
-      element.addEventListener('keydown', handleKeyDown);
+      element.addEventListener("keydown", handleKeyDown);
     }
 
     return () => {
       if (element) {
-        element.removeEventListener('keydown', handleKeyDown);
+        element.removeEventListener("keydown", handleKeyDown);
       }
     };
   }, [handleKeyDown]);
@@ -272,7 +264,6 @@ const ResponsiveBoardSection = styled(Section)`
   }
 
   @media (max-width: 500px) {
-    
   }
 `;
 
@@ -282,15 +273,11 @@ const ResponsiveFilterItem = styled(Item)`
   align-items: center;
   width: 70%;
 
-  
-
   @media (max-width: 768px) {
     padding-right: 0;
-
   }
 
   @media (max-width: 500px) {
-    
   }
 `;
 
@@ -301,11 +288,9 @@ const ResponsiveBoardArea = styled(Area)`
   height: auto;
 
   @media (max-width: 768px) {
-    
   }
 
   @media (max-width: 500px) {
-    
   }
 `;
 
@@ -313,11 +298,9 @@ const ResponsiveBoardBox = styled(Box)`
   height: auto;
 
   @media (max-width: 768px) {
-    
   }
 
   @media (max-width: 500px) {
-    
   }
 `;
 
@@ -365,7 +348,6 @@ const ResponsivePaginationSection = styled(Section)`
   }
 
   @media (max-width: 500px) {
-    
   }
 `;
 
@@ -380,45 +362,50 @@ const ResponsivePaginationArea = styled(Area)`
   }
 
   @media (max-width: 500px) {
-    
   }
 `;
 
 const PaginationButton = styled.button`
-  height: 30px;
-  width: 30px;
-  margin-right: 2px;
-  padding: 10px;
-  border: 1px solid #ccc;
-  
+  height: 40px;
+  width: 40px;
+  margin-right: 5px;
+  padding: 5px;
+  border: none;
+  border-radius: 5px;
   cursor: pointer;
-
-    /* 현재 선택된 페이지 버튼 스타일 */
-    background-color: ${(props) => (props.$isActive ? "#007bff" : "white")};
-  color: ${(props) => (props.$isActive ? "white" : "black")};
+  background-color: ${(props) => (props.$isActive ? "#4942e4" : "#f8f9fa")};
+  color: ${(props) => (props.$isActive ? "white" : "#212529")};
+  font-weight: ${(props) => (props.$isActive ? "bold" : "normal")};
+  transition: background-color 0.2s, color 0.2s;
 
   &:hover {
-    /* background-color: #f0f0f0; */
+    background-color: ${(props) => (props.$isActive ? "#37319d" : "#e2e6ea")}; /* 조건부 색상 변경 */
+    color: ${(props) => (props.$isActive ? "white" : "#212529")}; /* 조건부 색상 변경 */
   }
 
-
+  &:focus {
+    outline: none;
+  }
 
   @media (max-width: 768px) {
+    /* 반응형 디자인 */
   }
 
   @media (max-width: 500px) {
-    
+    /* 반응형 디자인 */
   }
 `;
 
+
 export const PaginationSection = () => {
   const { state, actions } = useSearch();
-  const { page, size, totalCount } = state;
+  const { size, totalCount } = state;
   const navigate = useNavigate();
   const totalPages = Math.ceil(totalCount / size);
-  // 페이지 범위를 계산하여 현재 페이지가 속한 그룹의 첫 페이지를 결정
-  const currentPageGroupStart = Math.floor(page / 10) * 10 + 1;
 
+  const [currentPage, setCurrentPage] = useState(1); // 초기 페이지 상태를 1로 설정
+
+  const currentPageGroupStart = Math.floor((currentPage - 1) / 10) * 10 + 1;
   const startPage = currentPageGroupStart;
   let endPage = startPage + 9;
   if (endPage > totalPages) {
@@ -431,13 +418,13 @@ export const PaginationSection = () => {
 
   const goToPage = useCallback(
     (pageNumber) => {
+      setCurrentPage(pageNumber);
       actions.setPage(pageNumber);
       actions.performSearch({ page: pageNumber });
-    
+
       const searchParams = new URLSearchParams(window.location.search);
       searchParams.set("page", pageNumber.toString());
       navigate(`?${searchParams.toString()}`, { replace: true });
-
     },
     [actions, navigate]
   );
@@ -446,22 +433,21 @@ export const PaginationSection = () => {
     <>
       <ResponsivePaginationSection>
         <ResponsivePaginationArea>
-          {/* 이전 페이지 그룹으로 이동 */}
           {startPage > 1 && (
             <PaginationButton onClick={() => goToPage(startPage - 10)}>
               {"<"}
             </PaginationButton>
           )}
-          {/* 페이지 번호 버튼 */}
           {pageNumbers.map((pageNumber) => (
             <PaginationButton
               key={pageNumber}
-              $isActive={page === pageNumber}
-              onClick={() => goToPage(pageNumber)}>
+              $isActive={currentPage === pageNumber}
+              aria-current={currentPage === pageNumber ? "page" : undefined}
+              onClick={() => goToPage(pageNumber)}
+            >
               {pageNumber}
             </PaginationButton>
           ))}
-          {/* 다음 페이지 그룹으로 이동 */}
           {endPage < totalPages && (
             <PaginationButton onClick={() => goToPage(endPage + 1)}>
               {">"}
@@ -472,3 +458,5 @@ export const PaginationSection = () => {
     </>
   );
 };
+
+

@@ -2,10 +2,6 @@ import {
   Main,
   Container,
   Section,
-  Area,
-  Box,
-  Item,
-  Element,
 } from "../styles/Layouts";
 import InbodyGraph from "../components/inBodyPage/InbodyGraph";
 import InbodyInput from "../components/inBodyPage/InbodyInput";

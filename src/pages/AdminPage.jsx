@@ -3,10 +3,6 @@ import {
   Main,
   Container,
   Section,
-  Area,
-  Box,
-  Item,
-  Element,
 } from "../styles/Layouts";
 import { useState } from "react";
 import logo from "../assets/icons/logo.svg";

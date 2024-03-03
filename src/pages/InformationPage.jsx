@@ -2,7 +2,6 @@ import InfoCategory from "../components/InfoPage/InfoCategory";
 import React, {
   useCallback,
   useEffect,
-  useLayoutEffect,
   useState,
   useRef,
 } from "react";
@@ -10,10 +9,6 @@ import {
   Main,
   Container,
   Section,
-  Area,
-  Box,
-  Item,
-  Element,
 } from "../styles/Layouts";
 import FoodClass from "../components/InfoPage/FoodClass";
 import ExerciseClass from "../components/InfoPage/ExerciseClass";

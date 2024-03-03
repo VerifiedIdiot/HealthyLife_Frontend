@@ -1,16 +1,7 @@
 import { useState } from "react";
 import MemberApi from "../api/MemberApi";
 import MypageComp from "../components/mypage/MypageComponent";
-import MypageEditComp from "../components/mypage/MypageEditComp";
-import {
-  Main,
-  Container,
-  Section,
-  Area,
-  Box,
-  Item,
-  Element,
-} from "../styles/Layouts";
+
 import { useEffect } from "react";
 
 const MyPage = () => {
@@ -28,7 +19,7 @@ const MyPage = () => {
       }
     };
     memberDetail();
-  }, []);
+  }, [memberInfo]);
 
   return (
     <>

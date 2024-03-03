@@ -1,10 +1,8 @@
 import { useNavigate } from "react-router";
 import { Area, Container, Main, Section } from "../../styles/Layouts";
-
 import logo from "../../assets/icons/logo.svg";
 import { useContext, useEffect, useState } from "react";
 import basicUser from "../../assets/imgs/basicUser.png";
-
 import { LargeButton } from "../../styles/styledComponents/StyledComponents";
 import { UserContext } from "../../contexts/UserStore";
 import MemberApi from "../../api/MemberApi";

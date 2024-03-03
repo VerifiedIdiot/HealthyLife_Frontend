@@ -3,7 +3,6 @@ import { ChatHeader } from "../components/chattingPage/ChatHeader";
 import ChatList from "../components/chattingPage/ChatList";
 import Chatting from "../components/chattingPage/Chatting";
 import FriendsList from "../components/chattingPage/FriendsList";
-import FriendBox from "../styles/modals/FriendBox";
 import Common from "../utils/Common";
 
 const ChattingPage = (props) => {

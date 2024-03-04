@@ -53,7 +53,7 @@ const ContentSection = styled.div`
   width: 100%;
 `;
 
-const MiddleModal = ({ $isOpen, $onClose, imageSrc, children }) => {
+const MiddleModal = ({ $isOpen, $onClose, imageSrc, children, $width}) => {
   // console.log("MiddleModal test");
 
   // esc 누르면 모달창 종료
@@ -73,7 +73,7 @@ const MiddleModal = ({ $isOpen, $onClose, imageSrc, children }) => {
   return (
     <>
       <ModalOverlay $isOpen={$isOpen} onClick={$onClose}>
-        <ModalContent onClick={(e) => e.stopPropagation()}>
+        <ModalContent $width={$width} onClick={(e) => e.stopPropagation()}>
           <CloseButton onClick={$onClose}>&times;</CloseButton>
           {/* <ImageSection src={imageSrc} /> */}
           <ContentSection>{children}</ContentSection>

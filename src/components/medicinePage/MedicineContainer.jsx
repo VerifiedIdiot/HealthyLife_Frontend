@@ -121,6 +121,7 @@ export const ComboSearchBox = () => {
         options={searchTypes}
         value={searchTypes.find(option => option.value === state.searchType)}
         onChange={handleSearchTypeChange}
+        isSearchable={false}
         theme={(theme) => ({
           ...theme,
           borderRadius: 0,

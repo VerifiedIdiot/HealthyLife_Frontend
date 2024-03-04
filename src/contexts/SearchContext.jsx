@@ -24,7 +24,7 @@ const initialState = {
   page: 1,
   size: 10,
   searchResults: [],
-  totalCount:  104736,
+  totalCount:  9999999,
   
 };
 

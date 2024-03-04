@@ -92,7 +92,7 @@ export const MealInfoBox = styled.div`
   display: flex;
   flex-direction: row;
   align-items: flex-start;
-  padding: 0 3vw;
+  width: 80%;
 `;
 
 export const WorkoutInfoBox = styled.div`
@@ -111,15 +111,17 @@ width: 20px;
 export const MealInfoArea = styled.div`
   display: flex;
   flex-direction: column;
-  justify-content: space-evenly;
+  /* justify-content: space-evenly; */
 `;
 
 export const MealInfoList = styled.ul`
-text-align: left;
+/* text-align: left; */
 `;
 
-export const MealInfo = styled.li`
-padding: 8px;
+export const MealInfo = styled.div`
+display: flex;
+width: 100%;
+justify-content: space-around;
 
 `;
 

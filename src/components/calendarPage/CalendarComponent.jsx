@@ -6,7 +6,7 @@ import {
   InfoItemBox,
   InfoItem,
 } from "./CalendarStyle";
-import MiddleModal from "../../styles/modals/MiddleModal";
+import SmallModal from "../../styles/modals/MiddleModal";
 
 // 캘린더 API 적용
 import Calendar from "react-calendar";
@@ -131,7 +131,7 @@ export const CalendarSection = () => {
             ) : null;
           }}
         />
-        <MiddleModal $isOpen={modalOpen} $onClose={closeModal}>
+        <SmallModal $isOpen={modalOpen} $onClose={closeModal}>
           <InfoArea>
             <InfoItemBox $height="5%"></InfoItemBox>
             <InfoItemBox $height="90%" >
@@ -140,7 +140,7 @@ export const CalendarSection = () => {
               </InfoItem>
             </InfoItemBox>
           </InfoArea>
-        </MiddleModal>
+        </SmallModal>
       </CalendarMainSection>
     </>
   );

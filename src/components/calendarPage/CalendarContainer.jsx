@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import MiddleModal from "../../styles/modals/MiddleModal";
+import SmallModal from "../../styles/modals/MiddleModal";
 import CalendarApi from "../../api/CalendarApi";
 import {
   ComboBoxContainer,
@@ -116,9 +116,14 @@ export const MealBox = () => {
                           .filter((meal) => meal.meal_type === mealType)
                           .map((meal) => (
                             <MealInfo key={meal.id}>
-                              {meal.meal_name}
-                              <MealDel>X</MealDel>
+                              <h1>{meal.meal_name}</h1>
+                              <p>{meal.carbonhydrate}</p>
+                              <p>{meal.protein}</p>
+                              <p>{meal.fat}</p>
+                              <p>{meal.kcal}</p>
+                              <MealDel>X</MealDel>   
                             </MealInfo>
+                            
                           ))}
                     </MealInfoList>
                   </MealInfoArea>
@@ -179,9 +184,9 @@ export const MealBox = () => {
           </ComboBox>
         </ComboSelectBox>
       </ComboBoxContainer>
-      <MiddleModal $isOpen={modalOpen} $onClose={closeModal}>
+      <SmallModal $isOpen={modalOpen} $onClose={closeModal}>
         <MealInputBox modalOpen={modalOpen} closeModal={closeModal} />
-      </MiddleModal>
+      </SmallModal>
     </>
   );
 };

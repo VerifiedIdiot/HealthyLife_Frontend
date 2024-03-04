@@ -58,12 +58,10 @@ const TableHeaderCell = styled.th`
   height: 60px;
   text-align: center;
   vertical-align: middle;
-  width: ${props => `${props.width}`};
+  width: ${(props) => `${props.width}`};
   border-bottom: 1px solid #ddd;
   font-weight: bold;
   font-size: 16px;
-
-  
 
   @media (max-width: 768px) {
   }
@@ -78,13 +76,13 @@ const TableBody = styled.tbody`
 const TableDataCell = styled.td`
   height: 8vh;
   vertical-align: middle;
-  width: ${props => `${props.width}`};
+  width: ${(props) => `${props.width}`};
   padding: 10px; /* 패딩 변경 */
   border-top: 1px solid #ddd; /* 데이터 셀의 상단 경계선 추가 */
   border-bottom: 1px solid #ddd; /* 데이터 셀의 하단 경계선 추가 */
-  
+
   text-align: left;
-  
+
   font-size: 14px; /* 폰트 크기 조정 */
 
   &:last-child {
@@ -97,11 +95,14 @@ const TableDataCell = styled.td`
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
-    &:hover {
+
+    ${(props) =>
+      props.isClicked &&
+      `
       overflow: visible;
       white-space: normal;
       z-index: 1;
-    }
+    `}
   }
 
   @media (max-width: 500px) {
@@ -111,9 +112,9 @@ const TableDataCell = styled.td`
 const ReactTable = () => {
   const { state } = useSearch();
   const { searchResults } = state;
+  const [clickedCellId, setClickedCellId] = useState(null);
   const isMobileView = useMobileView();
   const isTabletView = useTabletView();
-  
 
   // 컬럼 너비를 환경에 따라 동적으로 설정
   const getColumnWidth = (key) => {
@@ -152,25 +153,27 @@ const ReactTable = () => {
         Header: "제품명",
         accessor: "name",
         width: getColumnWidth("name"),
+        show: true,
       },
       {
         Header: "제품 구분",
         accessor: "originType",
-        show: !(isMobileView || isTabletView),
-
         width: getColumnWidth("originType"),
+        show: !(isMobileView || isTabletView),
+        
       },
 
       {
         Header: "기능성",
         accessor: "functionalities",
         Cell: ({ cell: { value } }) => value.join(", "), // 배열을 문자열로 변환
-        // width: getColumnWidth("functionalities"),
+        show: true,
       },
       {
         Header: "제조사명",
         accessor: "company",
         width: getColumnWidth("company"),
+        show: true,
       },
     ],
     [isMobileView, isTabletView]
@@ -182,46 +185,51 @@ const ReactTable = () => {
       data: Array.isArray(searchResults) ? searchResults : [],
     });
 
-  return (
-    <TableArea {...getTableProps()}>
-      <TableHeader>
-        {headerGroups.map((headerGroup) => (
-          <TableRow {...headerGroup.getHeaderGroupProps()}>
-            {headerGroup.headers.map(
-              (column) =>
-                column.show !== false && ( // show 속성이 false가 아닐 때만 컬럼 렌더링
-                  <TableHeaderCell
-                    {...column.getHeaderProps()}
-                    width={column.width}>
+    return (
+      <TableArea {...getTableProps()}>
+        <TableHeader>
+          {headerGroups.map(headerGroup => (
+            <TableRow {...headerGroup.getHeaderGroupProps()}>
+              {headerGroup.headers.map(column =>
+                column.show !== false && (
+                  <TableHeaderCell {...column.getHeaderProps()} width={column.width}>
                     {column.render("Header")}
                   </TableHeaderCell>
                 )
-            )}
-          </TableRow>
-        ))}
-      </TableHeader>
-      <TableBody {...getTableBodyProps()}>
-        {rows.map((row) => {
-          prepareRow(row);
-          return (
-            <TableBodyRow {...row.getRowProps()}>
-              {row.cells.map((cell) => {
-                // 컬럼이 숨겨져 있지 않은 경우에만 셀 렌더링
-                if (cell.column.show !== false) {
+              )}
+            </TableRow>
+          ))}
+        </TableHeader>
+        <TableBody {...getTableBodyProps()}>
+          {rows.map(row => {
+            prepareRow(row);
+            return (
+              <TableBodyRow {...row.getRowProps()}>
+                {row.cells.map(cell => {
+                  // 해당 셀이 속한 컬럼의 show 속성을 확인
+                  if (cell.column.show === false) {
+                    return null;
+                  }
+                  const isClicked = clickedCellId === `${row.id}-${cell.column.id}`;
                   return (
-                    <TableDataCell {...cell.getCellProps()}>
+                    <TableDataCell
+                      {...cell.getCellProps()}
+                      isClicked={isClicked}
+                      onClick={() => setClickedCellId(isClicked ? null : `${row.id}-${cell.column.id}`)}
+                      style={{
+                        display: isMobileView || isTabletView ? (cell.column.show ? "" : "none") : "",
+                      }}
+                    >
                       {cell.render("Cell")}
                     </TableDataCell>
                   );
-                }
-                return null; // 컬럼이 숨겨진 경우 셀을 렌더링하지 않음
-              })}
-            </TableBodyRow>
-          );
-        })}
-      </TableBody>
-    </TableArea>
-  );
-};
+                })}
+              </TableBodyRow>
+            );
+          })}
+        </TableBody>
+      </TableArea>
+    );
+  };
 
 export default ReactTable;

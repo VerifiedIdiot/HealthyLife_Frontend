@@ -1,11 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { CalendarMainSection } from "./CalendarStyle";
 import { MealBox } from "./CalendarContainer";
-import {
-  InfoArea,
-  InfoItemBox,
-  InfoItem,
-} from "./CalendarStyle";
+import { InfoArea, InfoItemBox, InfoItem } from "./CalendarStyle";
 import SmallModal from "../../styles/modals/MiddleModal";
 
 // 캘린더 API 적용
@@ -26,40 +22,11 @@ export const CalendarSection = () => {
     setModalOpen(false);
   };
 
-
-
   // 날짜 클릭 시 모달 창 열기
   const handleDayClick = async (value) => {
-    try {
-      const selectedDate = formatDate(value);
-      // 선택된 날짜와 일치하는 데이터 객체 찾아옴
-      const dateData = state.monthData.find(
-        (data) => data.reg_date === selectedDate
-      );
-      actions.setSelectedDate(selectedDate);
-      openModal();
-      if (dateData) {
-        const calendarId = dateData.calendar_id;
-        console.log(calendarId)
-        actions.setCalendarId(calendarId);
-        const details = await CalendarApi.getDetailsByCalendarId(calendarId);
-        // console.log(details);
-        actions.setDateData({
-          meal: details.meal,
-          workout: details.workout
-        });
-        
-      } else {
-        actions.setCalendarId(0); // 선택된 캘린더 ID 초기화
-        actions.setDateData({
-          meal: [], // 식사 정보 초기화
-          workout: [] // 운동 정보 초기화
-        });
-        console.log("데이터 없음");
-      }
-    } catch (error) {
-      console.error("Error fetching details for selected date:", error);
-    }
+    const selectedDate = formatDate(value);
+    openModal();
+    await actions.fetchDateData(selectedDate);
   };
 
   // 월 전환 버튼 클릭시 실행되는 함수
@@ -75,7 +42,7 @@ export const CalendarSection = () => {
       console.error("Failed to fetch month data:", error);
       throw error;
     }
-  }; 
+  };
 
   useEffect(() => {
     if (state.email) {
@@ -90,7 +57,6 @@ export const CalendarSection = () => {
       fetchMonthData();
     }
   }, [state.email]);
-
 
   return (
     <>
@@ -107,6 +73,19 @@ export const CalendarSection = () => {
           }
           onClickDay={handleDayClick}
           onActiveStartDateChange={handleMonthClick}
+          value={
+            new Date(
+              state.selectedDate.slice(0, 4),
+              state.selectedDate.slice(4, 6) - 1,
+              state.selectedDate.slice(6, 8)
+            )
+          }
+          activeStartDate={
+            new Date(
+              state.selectedMonth.slice(0, 4),
+              state.selectedMonth.slice(4, 6) - 1
+            )
+          }
           tileContent={({ date, view }) => {
             // 날짜를 YYYY-MM-DD 형식으로 변환
             const dateString = formatDate(date); // 이 함수는 date를 'YYYYMMDD' 형식으로 변환해야 합니다.
@@ -131,10 +110,10 @@ export const CalendarSection = () => {
             ) : null;
           }}
         />
-        <SmallModal $isOpen={modalOpen} $onClose={closeModal}>
+        <SmallModal $width="25vw" $isOpen={modalOpen} $onClose={closeModal}>
           <InfoArea>
-            <InfoItemBox $height="5%"></InfoItemBox>
-            <InfoItemBox $height="90%" >
+            
+            <InfoItemBox $height="95%">
               <InfoItem>
                 <MealBox />
               </InfoItem>

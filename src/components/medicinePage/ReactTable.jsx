@@ -39,7 +39,7 @@ const TableRow = styled.tr`
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05); /* 그림자를 더 섬세하게 */
   border-bottom: 1px solid #ddd; /* 행 간 구분을 위한 하단 경계선 추가 */
   &:nth-child(even) {
-    background-color: #d7d5d5; /* 배경색 변경 */
+    background-color: #d8d5d5; /* 배경색 변경 */
   }
 
   @media (max-width: 768px) {

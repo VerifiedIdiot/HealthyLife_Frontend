@@ -31,7 +31,7 @@ export const ComboSelectBox = styled.div.attrs({
   flex-direction: column;
   justify-content: ${(props) => props.$justify || "flex-start"};
 
-  width: 60%;
+  width: 100%;
   height: ${(props) => props.$height || "100%"};
   border-radius: 4px;
 
@@ -56,6 +56,37 @@ export const ComboBox = styled.div.attrs({
     flex-direction: row;
   }
 `;
+
+export const NavigationContainer = styled.div`
+  display: flex;
+  width: 100%;
+  justify-content: space-around;
+  align-items: center;
+  margin-bottom: 10px;
+`;
+
+
+export const NavigationButton = styled.button`
+  background-color: #4942e4;
+  color: white;
+  padding: 10px 15px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+
+  &:hover {
+    background-color: #3932c4;
+  }
+`;
+
+export const DateDisplay = styled.span`
+  font-size: 18px;
+  font-weight: bold;
+`;
+
+
+
 
 export const MealTitle = styled.div.attrs({
   className: "mealtitle",

@@ -6,6 +6,9 @@ import {
   ComboBoxSection,
   ComboSelectBox,
   ComboBox,
+  NavigationContainer,
+  NavigationButton,
+  DateDisplay,
   MealInput,
   MealTitle,
   MealInfoList,
@@ -49,6 +52,17 @@ export const MealBox = () => {
     actions.setMealType("");
   };
 
+  const getFormattedDate = (dateString) => {
+    const year = dateString.substring(0, 4);
+    const month = dateString.substring(4, 6);
+    const day = dateString.substring(6, 8);
+  
+    const date = new Date(`${year}-${month}-${day}`);
+    const options = { year: 'numeric', month: 'long', day: 'numeric', weekday: 'long' };
+    return date.toLocaleDateString('ko-KR', options);
+  };
+  
+
   // 추가하기 클릭시 addState의 값은 false -> true , true -> 식으로 반전
   // 해당 값을 의존성배열에 넣고, 추가하기 버튼이 클릭 되었을때 재 랜더링한다
   useEffect(() => {
@@ -77,9 +91,9 @@ export const MealBox = () => {
     }
   }, [state.addState, state.calendarId]);
 
-  const workoutDropdown = () => {
-    setDropdownWorkout(!dropdownWorkout);
-  };
+  // const workoutDropdown = () => {
+  //   setDropdownWorkout(!dropdownWorkout);
+  // };
   const toggleDropdown = (mealType) => {
     setDropdownMeal((prevStates) => ({
       ...prevStates,
@@ -90,7 +104,17 @@ export const MealBox = () => {
   return (
     <>
       <ComboBoxContainer>
-        <ComboSelectBox>
+        <NavigationContainer>
+          <NavigationButton onClick={actions.moveToPreviousDay}>
+            {"<"}
+          </NavigationButton>
+          <DateDisplay>{getFormattedDate(state.selectedDate)}</DateDisplay>
+          <NavigationButton onClick={actions.moveToNextDay}>
+            {">"}
+          </NavigationButton>
+        </NavigationContainer>
+
+        {/* <ComboSelectBox>
           {MealTypes.map((mealType) => (
             <ComboBox key={mealType}>
               <MealTitle>
@@ -106,8 +130,6 @@ export const MealBox = () => {
                 <MealInfoBox>
                   <MealInfoArea>
                     <MealInfoList>
-                      {/* 배열을 받아오지 못했을때 에러가 나는걸 방지하기 위한 &&연산자 */}
-                      {/* && 연산자는 A && B 일때 둘다 TRUE이면 B를 실행 */}
                       {Array.isArray(state.dateData.meal) &&
                         state.dateData.meal.filter(
                           (meal) => meal.meal_type === mealType
@@ -121,9 +143,8 @@ export const MealBox = () => {
                               <p>{meal.protein}</p>
                               <p>{meal.fat}</p>
                               <p>{meal.kcal}</p>
-                              <MealDel>X</MealDel>   
+                              <MealDel>X</MealDel>
                             </MealInfo>
-                            
                           ))}
                     </MealInfoList>
                   </MealInfoArea>
@@ -169,8 +190,7 @@ export const MealBox = () => {
                     </WorkoutInfoBox>
                   )}
                   <ToggleButton
-                    onClick={() => setDropdownWorkout(!dropdownWorkout)}
-                  >
+                    onClick={() => setDropdownWorkout(!dropdownWorkout)}>
                     <br />
                     <hr />
                     {dropdownWorkout ? (
@@ -182,7 +202,7 @@ export const MealBox = () => {
                 </>
               )}
           </ComboBox>
-        </ComboSelectBox>
+        </ComboSelectBox> */}
       </ComboBoxContainer>
       <SmallModal $isOpen={modalOpen} $onClose={closeModal}>
         <MealInputBox modalOpen={modalOpen} closeModal={closeModal} />
@@ -296,7 +316,7 @@ export const MealInputBox = ({ modalOpen, closeModal }) => {
     <>
       <ComboBoxContainer>
         <ComboBoxSection>
-          <ComboSelectBox >
+          <ComboSelectBox>
             <InputField
               type="text"
               placeholder="메뉴를 입력하세요."
@@ -313,8 +333,7 @@ export const MealInputBox = ({ modalOpen, closeModal }) => {
                   // 운동 검색 결과 렌더링
                   <SearchResultItem
                     key={index}
-                    onClick={() => handleSearchResultClick(item)}
-                  >
+                    onClick={() => handleSearchResultClick(item)}>
                     <p className="workout-name">{item.name}</p>
                     <p className="workout-duration">{item.muscle}</p>
                     <p className="workout-intensity">{item.equipment}</p>
@@ -324,8 +343,7 @@ export const MealInputBox = ({ modalOpen, closeModal }) => {
                   // 음식 검색 결과 렌더링
                   <SearchResultItem
                     key={index}
-                    onClick={() => handleSearchResultClick(item)}
-                  >
+                    onClick={() => handleSearchResultClick(item)}>
                     <p className="food-name">{item.name}</p>
                     <p className="food-size">{item.servingSize}g</p>
                     <p className="food-kcal">{item.kcal}kcal</p>

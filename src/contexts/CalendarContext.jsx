@@ -1,9 +1,4 @@
-import React, {
-  createContext,
-  useContext,
-  useReducer,
-  useEffect,
-} from "react";
+import React, { createContext, useContext, useReducer, useEffect } from "react";
 
 import CalendarApi from "../api/CalendarApi";
 import Common from "../utils/Common";
@@ -51,6 +46,7 @@ const calendarReducer = (state, action) => {
         return state;
       }
       return { ...state, selectedDate: action.payload };
+
     case "SET_CALENDAR_ID":
       if (state.calendarId === action.payload) {
         return state;
@@ -91,10 +87,52 @@ export const CalendarProvider = ({ children }) => {
       dispatch({ type: "SET_SELECTED_DATE", payload: selectedDate }),
     setCalendarId: (calendarId) =>
       dispatch({ type: "SET_CALENDAR_ID", payload: calendarId }),
-      setAddState: (addState) =>
+    setAddState: (addState) =>
       dispatch({ type: "SET_ADD_STATE", payload: addState }),
     setDateData: (setDateData) =>
       dispatch({ type: "SET_DATE_DATA", payload: setDateData }),
+      // 캘린더 영역에서 날짜에 해당하는 영역을 클릭할 시 해당 날짜 데이터를 불러오는 함수 ,
+      // 이전날짜와 다음날짜도 모달창 내에서 불러오기때문에 수정하였음 24/03/08 정벼리
+      fetchDateData: async (selectedDate) => {
+        try {
+          const dateData = state.monthData.find(
+            (data) => data.reg_date === selectedDate
+          );
+          actions.setSelectedDate(selectedDate);
+    
+          if (dateData) {
+            const calendarId = dateData.calendar_id;
+            actions.setCalendarId(calendarId);
+            const details = await CalendarApi.getDetailsByCalendarId(calendarId);
+            actions.setDateData({
+              meal: details.meal,
+              workout: details.workout
+            });
+          } else {
+            actions.setCalendarId(0);
+            actions.setDateData({ meal: [], workout: [] });
+          }
+        } catch (error) {
+          console.error("Error fetching details for selected date:", error);
+        }
+      },
+
+      
+      moveToPreviousDay: async () => {
+        const prevDate = yyyymmddToDate(state.selectedDate);
+        prevDate.setDate(prevDate.getDate() - 1);
+        const formattedDate = formatDate(prevDate);
+        await checkAndFetchNewMonthData(prevDate); // 여기서 prevDate를 전달
+        await actions.fetchDateData(formattedDate);
+      },
+      
+      moveToNextDay: async () => {
+        const nextDate = yyyymmddToDate(state.selectedDate);
+        nextDate.setDate(nextDate.getDate() + 1);
+        const formattedDate = formatDate(nextDate);
+        await checkAndFetchNewMonthData(nextDate); // 여기서 nextDate를 전달
+        await actions.fetchDateData(formattedDate);
+      },
     // 애는 음식이나 운동을정보를 선택하고 추가할때 실행시킬 액션함수 내 위치할 내부 액션함수 , 그러니 단독사용 x
     updateData: async (email, selectedMonth) => {
       try {
@@ -113,7 +151,12 @@ export const CalendarProvider = ({ children }) => {
     addMealAndUpdate: async (email, mealType, selectedDate, selectedItem) => {
       try {
         // POST 요청을 통해 식사 정보 추가
-       const calendarId = await CalendarApi.addMeal(email, mealType, selectedDate, selectedItem);
+        const calendarId = await CalendarApi.addMeal(
+          email,
+          mealType,
+          selectedDate,
+          selectedItem
+        );
         actions.setCalendarId(calendarId);
         // 성공적으로 추가된 후, updateData 액션을 호출하여 날짜 및 월 데이터 업데이트
         await actions.updateData(email, state.selectedMonth);
@@ -127,7 +170,11 @@ export const CalendarProvider = ({ children }) => {
 
     addWorkoutAndUpdate: async (email, selectedDate, selectedItem) => {
       try {
-        const calendarId = await CalendarApi.addWorkout(email, selectedDate, selectedItem);
+        const calendarId = await CalendarApi.addWorkout(
+          email,
+          selectedDate,
+          selectedItem
+        );
         actions.setCalendarId(calendarId);
         await actions.updateData(email, state.selectedMonth);
         dispatch({ type: "SET_ADD_STATE", payload: false });
@@ -174,6 +221,26 @@ export const CalendarProvider = ({ children }) => {
     const month = `${d.getMonth() + 1}`.padStart(2, "0"); // 월은 0부터 시작하므로 1을 더해주고, 두 자리수로 만듭니다.
     return `${year}${month}`;
   };
+
+  const yyyymmddToDate = (str) => {
+    
+    const year = str.substring(0, 4);
+    const month = str.substring(4, 6);
+    const day = str.substring(6, 8);
+  
+    return new Date(year, month - 1, day);
+  };
+
+  // 모달내에서 화살표 버튼을 클릭하여 다른날짜 데이터를 접근중에 month가 이전이나 다음으로 넘어갔을때 
+  // 달이 바뀐시점을 확인하고 새로운 월별 데이터를 불러오는 api를 실행시키는 함수
+const checkAndFetchNewMonthData = async (date) => {
+  const newMonth = formatMonth(date);
+  if (state.selectedMonth !== newMonth) {
+    actions.setSelectedMonth(newMonth);
+    const monthData = await CalendarApi.getMonthData(state.email, newMonth);
+    actions.setMonthData(monthData);
+  }
+};
 
   return (
     <CalendarContext.Provider

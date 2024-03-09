@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import CalendarCharts from "./CalendarCharts";
 import SmallModal from "../../styles/modals/MiddleModal";
 import CalendarApi from "../../api/CalendarApi";
 import {
@@ -101,6 +102,7 @@ export const MealBox = () => {
     }));
   };
 
+
   return (
     <>
       <ComboBoxContainer>
@@ -113,96 +115,7 @@ export const MealBox = () => {
             {">"}
           </NavigationButton>
         </NavigationContainer>
-
-        {/* <ComboSelectBox>
-          {MealTypes.map((mealType) => (
-            <ComboBox key={mealType}>
-              <MealTitle>
-                <MealInput>
-                  <h2>{mealType}</h2>
-                </MealInput>
-                <MealButton>
-                  <AddButton onClick={() => openModal(mealType)}> + </AddButton>
-                </MealButton>
-              </MealTitle>
-
-              {dropdownMeal[mealType] && (
-                <MealInfoBox>
-                  <MealInfoArea>
-                    <MealInfoList>
-                      {Array.isArray(state.dateData.meal) &&
-                        state.dateData.meal.filter(
-                          (meal) => meal.meal_type === mealType
-                        ).length > 0 &&
-                        state.dateData.meal
-                          .filter((meal) => meal.meal_type === mealType)
-                          .map((meal) => (
-                            <MealInfo key={meal.id}>
-                              <h1>{meal.meal_name}</h1>
-                              <p>{meal.carbonhydrate}</p>
-                              <p>{meal.protein}</p>
-                              <p>{meal.fat}</p>
-                              <p>{meal.kcal}</p>
-                              <MealDel>X</MealDel>
-                            </MealInfo>
-                          ))}
-                    </MealInfoList>
-                  </MealInfoArea>
-                </MealInfoBox>
-              )}
-              {Array.isArray(state.dateData.meal) &&
-                state.dateData.meal.filter(
-                  (meal) => meal.meal_type === mealType
-                ).length > 0 && (
-                  <ToggleButton onClick={() => toggleDropdown(mealType)}>
-                    <br />
-                    <hr />
-                    {dropdownMeal[mealType] ? (
-                      <FontAwesomeIcon icon={faCaretUp} />
-                    ) : (
-                      <FontAwesomeIcon icon={faCaretDown} />
-                    )}
-                  </ToggleButton>
-                )}
-            </ComboBox>
-          ))}
-          <ComboBox>
-            <MealTitle>
-              <MealInput>
-                <h2>운동</h2>
-              </MealInput>
-              <MealButtonBox>
-                <AddButton onClick={() => openModal("운동")}> + </AddButton>
-              </MealButtonBox>
-            </MealTitle>
-            {Array.isArray(state.dateData.workout) &&
-              state.dateData.workout.length > 0 && (
-                <>
-                  {dropdownWorkout && (
-                    <WorkoutInfoBox>
-                      <WorkoutInfoList>
-                        {state.dateData.workout.map((workout) => (
-                          <MealInfo key={workout.id}>
-                            {workout.workout_name}
-                          </MealInfo>
-                        ))}
-                      </WorkoutInfoList>
-                    </WorkoutInfoBox>
-                  )}
-                  <ToggleButton
-                    onClick={() => setDropdownWorkout(!dropdownWorkout)}>
-                    <br />
-                    <hr />
-                    {dropdownWorkout ? (
-                      <FontAwesomeIcon icon={faCaretUp} />
-                    ) : (
-                      <FontAwesomeIcon icon={faCaretDown} />
-                    )}
-                  </ToggleButton>
-                </>
-              )}
-          </ComboBox>
-        </ComboSelectBox> */}
+        <CalendarCharts />
       </ComboBoxContainer>
       <SmallModal $isOpen={modalOpen} $onClose={closeModal}>
         <MealInputBox modalOpen={modalOpen} closeModal={closeModal} />

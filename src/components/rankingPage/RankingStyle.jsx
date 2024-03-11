@@ -18,6 +18,13 @@ export const SortedImgBoxSection = styled(Section)`
 export const SortedBoxArea = styled(Area)`
   box-shadow: none;
   margin: 0 1vw;
+  cursor: pointer;
+  border-bottom: ${({ isSelected }) => isSelected ? '2px solid #4942E4' : 'none'};
+  transition: transform 0.2s;
+
+  &:hover {
+    transform: scale(1.05); 
+  }
 `;
 
 export const ItemType = styled(Item)`
@@ -150,7 +157,7 @@ export const ItemPaginationArea = styled(Area)`
 `;
 
 export const ItemPaginationButton = styled.button`
-    height: 30px;
+  height: 30px;
   width: 30px;
   margin-right: 2px;
   padding: 10px;
@@ -164,5 +171,23 @@ export const ItemPaginationButton = styled.button`
 
   background-color: ${(props) => (props.$isActive ? "#007bff" : "white")};
   color: ${(props) => (props.$isActive ? "white" : "black")};
+`;
 
+
+
+export const PaginationButton = styled.button`
+  padding: 8px;
+  margin: 0 4px;
+  background-color: ${({ isActive }) => (isActive ? "#4942E4" : "white")};
+  border: 1px solid #eee;
+  cursor: pointer;
+  &:hover {
+    background-color: lightgray;
+  }
+`;
+
+export const PaginationWrapper = styled.div`
+  display: flex;
+  justify-content: center;
+  padding: 20px;
 `;

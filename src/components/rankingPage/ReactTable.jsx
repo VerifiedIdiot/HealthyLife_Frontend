@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useMemo } from "react";
 import { useTable, useSortBy } from "react-table";
 import {
   TableArea,
@@ -55,25 +55,38 @@ export const MyReactTable = () => {
       <TableHeader>
         <TableRow>
           <TableHeaderCell>1</TableHeaderCell>
-          <TableHeaderCell>test1</TableHeaderCell>
+          <TableHeaderCell>test</TableHeaderCell>
           <TableHeaderCell>여</TableHeaderCell>
           <TableHeaderCell>125</TableHeaderCell>
         </TableRow>
       </TableHeader>
-      {/* <TableBody>
+      <TableBody>
         <TableRow>
           <TableDataCell>{userEmail.ranks}</TableDataCell>
           <TableDataCell>{userEmail.nickname}</TableDataCell>
           <TableDataCell>{userEmail.gender}</TableDataCell>
           <TableDataCell>{userEmail.points}</TableDataCell>
         </TableRow>
-      </TableBody> */}
+      </TableBody>
     </TableArea>
   );
 };
 
+
+const PaginationControls = ({ currentPage, totalPages, setPage }) => {
+  return (
+    <div>
+      {currentPage > 1 && <button onClick={() => setPage(currentPage - 1)}>이전</button>}
+      {currentPage} / {totalPages}
+      {currentPage < totalPages && <button onClick={() => setPage(currentPage + 1)}>다음</button>}
+    </div>
+  );
+};
+
 export const TotalReactTable = () => {
+  const [currentPage, setCurrentPage] = useState(1);
   const [data, setData] = useState([]);
+  const pageSize = 5;
 
   const columns = React.useMemo(
     () => [
@@ -101,18 +114,17 @@ export const TotalReactTable = () => {
     []
   );
 
-  // useTable 훅을 사용하여 테이블 관련 프로퍼티들을 가져옵니다.
-  const { getTableProps, getTableBodyProps, headerGroups, rows, prepareRow } =
-    useTable(
-      {
-        columns,
-        data,
-      },
-      useSortBy
-    );
+  // const { getTableProps, getTableBodyProps, headerGroups, rows, prepareRow } =
+  //   useTable(
+  //     {
+  //       columns,
+  //       data,
+  //     },
+  //     useSortBy
+  //   );
 
   useEffect(() => {
-    const fetchSeasonData = async () => {
+    const fetchTotalData = async () => {
       try {
         const result = await RankingApi.getListByTotal({});
         console.log("토탈:", result)
@@ -126,8 +138,19 @@ export const TotalReactTable = () => {
         console.error(error);
       }
     };
-    fetchSeasonData();
+    fetchTotalData();
   }, []);
+
+  const totalPages = Math.ceil(data.length / pageSize);
+  const currentPageData = useMemo(() => {
+    const start = (currentPage - 1) * pageSize;
+    const end = start + pageSize;
+    return data.slice(start, end);
+  }, [currentPage, data]);
+
+  const tableInstance = useTable({ columns, data: currentPageData }, useSortBy);
+  const { getTableProps, getTableBodyProps, headerGroups, rows, prepareRow } = tableInstance;
+
 
   return (
     <>
@@ -166,6 +189,11 @@ export const TotalReactTable = () => {
           })}
         </TableBody>
       </TableArea>
+      {/* <PaginationControls
+        currentPage={currentPage}
+        totalPages={totalPages}
+        setPage={setCurrentPage}
+      /> */}
     </>
   );
 };
@@ -199,7 +227,6 @@ export const SeasonReactTable = () => {
     []
   );
 
-  // useTable 훅을 사용하여 테이블 관련 프로퍼티들을 가져옵니다.
   const { getTableProps, getTableBodyProps, headerGroups, rows, prepareRow } =
     useTable(
       {
@@ -212,8 +239,8 @@ export const SeasonReactTable = () => {
   useEffect(() => {
     const fetchSeasonData = async () => {
       try {
-        const result = await RankingApi.getListByTotal({});
-        console.log("토탈:", result)
+        const result = await RankingApi.getListBySeason({});
+        console.log("시즌:", result)
         result.sort((a, b) => b.points - a.points);
         const rankedData = result.map((item, index) => ({
           ...item,
@@ -268,3 +295,202 @@ export const SeasonReactTable = () => {
   );
 };
 
+
+
+export const MaleReactTable = () => {
+  const [data, setData] = useState([]);
+
+  const columns = React.useMemo(
+    () => [
+      {
+        Header: "순위",
+        accessor: "ranks",
+        width: 200,
+      },
+      {
+        Header: "닉네임",
+        accessor: "nickname",
+        width: 200,
+      },
+      {
+        Header: "성별",
+        accessor: "gender",
+        width: 200,
+      },
+      {
+        Header: "포인트",
+        accessor: "points",
+        width: 200,
+      },
+    ],
+    []
+  );
+
+  const { getTableProps, getTableBodyProps, headerGroups, rows, prepareRow } =
+    useTable(
+      {
+        columns,
+        data,
+      },
+      useSortBy
+    );
+
+    useEffect(() => {
+      const fetchSeasonData = async () => {
+        try {
+          const result = await RankingApi.getListBySeason({});
+          console.log("시즌:", result);
+          result.sort((a, b) => b.points - a.points);
+    
+          const maleData = result.filter(item => item.gender === '남');
+          const rankedData = maleData.map((item, index) => ({
+            ...item,
+            rank: index + 1,
+          }));
+          setData(rankedData);
+        } catch (error) {
+          console.error(error);
+        }
+      };
+      fetchSeasonData();
+    }, []);
+
+  return (
+    <>
+      <TableArea $justify="center" {...getTableProps()}>
+        <TableHeader>
+          {headerGroups.map((headerGroup) => (
+            <TableRow {...headerGroup.getHeaderGroupProps()}>
+              {headerGroup.headers.map((column) => (
+                <TableHeaderCell
+                  {...column.getHeaderProps(column.getSortByToggleProps())}
+                  width={column.width}
+                >
+                  {column.render("Header")}
+                </TableHeaderCell>
+              ))}
+            </TableRow>
+          ))}
+        </TableHeader>
+        <TableBody {...getTableBodyProps()}>
+          {rows.map((row) => {
+            prepareRow(row);
+            return (
+              <TableRow {...row.getRowProps()}>
+                {row.cells.map((cell) => {
+                  return (
+                    <TableDataCell
+                      {...cell.getCellProps()}
+                      width={cell.column.width}
+                    >
+                      {cell.render("Cell")}
+                    </TableDataCell>
+                  );
+                })}
+              </TableRow>
+            );
+          })}
+        </TableBody>
+      </TableArea>
+    </>
+  );
+};
+
+export const FemaleReactTable = () => {
+  const [data, setData] = useState([]);
+
+  const columns = React.useMemo(
+    () => [
+      {
+        Header: "순위",
+        accessor: "ranks",
+        width: 200,
+      },
+      {
+        Header: "닉네임",
+        accessor: "nickname",
+        width: 200,
+      },
+      {
+        Header: "성별",
+        accessor: "gender",
+        width: 200,
+      },
+      {
+        Header: "포인트",
+        accessor: "points",
+        width: 200,
+      },
+    ],
+    []
+  );
+
+  const { getTableProps, getTableBodyProps, headerGroups, rows, prepareRow } =
+    useTable(
+      {
+        columns,
+        data,
+      },
+      useSortBy
+    );
+
+    useEffect(() => {
+      const fetchSeasonData = async () => {
+        try {
+          const result = await RankingApi.getListBySeason({});
+          console.log("시즌:", result);
+          result.sort((a, b) => b.points - a.points);
+    
+          const maleData = result.filter(item => item.gender === '여');
+          const rankedData = maleData.map((item, index) => ({
+            ...item,
+            rank: index + 1,
+          }));
+          setData(rankedData);
+        } catch (error) {
+          console.error(error);
+        }
+      };
+      fetchSeasonData();
+    }, []);
+
+  return (
+    <>
+      <TableArea $justify="center" {...getTableProps()}>
+        <TableHeader>
+          {headerGroups.map((headerGroup) => (
+            <TableRow {...headerGroup.getHeaderGroupProps()}>
+              {headerGroup.headers.map((column) => (
+                <TableHeaderCell
+                  {...column.getHeaderProps(column.getSortByToggleProps())}
+                  width={column.width}
+                >
+                  {column.render("Header")}
+                </TableHeaderCell>
+              ))}
+            </TableRow>
+          ))}
+        </TableHeader>
+        <TableBody {...getTableBodyProps()}>
+          {rows.map((row) => {
+            prepareRow(row);
+            return (
+              <TableRow {...row.getRowProps()}>
+                {row.cells.map((cell) => {
+                  return (
+                    <TableDataCell
+                      {...cell.getCellProps()}
+                      width={cell.column.width}
+                    >
+                      {cell.render("Cell")}
+                    </TableDataCell>
+                  );
+                })}
+              </TableRow>
+            );
+          })}
+        </TableBody>
+      </TableArea>
+    </>
+  );
+};

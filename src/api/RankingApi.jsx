@@ -5,7 +5,22 @@ import AxiosInstance from "../utils/AxiosInstance";
 const BACKEND_DOMAIN = process.env.REACT_APP_BACKEND_DOMAIN;
 
 const RankingApi = {
-    
+    getGenderData: async (email, gender) => {
+        try {
+          const params = {
+            email: email,
+            gender: gender,
+          };
+          const response = await axios.get(
+            `${BACKEND_DOMAIN}/totalRanking/detail`,
+            { params }
+        );
+        return response.data;
+        } catch (error) {
+          console.error("Error in getㅌMonthlyData API call", error);
+          throw error;
+        }
+      },
     getListBySeason: async () => {
         try {
             const response = await axios.get(

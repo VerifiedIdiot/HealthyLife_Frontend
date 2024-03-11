@@ -42,7 +42,7 @@ const BodyApi = {
       email: email,
       muscle: muscle,
       weight: weight,
-      DCI: dci,
+      dci: dci,
     };
     console.log("이메일" + email);
     return await axios.post(BACKEND_DOMAIN + "/Body/new", userBody);

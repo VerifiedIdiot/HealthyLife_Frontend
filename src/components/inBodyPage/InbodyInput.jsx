@@ -113,7 +113,7 @@ const InbodyInput = (props) => {
         const resp = await MemberApi.getMemberDetail();
         console.warn(resp.data.gender);
         console.log(resp.data.birth);
-        console.log("운동량" + resp.data.exerciseInfo);
+        console.log("운동량 : " + resp.data.exerciseInfo);
         setExerciseInfo(resp.data.exerciseInfo);
         setGender(resp.data.gender);
 
@@ -165,10 +165,25 @@ const InbodyInput = (props) => {
   );
 
   const dci = useMemo(() => {
-    if (!exerciseInfo || !weight) {
+    if (!exerciseInfo || !weight ) {
       return 0;
+    } else {
+      const exerciseValue = 24;
+      switch (exerciseInfo) {
+        case "적음": {
+          return exerciseValue * 1.3 * weight;
+        }
+        case "보통": {
+          return exerciseValue * 1.5 * weight;
+        }
+        case "많음": {
+          return exerciseValue * 1.7 * weight;
+        }
+        default: {
+          return 0; // 잘못된 값이 들어왔을 때의 기본값 처리
+        }
+      }
     }
-    return exerciseInfo * weight;
   }, [exerciseInfo, weight]);
 
   const heightChange = (e) => {
@@ -206,7 +221,6 @@ const InbodyInput = (props) => {
         if (window.confirm(confirmationMessage)) {
           if (rsp.data === true) {
             alert("등록 성공");
-            console.log("씨빨 안뜨네");
             setHeight("");
             setWeight("");
             setMuscle("");
@@ -266,8 +280,7 @@ const InbodyInput = (props) => {
         style={{
           borderRadius: "8px",
           boxShadow: "0 2px 4px rgba(0, 0, 0, 0.5)",
-        }}
-      >
+        }}>
         <ImgContainer>
           <Runner src={runner} />
         </ImgContainer>
@@ -282,8 +295,7 @@ const InbodyInput = (props) => {
               marginBottom: "1rem",
               marginTop: "1rem",
               marginLeft: "1rem",
-            }}
-          >
+            }}>
             {formattedDate} 신체정보 입력
           </Section>
           <Section $height="25%" $justify="space-around">
@@ -318,8 +330,7 @@ const InbodyInput = (props) => {
             $height="25%"
             $justify="end"
             $align="center"
-            style={{ borderRadius: "0px 0px 8px 0px" }}
-          >
+            style={{ borderRadius: "0px 0px 8px 0px" }}>
             {bmi !== 0 ? (
               <>
                 <Input4>
@@ -336,8 +347,7 @@ const InbodyInput = (props) => {
             )}
             <MiddleButton
               style={{ marginRight: "1.5%", marginBottom: "1.5%" }}
-              onClick={bodyUpload}
-            >
+              onClick={bodyUpload}>
               제출
             </MiddleButton>
           </Section>

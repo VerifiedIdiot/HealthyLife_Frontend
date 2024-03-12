@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import CalendarCharts from "./CalendarCharts";
-import SmallModal from "../../styles/modals/MiddleModal";
+import CalendarModal from "./CalendarStyle";
 import CalendarApi from "../../api/CalendarApi";
 import {
   ComboBoxContainer,
@@ -117,9 +117,9 @@ export const MealBox = () => {
         </NavigationContainer>
         <CalendarCharts />
       </ComboBoxContainer>
-      <SmallModal $isOpen={modalOpen} $onClose={closeModal}>
+      <CalendarModal $isOpen={modalOpen} $onClose={closeModal}>
         <MealInputBox modalOpen={modalOpen} closeModal={closeModal} />
-      </SmallModal>
+      </CalendarModal>
     </>
   );
 };

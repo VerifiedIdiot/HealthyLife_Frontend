@@ -1,4 +1,6 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
+
+import { useEffect } from "react";
 import { Container, Section, Area, Box, Item } from "../../styles/Layouts";
 import styled from "styled-components";
 import { MiddleButton } from "../../styles/styledComponents/StyledComponents";
@@ -60,7 +62,7 @@ export const ComboBox = styled.div.attrs({
 export const NavigationContainer = styled.div`
   display: flex;
   width: 100%;
-  justify-content: space-around;
+  justify-content: space-between;
   align-items: center;
   margin-bottom: 10px;
 `;
@@ -399,3 +401,95 @@ export const CalendarMainSection = styled(Container)`
     opacity: 0.3;
   }
 `;
+
+
+
+
+
+
+
+
+const ModalOverlay = styled.div`
+  display: ${(props) => (props.$isOpen ? "flex" : "none")};
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+`;
+
+const ModalContent = styled.div`
+  position: relative;
+  background: white;
+  padding: 20px;
+  border-radius: 8px;
+  display: flex;
+  width: ${(props) => props.$width || "450px"};
+  height: ${(props) => props.$height || "650px"};
+  
+  z-index: 99999;
+
+    @media (max-width: 768px) {
+
+    
+  }
+`;
+
+
+
+
+
+const CloseButton = styled.button`
+  position: absolute;
+  top: 15px;
+  right: 15px;
+  background: none;
+  border: none;
+  font-size: 24px;
+  cursor: pointer;
+
+  /* @media (max-width: 768px) {
+    
+    top: 1px;
+    right: 1px;
+    
+  } */
+`;
+
+const ContentSection = styled.div`
+  display: flex;
+`;
+
+const CalendarModal = ({ $isOpen, $onClose, imageSrc, children }) => {
+  // esc 누르면 모달창 종료
+  useEffect(() => {
+    const handleEsc = (event) => {
+      if (event.keyCode === 27) {
+        $onClose();
+      }
+    };
+    window.addEventListener("keydown", handleEsc);
+
+    return () => {
+      window.removeEventListener("keydown", handleEsc);
+    };
+  }, [$onClose]);
+
+  return (
+    <>
+      <ModalOverlay $isOpen={$isOpen} onClick={$onClose}>
+        <ModalContent onClick={(e) => e.stopPropagation()}>
+          
+          {/* <ImageSection src={imageSrc} /> */}
+          <ContentSection>{children}</ContentSection>
+        </ModalContent>
+      </ModalOverlay>
+    </>
+  );
+};
+
+export default CalendarModal;

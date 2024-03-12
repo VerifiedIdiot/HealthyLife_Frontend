@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { CalendarMainSection } from "./CalendarStyle";
+import CalendarModal, { CalendarMainSection } from "./CalendarStyle";
 import { MealBox } from "./CalendarContainer";
 import { InfoArea, InfoItemBox, InfoItem } from "./CalendarStyle";
 import SmallModal from "../../styles/modals/MiddleModal";
@@ -110,7 +110,7 @@ export const CalendarSection = () => {
             ) : null;
           }}
         />
-        <SmallModal $width="25vw" $isOpen={modalOpen} $onClose={closeModal}>
+        <CalendarModal $isOpen={modalOpen} $onClose={closeModal}>
           <InfoArea>
             
             <InfoItemBox $height="95%">
@@ -119,7 +119,7 @@ export const CalendarSection = () => {
               </InfoItem>
             </InfoItemBox>
           </InfoArea>
-        </SmallModal>
+        </CalendarModal>
       </CalendarMainSection>
     </>
   );

@@ -30,10 +30,11 @@ const CalendarCharts = () => {
   });
 
   useEffect(() => {
+    const selectedDateStr = state.selectedDate;
     const startDate = new Date(
-      state.selectedDate.substring(0, 4),
-      state.selectedDate.substring(4, 6) - 1,
-      state.selectedDate.substring(6, 8)
+      selectedDateStr.substring(0, 4),
+      selectedDateStr.substring(4, 6) - 1,
+      selectedDateStr.substring(6, 8)
     );
     startDate.setDate(startDate.getDate() - 3);
     const endDate = new Date(startDate);
@@ -54,37 +55,44 @@ const CalendarCharts = () => {
       data: filteredData.map((data) => data.calorie),
     }];
   
-    // 현재 DCI 값과 최신 갱신 날짜 추적
+    
     let currentDCI = null;
-    let lastUpdateIndex = 0;
-    filteredData.forEach((data, index) => {
-      let dciValue = parseFloat(data.dci);
-      if (!isNaN(dciValue) && dciValue != null) {
-        currentDCI = dciValue;
-        lastUpdateIndex = index;
+    let latestDateForDCI = null;
+    state.monthData.forEach((data) => {
+      if (data.dci && data.reg_date <= selectedDateStr) {
+        if (!latestDateForDCI || data.reg_date > latestDateForDCI) {
+          latestDateForDCI = data.reg_date;
+          currentDCI = data.dci;
+        }
       }
     });
+
+    
   
-    // 수평선 Annotations 생성
-    const annotations = {
-      yaxis: [
-        {
-          y: currentDCI,
+    const annotations = currentDCI ? {
+      yaxis: [{
+        y: parseFloat(currentDCI),
+        borderColor: '#00E396',
+        label: {
           borderColor: '#00E396',
-          label: {
-            borderColor: '#00E396',
-            style: { color: '#fff', background: '#00E396' },
-            text: `DCI: ${currentDCI}kcal`,
-          },
-        }
-      ],
-    };
+          style: { color: '#fff', background: '#00E396' },
+          text: `DCI: ${currentDCI}kcal`,
+        },
+      }],
+    } : {};
   
     setChartData({
       series: series,
       options: {
-        chart: { type: "line", toolbar: { show: false } },
-        xaxis: { categories: categories },
+        chart: {
+          type: "line",
+          toolbar: {
+            show: false,
+          },
+        },
+        xaxis: {
+          categories: categories,
+        },
         annotations: annotations,
         tooltip: {
           enabled: true,
@@ -100,12 +108,6 @@ const CalendarCharts = () => {
       },
     });
   }, [state.selectedDate, state.monthData]);
-  
-  
-  
-  
-  
-
   // 데이터 가공 및 차트 데이터 설정 로직 추가...
 
   return (

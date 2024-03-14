@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import CalendarModal, { CalendarMainSection } from "./CalendarStyle";
-import { MealBox } from "./CalendarContainer";
+import { MealBox , SelectedDateInfo } from "./CalendarContainer";
 import { InfoArea, InfoItemBox, InfoItem } from "./CalendarStyle";
 import SmallModal from "../../styles/modals/MiddleModal";
 
@@ -115,7 +115,7 @@ export const CalendarSection = () => {
             
             <InfoItemBox $height="95%">
               <InfoItem>
-                <MealBox />
+                <SelectedDateInfo />
               </InfoItem>
             </InfoItemBox>
           </InfoArea>

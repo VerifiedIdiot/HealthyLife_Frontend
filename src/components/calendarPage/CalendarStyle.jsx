@@ -67,7 +67,6 @@ export const NavigationContainer = styled.div`
   margin-bottom: 10px;
 `;
 
-
 export const NavigationButton = styled.button`
   background-color: #4942e4;
   color: white;
@@ -87,9 +86,6 @@ export const DateDisplay = styled.span`
   font-weight: bold;
 `;
 
-
-
-
 export const MealTitle = styled.div.attrs({
   className: "mealtitle",
 })`
@@ -103,7 +99,6 @@ export const MealInput = styled.div`
   padding: 10px 0;
   border: none;
   background-color: transparent;
-  
 
   h2 {
     font-size: 1.2rem;
@@ -135,11 +130,11 @@ export const WorkoutInfoBox = styled.div`
   padding: 0 3vw;
 `;
 export const MealDel = styled.button`
-margin: 0 3px;
-color: #666;
-border: 1px solid #eee;
-border-radius: 3px;
-width: 20px;
+  margin: 0 3px;
+  color: #666;
+  border: 1px solid #eee;
+  border-radius: 3px;
+  width: 20px;
 `;
 export const MealInfoArea = styled.div`
   display: flex;
@@ -148,14 +143,13 @@ export const MealInfoArea = styled.div`
 `;
 
 export const MealInfoList = styled.ul`
-/* text-align: left; */
+  /* text-align: left; */
 `;
 
 export const MealInfo = styled.div`
-display: flex;
-width: 100%;
-justify-content: space-around;
-
+  display: flex;
+  width: 100%;
+  justify-content: space-around;
 `;
 
 export const WorkoutInfoList = styled.ul``;
@@ -186,7 +180,7 @@ export const MealButton = styled.div`
 export const InputField = styled.input`
   width: 30vw;
   height: 40px;
-  
+
   margin: 10px;
   border: 1px solid #ccc;
   border-radius: 4px;
@@ -287,7 +281,6 @@ export const CalendarMainSection = styled(Container)`
 
   // react-calendar.css
   .react-calendar {
-
     width: 100%;
     height: 100%;
     margin: 0 auto;
@@ -402,12 +395,7 @@ export const CalendarMainSection = styled(Container)`
   }
 `;
 
-
-
-
-
-
-
+/// 날짜별 모달 ///
 
 const ModalOverlay = styled.div`
   display: ${(props) => (props.$isOpen ? "flex" : "none")};
@@ -430,18 +418,12 @@ const ModalContent = styled.div`
   display: flex;
   width: ${(props) => props.$width || "450px"};
   height: ${(props) => props.$height || "650px"};
-  
+
   z-index: 99999;
 
-    @media (max-width: 768px) {
-
-    
+  @media (max-width: 768px) {
   }
 `;
-
-
-
-
 
 const CloseButton = styled.button`
   position: absolute;
@@ -483,7 +465,6 @@ const CalendarModal = ({ $isOpen, $onClose, imageSrc, children }) => {
     <>
       <ModalOverlay $isOpen={$isOpen} onClick={$onClose}>
         <ModalContent onClick={(e) => e.stopPropagation()}>
-          
           {/* <ImageSection src={imageSrc} /> */}
           <ContentSection>{children}</ContentSection>
         </ModalContent>
@@ -493,3 +474,23 @@ const CalendarModal = ({ $isOpen, $onClose, imageSrc, children }) => {
 };
 
 export default CalendarModal;
+
+/// 날짜별 모달 내 영역 ///
+
+export const DailyInfoContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  width: 95%;
+  height: 40%;
+  border: 1px solid black;
+`;
+
+export const DailyInfoArea = styled.div`
+  display: flex;
+  width: 100%;
+  height: 50%;
+  border: 1px solid black;
+`;
+
+
+

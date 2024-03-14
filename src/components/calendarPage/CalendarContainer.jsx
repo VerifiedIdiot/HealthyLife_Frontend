@@ -10,6 +10,8 @@ import {
   NavigationContainer,
   NavigationButton,
   DateDisplay,
+  DailyInfoContainer,
+  DailyInfoArea,
   MealInput,
   MealTitle,
   MealInfoList,
@@ -31,6 +33,85 @@ import {
 import { useCalendar } from "../../contexts/CalendarContext";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCaretUp, faCaretDown } from "@fortawesome/free-solid-svg-icons";
+
+
+export const SelectedDateInfo = () => {
+  const { state, actions } = useCalendar();
+  const [modalOpen, setModalOpen] = useState(false);
+
+
+  const closeModal = () => {
+    setModalOpen(false);
+    actions.setMealType("");
+  };
+
+  const getFormattedDate = (dateString) => {
+    const year = dateString.substring(0, 4);
+    const month = dateString.substring(4, 6);
+    const day = dateString.substring(6, 8);
+  
+    const date = new Date(`${year}-${month}-${day}`);
+    const options = { year: 'numeric', month: 'long', day: 'numeric', weekday: 'long' };
+    return date.toLocaleDateString('ko-KR', options);
+  };
+  
+
+  // 추가하기 클릭시 addState의 값은 false -> true , true -> 식으로 반전
+  // 해당 값을 의존성배열에 넣고, 추가하기 버튼이 클릭 되었을때 재 랜더링한다
+  useEffect(() => {
+    const updateAfterInsert = async () => {
+      try {
+        // 데이터 추가 후 상태 업데이트를 위한 API 호출
+        const response = await CalendarApi.getDetailsByCalendarId(
+          state.calendarId
+        );
+        // 상태 업데이트
+        actions.setDateData({
+          meal: response.meal,
+          workout: response.workout,
+        });
+      } catch (error) {
+        console.error("상세 정보 조회 실패:", error);
+      }
+    };
+
+    // 데이터 추가 플래그가 true일 경우에만 업데이트 함수 호출
+    if (state.addState === true) {
+      updateAfterInsert().then(() => {
+        // 성공적인 업데이트 후 addState를 false로 재설정
+        actions.setAddState(false);
+      });
+    }
+  }, [state.addState, state.calendarId]);
+
+
+
+  return (
+    <>
+      <ComboBoxContainer>
+        <NavigationContainer>
+          <NavigationButton onClick={actions.moveToPreviousDay}>
+            {"<"}
+          </NavigationButton>
+          <DateDisplay>{getFormattedDate(state.selectedDate)}</DateDisplay>
+          <NavigationButton onClick={actions.moveToNextDay}>
+            {">"}
+          </NavigationButton>
+        </NavigationContainer>
+        <CalendarCharts />
+        <DailyInfoContainer>
+        <DailyInfoArea></DailyInfoArea>
+        <DailyInfoArea></DailyInfoArea>
+        </DailyInfoContainer>
+      </ComboBoxContainer>
+      <CalendarModal $isOpen={modalOpen} $onClose={closeModal}>
+        <MealInputBox modalOpen={modalOpen} closeModal={closeModal} />
+      </CalendarModal>
+    </>
+  );
+};
+
+
 
 export const MealBox = () => {
   const { state, actions } = useCalendar();
@@ -116,6 +197,10 @@ export const MealBox = () => {
           </NavigationButton>
         </NavigationContainer>
         <CalendarCharts />
+        <DailyInfoContainer>
+        <DailyInfoArea></DailyInfoArea>
+        <DailyInfoArea></DailyInfoArea>
+        </DailyInfoContainer>
       </ComboBoxContainer>
       <CalendarModal $isOpen={modalOpen} $onClose={closeModal}>
         <MealInputBox modalOpen={modalOpen} closeModal={closeModal} />

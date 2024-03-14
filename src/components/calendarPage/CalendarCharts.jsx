@@ -38,7 +38,7 @@ const CalendarCharts = () => {
     startDate.setDate(startDate.getDate() - 3);
     const endDate = new Date(startDate);
     endDate.setDate(endDate.getDate() + 6);
-
+  
     const filteredData = state.monthData.filter((data) => {
       const dataDate = new Date(
         data.reg_date.substring(0, 4),
@@ -47,38 +47,64 @@ const CalendarCharts = () => {
       );
       return dataDate >= startDate && dataDate <= endDate;
     });
-
+  
     const categories = filteredData.map((data) => data.reg_date);
-    const series = [
-      {
-        name: "칼로리",
-        data: filteredData.map((data) => data.calorie),
-      },
-    ];
-
+    const series = [{
+      name: "칼로리",
+      data: filteredData.map((data) => data.calorie),
+    }];
+  
+    // 현재 DCI 값과 최신 갱신 날짜 추적
+    let currentDCI = null;
+    let lastUpdateIndex = 0;
+    filteredData.forEach((data, index) => {
+      let dciValue = parseFloat(data.dci);
+      if (!isNaN(dciValue) && dciValue != null) {
+        currentDCI = dciValue;
+        lastUpdateIndex = index;
+      }
+    });
+  
+    // 수평선 Annotations 생성
+    const annotations = {
+      yaxis: [
+        {
+          y: currentDCI,
+          borderColor: '#00E396',
+          label: {
+            borderColor: '#00E396',
+            style: { color: '#fff', background: '#00E396' },
+            text: `DCI: ${currentDCI}kcal`,
+          },
+        }
+      ],
+    };
+  
     setChartData({
-      ...chartData,
       series: series,
       options: {
-        ...chartData.options,
-        xaxis: {
-          categories: categories,
-        },
-        colors: ["#0000FF"],
+        chart: { type: "line", toolbar: { show: false } },
+        xaxis: { categories: categories },
+        annotations: annotations,
         tooltip: {
-          enabled: true, 
+          enabled: true,
           custom: function ({ series, seriesIndex, dataPointIndex, w }) {
             return `<div class="arrow_box" style="text-align: left;">
-            <span style='color: #0000FF;'>●</span> 칼로리: ${series[seriesIndex][dataPointIndex]}kcal
-            <br><span style='color: green;'>●</span> 탄수화물: ${filteredData[dataPointIndex].carbohydrate}g
-            <br><span style='color: red;'>●</span> 단백질: ${filteredData[dataPointIndex].protein}g
-            <br><span style='color: yellow;'>●</span> 지방: ${filteredData[dataPointIndex].fat}g
-          </div>`;
-        },
+              <span style='color: #0000FF;'>●</span> 칼로리: ${series[seriesIndex][dataPointIndex]}kcal
+              <br><span style='color: green;'>●</span> 탄수화물: ${filteredData[dataPointIndex].carbohydrate}g
+              <br><span style='color: red;'>●</span> 단백질: ${filteredData[dataPointIndex].protein}g
+              <br><span style='color: yellow;'>●</span> 지방: ${filteredData[dataPointIndex].fat}g
+              </div>`;
+          },
         },
       },
     });
   }, [state.selectedDate, state.monthData]);
+  
+  
+  
+  
+  
 
   // 데이터 가공 및 차트 데이터 설정 로직 추가...
 

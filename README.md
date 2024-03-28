@@ -1,4 +1,5 @@
 ![notion용3](https://github.com/sonincheon/Doggo-frontend/assets/142462485/5a439b87-be96-4fa8-966b-2ddca0c18a91)
+---
 ## 손인천 담당 기능 요약 ##
 
 1. ML을 이용한 기대 수명 예측(파이썬)
@@ -28,7 +29,8 @@
 3. 이외의 활동
    - Spring의 JWT 보안토큰 관련 에러 수정 및 피드백
    - Axios 인스턴스 생성하여 401에러시, JWT토큰 재발급
-  
+     
+---  
 ## 정벼리 담당 기능 요약 ##
 
 1. ELK 를 활용한 건강기능식품 조회 
